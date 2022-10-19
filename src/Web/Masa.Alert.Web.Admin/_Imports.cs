@@ -28,7 +28,6 @@ global using BlazorDownloadFile;
 global using Microsoft.JSInterop;
 global using Masa.Blazor.Components.Editor;
 global using Masa.Alert.Web.Admin.Data.Shared.Favorite;
-global using Masa.Alert.Web.Admin.Data.Others.AccountSettings.Dto;
 global using Masa.Alert.Web.Admin.Data.Base;
 global using Microsoft.Extensions.DependencyInjection;
 global using Masa.Utils.Data.Elasticsearch;
