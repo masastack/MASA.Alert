@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Masa.BuildingBlocks.StackSdks.Auth.Contracts" Version="$(MasaFrameworkPackageVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Common\Masa.Alert.Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Ddd.Application.Contracts\Masa.Alert.Infrastructure.Ddd.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
+</Project>

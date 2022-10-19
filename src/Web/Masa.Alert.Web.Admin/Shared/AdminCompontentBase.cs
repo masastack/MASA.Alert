@@ -1,0 +1,153 @@
+﻿// Copyright (c) MASA Stack All rights reserved.
+// Licensed under the Apache License. See LICENSE.txt in the project root for license information.
+
+namespace Masa.Alert.Web.Admin;
+
+public abstract class AdminCompontentBase : BDomComponentBase
+{
+    private I18n? _i18n;
+    private GlobalConfig? _globalConfig;
+    private NavigationManager? _navigationManager;
+    private AlertCaller? _alertCaller;
+
+    [Inject]
+    public AlertCaller AlertCaller
+    {
+        get
+        {
+            return _alertCaller ?? throw new Exception("please Inject AlertCaller!");
+        }
+        set
+        {
+            _alertCaller = value;
+        }
+    }
+
+    [Inject]
+    public IPopupService PopupService { get; set; } = default!;
+
+    [Inject]
+    public I18n I18n
+    {
+        get
+        {
+            return _i18n ?? throw new Exception("please Inject I18n!");
+        }
+        set
+        {
+            _i18n = value;
+        }
+    }
+
+    [Inject]
+    public GlobalConfig GlobalConfig
+    {
+        get
+        {
+            return _globalConfig ?? throw new Exception("please Inject GlobalConfig!");
+        }
+        set
+        {
+            _globalConfig = value;
+        }
+    }
+
+    [Inject]
+    public NavigationManager NavigationManager
+    {
+        get
+        {
+            return _navigationManager ?? throw new Exception("please Inject NavigationManager!");
+        }
+        set
+        {
+            _navigationManager = value;
+        }
+    }
+
+    public bool Loading
+    {
+        get => GlobalConfig.Loading;
+        set => GlobalConfig.Loading = value;
+    }
+
+    public string LoadingText
+    {
+        get => GlobalConfig.LoadingText;
+        set => GlobalConfig.LoadingText = value;
+    }
+
+    public string T(string key) => I18n.T(key);
+
+    public HubConnection? HubConnection { get; set; }
+
+    public async Task ConfirmAsync(string messgae, Func<Task> callback, AlertTypes type = AlertTypes.Warning)
+    {
+        if (await PopupService.ConfirmAsync(I18n.T("OperationConfirmation"), messgae, type)) await callback.Invoke();
+    }
+
+    public async Task SuccessMessageAsync(string message)
+    {
+        await PopupService.ToastSuccessAsync(message);
+    }
+
+    public async Task WarningAsync(string message)
+    {
+        await PopupService.ToastWarningAsync(message);
+    }
+
+    public async Task ErrorMessageAsync(string message)
+    {
+        await PopupService.ToastErrorAsync(message);
+    }
+
+    public static List<TEnum> GetEnumList<TEnum>() where TEnum : struct, Enum
+    {
+        return EnumHelper.GetEnumList<TEnum>();
+    }
+
+    protected async Task HandleErrorAsync(Exception exception)
+    {
+        await InvokeAsync(async () =>
+        {
+            await ErrorMessageAsync(exception.Message);
+            Loading = false;
+            StateHasChanged();
+        });
+    }
+
+    public List<KeyValuePair<string, TEnum>> GetEnumMap<TEnum>() where TEnum : struct, Enum
+    {
+        return Enum.GetValues<TEnum>().Select(e => new KeyValuePair<string, TEnum>(e.ToString(), e)).ToList();
+    }
+
+    public List<KeyValuePair<string, bool>> GetBooleanMap()
+    {
+        return new()
+        {
+            new(T("Enable"), true),
+            new(T("Disabled"), false)
+        };
+    }
+
+    public async Task Throttle(Func<Task> callback, int wait = 500, bool immediate = true)
+    {
+        if (immediate)
+        {
+            if (!GlobalConfig.ThrottleFlag)
+            {
+                GlobalConfig.ThrottleFlag = true;
+                await callback.Invoke();
+                await Task.Delay(wait);
+                GlobalConfig.ThrottleFlag = false;
+            }
+        }
+        else if (!GlobalConfig.ThrottleFlag)
+        {
+            GlobalConfig.ThrottleFlag = true;
+            await Task.Delay(wait);
+            GlobalConfig.ThrottleFlag = false;
+            await callback.Invoke();
+        }
+    }
+}

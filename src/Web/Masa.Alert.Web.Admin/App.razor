@@ -1,0 +1,26 @@
+﻿@using System.Reflection
+
+<Router AppAssembly="@typeof(App).Assembly"
+        AdditionalAssemblies="additionalAssemblies">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <MApp>
+            <Masa.Stack.Components.Others.NotFound/>
+        </MApp>
+    </NotFound>
+</Router>
+
+@code {
+
+    private List<Assembly> additionalAssemblies = new();
+
+    public App()
+    {
+        var masaStackComponentsAssembly = typeof(Masa.Stack.Components.UserCenter).Assembly;
+        additionalAssemblies.Add(masaStackComponentsAssembly);
+    }
+
+}

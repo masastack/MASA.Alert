@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  masa.alert.service.admin:
+    image: ${DOCKER_REGISTRY-}masaalertserviceadmin
+    build:
+      context: .
+      dockerfile: src/Services/Masa.Alert.Service/Dockerfile
+
+  masa.alert.web.admin.server:
+    image: ${DOCKER_REGISTRY-}masaalertwebadminserver
+    build:
+      context: .
+      dockerfile: src/Web/Masa.Alert.Web.Admin.Server/Dockerfile
+
