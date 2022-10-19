@@ -22,3 +22,4 @@ global using System.Security.Cryptography.X509Certificates;
 global using System.Net.NetworkInformation;
 global using Masa.Alert.Web.Admin.Global;
 global using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+global using Microsoft.AspNetCore.Authentication.Cookies;
