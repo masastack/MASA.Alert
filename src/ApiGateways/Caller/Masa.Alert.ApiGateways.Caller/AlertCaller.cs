@@ -3,6 +3,7 @@
 public class AlertCaller : BaseDaprCaller
 {
     TokenProvider _tokenProvider;
+
     protected override string AppId { get; set; } = App.APP;
 
     public override string? Name { get; set; } = nameof(AlertCaller);

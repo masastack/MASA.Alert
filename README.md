@@ -2,7 +2,7 @@
 
 # 介绍
 
-MASA告警中心应用程序，由[Masa.BuildingBlocks](https://github.com/masastack/Masa.BuildingBlocks), [Masa.Contrib](https://github.com/masastack/Masa.Contrib), [Masa.Utils](https://github.com/masastack/Masa.Utils),[Dapr](https://github.com/dapr/dapr)提供支持。
+MASA告警中心应用程序，由[MASA.Framework](https://github.com/masastack/MASA.Framework),[Dapr](https://github.com/dapr/dapr)提供支持。
 
 
 
