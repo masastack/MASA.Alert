@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using BlazorComponent.Helpers;
+
 namespace Masa.Alert.Web.Admin;
 
 public abstract class AdminCompontentBase : BDomComponentBase
@@ -99,11 +101,6 @@ public abstract class AdminCompontentBase : BDomComponentBase
     public async Task ErrorMessageAsync(string message)
     {
         await PopupService.ToastErrorAsync(message);
-    }
-
-    public static List<TEnum> GetEnumList<TEnum>() where TEnum : struct, Enum
-    {
-        return EnumHelper.GetEnumList<TEnum>();
     }
 
     protected async Task HandleErrorAsync(Exception exception)
