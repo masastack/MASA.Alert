@@ -43,7 +43,8 @@ public partial class AlarmRuleManagement : AdminCompontentBase
                 ProjectId = "Masa.Auth",
                 AppId = "masa-auth-web-admin",
                 ModifierName = "李西瓜",
-                ModificationTime = DateTime.Now
+                ModificationTime = DateTime.Now,
+                IsEnabled = i%6!=0
             });
         }
     }

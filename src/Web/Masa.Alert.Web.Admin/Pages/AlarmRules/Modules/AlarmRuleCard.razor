@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<MCard Class="d-flex flex-column px-2 rounded-xl" MinHeight=Height>
+<MCard Class="@($"d-flex flex-column px-2 rounded-xl {(AlarmRule.IsEnabled?"":"fill-disabled")}")" MinHeight=Height>
     <MCardTitle class="px-0 py-1">
         <MListItem>
             <MSpacer />
@@ -10,17 +10,24 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MList Dense>
-                            <MListItem Link OnClick="HandleOnEdit">
+                            <MListItem Link>
                                 <MListItemContent>
                                     <MListItemTitle>
                                         <span class="body regular--text">@T("Edit")</span>
                                     </MListItemTitle>
                                 </MListItemContent>
                             </MListItem>
-                            <MListItem Link OnClick="HandleOnDelete">
+                            <MListItem Link>
                                 <MListItemContent>
                                     <MListItemTitle>
-                                        <span class="body error--text">@T("Delete")</span>
+                                        <span class="body regular--text">@T("AlarmHistory")</span>
+                                    </MListItemTitle>
+                                </MListItemContent>
+                            </MListItem>
+                            <MListItem Link>
+                                <MListItemContent>
+                                    <MListItemTitle>
+                                        <span class="body regular--text">@T("Disable")</span>
                                     </MListItemTitle>
                                 </MListItemContent>
                             </MListItem>
@@ -64,59 +71,4 @@
     [EditorRequired]
     [Parameter]
     public AlarmRuleListViewModel AlarmRule { get; set; } = null!;
-
-    [Parameter]
-    public EventCallback OnEdit { get; set; }
-
-    [Parameter]
-    public EventCallback OnView { get; set; }
-
-    [Parameter]
-    public EventCallback OnTest { get; set; }
-
-    [Parameter]
-    public EventCallback OnDelete { get; set; }
-
-    [Parameter]
-    public EventCallback OnIsEnabled { get; set; }
-
-    private async Task HandleOnEdit()
-    {
-        if (OnEdit.HasDelegate)
-        {
-            await OnEdit.InvokeAsync();
-        }
-    }
-
-    private async Task HandleOnView()
-    {
-        if (OnView.HasDelegate)
-        {
-            await OnView.InvokeAsync();
-        }
-    }
-
-    private async Task HandleOnTest()
-    {
-        if (OnTest.HasDelegate)
-        {
-            await OnTest.InvokeAsync();
-        }
-    }
-
-    private async Task HandleOnDelete()
-    {
-        if (OnDelete.HasDelegate)
-        {
-            await OnDelete.InvokeAsync();
-        }
-    }
-
-    private async Task HandleOnIsEnabled()
-    {
-        if (OnIsEnabled.HasDelegate)
-        {
-            await OnIsEnabled.InvokeAsync();
-        }
-    }
 }

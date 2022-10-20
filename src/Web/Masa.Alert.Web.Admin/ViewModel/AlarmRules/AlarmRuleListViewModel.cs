@@ -14,4 +14,6 @@ public class AlarmRuleListViewModel
     public DateTime ModificationTime { get; set; }
 
     public string ModifierName { get; set; } = string.Empty;
+
+    public bool IsEnabled { get; set; }
 }

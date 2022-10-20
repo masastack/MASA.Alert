@@ -95,6 +95,8 @@
     "TimeType": "时间类型",
     "ProjectId": "项目",
     "AppId": "应用",
-    "MetricId": "指标"
+    "MetricId": "指标",
+    "AlarmHistory": "告警历史",
+    "Disable": "禁用"
   }
 }

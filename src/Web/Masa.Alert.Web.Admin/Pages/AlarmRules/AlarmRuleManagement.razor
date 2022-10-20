@@ -3,8 +3,8 @@
 <AutoHeight Overflow>
     <HeaderContent>
         <SLabeledRadioGroup @bind-Value="@_queryParam.AlarmRuleType" Dense Class="emphasis2--text subtitle2" Style="height:36px">
-            <SLabeledRadio Value="AlarmRuleTypes.Log">@T(AlarmRuleTypes.Log.ToString())</SLabeledRadio>
-            <SLabeledRadio Value="AlarmRuleTypes.Metric">@T(AlarmRuleTypes.Metric.ToString())</SLabeledRadio>
+            <SLabeledRadio Value="AlarmRuleTypes.Log" Class="px-6">@T(AlarmRuleTypes.Log.ToString())</SLabeledRadio>
+            <SLabeledRadio Value="AlarmRuleTypes.Metric" Class="px-6">@T(AlarmRuleTypes.Metric.ToString())</SLabeledRadio>
         </SLabeledRadioGroup>
         <div class="ma-0 search-panel my-6">
             @if (advanced)
