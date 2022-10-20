@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using BlazorComponent.Helpers;
-
 namespace Masa.Alert.Web.Admin;
 
 public abstract class AdminCompontentBase : BDomComponentBase
@@ -79,7 +77,14 @@ public abstract class AdminCompontentBase : BDomComponentBase
         set => GlobalConfig.LoadingText = value;
     }
 
-    public string T(string key) => I18n.T(key);
+    protected virtual string? PageName { get; set; }
+
+    public string T(string key)
+    {
+        if (string.IsNullOrEmpty(key)) return key;
+        if (PageName is not null) return I18n.T(PageName, key, false) ?? I18n.T(key, false);
+        else return I18n.T(key, true);
+    }
 
     public HubConnection? HubConnection { get; set; }
 

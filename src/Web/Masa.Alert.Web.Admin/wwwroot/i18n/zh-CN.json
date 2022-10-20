@@ -88,5 +88,13 @@
   "StartTime": "开始时间",
   "EndTime": "结束时间",
   "OperationSuccessfulMessage": "操作成功.",
-  "DeletedSuccessfullyMessage": "删除成功."
+  "DeletedSuccessfullyMessage": "删除成功.",
+  "AlarmRule": {
+    "Log": "日志监控",
+    "Metric": "指标监控",
+    "TimeType": "时间类型",
+    "ProjectId": "项目",
+    "AppId": "应用",
+    "MetricId": "指标"
+  }
 }

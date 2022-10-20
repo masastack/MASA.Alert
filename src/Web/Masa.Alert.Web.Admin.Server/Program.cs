@@ -1,6 +1,8 @@
 // Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Alert.ApiGateways.Caller.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseKestrel(option =>
@@ -21,7 +23,7 @@ builder.Services.AddResponseCompression(opts =>
 });
 
 builder.AddMasaStackComponentsForServer("wwwroot/i18n");
-
+builder.Services.AddCallers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();
 builder.Services.AddScoped<TokenProvider>();

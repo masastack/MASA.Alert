@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\" />
+    <Folder Include="ViewModel\Users\Validator\" />
   </ItemGroup>
 
 </Project>

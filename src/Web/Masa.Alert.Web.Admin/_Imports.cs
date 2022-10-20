@@ -37,3 +37,7 @@ global using Masa.BuildingBlocks.SearchEngine.AutoComplete.Options;
 global using Masa.Stack.Components;
 global using Masa.Stack.Components.Models;
 global using System.Collections.Concurrent;
+global using Masa.Alert.Web.Admin.ViewModel.AlarmRules;
+global using Microsoft.AspNetCore.Components.Rendering;
+global using BlazorComponent.Helpers;
+global using Masa.Alert.Application.Contracts.AlarmRules;

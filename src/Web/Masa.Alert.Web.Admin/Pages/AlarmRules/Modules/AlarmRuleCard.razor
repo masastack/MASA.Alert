@@ -1,0 +1,122 @@
+﻿@inherits AdminCompontentBase
+<MCard Class="d-flex flex-column px-2 rounded-xl" MinHeight=Height>
+    <MCardTitle class="px-0 py-1">
+        <MListItem>
+            <MSpacer />
+            <MListItemIcon Class="mr-n2">
+                <MMenu OffsetY>
+                    <ActivatorContent>
+                        <MIcon @attributes="@context.Attrs" Size=26 Color="#323D6F">mdi-dots-horizontal</MIcon>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MList Dense>
+                            <MListItem Link OnClick="HandleOnEdit">
+                                <MListItemContent>
+                                    <MListItemTitle>
+                                        <span class="body regular--text">@T("Edit")</span>
+                                    </MListItemTitle>
+                                </MListItemContent>
+                            </MListItem>
+                            <MListItem Link OnClick="HandleOnDelete">
+                                <MListItemContent>
+                                    <MListItemTitle>
+                                        <span class="body error--text">@T("Delete")</span>
+                                    </MListItemTitle>
+                                </MListItemContent>
+                            </MListItem>
+                        </MList>
+                    </ChildContent>
+                </MMenu>
+
+            </MListItemIcon>
+        </MListItem>
+    </MCardTitle>
+    <MCardText class="flex-grow-1 px-4 d-flex flex-column">
+        <div class="h6 text-truncate regular--text">@AlarmRule.DisplayName</div>
+        <div class="subtitle2 mt-5">
+            <MChip Color="emphasis2"
+                   Small
+                   Outlined>
+                @AlarmRule.ProjectId
+            </MChip>
+            <MChip Class="ml-2"
+                   Color="emphasis2"
+                   Small
+                   Outlined>
+                @AlarmRule.AppId
+            </MChip>
+        </div>
+    </MCardText>
+    <MCardActions class="px-3 pb-3">
+        <MSpacer />
+        <span class="caption regular3--text">@AlarmRule.ModificationTime.Humanize(culture:I18n.Culture) </span>
+        <span class="d-flex px-1" style="height: 8px">
+            <MDivider Vertical />
+        </span>
+        <span class="caption regular2--text">@AlarmRule.ModifierName</span>
+    </MCardActions>
+</MCard>
+
+@code {
+    [Parameter]
+    public int Height { get; set; } = 210;
+
+    [EditorRequired]
+    [Parameter]
+    public AlarmRuleListViewModel AlarmRule { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback OnEdit { get; set; }
+
+    [Parameter]
+    public EventCallback OnView { get; set; }
+
+    [Parameter]
+    public EventCallback OnTest { get; set; }
+
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback OnIsEnabled { get; set; }
+
+    private async Task HandleOnEdit()
+    {
+        if (OnEdit.HasDelegate)
+        {
+            await OnEdit.InvokeAsync();
+        }
+    }
+
+    private async Task HandleOnView()
+    {
+        if (OnView.HasDelegate)
+        {
+            await OnView.InvokeAsync();
+        }
+    }
+
+    private async Task HandleOnTest()
+    {
+        if (OnTest.HasDelegate)
+        {
+            await OnTest.InvokeAsync();
+        }
+    }
+
+    private async Task HandleOnDelete()
+    {
+        if (OnDelete.HasDelegate)
+        {
+            await OnDelete.InvokeAsync();
+        }
+    }
+
+    private async Task HandleOnIsEnabled()
+    {
+        if (OnIsEnabled.HasDelegate)
+        {
+            await OnIsEnabled.InvokeAsync();
+        }
+    }
+}
