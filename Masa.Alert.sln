@@ -62,9 +62,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.EntityFrameworkC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.Infrastructure.Middleware", "src\Infrastructure\Masa.Alert.Infrastructure.Middleware\Masa.Alert.Infrastructure.Middleware.csproj", "{E3D12FD7-CCD5-4011-BC32-A7A33CBA283F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Alert.Domain.Shared", "src\Domain\Masa.Alert.Domain.Shared\Masa.Alert.Domain.Shared.csproj", "{A19B5B50-AB34-48E0-A647-18FB2FB098EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.Domain.Shared", "src\Domain\Masa.Alert.Domain.Shared\Masa.Alert.Domain.Shared.csproj", "{A19B5B50-AB34-48E0-A647-18FB2FB098EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Alert.Application.Contracts", "src\Application\Masa.Alert.Application.Contracts\Masa.Alert.Application.Contracts.csproj", "{45550B8B-17A9-45D5-BA03-F2C9905E353D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.Application.Contracts", "src\Application\Masa.Alert.Application.Contracts\Masa.Alert.Application.Contracts.csproj", "{45550B8B-17A9-45D5-BA03-F2C9905E353D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

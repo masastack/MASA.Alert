@@ -9,6 +9,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private PaginatedListDto<AlarmRuleListViewModel> _entities = new();
     private bool advanced = false;
     private bool isAnimate;
+    private AlarmRuleUpsertModal? _createModal;
 
     protected override async Task OnInitializedAsync()
     {
@@ -29,6 +30,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     {
         Loading = true;
         FillData();
+        await Task.CompletedTask;
         Loading = false;
         StateHasChanged();
     }

@@ -97,6 +97,27 @@
     "AppId": "应用",
     "MetricId": "指标",
     "AlarmHistory": "告警历史",
-    "Disable": "禁用"
+    "Disable": "禁用",
+    "AddAlarmRule": "新增告警规则",
+    "RelationRes": "关联资源",
+    "MonitoringSetting": "监控设置",
+    "AlarmSetting": "告警设置",
+    "SelectItem": "选择项目",
+    "SelectApp": "选择应用",
+    "ChartYAxisUnit": "Y轴单位",
+    "ChartSetting": "图表设置",
+    "VariableConfiguration": "变量配置",
+    "CheckFrequency": "检查频率",
+    "FixedInterval": "固定间隔",
+    "Cron": "CRON",
+    "CronExpression": "CRON表达式",
+    "GetTotal": "获取数据总量",
+    "TotalVariable": "变量",
+    "Field": "日志参数",
+    "Count": "计数",
+    "Alias": "变量",
+    "Period": "周期",
+    "Offset": "偏移量",
+    "LogFilter": "日志筛选"
   }
 }

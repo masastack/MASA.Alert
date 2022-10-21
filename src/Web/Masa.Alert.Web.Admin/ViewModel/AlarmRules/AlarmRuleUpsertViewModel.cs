@@ -11,7 +11,30 @@ public class AlarmRuleUpsertViewModel
 
     public string AppId { get; set; } = default!;
 
-    public DateTime ModificationTime { get; set; }
+    public int Step { get; set; } = 1;
 
-    public string ModifierName { get; set; } = string.Empty;
+    public string ChartYAxisUnit { get; set; } = default!;
+
+    public AlarmRuleCheckFrequency CheckFrequency { get; set; }
+
+    public int CheckIntervalTime { get; set; } = 15;
+
+    public CheckFrequencyTimeTypes CheckIntervalTimeType { get; set; } = CheckFrequencyTimeTypes.Minute;
+
+    public string CronExpression { get; set; } = default!;
+
+    public bool IsGetTotal { get; set; }
+
+    public string TotalVariable { get; set; } = "total";
+
+    public string Expression { get; set; } = default!;
+
+    public List<LogMonitorItemViewModel> LogMonitorItems { get; set; }
+
+    public List<MetricMonitorItemViewModel> MetricMonitorItems { get; set; } = default!;
+
+    public AlarmRuleUpsertViewModel()
+    {
+        LogMonitorItems = LogMonitorItems ?? new List<LogMonitorItemViewModel> { new LogMonitorItemViewModel() };
+    }
 }

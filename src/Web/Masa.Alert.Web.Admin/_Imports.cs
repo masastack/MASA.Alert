@@ -41,3 +41,7 @@ global using Masa.Alert.Web.Admin.ViewModel.AlarmRules;
 global using Microsoft.AspNetCore.Components.Rendering;
 global using BlazorComponent.Helpers;
 global using Masa.Alert.Application.Contracts.AlarmRules;
+global using Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
+global using Masa.Alert.Domain.Shared.AlarmRules;
+global using static Masa.Stack.Components.JsInitVariables;
+global using Masa.Alert.Web.Admin.ViewModel.Enums;

@@ -30,7 +30,7 @@
                         @(!advanced ? "mdi-filter" : "mdi-filter-off")
                     </SIcon>
                 </div>
-                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6">@T("Permission.Create")</SButton>
+                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _createModal?.OpenModalAsync()!">@T("Permission.Create")</SButton>
             </div>
         </div>
     </HeaderContent>
@@ -51,3 +51,4 @@
     </FooterContent>
 </AutoHeight>
 
+<AlarmRuleUpsertModal @ref="_createModal" OnOk="HandleOk" />

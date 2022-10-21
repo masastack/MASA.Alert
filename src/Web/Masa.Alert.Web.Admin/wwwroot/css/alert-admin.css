@@ -442,3 +442,18 @@
     height: 48px;
     padding-left: 6px;
 }
+
+.sheetDialogPadding {
+    padding-left: 228px;
+    padding-right: 228px;
+    padding-bottom: 48px;
+    padding-top: 48px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.m-input__append-outer, .m-input__prepend-outer {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
