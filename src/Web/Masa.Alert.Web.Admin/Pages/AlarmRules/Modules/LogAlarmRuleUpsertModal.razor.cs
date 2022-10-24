@@ -1,11 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Alert.Infrastructure.Common.Utils;
-
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 
-public partial class AlarmRuleUpsertModal : AdminCompontentBase
+public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
 {
     [Parameter]
     public EventCallback OnOk { get; set; }
@@ -19,8 +17,11 @@ public partial class AlarmRuleUpsertModal : AdminCompontentBase
     private string _nextRunTimeStr = string.Empty;
     private List<string> _items = new();
 
-    public async Task OpenModalAsync()
+    protected override string? PageName { get; set; } = "AlarmRule";
+
+    public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)
     {
+        _model = listModel?.Adapt<AlarmRuleUpsertViewModel>() ?? new();
         await InvokeAsync(() =>
         {
             _visible = true;

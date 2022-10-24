@@ -10,7 +10,7 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MList Dense>
-                            <MListItem Link>
+                            <MListItem Link OnClick="HandleEdit">
                                 <MListItemContent>
                                     <MListItemTitle>
                                         <span class="body regular--text">@T("Edit")</span>
@@ -71,4 +71,15 @@
     [EditorRequired]
     [Parameter]
     public AlarmRuleListViewModel AlarmRule { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback OnEdit { get; set; }
+
+    private async Task HandleEdit()
+    {
+        if (OnEdit.HasDelegate)
+        {
+            await OnEdit.InvokeAsync();
+        }
+    }
 }

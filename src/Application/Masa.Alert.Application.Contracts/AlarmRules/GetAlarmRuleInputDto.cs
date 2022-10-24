@@ -9,7 +9,7 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto
 
     public AlarmRuleTypes AlarmRuleType { get; set; } = AlarmRuleTypes.Log;
 
-    public TimeTypes TimeType { get; set; }
+    public SearchTimeTypes TimeType { get; set; }
 
     public DateTime? StartTime { get; set; }
 
@@ -29,7 +29,7 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto
     {
     }
 
-    public GetAlarmRuleInputDto(string filter, TimeTypes timeType, DateTime? startTime,
+    public GetAlarmRuleInputDto(string filter, SearchTimeTypes timeType, DateTime? startTime,
        DateTime? endTime, string projectId, string appId, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
     {
         Filter = filter;

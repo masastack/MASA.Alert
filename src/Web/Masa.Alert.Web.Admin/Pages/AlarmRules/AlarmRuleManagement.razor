@@ -10,7 +10,7 @@
             @if (advanced)
             {
                 <div class="fold d-inline-flex">
-                    <EnumSimpleSelect TValue="TimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))"></EnumSimpleSelect>
+                    <EnumSimpleSelect TValue="SearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))"></EnumSimpleSelect>
                     <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" />
                     @if (_queryParam.AlarmRuleType == AlarmRuleTypes.Log)
                     {
@@ -39,7 +39,7 @@
             @foreach (var _entitie in _entities.Result)
             {
                 <MCol Md="3">
-                    <AlarmRuleCard AlarmRule="_entitie" />
+                    <AlarmRuleCard AlarmRule="_entitie" OnEdit="()=> _createModal?.OpenModalAsync(_entitie)!" />
                 </MCol>
             }
         </MRow>
@@ -51,4 +51,4 @@
     </FooterContent>
 </AutoHeight>
 
-<AlarmRuleUpsertModal @ref="_createModal" OnOk="HandleOk" />
+<LogAlarmRuleUpsertModal @ref="_createModal" OnOk="HandleOk" />

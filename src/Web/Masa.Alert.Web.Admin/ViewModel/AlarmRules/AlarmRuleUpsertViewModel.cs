@@ -19,7 +19,7 @@ public class AlarmRuleUpsertViewModel
 
     public int CheckIntervalTime { get; set; } = 15;
 
-    public CheckFrequencyTimeTypes CheckIntervalTimeType { get; set; } = CheckFrequencyTimeTypes.Minute;
+    public TimeTypes CheckIntervalTimeType { get; set; } = TimeTypes.Minute;
 
     public string CronExpression { get; set; } = default!;
 
@@ -27,14 +27,31 @@ public class AlarmRuleUpsertViewModel
 
     public string TotalVariable { get; set; } = "total";
 
-    public string Expression { get; set; } = default!;
+    public string WhereExpression { get; set; } = default!;
+
+    public string QueryStr { get; set; } = "Query";
+
+    public int ContinuousTriggerThreshold { get; set; }
+
+    public AlarmRuleSilenceCycle SilenceCycle { get; set; }
+
+    public int SilenceTimeValue { get; set; } = 15;
+
+    public TimeTypes SilenceTimeType { get; set; } = TimeTypes.Minute;
+
+    public int SilenceCycleValue { get; set; } = 15;
+
+    public bool IsEnabled { get; set; }
 
     public List<LogMonitorItemViewModel> LogMonitorItems { get; set; }
 
     public List<MetricMonitorItemViewModel> MetricMonitorItems { get; set; } = default!;
 
+    public List<AlarmRuleItemViewModel> Items { get; set; }
+
     public AlarmRuleUpsertViewModel()
     {
         LogMonitorItems = LogMonitorItems ?? new List<LogMonitorItemViewModel> { new LogMonitorItemViewModel() };
+        Items = Items ?? new List<AlarmRuleItemViewModel> { new AlarmRuleItemViewModel() };
     }
 }

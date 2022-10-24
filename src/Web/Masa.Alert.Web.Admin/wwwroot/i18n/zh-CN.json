@@ -106,6 +106,7 @@
     "SelectApp": "选择应用",
     "ChartYAxisUnit": "Y轴单位",
     "ChartSetting": "图表设置",
+    "ChartSettingTip": "当前时间距离N周期之前的数据对比",
     "VariableConfiguration": "变量配置",
     "CheckFrequency": "检查频率",
     "FixedInterval": "固定间隔",
@@ -118,6 +119,22 @@
     "Alias": "变量",
     "Period": "周期",
     "Offset": "偏移量",
-    "LogFilter": "日志筛选"
+    "LogFilter": "日志筛选",
+    "WhereExpression": "表达式",
+    "BaseInfo": "基础信息",
+    "DisplayName": "告警规则名称",
+    "TriggerRules": "触发规则",
+    "AlertSeverity": "严重程度",
+    "MessageTemplateId": "消息模板",
+    "IsRecoveryNotification": "恢复通知",
+    "IsNotification": "无需通知",
+    "AdvancedConfiguration": "高级配置",
+    "ContinuousTriggerThreshold": "连续触发阈值",
+    "ContinuousTriggerThresholdTip": "连续多少次执行检查评估都满足触发条件时，才会触发告警。",
+    "SilenceCycle": "沉默周期",
+    "SilenceCycleTip": "告警发生后未恢复正常，间隔多久重复发送一次告警通知",
+    "ChartPreview": "图表预览",
+    "Expression": "表达式",
+    "ExpressionTip": "支持加（+）、减（-）、乘（*）、除（/）、取模（%）5种基础运算符和大于（>）、大于等于（>=）、小于（<）、小于等于（<=）、等于（==）、不等于（!=）、正则匹配 （=~）、 正则不匹配（!~）8种比较运算符"
   }
 }

@@ -1,10 +1,13 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Application.Contracts.Enums;
+namespace Masa.Alert.Domain.Shared.AlarmRules;
 
-public enum TimeTypes
+public enum AlertSeverity
 {
-    ModificationTime = 1,
-    CreationTime,
+    Serious = 1,
+    High,
+    Secondary,
+    Low,
+    Report
 }

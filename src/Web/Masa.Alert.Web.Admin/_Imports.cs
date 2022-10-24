@@ -45,3 +45,4 @@ global using Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 global using Masa.Alert.Domain.Shared.AlarmRules;
 global using static Masa.Stack.Components.JsInitVariables;
 global using Masa.Alert.Web.Admin.ViewModel.Enums;
+global using Masa.Alert.Infrastructure.Common.Utils;

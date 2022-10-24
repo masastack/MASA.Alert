@@ -9,13 +9,9 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private PaginatedListDto<AlarmRuleListViewModel> _entities = new();
     private bool advanced = false;
     private bool isAnimate;
-    private AlarmRuleUpsertModal? _createModal;
+    private LogAlarmRuleUpsertModal? _createModal;
 
-    protected override async Task OnInitializedAsync()
-    {
-        PageName = "AlarmRule";
-        await base.OnInitializedAsync();
-    }
+    protected override string? PageName { get; set; } = "AlarmRule";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
