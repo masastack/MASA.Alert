@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0">
+<SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
     <MRow Justify="JustifyTypes.SpaceBetween" Align="AlignTypes.Center">
         <MCol>
             <span class="emphasis--text btn">@T("YAxisUnits")：@AlarmRule?.ChartYAxisUnit</span>
