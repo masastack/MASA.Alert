@@ -9,7 +9,8 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private PaginatedListDto<AlarmRuleListViewModel> _entities = new();
     private bool advanced = false;
     private bool isAnimate;
-    private LogAlarmRuleUpsertModal? _createModal;
+    private LogAlarmRuleUpsertModal? _logUpsertModal;
+    private MetricAlarmRuleUpsertModal? _metricUpsertModal;
 
     protected override string? PageName { get; set; } = "AlarmRule";
 
@@ -93,5 +94,31 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         Loading = false;
         await SuccessMessageAsync(T("MessageTaskDeleteMessage"));
         await LoadData();
+    }
+
+    private async Task HandleAdd()
+    {
+        if (_queryParam.AlarmRuleType== AlarmRuleTypes.Log)
+        {
+            await _logUpsertModal?.OpenModalAsync()!;
+        }
+
+        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
+        {
+            await _metricUpsertModal?.OpenModalAsync()!;
+        }
+    }
+
+    private async Task HandleEdit(AlarmRuleListViewModel item)
+    {
+        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Log)
+        {
+            await _logUpsertModal?.OpenModalAsync(item)!;
+        }
+
+        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
+        {
+            await _metricUpsertModal?.OpenModalAsync(item)!;
+        }
     }
 }

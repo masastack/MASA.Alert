@@ -14,7 +14,7 @@
   "CreationTime": "创建时间",
   "ModificationTime": "修改时间",
   "State": "状态",
-  "Enable": "启用",
+  "Enabled": "启用",
   "IsEnabled": "启用/禁用",
   "Description": "描述说明",
   "Explain": "说明",
@@ -89,6 +89,16 @@
   "EndTime": "结束时间",
   "OperationSuccessfulMessage": "操作成功.",
   "DeletedSuccessfullyMessage": "删除成功.",
+  "GreaterThan": ">",
+  "GreaterThanOrEqualTo": ">=",
+  "LessThan": "<",
+  "LessThanOrEqualTo": "<=",
+  "EqualTo": "==",
+  "BeEqualTo": "等于",
+  "NotEqualTo": "不等于",
+  "Count": "计数",
+  "Sum": "求和",
+  "Avg": "平均值",
   "AlarmRule": {
     "Log": "日志监控",
     "Metric": "指标监控",
@@ -135,6 +145,9 @@
     "SilenceCycleTip": "告警发生后未恢复正常，间隔多久重复发送一次告警通知",
     "ChartPreview": "图表预览",
     "Expression": "表达式",
-    "ExpressionTip": "支持加（+）、减（-）、乘（*）、除（/）、取模（%）5种基础运算符和大于（>）、大于等于（>=）、小于（<）、小于等于（<=）、等于（==）、不等于（!=）、正则匹配 （=~）、 正则不匹配（!~）8种比较运算符"
+    "ExpressionTip": "支持加（+）、减（-）、乘（*）、除（/）、取模（%）5种基础运算符和大于（>）、大于等于（>=）、小于（<）、小于等于（<=）、等于（==）、不等于（!=）、正则匹配 （=~）、 正则不匹配（!~）8种比较运算符",
+    "MetricMonitor.Name": "监控指标",
+    "MetricMonitor.Tag": "Tag",
+    "MetricMonitor.Alias": "变量"
   }
 }

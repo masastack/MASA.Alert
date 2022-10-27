@@ -22,11 +22,13 @@ builder.Services.AddResponseCompression(opts =>
         new[] { "application/octet-stream" });
 });
 
-builder.AddMasaStackComponentsForServer("wwwroot/i18n");
 builder.Services.AddCallers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();
+
 builder.Services.AddScoped<TokenProvider>();
+builder.AddMasaStackComponentsForServer("wwwroot/i18n");
+
 builder.Services.AddMapster();
 var oidcOptions = builder.Services.GetMasaConfiguration().Local.GetSection("$public.OIDC:AuthClient").Get<MasaOpenIdConnectOptions>();
 builder.Services.AddMasaOpenIdConnect(oidcOptions);

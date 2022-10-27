@@ -11,6 +11,6 @@ global using Masa.Alert.ApiGateways.Caller.Const;
 global using Masa.Alert.ApiGateways.Caller.Extensions;
 global using Masa.Alert.Infrastructure.Common.Utils;
 global using IdentityModel.Client;
-global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Provider;
 global using System.Net.Http.Headers;
 global using Microsoft.Extensions.Hosting;
+global using Masa.Contrib.Service.Caller.Authentication.OpenIdConnect;

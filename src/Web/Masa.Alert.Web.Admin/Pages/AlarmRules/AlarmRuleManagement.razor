@@ -30,7 +30,7 @@
                         @(!advanced ? "mdi-filter" : "mdi-filter-off")
                     </SIcon>
                 </div>
-                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _createModal?.OpenModalAsync()!">@T("Permission.Create")</SButton>
+                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="HandleAdd">@T("Permission.Create")</SButton>
             </div>
         </div>
     </HeaderContent>
@@ -39,7 +39,7 @@
             @foreach (var _entitie in _entities.Result)
             {
                 <MCol Md="3">
-                    <AlarmRuleCard AlarmRule="_entitie" OnEdit="()=> _createModal?.OpenModalAsync(_entitie)!" />
+                    <AlarmRuleCard AlarmRule="_entitie" OnEdit="()=> HandleEdit(_entitie)" />
                 </MCol>
             }
         </MRow>
@@ -51,4 +51,5 @@
     </FooterContent>
 </AutoHeight>
 
-<LogAlarmRuleUpsertModal @ref="_createModal" OnOk="HandleOk" />
+<LogAlarmRuleUpsertModal @ref="_logUpsertModal" OnOk="HandleOk" />
+<MetricAlarmRuleUpsertModal @ref="_metricUpsertModal" OnOk="HandleOk" />

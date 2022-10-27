@@ -16,7 +16,7 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.RazorPages;
 global using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 global using Masa.Alert.Infrastructure.Tsc;
-global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Provider;
+global using Masa.Contrib.Service.Caller.Authentication.OpenIdConnect;
 global using Masa.Utils.Security.Authentication.OpenIdConnect;
 global using System.Security.Cryptography.X509Certificates;
 global using System.Net.NetworkInformation;

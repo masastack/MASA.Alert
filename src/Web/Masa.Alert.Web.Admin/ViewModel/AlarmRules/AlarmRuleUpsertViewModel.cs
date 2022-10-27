@@ -52,6 +52,7 @@ public class AlarmRuleUpsertViewModel
     public AlarmRuleUpsertViewModel()
     {
         LogMonitorItems = LogMonitorItems ?? new List<LogMonitorItemViewModel> { new LogMonitorItemViewModel() };
+        MetricMonitorItems = MetricMonitorItems ?? new List<MetricMonitorItemViewModel> { new MetricMonitorItemViewModel() };
         Items = Items ?? new List<AlarmRuleItemViewModel> { new AlarmRuleItemViewModel() };
     }
 }

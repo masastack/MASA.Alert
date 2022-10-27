@@ -24,13 +24,26 @@
                                     </MListItemTitle>
                                 </MListItemContent>
                             </MListItem>
-                            <MListItem Link>
-                                <MListItemContent>
-                                    <MListItemTitle>
-                                        <span class="body regular--text">@T("Disable")</span>
-                                    </MListItemTitle>
-                                </MListItemContent>
-                            </MListItem>
+                            @if (AlarmRule.IsEnabled)
+                            {
+                                <MListItem Link OnClick="HandleDisable">
+                                    <MListItemContent>
+                                        <MListItemTitle>
+                                            <span class="body regular--text">@T("Disable")</span>
+                                        </MListItemTitle>
+                                    </MListItemContent>
+                                </MListItem>
+                            }
+                            @if (!AlarmRule.IsEnabled)
+                            {
+                                <MListItem Link OnClick="HandleEnabled">
+                                    <MListItemContent>
+                                        <MListItemTitle>
+                                            <span class="body regular--text">@T("Enabled")</span>
+                                        </MListItemTitle>
+                                    </MListItemContent>
+                                </MListItem>
+                            }
                         </MList>
                     </ChildContent>
                 </MMenu>
@@ -81,5 +94,15 @@
         {
             await OnEdit.InvokeAsync();
         }
+    }
+
+    private void HandleDisable()
+    {
+        AlarmRule.IsEnabled = false;
+    }
+
+    private void HandleEnabled()
+    {
+        AlarmRule.IsEnabled = true;
     }
 }

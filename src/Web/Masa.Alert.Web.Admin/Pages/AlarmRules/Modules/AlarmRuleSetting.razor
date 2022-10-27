@@ -10,7 +10,34 @@
             <DefaultTooltip Class="ml-2" Tooltip="@T("ExpressionTip")" />
         </AppendOuterContent>
     </STextarea>
-    <div class="d-flex mt-2 mb-8">
+    <MRow NoGutters Class="mt-2 mb-8">
+        <MCol Md="2">
+            <SSelect @bind-Value="item.AlertSeverity" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.AlertSeverity))">
+            </SSelect>
+        </MCol>
+        <MCol Md="3">
+            <SSelect Class="ml-2" @bind-Value="item.MessageTemplateId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.MessageTemplateId))">
+            </SSelect>
+        </MCol>
+        <MCol Class="my-auto d-flex">
+            <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label ml-5 my-auto">
+                <LabelContent>
+                    <span class="default--text subtitle2">@T("IsRecoveryNotification")</span>
+                </LabelContent>
+            </MSwitch>
+            <MSwitch @bind-Value="item.IsNotification" Inset Class="label ml-5 my-auto">
+                <LabelContent>
+                    <span class="default--text subtitle2">@T("IsNotification")</span>
+                </LabelContent>
+            </MSwitch>
+            <SIcon Size="24" OnClick="HandleItemsAdd" Class="ml-5 my-auto">mdi-plus-circle</SIcon>
+            @if (Model.Items.IndexOf(item) > 0)
+            {
+                <SIcon Size="24" Class="ml-4 my-auto" OnClick="()=>HandleItemsRemove(item)">mdi-delete-outline</SIcon>
+            }
+        </MCol>
+    </MRow>
+    @*<div class="d-flex mt-2 mb-8">
         <SSelect @bind-Value="item.AlertSeverity" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.AlertSeverity))">
         </SSelect>
         <SSelect Class="ml-2" @bind-Value="item.MessageTemplateId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.MessageTemplateId))">
@@ -31,7 +58,7 @@
             <SIcon Size="24" Class="ml-4 my-auto" OnClick="()=>HandleItemsRemove(item)">mdi-delete-outline</SIcon>
         }
         <MSpacer></MSpacer>
-    </div>
+    </div>*@
 }
 <DefaultTitle Class="mb-3">@T("AdvancedConfiguration")</DefaultTitle>
 <STextField @bind-Value="Model.ContinuousTriggerThreshold" Label="@T(nameof(Model.ContinuousTriggerThreshold))">
