@@ -457,3 +457,7 @@
     margin-top: auto !important;
     margin-bottom: auto !important;
 }
+
+.m-input__control{
+    flex:1;
+}

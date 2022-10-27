@@ -88,14 +88,14 @@
                                         <MCol Md="2">
                                             <SSelect @bind-Value="item.Field" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Field))">
                                                 <AppendOuterContent>
-                                                    <span class="default--text subtitle2 my-auto" style="width:40px">@T("Count")</span>
+                                                    <span class="default--text subtitle2 my-auto">@T("Count")</span>
                                                 </AppendOuterContent>
                                             </SSelect>
                                         </MCol>
                                         <MCol Md="2">
-                                            <SSelect @bind-Value="item.Alias" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Alias))">
+                                            <SSelect Class="ml-2" @bind-Value="item.Alias" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Alias))">
                                                 <PrependContent>
-                                                    <span class="default--text subtitle2 my-auto" style="width:16px">@T("as")</span>
+                                                    <span class="default--text subtitle2 my-auto" >@T("as")</span>
                                                 </PrependContent>
                                             </SSelect>
                                         </MCol>
@@ -110,7 +110,7 @@
                                             {
                                                 <STextField @bind-Value="item.OffsetPeriod" Class="ml-2">
                                                     <AppendOuterContent>
-                                                        <span class="default--text subtitle2 my-auto" style="width:40px">@T("Period")</span>
+                                                        <span class="default--text subtitle2 my-auto">@T("Period")</span>
                                                     </AppendOuterContent>
                                                 </STextField>
                                             }

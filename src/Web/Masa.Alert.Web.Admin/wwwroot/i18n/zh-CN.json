@@ -148,6 +148,8 @@
     "ExpressionTip": "支持加（+）、减（-）、乘（*）、除（/）、取模（%）5种基础运算符和大于（>）、大于等于（>=）、小于（<）、小于等于（<=）、等于（==）、不等于（!=）、正则匹配 （=~）、 正则不匹配（!~）8种比较运算符",
     "MetricMonitor.Name": "监控指标",
     "MetricMonitor.Tag": "Tag",
-    "MetricMonitor.Alias": "变量"
+    "MetricMonitor.Alias": "变量",
+    "SilenceCycle.Time": "按时间",
+    "SilenceCycle.Cycle": "按周期"
   }
 }

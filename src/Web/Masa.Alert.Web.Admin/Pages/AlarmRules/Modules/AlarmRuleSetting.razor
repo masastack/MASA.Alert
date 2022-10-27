@@ -37,28 +37,6 @@
             }
         </MCol>
     </MRow>
-    @*<div class="d-flex mt-2 mb-8">
-        <SSelect @bind-Value="item.AlertSeverity" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.AlertSeverity))">
-        </SSelect>
-        <SSelect Class="ml-2" @bind-Value="item.MessageTemplateId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.MessageTemplateId))">
-        </SSelect>
-        <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label my-auto ml-5">
-            <LabelContent>
-                <span class="default--text subtitle2 my-auto">@T("IsRecoveryNotification")</span>
-            </LabelContent>
-        </MSwitch>
-        <MSwitch @bind-Value="item.IsNotification" Inset Class="label my-auto ml-5">
-            <LabelContent>
-                <span class="default--text subtitle2 my-auto">@T("IsNotification")</span>
-            </LabelContent>
-        </MSwitch>
-        <SIcon Size="24" OnClick="HandleItemsAdd" Class="ml-5 my-auto">mdi-plus-circle</SIcon>
-        @if (Model.Items.IndexOf(item) > 0)
-        {
-            <SIcon Size="24" Class="ml-4 my-auto" OnClick="()=>HandleItemsRemove(item)">mdi-delete-outline</SIcon>
-        }
-        <MSpacer></MSpacer>
-    </div>*@
 }
 <DefaultTitle Class="mb-3">@T("AdvancedConfiguration")</DefaultTitle>
 <STextField @bind-Value="Model.ContinuousTriggerThreshold" Label="@T(nameof(Model.ContinuousTriggerThreshold))">
@@ -88,7 +66,7 @@
         <MCol Md="3">
             <STextField @bind-Value="Model.SilenceCycleValue" Class="ml-2">
                 <AppendOuterContent>
-                    <span class="default--text subtitle2 my-auto" style="width:40px">@T("Period")</span>
+                    <span class="default--text subtitle2 my-auto">@T("Period")</span>
                 </AppendOuterContent>
             </STextField>
         </MCol>
