@@ -151,5 +151,11 @@
     "MetricMonitor.Alias": "变量",
     "SilenceCycle.Time": "按时间",
     "SilenceCycle.Cycle": "按周期"
+  },
+  "AlarmChart": {
+    "ChartPreview": "图表预览",
+    "ChartPreviewTips": "本图仅用于预览效果的参考",
+    "UpdateChart": "更新图表",
+    "YAxisUnits": "Y轴单位"
   }
 }

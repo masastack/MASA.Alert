@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Alert.Web.Admin.Components.Modules.Alarm;
+
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 
 public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
@@ -16,6 +18,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     private string _tempCron = string.Empty;
     private string _nextRunTimeStr = string.Empty;
     private List<string> _items = new();
+    private AlarmPreviewChart? _previewChart;
 
     protected override string? PageName { get; set; } = "AlarmRule";
 

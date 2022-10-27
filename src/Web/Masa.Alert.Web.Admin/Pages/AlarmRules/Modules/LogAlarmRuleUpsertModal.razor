@@ -137,7 +137,7 @@
                             <FooterContent>
                                 <div class="d-flex">
                                     <MSpacer></MSpacer>
-                                    <SButton Text Color="primary">@T("ChartPreview")</SButton>
+                                    <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=1" Outlined　Class="ml-6">@T("PreviousStep")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=3" Class="ml-6">@T("NextStep")</SButton>
                                 </div>
@@ -152,7 +152,7 @@
                             <FooterContent>
                                 <div class="d-flex">
                                     <MSpacer></MSpacer>
-                                    <SButton Text Color="primary">@T("ChartPreview")</SButton>
+                                    <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=2" Outlined　Class="ml-6">@T("PreviousStep")</SButton>
                                     <SButton Medium Class="ml-6">@T("Submit")</SButton>
                                 </div>
@@ -169,3 +169,5 @@
     <PCron @bind-Value="@(_tempCron)">
     </PCron>
 </SSimpleModal>
+
+<AlarmPreviewChart @ref="_previewChart" />
