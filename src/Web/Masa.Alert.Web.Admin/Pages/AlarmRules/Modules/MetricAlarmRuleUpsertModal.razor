@@ -27,9 +27,9 @@
                                 </MRow>
                                 <MRow>
                                     <MCol Md="2">
-                                        <SSelect @bind-Value="_model.CheckFrequency" Items="Enum.GetValues<AlarmRuleCheckFrequency>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(_model.CheckFrequency))" />
+                                        <SSelect @bind-Value="_model.CheckFrequency" Items="Enum.GetValues<AlarmCheckFrequencyTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(_model.CheckFrequency))" />
                                     </MCol>
-                                    @if (_model.CheckFrequency == AlarmRuleCheckFrequency.FixedInterval)
+                                    @if (_model.CheckFrequency == AlarmCheckFrequencyTypes.FixedInterval)
                                     {
                                         <MCol Md="2">
                                             <STextField @bind-Value="_model.CheckIntervalTime" />
@@ -38,7 +38,7 @@
                                             <SSelect @bind-Value="_model.CheckIntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
                                         </MCol>
                                     }
-                                    @if (_model.CheckFrequency == AlarmRuleCheckFrequency.Cron)
+                                    @if (_model.CheckFrequency == AlarmCheckFrequencyTypes.Cron)
                                     {
                                         <MCol Md="3">
                                             <STextField @bind-Value="_model.CronExpression" Label="@T(nameof(_model.CronExpression))" AppendIcon="mdi-clock" OnAppendClick="OpenCronModal" OnChange="(string v)=>GetNextRunTime()" />
