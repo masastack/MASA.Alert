@@ -1,0 +1,9 @@
+﻿global using System.Reflection;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.ChangeTracking;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.Extensions.Logging;
+global using Masa.Contrib.Isolation.UoW.EFCore;
+global using Masa.BuildingBlocks.Data.UoW;
+global using Masa.Contrib.Ddd.Domain.Repository.EFCore;
+global using System.Text.Json;

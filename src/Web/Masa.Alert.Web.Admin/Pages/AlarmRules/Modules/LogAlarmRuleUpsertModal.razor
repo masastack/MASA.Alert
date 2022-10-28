@@ -1,0 +1,173 @@
+﻿@inherits AdminCompontentBase
+<DefaultSheetDialog Value="_visible" ValueChanged="HandleVisibleChanged"
+                    Title="@T("AddAlarmRule")" ContentClass="sheet-dialog">
+    <ChildContent>
+        <MForm Model="_model" EnableValidation @ref="_form" Class="full-height">
+            <MStepper Value="_model.Step" Elevation=0 Class="d-flex flex-column full-height">
+                <MStepperHeader Style="box-shadow:none !important">
+                    <MStepperStep Step="1" Complete="_model.Step>1">
+                        @T("RelationRes")
+                    </MStepperStep>
+                    <MDivider></MDivider>
+                    <MStepperStep Step="2" Complete="_model.Step>2">
+                        @T("MonitoringSetting")
+                    </MStepperStep>
+                    <MDivider></MDivider>
+                    <MStepperStep Step="3">
+                        @T("AlarmSetting")
+                    </MStepperStep>
+                </MStepperHeader>
+                <MStepperItems Class="full-height">
+                    <MStepperContent Class="full-height" Step="1">
+                        <AutoHeight>
+                            <AutoHeightContent>
+                                <DefaultTitle Class="mb-4 mt-6">@T("SelectItem")</DefaultTitle>
+                                <SSelect @bind-Value="_model.ProjectId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(_model.ProjectId))" />
+                                <DefaultTitle Class="mb-4 mt-16">@T("SelectApp")</DefaultTitle>
+                                <SSelect @bind-Value="_model.AppId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(_model.AppId))" />
+                            </AutoHeightContent>
+                            <FooterContent>
+                                <div class="d-flex">
+                                    <MSpacer></MSpacer>
+                                    <SButton Medium OnClick="()=>_model.Step=2">@T("NextStep")</SButton>
+                                </div>
+                            </FooterContent>
+                        </AutoHeight>
+                    </MStepperContent>
+                    <MStepperContent Class="full-height" Step="2">
+                        <AutoHeight Overflow>
+                            <AutoHeightContent>
+                                <DefaultTitle Class="mb-3">@T("ChartSetting")
+                                    <DefaultTooltip Class="ml-2" Tooltip="@T("ChartSettingTip")" />
+                                </DefaultTitle>
+                                <MRow>
+                                    <MCol Md="3">
+                                        <STextField @bind-Value="_model.ChartYAxisUnit" Label="@T(nameof(_model.ChartYAxisUnit))"/>
+                                    </MCol>
+                                </MRow>
+
+                                <DefaultTitle Class="mt-5 mb-3">@T("VariableConfiguration")</DefaultTitle>
+                                <MRow>
+                                    <MCol Md="2">
+                                        <SSelect @bind-Value="_model.CheckFrequency" Items="Enum.GetValues<AlarmCheckFrequencyTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(_model.CheckFrequency))" />
+                                    </MCol>
+                                    @if (_model.CheckFrequency == AlarmCheckFrequencyTypes.FixedInterval)
+                                    {
+                                        <MCol Md="2">
+                                            <STextField @bind-Value="_model.CheckIntervalTime" />
+                                        </MCol>
+                                        <MCol Md="2">
+                                            <SSelect @bind-Value="_model.CheckIntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+                                        </MCol>
+                                    }
+                                    @if (_model.CheckFrequency == AlarmCheckFrequencyTypes.Cron)
+                                    {
+                                        <MCol Md="3">
+                                            <STextField @bind-Value="_model.CronExpression" Label="@T(nameof(_model.CronExpression))" AppendIcon="mdi-clock" OnAppendClick="OpenCronModal" OnChange="(string v)=>GetNextRunTime()" />
+                                        </MCol>
+                                    }
+                                </MRow>
+                                @if (!string.IsNullOrEmpty(_model.CronExpression))
+                                {
+                                    <div>
+                                        @((MarkupString)_nextRunTimeStr)
+                                    </div>
+                                }
+                                <MRow Class="my-8">
+                                    <MSwitch @bind-Value="_model.IsGetTotal" Inset Class="label my-auto ml-4" Label="@T("GetTotal")" />
+                                    @if (_model.IsGetTotal)
+                                    {
+                                        <MCol Md="2">
+                                            <STextField @bind-Value="_model.TotalVariable" Label="@T(nameof(_model.TotalVariable))" />
+                                        </MCol>
+                                    }
+                                </MRow>
+                                @foreach (var item in _model.LogMonitorItems)
+                                {
+                                    <MRow NoGutters Class="mt-5">
+                                        <MCol Md="2">
+                                            <SSelect @bind-Value="item.Field" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Field))">
+                                                <AppendOuterContent>
+                                                    <span class="default--text subtitle2 my-auto">@T("Count")</span>
+                                                </AppendOuterContent>
+                                            </SSelect>
+                                        </MCol>
+                                        <MCol Md="2">
+                                            <SSelect Class="ml-2" @bind-Value="item.Alias" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Alias))">
+                                                <PrependContent>
+                                                    <span class="default--text subtitle2 my-auto" >@T("as")</span>
+                                                </PrependContent>
+                                            </SSelect>
+                                        </MCol>
+                                        <MCol Md="4" Class="d-flex">
+                                            <MSwitch @bind-Value="item.IsOffset" Inset Class="label my-auto ml-4">
+                                                <LabelContent>
+                                                    <DefaultTooltip Class="ml-2" Tooltip="@T("ChartSettingTip")" />
+                                                    <span class="default--text subtitle2 my-auto ml-1">@T("Offset")</span>
+                                                </LabelContent>
+                                            </MSwitch>
+                                            @if (item.IsOffset)
+                                            {
+                                                <STextField @bind-Value="item.OffsetPeriod" Class="ml-2">
+                                                    <AppendOuterContent>
+                                                        <span class="default--text subtitle2 my-auto">@T("Period")</span>
+                                                    </AppendOuterContent>
+                                                </STextField>
+                                            }
+                                        </MCol>
+                                        <MSpacer></MSpacer>
+                                        <MCol Class="my-auto">
+                                            <SIcon Size="24" OnClick="HandleLogMonitorItemsAdd">mdi-plus-circle</SIcon>
+                                            @if (_model.LogMonitorItems.IndexOf(item) > 0)
+                                            {
+                                                <SIcon Size="24" Class="ml-2" OnClick="()=>HandleLogMonitorItemsRemove(item)">mdi-delete-outline</SIcon>
+                                            }
+                                        </MCol>
+                                    </MRow>
+                                }
+                                <DefaultTitle Class="mt-5 mb-2">@T("LogFilter")</DefaultTitle>
+                                <STextarea @bind-Value="_model.WhereExpression" Label="@T(nameof(_model.WhereExpression))" Outlined HideDetails="@("auto")"></STextarea>
+                                <MAlert Class="mt-5 body2  d-flex align-center" Dense
+                                        Text
+                                        Icon="@("mdi-alert-circle-outline")"
+                                        Type="AlertTypes.Warning">
+                                    @_model.QueryStr
+                                </MAlert>
+                            </AutoHeightContent>
+                            <FooterContent>
+                                <div class="d-flex">
+                                    <MSpacer></MSpacer>
+                                    <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
+                                    <SButton Medium OnClick="()=>_model.Step=1" Outlined　Class="ml-6">@T("PreviousStep")</SButton>
+                                    <SButton Medium OnClick="()=>_model.Step=3" Class="ml-6">@T("NextStep")</SButton>
+                                </div>
+                            </FooterContent>
+                        </AutoHeight>
+                    </MStepperContent>
+                    <MStepperContent Class="full-height" Step="3">
+                        <AutoHeight Overflow>
+                            <AutoHeightContent>
+                                <AlarmRuleSetting @bind-Model="_model"></AlarmRuleSetting>
+                            </AutoHeightContent>
+                            <FooterContent>
+                                <div class="d-flex">
+                                    <MSpacer></MSpacer>
+                                    <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
+                                    <SButton Medium OnClick="()=>_model.Step=2" Outlined　Class="ml-6">@T("PreviousStep")</SButton>
+                                    <SButton Medium Class="ml-6">@T("Submit")</SButton>
+                                </div>
+                            </FooterContent>
+                        </AutoHeight>
+                    </MStepperContent>
+                </MStepperItems>
+            </MStepper>
+        </MForm>
+    </ChildContent>
+</DefaultSheetDialog>
+
+<SSimpleModal @bind-Value="@_cronVisible" Title="@T("CronExpression")" OnSave="SetCronExpression">
+    <PCron @bind-Value="@(_tempCron)">
+    </PCron>
+</SSimpleModal>
+
+<AlarmPreviewChart @ref="_previewChart" AlarmRule="_model" />

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Masa.Alert.Infrastructure.Ddd.Application.Contracts": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61918;http://localhost:61919"
+    }
+  }
+}
