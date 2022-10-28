@@ -1,0 +1,48 @@
+﻿@inherits AdminCompontentBase
+@page "/alarmHistory"
+<AutoHeight Overflow>
+    <HeaderContent>
+        <div class="ma-0 search-panel my-6">
+            @if (advanced)
+            {
+                <div class="fold d-inline-flex">
+                    <EnumSimpleSelect TValue="SearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))"></EnumSimpleSelect>
+                    <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" />
+                    @if (_queryParam.AlarmRuleType == AlarmRuleTypes.Log)
+                    {
+                        <SSimpleSelect @bind-Value="@_queryParam.ProjectId" DefaultText="@T(nameof(_queryParam.ProjectId))" Class="ml-6"></SSimpleSelect>
+                        <SSimpleSelect @bind-Value="@_queryParam.AppId" DefaultText="@T(nameof(_queryParam.AppId))" Class="ml-6"></SSimpleSelect>
+                    }
+                    @if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
+                    {
+                        <SSimpleSelect @bind-Value="@_queryParam.MetricId" DefaultText="@T(nameof(_queryParam.MetricId))" Class="ml-6"></SSimpleSelect>
+                    }
+                </div>
+            }
+            <div class="d-flex search-panel-right @(!isAnimate?"full-width":"") @(isAnimate?"animate__animated":"") @(!advanced?"animate__searchOpen":"animate__searchShrink")">
+                <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
+                <div @onclick="ToggleAdvanced" class="ml-6 d-flex button fill">
+                    <SIcon Class="ma-auto" Color="emphasis2" Size=20>
+                        @(!advanced ? "mdi-filter" : "mdi-filter-off")
+                    </SIcon>
+                </div>
+                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="HandleAdd">@T("Permission.Create")</SButton>
+            </div>
+        </div>
+    </HeaderContent>
+    <AutoHeightContent>
+        <MRow Style="height:0px">
+            @foreach (var _entitie in _entities.Result)
+            {
+                <MCol Md="3">
+                    <AlarmRuleCard AlarmRule="_entitie" OnEdit="()=> HandleEdit(_entitie)" />
+                </MCol>
+            }
+        </MRow>
+    </AutoHeightContent>
+    <FooterContent>
+        <div class="mt-6">
+            <SPagination Page="_queryParam.Page" PageSize="_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+        </div>
+    </FooterContent>
+</AutoHeight>
