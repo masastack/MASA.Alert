@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Domain.Shared.AlarmRules;
 
-public enum AlarmRuleCheckFrequency
+public enum AlarmCheckFrequencyTypes
 {
     FixedInterval = 1,
     Cron,

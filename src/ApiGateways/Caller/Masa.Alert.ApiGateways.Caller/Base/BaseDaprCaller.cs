@@ -17,9 +17,4 @@ public abstract class BaseDaprCaller : DaprCallerBase
             AppId = $"{AppId}-{webHostEnvironment.EnvironmentName.ToLower()}";
         }
     }
-
-    protected override DefaultDaprClientBuilder UseDapr()
-    {
-        return base.UseDapr().AddHttpRequestMessage<HeaderRequestMessage>();
-    }
 }

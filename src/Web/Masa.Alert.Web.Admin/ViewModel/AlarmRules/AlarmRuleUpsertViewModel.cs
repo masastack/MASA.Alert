@@ -15,7 +15,7 @@ public class AlarmRuleUpsertViewModel
 
     public string ChartYAxisUnit { get; set; } = default!;
 
-    public AlarmRuleCheckFrequency CheckFrequency { get; set; }
+    public AlarmCheckFrequencyTypes CheckFrequency { get; set; }
 
     public int CheckIntervalTime { get; set; } = 15;
 
