@@ -1,0 +1,29 @@
+﻿@inherits AdminCompontentBase
+<SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
+    <AlarmPreviewChart AlarmRule="_alarmRule"></AlarmPreviewChart>
+</SModal>
+
+@code {
+    [Parameter]
+    public StringNumber Width { get; set; } = 761;
+
+    [EditorRequired]
+    [Parameter]
+    public AlarmRuleUpsertViewModel? AlarmRule { get; set; }
+
+    private AlarmRuleViewModel _alarmRule = new();
+
+    protected override string? PageName { get; set; } = "AlarmChart";
+
+    private bool _visible = false;
+
+    public async Task OpenModalAsync()
+    {
+        _alarmRule = AlarmRule?.Adapt<AlarmRuleViewModel>() ?? new();
+        await InvokeAsync(() =>
+        {
+            _visible = true;
+            StateHasChanged();
+        });
+    }
+}

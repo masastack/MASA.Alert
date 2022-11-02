@@ -297,7 +297,7 @@
 }
 
 .page-content {
-    height: calc(100vh - 186px);
+    height: calc(100vh - 244px);
 }
 
 .masa .warning-disabled--text {
@@ -460,4 +460,26 @@
 
 .m-input__control{
     flex:1;
+}
+
+.remind--text {
+    color: #FF7D00 !important;
+}
+
+.default-tab {
+    height: 36px;
+}
+
+.default-tab button.m-btn--active {
+    color: #323D6F;
+    font-weight: 700;
+    font-size: 14px;
+}
+.default-tab button {
+    color: #7681AB;
+    font-size: 14px;
+    font-weight: 500;
+}
+.flex-none{
+    flex: none;
 }

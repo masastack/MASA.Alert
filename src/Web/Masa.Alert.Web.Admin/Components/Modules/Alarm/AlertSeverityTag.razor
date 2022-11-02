@@ -1,0 +1,36 @@
+﻿@inherits AdminCompontentBase
+<div class="d-flex">
+    <div class="@($"pa-2 rounded-circle my-auto {Class}")" style="height: fit-content;"></div>
+    <span class="ml-3">@T(Value.ToString())</span>
+</div>
+
+@code {
+    [Parameter]
+    public AlertSeverity Value { get; set; }
+
+    public string Class { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        switch (Value)
+        {
+            case AlertSeverity.Serious:
+                Class = "warning-clicked";
+                break;
+            case AlertSeverity.High:
+                Class = "warning";
+                break;
+            case AlertSeverity.Secondary:
+                Class = "remind";
+                break;
+            case AlertSeverity.Low:
+                Class = "yellow";
+                break;
+            case AlertSeverity.Report:
+                Class = "yellow-clicked";
+                break;
+            default:
+                break;
+        }
+    }
+}

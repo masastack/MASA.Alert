@@ -2,15 +2,17 @@
 @page "/alarmRules"
 <AutoHeight Overflow>
     <HeaderContent>
-        <SLabeledRadioGroup @bind-Value="@_queryParam.AlarmRuleType" Dense Class="emphasis2--text subtitle2" Style="height:36px">
-            <SLabeledRadio Value="AlarmRuleTypes.Log" Class="px-6">@T(AlarmRuleTypes.Log.ToString())</SLabeledRadio>
-            <SLabeledRadio Value="AlarmRuleTypes.Metric" Class="px-6">@T(AlarmRuleTypes.Metric.ToString())</SLabeledRadio>
+        <SLabeledRadioGroup @bind-Value="@_queryParam.AlarmRuleType" Dense Class="default-tab">
+            @foreach (var item in Enum.GetValues<AlarmRuleTypes>())
+            {
+                <SLabeledRadio Value="item" Class="px-6">@T(item.ToString())</SLabeledRadio>
+            }
         </SLabeledRadioGroup>
         <div class="ma-0 search-panel my-6">
             @if (advanced)
             {
                 <div class="fold d-inline-flex">
-                    <EnumSimpleSelect TValue="SearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))"></EnumSimpleSelect>
+                    <EnumSimpleSelect TValue="AlarmRuleSearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))"></EnumSimpleSelect>
                     <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" />
                     @if (_queryParam.AlarmRuleType == AlarmRuleTypes.Log)
                     {

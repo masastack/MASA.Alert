@@ -43,16 +43,9 @@ public class AlarmRuleUpsertViewModel
 
     public bool IsEnabled { get; set; }
 
-    public List<LogMonitorItemViewModel> LogMonitorItems { get; set; }
+    public List<LogMonitorItemViewModel> LogMonitorItems { get; set; } = new();
 
-    public List<MetricMonitorItemViewModel> MetricMonitorItems { get; set; } = default!;
+    public List<MetricMonitorItemViewModel> MetricMonitorItems { get; set; } = new();
 
-    public List<AlarmRuleItemViewModel> Items { get; set; }
-
-    public AlarmRuleUpsertViewModel()
-    {
-        LogMonitorItems = LogMonitorItems ?? new List<LogMonitorItemViewModel> { new LogMonitorItemViewModel() };
-        MetricMonitorItems = MetricMonitorItems ?? new List<MetricMonitorItemViewModel> { new MetricMonitorItemViewModel() };
-        Items = Items ?? new List<AlarmRuleItemViewModel> { new AlarmRuleItemViewModel() };
-    }
+    public List<AlarmRuleItemViewModel> Items { get; set; } = new();
 }

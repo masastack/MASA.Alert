@@ -1,0 +1,69 @@
+﻿@inherits AdminCompontentBase
+<div class="emphasis--text btn">
+    <span>@AlarmHistory.AlarmRule.ProjectId</span>
+    <span class="ml-4">@AlarmHistory.AlarmRule.AppId</span>
+</div>
+<AlarmPreviewChart AlarmRule="AlarmHistory.AlarmRule" />
+<DefaultSubTitle>@T("CheckFrequency")</DefaultSubTitle>
+<div class="d-flex justify-space-between">
+    <span class="regular--text body2">
+        @if (AlarmHistory.AlarmRule.CheckFrequency == AlarmCheckFrequencyTypes.FixedInterval)
+        {
+            @AlarmHistory.AlarmRule.CheckIntervalTime @T(AlarmHistory.AlarmRule.CheckIntervalTimeType.ToString())
+        }
+        @if (AlarmHistory.AlarmRule.CheckFrequency == AlarmCheckFrequencyTypes.Cron)
+        {
+            @AlarmHistory.AlarmRule.CronExpression
+        }
+    </span>
+    <span class="regular3--text caption">@T(AlarmHistory.AlarmRule.CheckFrequency.ToString())</span>
+</div>
+<DefaultSubTitle>@T("VariableInfo")</DefaultSubTitle>
+@foreach (var item in AlarmHistory.AlarmRule.LogMonitorItems)
+{
+    <div class="d-flex justify-space-between">
+        <div class="regular--text body2">
+            <span>@item.Field</span>
+            <span class="ml-2">@T("Count")</span>
+            <span class="ml-2">@(item.IsOffset ? string.Format(T("OffsetPeriod"), item.OffsetPeriod) : string.Empty)</span>
+        </div>
+        <div class="regular3--text caption">@item.Alias</div>
+    </div>
+}
+@foreach (var item in AlarmHistory.AlarmRule.MetricMonitorItems)
+{
+    <div class="d-flex justify-space-between">
+        <div class="regular--text body2">
+            <span>@item.Name</span>
+            <span class="ml-2">@item.Tag @T(item.ComparisonOperator.ToString()) @item.Value</span>
+            <span class="ml-2">@T(item.AggregationType.ToString())</span>
+            <span class="ml-2">@(item.IsOffset ? string.Format(T("OffsetPeriod"), item.OffsetPeriod) : string.Empty)</span>
+        </div>
+        <div class="regular3--text caption">@item.Alias</div>
+    </div>
+}
+<DefaultSubTitle>@T("AlarmInfo")</DefaultSubTitle>
+<div class="d-flex justify-space-between mb-6">
+    <div class="regular--text body2">
+        @AlarmHistory.LastAlarmTime.ToString(T("$DateTimeFormat"))
+    </div>
+    <div class="regular3--text caption">@T("AlarmTime")</div>
+</div>
+@foreach (var item in AlarmHistory.AlarmRuleItems)
+{
+    <div class="d-flex justify-space-between mb-2">
+        <div class="regular--text body2">
+            <AlertSeverityTag Value="@item.AlertSeverity" />
+        </div>
+        <div class="regular--text body2">
+            <div>@item.Expression</div>
+            <div class="d-flex">
+                <span class="my-auto">@(item.IsNotification ? item.MessageTemplateName : T("NoNotice"))</span>
+                <MSwitch Value="item.IsRecoveryNotification" Inset Class="label my-auto ml-6" Label="@T("RecoveryNotification")" />
+            </div>
+        </div>
+        <div class="regular3--text caption">@T("TriggerRules")</div>
+    </div>
+}
+<DefaultTitle>@T("HandleDetails")</DefaultTitle>
+<StatusTimeline />

@@ -1,10 +1,12 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Application.Contracts.Enums;
+namespace Masa.Alert.Domain.Shared.AlarmHistory;
 
-public enum SearchTimeTypes
+public enum AlarmHistoryStatuses
 {
-    ModificationTime = 1,
-    CreationTime,
+    Pending = 1,
+    InProcess,
+    ProcessingCompleted,
+    Notified
 }
