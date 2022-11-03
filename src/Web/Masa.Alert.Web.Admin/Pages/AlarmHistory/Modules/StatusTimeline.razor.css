@@ -1,0 +1,19 @@
+﻿.status-time-line {
+    margin-left: -430px;
+}
+
+    .status-time-line ::deep .m-timeline-item__dot {
+        box-shadow: none;
+    }
+
+    .status-time-line ::deep .m-timeline-item__dot {
+        background: transparent !important;
+    }
+
+    .status-time-line ::deep .m-timeline-item__inner-dot {
+        background-color: transparent !important;
+    }
+
+    .status-time-line ::deep .m-icon {
+        background: #ffff !important;
+    }

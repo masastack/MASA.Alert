@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Alert.Web.Admin.Components.Modules.Alarm;
-
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 
 public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
@@ -18,18 +16,35 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     private string _tempCron = string.Empty;
     private string _nextRunTimeStr = string.Empty;
     private List<string> _items = new();
-    private AlarmPreviewChart? _previewChart;
+    private AlarmPreviewChartModal? _previewChart;
 
     protected override string? PageName { get; set; } = "AlarmRule";
 
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)
     {
         _model = listModel?.Adapt<AlarmRuleUpsertViewModel>() ?? new();
+        FillData();
         await InvokeAsync(() =>
         {
             _visible = true;
             StateHasChanged();
         });
+    }
+
+    private void FillData()
+    {
+        if (!_model.LogMonitorItems.Any())
+        {
+            _model.LogMonitorItems.Add(new LogMonitorItemViewModel());
+        }
+        if (!_model.MetricMonitorItems.Any())
+        {
+            _model.MetricMonitorItems.Add(new MetricMonitorItemViewModel());
+        }
+        if (!_model.Items.Any())
+        {
+            _model.Items.Add(new AlarmRuleItemViewModel());
+        }
     }
 
     private void HandleCancel()

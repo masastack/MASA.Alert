@@ -11,6 +11,8 @@ public class AlarmRuleItemViewModel
 
     public string MessageTemplateId { get; set; } = default!;
 
+    public string MessageTemplateName { get; set; } = default!;
+
     public bool IsRecoveryNotification { get; set; }
 
     public bool IsNotification { get; set; }

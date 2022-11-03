@@ -1,0 +1,69 @@
+﻿@inherits AdminCompontentBase
+@page "/alarmHistory"
+<AutoHeight Overflow>
+    <HeaderContent>
+        <SLabeledRadioGroup @bind-Value="@_queryParam.SearchType" Dense Class="default-tab" >
+            @foreach (var item in Enum.GetValues<AlarmHistorySearchTypes>())
+            {
+                <SLabeledRadio Value="item" Class="px-6">@T(item.ToString())</SLabeledRadio>
+            }
+        </SLabeledRadioGroup>
+        <div class="ma-0 search-panel my-6">
+            @if (advanced)
+            {
+                <div class="fold d-inline-flex">
+                    <EnumSimpleSelect TValue="AlarmHistorySearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))" />
+                    <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" />
+                    <EnumSimpleSelect TValue="AlertSeverity" @bind-Value="@_queryParam.AlertSeverity" DefaultText="@T(nameof(_queryParam.AlertSeverity))" Class="ml-6" />
+                    <EnumSimpleSelect TValue="AlarmHistoryStatuses" @bind-Value="@_queryParam.Status" DefaultText="@T(nameof(_queryParam.Status))" Class="ml-6" />
+                </div>
+            }
+            <div class="d-flex search-panel-right @(!isAnimate?"full-width":"") @(isAnimate?"animate__animated":"") @(!advanced?"animate__searchOpen":"animate__searchShrink")">
+                <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
+                <div @onclick="ToggleAdvanced" class="ml-6 d-flex button fill">
+                    <SIcon Class="ma-auto" Color="emphasis2" Size=20>
+                        @(!advanced ? "mdi-filter" : "mdi-filter-off")
+                    </SIcon>
+                </div>
+            </div>
+        </div>
+    </HeaderContent>
+    <AutoHeightContent>
+        <MCard Class="page-content">
+            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" ItemsPerPage="_queryParam.PageSize" HideDefaultFooter FixedRight Width="@("120%")" Class="d-flex full-height flex-column">
+                <HeaderColContent Context="header">
+                    <span class="text-btn">@header.Text</span>
+                </HeaderColContent>
+                <ItemColContent>
+                    @switch (context.Header.Value)
+                    {
+                        case nameof(AlarmHistoryListViewModel.AlertSeverity):
+                            <AlertSeverityTag Value="@context.Item.AlertSeverity" />
+                            break;
+                        case nameof(AlarmHistoryListViewModel.Status):
+                            <AlarmHistoryStatusTag Value="@context.Item.Status" />
+                            break;
+                        case "Action":
+                            @if (context.Item.Status == AlarmHistoryStatuses.Pending)
+                            {
+                                <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("Handle"))" OnClick="()=>_handleAlarmModal?.OpenModalAsync(context.Item)!">mdi-skull-outline</SIcon>
+                            }
+                            else{
+                                <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("View"))" OnClick="()=>_detailModal?.OpenModalAsync(context.Item)!">mdi-eye</SIcon>
+                            }
+                            break;
+                        default:
+                            <DefaultGenericColumnRender Value="@context.Value" Width="@context.Header.Width"></DefaultGenericColumnRender>
+                            break;
+                    }
+                </ItemColContent>
+                <FooterContent>
+                    <SPagination Class="mt-3 mx-6 pb-6" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+                </FooterContent>
+            </SDataTable>
+        </MCard>
+    </AutoHeightContent>
+</AutoHeight>
+
+<AlarmHistoryDetailModal @ref="_detailModal" />
+<HandleAlarmModal @ref="_handleAlarmModal" />

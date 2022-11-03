@@ -1,0 +1,21 @@
+﻿@inherits AdminCompontentBase
+<DefaultSheetDialog Value="_visible" ValueChanged="HandleVisibleChanged"
+                    Title="@T("ViewAlarmHistory")" ContentClass="sheet-dialog">
+    <ChildContent>
+        <AutoHeight Overflow>
+            <AutoHeightContent>
+                <div style="padding-left: 280px;padding-right: 280px;">
+                    <DefaultTitle Class="mb-4">@T("AlarmDetails")</DefaultTitle>
+                    <AlarmHistoryDetail AlarmHistory="_model"></AlarmHistoryDetail>
+                </div>
+            </AutoHeightContent>
+            <FooterContent>
+                <div class="d-flex">
+                    <SButton Class="btn" Text Color="error">@T("Delete")</SButton>
+                    <MSpacer></MSpacer>
+                </div>
+            </FooterContent>
+        </AutoHeight>
+       
+    </ChildContent>
+</DefaultSheetDialog>

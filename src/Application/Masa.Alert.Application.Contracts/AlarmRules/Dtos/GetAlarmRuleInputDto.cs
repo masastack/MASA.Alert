@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Application.Contracts.AlarmRules;
+namespace Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 
 public class GetAlarmRuleInputDto : PaginatedOptionsDto
 {
@@ -9,7 +9,7 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto
 
     public AlarmRuleTypes AlarmRuleType { get; set; } = AlarmRuleTypes.Log;
 
-    public SearchTimeTypes TimeType { get; set; }
+    public AlarmRuleSearchTimeTypes TimeType { get; set; }
 
     public DateTime? StartTime { get; set; }
 
@@ -29,7 +29,7 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto
     {
     }
 
-    public GetAlarmRuleInputDto(string filter, SearchTimeTypes timeType, DateTime? startTime,
+    public GetAlarmRuleInputDto(string filter, AlarmRuleSearchTimeTypes timeType, DateTime? startTime,
        DateTime? endTime, string projectId, string appId, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
     {
         Filter = filter;
@@ -38,5 +38,11 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto
         EndTime = endTime;
         ProjectId = projectId;
         AppId = appId;
+    }
+
+    public enum AlarmRuleSearchTimeTypes
+    {
+        ModificationTime = 1,
+        CreationTime,
     }
 }

@@ -1,27 +1,28 @@
 ﻿@inherits AdminCompontentBase
-<SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
-    <MRow Justify="JustifyTypes.SpaceBetween" Align="AlignTypes.Center">
-        <MCol>
-            <span class="emphasis--text btn">@T("YAxisUnits")：@AlarmRule?.ChartYAxisUnit</span>
-            <span class="emphasis--text caption">@T("ChartPreviewTips")</span>
-        </MCol>
-        <MCol>
-            <SDateTimeRangePicker @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none" />
-        </MCol>
-    </MRow>
-    <div class="d-flex align-center justify-center">
-        <MECharts Option="_option" Width="Width">
-        </MECharts>
-    </div>
-</SModal>
+<MRow Justify="JustifyTypes.SpaceBetween" Align="AlignTypes.Center">
+    <MCol>
+        <span class="emphasis--text btn">@T("YAxisUnits")：@AlarmRule?.ChartYAxisUnit</span>
+        <span class="emphasis--text caption">@T("ChartPreviewTips")</span>
+    </MCol>
+    <MCol>
+        <SDateTimeRangePicker @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none" />
+    </MCol>
+</MRow>
+<div class="d-flex align-center justify-center">
+    <MECharts Option="_option" Width="Width" Height="Height">
+    </MECharts>
+</div>
 
 @code {
     [Parameter]
     public StringNumber Width { get; set; } = 761;
 
+    [Parameter]
+    public StringNumber Height { get; set; } = 219;
+
     [EditorRequired]
     [Parameter]
-    public AlarmRuleUpsertViewModel? AlarmRule { get; set; }
+    public AlarmRuleViewModel? AlarmRule { get; set; }
 
     protected override string? PageName { get; set; } = "AlarmChart";
 
@@ -29,7 +30,6 @@
 
     private DateTime? _endTime { get; set; }
 
-    private bool _visible = false;
     private object _option = new
     {
         Tooltip = new
@@ -53,7 +53,8 @@
             BoundaryGap = false,
             Data = new[] { "10-1", "10-2", "10-3", "10-4", "10-5", "10-6", "10-7", "10-8", "10-9", "10-10" }
         },
-        YAxis = new {
+        YAxis = new
+        {
             Type = "value"
         },
         Series = new[]
@@ -74,13 +75,4 @@
             }
     }
     };
-
-    public async Task OpenModalAsync()
-    {
-        await InvokeAsync(() =>
-        {
-            _visible = true;
-            StateHasChanged();
-        });
-    }
 }

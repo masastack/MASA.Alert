@@ -1,0 +1,73 @@
+﻿@inherits AdminCompontentBase
+<div class="status-time-line">
+    <MTimeline Dense=false>
+        @foreach (var item in StatusCommits)
+        {
+            <MTimelineItem Color="fill" Small FillDot Right>
+                <OppositeContent>
+                    <div class="@($"btn mr-n5 {GetStatusColor(item.Status)}")">@T(item.Status.ToString())</div>
+                </OppositeContent>
+                <IconContent>
+                    <AlarmHistoryStatusIcon Value="@item.Status" />
+                </IconContent>
+                <ChildContent>
+                    <div class="ml-n5">
+                        <div class="regular--text btn">@item.Remarks</div>
+                        <div class="regular3--text overline">@item.CreationTime.ToString(T("$DateTimeFormat"))</div>
+                    </div>
+                </ChildContent>
+            </MTimelineItem>
+        }
+    </MTimeline>
+</div>
+
+@code {
+    [Parameter]
+    public List<AlarmHistoryStatusCommitViewModel> StatusCommits { get; set; } = new();
+
+    private string _class = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        StatusCommits = new List<AlarmHistoryStatusCommitViewModel>
+        {
+            new AlarmHistoryStatusCommitViewModel{
+                Status = AlarmHistoryStatuses.Notified,
+                Remarks = "" ,
+                CreationTime =DateTime.Now
+            },
+            new AlarmHistoryStatusCommitViewModel{
+                Status = AlarmHistoryStatuses.ProcessingCompleted,
+                Remarks = "李冬瓜分配处理人：李西瓜" ,
+                CreationTime =DateTime.Now
+            },
+            new AlarmHistoryStatusCommitViewModel{
+                Status = AlarmHistoryStatuses.InProcess,
+                Remarks = "李西瓜" ,
+                CreationTime =DateTime.Now
+            },
+            new AlarmHistoryStatusCommitViewModel{
+                Status = AlarmHistoryStatuses.Pending,
+                Remarks = "库存不足处理完成的通知" ,
+                CreationTime =DateTime.Now
+            }
+        };
+    }
+
+    private string GetStatusColor(AlarmHistoryStatuses Status)
+    {
+        switch (Status)
+        {
+            case AlarmHistoryStatuses.Notified:
+                return "info--text";
+            case AlarmHistoryStatuses.ProcessingCompleted:
+                return "success--text";
+            case AlarmHistoryStatuses.InProcess:
+                return "primary--text";
+            case AlarmHistoryStatuses.Pending:
+                return "remind--text";
+            default:
+                return "";
+        }
+    }
+}
