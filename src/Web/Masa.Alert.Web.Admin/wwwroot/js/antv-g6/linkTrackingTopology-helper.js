@@ -141,13 +141,61 @@ export function registerEdge() {
     )
 }
 
-export function init(domRef, data) {
+const legendData = {
+    nodes: [
+        { id: "正常", label: "正常" },
+        { id: "错误", label: "错误" },
+        { id: "告警", label: "告警" }
+    ], edges: [
+        { id: "正常", label: "正常" },
+        { id: "错误", label: "错误" },
+        { id: "告警", label: "告警" }
+    ]
+};
+
+const createLegend = () => {
+    const legend = new G6.Legend({
+        data: legendData,
+        align: "center",
+        layout: "horizontal", // vertical
+        position: "top-left",
+
+        filter: {
+            enable: true,
+            multiple: true,
+            trigger: "click",
+            graphActiveState: "activeByLegend",
+            graphInactiveState: "inactiveByLegend",
+            filterFunctions: {
+                "正常": (d) => {
+                    console.log("正常", d);
+                    if (d.state === 1) return true;
+                    return false
+                },
+                "错误": (d) => {
+                    console.log("错误", d);
+                    if (d.state === 2) return true;
+                    return false
+                },
+                "告警": (d) => {
+                    console.log("告警", d);
+                    if (d.state === 3) return true;
+                    return false
+                },
+            }
+        }
+    });
+
+    return legend;
+}
+
+const createGraph = (domRef, data) => {
     const graph = new G6.Graph({
         container: domRef,
         width: 1440,
         height: 765,
         linkCenter: true,
-        plugins: [tooltip],
+        plugins: [tooltip, legend],
         modes: {
             default: ['drag-node'],
         },
@@ -174,28 +222,26 @@ export function init(domRef, data) {
             linkDistance: 200, // 设置边长为 100
             preventOverlap: true, // 设置防止重叠
         },
-        filter: {
-            enable: true,
-            multiple: true,
-            trigger: 'click',
-            graphActiveState: 'activeByLegend',
-            graphInactiveState: 'inactiveByLegend',
-            filterFunctions: {
-                "正常": (d) => {
-                    if (d.state === 1) return true;
-                    return false
-                },
-                "错误": (d) => {
-                    if (d.state === 2) return true;
-                    return false
-                },
-                "告警": (d) => {
-                    if (d.state === 3) return true;
-                    return false
-                },
+        nodeStateStyles: {
+            activeByLegend: {
+                lineWidth: 5,
+                strokeOpacity: 0.5,
+                stroke: '#f00'
+            },
+            inactiveByLegend: {
+                opacity: 0.5
             }
-        }
+        },
     });
+
+    return graph;
+}
+
+export function init(domRef, data) {
+
+    const legend = createLegend();
+    const graph = createGraph();
+    
     domRef.graph = graph;
 
     const nodes = data.nodes;
