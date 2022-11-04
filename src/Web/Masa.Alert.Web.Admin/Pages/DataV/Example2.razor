@@ -1,0 +1,59 @@
+﻿@inherits AdminCompontentBase
+@page "/datav/example2"
+@using Masa.Alert.Web.Admin.Pages.DataV.Modules.HexagonalMeshs
+
+
+<HexagonalMesh Value="Data"></HexagonalMesh>
+
+@code{
+
+    private List<HexagonalMeshViewModel> Data = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        FillData();
+        await base.OnInitializedAsync();
+    }
+
+    public void FillData()
+    {
+        var items = new List<HexagonalMeshItemViewModel>
+        {
+            new HexagonalMeshItemViewModel{
+                Name="masa-auth-web-admin",
+                State = Modules.LinkTrackingTopologyStatuses.Normal
+            },
+            new HexagonalMeshItemViewModel{
+                Name="masa-auth-service",
+                State = Modules.LinkTrackingTopologyStatuses.Normal
+            },
+            new HexagonalMeshItemViewModel{
+                Name="masa-auth-web-admin",
+                State = Modules.LinkTrackingTopologyStatuses.Normal
+            }
+        };
+        Data = new List<HexagonalMeshViewModel>
+        {
+            new HexagonalMeshViewModel
+            {
+                Key="0-0",
+                Q=0,
+                R=0,
+                Name="auth",
+                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                Items=items
+            },
+            new HexagonalMeshViewModel
+            {
+                Key="0-1",
+                Q=1,
+                R=0,
+                Name="auth",
+                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                Items=items
+            },
+        };
+
+        
+    }
+}

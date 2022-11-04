@@ -189,7 +189,7 @@ const createLegend = () => {
     return legend;
 }
 
-const createGraph = (domRef, data) => {
+const createGraph = (domRef, data, legend) => {
     const graph = new G6.Graph({
         container: domRef,
         width: 1440,
@@ -240,7 +240,7 @@ const createGraph = (domRef, data) => {
 export function init(domRef, data) {
 
     const legend = createLegend();
-    const graph = createGraph();
+    const graph = createGraph(domRef, data, legend);
     
     domRef.graph = graph;
 
