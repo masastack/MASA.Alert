@@ -1,6 +1,18 @@
-﻿const addPolygon = (domRef, d) => {
+﻿const handleData = (data) => {
+    let hexes = data.reduce((target, item, index) => {
+        target[item.key] = item;
+        return target;
+    }, {})
+    return {
+        "layout": "odd-r",
+        "hexes": hexes
+    }
+}
+
+export function addPolygon(domRef, d) {
+    let newData = handleData(d);
     let chart = domRef.chart;
-    var dv = new DataSet.View().source(d, {
+    var dv = new DataSet.View().source(newData, {
         type: 'hex',
         width: 120,
         height: 120
