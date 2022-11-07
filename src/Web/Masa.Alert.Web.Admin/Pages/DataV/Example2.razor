@@ -1,6 +1,7 @@
-﻿@inherits AdminCompontentBase
+﻿@inherits BDomComponentBase
 @page "/datav/example2"
 @using Masa.Alert.Web.Admin.Pages.DataV.Modules.HexagonalMeshs
+@using Masa.Alert.Web.Admin.Pages.DataV.Modules.LinkTrackingTopologys
 
 
 <HexagonalMesh Value="Data"></HexagonalMesh>
@@ -21,15 +22,15 @@
         {
             new HexagonalMeshItemViewModel{
                 Name="masa-auth-web-admin",
-                State = Modules.LinkTrackingTopologyStatuses.Normal
+                State = LinkTrackingTopologyStatuses.Normal
             },
             new HexagonalMeshItemViewModel{
                 Name="masa-auth-service",
-                State = Modules.LinkTrackingTopologyStatuses.Normal
+                State = LinkTrackingTopologyStatuses.Normal
             },
             new HexagonalMeshItemViewModel{
                 Name="masa-auth-web-admin",
-                State = Modules.LinkTrackingTopologyStatuses.Normal
+                State = LinkTrackingTopologyStatuses.Normal
             }
         };
         Data = new List<HexagonalMeshViewModel>
@@ -40,7 +41,7 @@
                 Q=0,
                 R=0,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -49,7 +50,7 @@
                 Q=1,
                 R=0,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -58,7 +59,7 @@
                 Q=2,
                 R=0,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -67,7 +68,7 @@
                 Q=3,
                 R=0,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -76,7 +77,7 @@
                 Q=4,
                 R=0,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -85,7 +86,7 @@
                 Q=5,
                 R=0,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -94,7 +95,7 @@
                 Q=0,
                 R=1,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -103,7 +104,7 @@
                 Q=1,
                 R=1,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -112,7 +113,7 @@
                 Q=2,
                 R=1,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Error,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -121,7 +122,7 @@
                 Q=3,
                 R=1,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -130,7 +131,7 @@
                 Q=4,
                 R=1,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -139,7 +140,7 @@
                 Q=5,
                 R=1,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -148,7 +149,7 @@
                 Q=1,
                 R=2,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -157,7 +158,7 @@
                 Q=2,
                 R=2,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -166,7 +167,7 @@
                 Q=3,
                 R=2,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -175,7 +176,7 @@
                 Q=4,
                 R=2,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -184,7 +185,7 @@
                 Q=5,
                 R=2,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -193,7 +194,7 @@
                 Q=6,
                 R=2,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -202,7 +203,7 @@
                 Q=1,
                 R=3,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -211,7 +212,7 @@
                 Q=2,
                 R=3,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Alarm,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -220,7 +221,7 @@
                 Q=3,
                 R=3,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -229,7 +230,7 @@
                 Q=4,
                 R=3,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -238,7 +239,7 @@
                 Q=5,
                 R=3,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
             new HexagonalMeshViewModel
@@ -247,7 +248,7 @@
                 Q=6,
                 R=3,
                 Name="auth",
-                State = Modules.LinkTrackingTopologyStatuses.Normal,
+                State = LinkTrackingTopologyStatuses.Normal,
                 Items=items
             },
         };

@@ -9,23 +9,39 @@
     }
 }
 
+const getStroke = (state) => {
+    switch (state) {
+        case 1: {
+            return "#299F00";
+        }
+        case 2: {
+            return "#F80E1C";
+        }
+        case 3: {
+            return "#F1AE00";
+        }
+    }
+    return "";
+};
+
 export function addPolygon(domRef, d) {
     let newData = handleData(d);
     let chart = domRef.chart;
     var dv = new DataSet.View().source(newData, {
         type: 'hex',
         width: 120,
-        height: 120
+        height: 120,
     });
 
     var bgView = chart.view();
     bgView.source(dv);
-    bgView.polygon().position('x*y').color('#FFFFFF').opacity(0.5).style({
-        stroke: '#299F00',
-        lineWidth: 4
+    bgView.polygon().position('x*y').color('#FFFFFF').opacity(0.5).style('state', {
+        stroke: (state) => {
+            return getStroke(state)
+        },
+        lineWidth: 2,
     }).label('key', {
         htmlTemplate: function formatter(text, item, index) {
-            console.log(text, item, index);
             let d = item._origin;
             var html = `<p style="text-align: center;font-size: 12px;">${d.name}</p>`;
             let items = d.items.slice(0.3);
@@ -41,7 +57,7 @@ export function addPolygon(domRef, d) {
 
 export function init(domRef, data) {
     let chart = new G2.Chart({
-        container: 'mountNode',
+        container: domRef,
         forceFit: true,
         height: window.innerHeight,
         padding: window.innerHeight / 24
@@ -62,6 +78,7 @@ export function init(domRef, data) {
         showTitle: false
     });
     chart.axis(false);
+
     chart.tooltip({
         showTitle: false,
         itemTpl: `<p>MASA Project B</p>`

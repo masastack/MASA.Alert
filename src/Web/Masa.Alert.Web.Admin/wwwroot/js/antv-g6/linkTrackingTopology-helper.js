@@ -24,7 +24,6 @@ const defaultNodeStyle = {
     lineDash: [5, 5]
 };
 const getNodeStroke = (state) => {
-    console.log(state);
     switch (state) {
         case 1: {
             return "#4318FF";
@@ -39,7 +38,6 @@ const getNodeStroke = (state) => {
     return "";
 };
 const getNodeLineDash = (depth) => {
-    console.log(depth);
     switch (depth) {
         case 1: {
             return [10, 2];
@@ -168,17 +166,14 @@ const createLegend = () => {
             graphInactiveState: "inactiveByLegend",
             filterFunctions: {
                 "正常": (d) => {
-                    console.log("正常", d);
                     if (d.state === 1) return true;
                     return false
                 },
                 "错误": (d) => {
-                    console.log("错误", d);
                     if (d.state === 2) return true;
                     return false
                 },
                 "告警": (d) => {
-                    console.log("告警", d);
                     if (d.state === 3) return true;
                     return false
                 },
@@ -238,10 +233,8 @@ const createGraph = (domRef, data, legend) => {
 }
 
 export function init(domRef, data) {
-
     const legend = createLegend();
     const graph = createGraph(domRef, data, legend);
-    
     domRef.graph = graph;
 
     const nodes = data.nodes;

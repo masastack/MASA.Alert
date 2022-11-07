@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Web.Admin.Pages.DataV.Modules.HexagonalMeshs;
 
-public partial class HexagonalMesh : AdminCompontentBase
+public partial class HexagonalMesh : BDomComponentBase
 {
     [Parameter]
     public List<HexagonalMeshViewModel> Value { get; set; } = default!;

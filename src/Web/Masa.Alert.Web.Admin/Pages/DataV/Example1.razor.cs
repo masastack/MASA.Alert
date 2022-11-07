@@ -2,10 +2,11 @@
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 using Masa.Alert.Web.Admin.Pages.DataV.Modules;
+using Masa.Alert.Web.Admin.Pages.DataV.Modules.LinkTrackingTopologys;
 
 namespace Masa.Alert.Web.Admin.Pages.DataV;
 
-public partial class Example1 : AdminCompontentBase
+public partial class Example1 : BDomComponentBase
 {
 
     public LinkTrackingTopologyViewModel Data { get; set; } = new();
