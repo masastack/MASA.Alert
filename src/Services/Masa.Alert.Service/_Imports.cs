@@ -45,8 +45,6 @@ global using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using System.Dynamic;
 global using Masa.BuildingBlocks.Ddd.Domain.Entities.Full;
-global using Masa.Utils.Development.Dapr;
-global using Masa.Utils.Development.Dapr.AspNetCore;
 global using Dapr;
 global using Microsoft.AspNetCore.SignalR;
 global using Microsoft.Extensions.Options;

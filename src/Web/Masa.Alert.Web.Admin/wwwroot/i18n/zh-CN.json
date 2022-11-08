@@ -26,6 +26,8 @@
   "Delete": "删除",
   "Edit": "编辑",
   "Sync": "同步",
+  "View": "查看",
+  "Handle": "处理",
   "AddChild": "加子级",
   "DeletionConfirmationMessage": "确定删除数据?",
   "Creator": "创建人",
@@ -115,6 +117,7 @@
   "FixedInterval": "固定间隔",
   "MessageTemplate": "消息模板",
   "Handler": "处理人",
+  "Test": "测试",
   "AlarmRule": {
     "Log": "日志监控",
     "Metric": "指标监控",
@@ -194,5 +197,13 @@
     "RecoveryNotification": "恢复通知",
     "ThirdPartyProcessing": "第三方处理",
     "SendNotificationAfterProcessing": "处理完成后发送通知"
+  },
+  "WebHook": {
+    "AddWebHook": "新增WebHook",
+    "TestWebHook": "测试WebHook",
+    "DisplayName": "名称",
+    "Url": "Url",
+    "Description": "描述说明",
+    "SecretKey": "密钥"
   }
 }

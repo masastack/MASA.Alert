@@ -1,18 +1,15 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Web.Admin.Pages.AlarmRules;
+namespace Masa.Alert.Web.Admin.Pages.WebHooks;
 
-public partial class AlarmRuleManagement : AdminCompontentBase
+public partial class WebHookManagement : AdminCompontentBase
 {
-    private GetAlarmRuleInputDto _queryParam = new(20);
-    private PaginatedListDto<AlarmRuleListViewModel> _entities = new();
-    private bool advanced = false;
-    private bool isAnimate;
-    private LogAlarmRuleUpsertModal? _logUpsertModal;
-    private MetricAlarmRuleUpsertModal? _metricUpsertModal;
-
-    protected override string? PageName { get; set; } = "AlarmRule";
+    private GetWebHookInputDto _queryParam = new(20);
+    private PaginatedListDto<WebHookListViewModel> _entities = new();
+    private WebHookUpsertModal? _upsertModal;
+    private WebHookTestModal? _testModal;
+    protected override string? PageName { get; set; } = "WebHook";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -36,14 +33,14 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     {
         for (int i = 0; i < 20; i++)
         {
-            _entities.Result.Add(new AlarmRuleListViewModel
+            _entities.Result.Add(new WebHookListViewModel
             {
-                DisplayName = "库存告警通知库存告警通知库存...",
-                ProjectId = "Masa.Auth",
-                AppId = "masa-auth-web-admin",
+                DisplayName = "名称XXXX",
+                Url = "www.masastack.com",
+                Description = "描述说明描述说明描述说明",
                 ModifierName = "李西瓜",
                 ModificationTime = DateTime.Now,
-                IsEnabled = i%6!=0
+                SecretKey = "6F9619FF-8B86-D011-B42D-00C04FC964FF"
             });
         }
     }
@@ -77,12 +74,6 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         await LoadData();
     }
 
-    private void ToggleAdvanced()
-    {
-        advanced = !advanced;
-        isAnimate = true;
-    }
-
     private async Task HandleDelAsync(Guid _entityId)
     {
         await ConfirmAsync(T("DeletionConfirmationMessage"), async () => { await DeleteAsync(_entityId); });
@@ -94,31 +85,5 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         Loading = false;
         await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
         await LoadData();
-    }
-
-    private async Task HandleAdd()
-    {
-        if (_queryParam.AlarmRuleType== AlarmRuleTypes.Log)
-        {
-            await _logUpsertModal?.OpenModalAsync()!;
-        }
-
-        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
-        {
-            await _metricUpsertModal?.OpenModalAsync()!;
-        }
-    }
-
-    private async Task HandleEdit(AlarmRuleListViewModel item)
-    {
-        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Log)
-        {
-            await _logUpsertModal?.OpenModalAsync(item)!;
-        }
-
-        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
-        {
-            await _metricUpsertModal?.OpenModalAsync(item)!;
-        }
     }
 }
