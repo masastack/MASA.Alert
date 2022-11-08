@@ -3,19 +3,13 @@
 
 namespace Masa.Alert.Web.Admin.ViewModel.WebHooks;
 
-public class WebHookListViewModel
+public class WebHookUpsertViewModel
 {
-    public Guid Id { get; set; }
-
     public string DisplayName { get; set; } = default!;
 
     public string Url { get; set; } = default!;
 
     public string Description { get; set; } = default!;
 
-    public string SecretKey { get; set; } = default!;
-
-    public DateTime ModificationTime { get; set; }
-
-    public string ModifierName { get; set; } = string.Empty;
+    public string SecretKey { get; set; } =  Guid.NewGuid().ToString();
 }

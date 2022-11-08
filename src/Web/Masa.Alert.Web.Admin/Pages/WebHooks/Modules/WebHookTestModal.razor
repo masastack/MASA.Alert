@@ -1,0 +1,20 @@
+﻿@inherits AdminCompontentBase
+<PModal @bind-Value="_visible"
+        Persistent
+        Title="@T("TestWebHook")"
+        HideCancelAction
+        Width="398"
+        FormModel="_model"
+        HideTitleDivider
+        HideActionsDivider
+        HeaderClass="h6 emphasis2--text pa-6 pb-0"
+        ActionsClass="pa-6 pt-0"
+        OnSave="HandleOkAsync"
+        OnCancel="HandleCancel">
+    <ChildContent>
+        <SUserAutoComplete @bind-Value="_model.UserId" />
+    </ChildContent>
+    <SaveContent Context="save">
+        <SButton Medium OnClick="save.Click">@T("Test")</SButton>
+    </SaveContent>
+</PModal>

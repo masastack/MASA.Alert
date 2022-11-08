@@ -1,0 +1,35 @@
+﻿@inherits AdminCompontentBase
+<DefaultSheetDialog Value="_visible" ValueChanged="HandleVisibleChanged"
+                    Title="@T("AddWebHook")" ContentClass="sheet-dialog">
+    <ChildContent>
+        <MForm Model="_model" EnableValidation @ref="_form" Class="full-height">
+            <AutoHeight>
+                <AutoHeightContent>
+                    <div style="padding-left: 342px;padding-right: 342px;">
+                        <div class="regular--text btn d-flex">
+                            <span>@T(nameof(_model.SecretKey))</span>
+                            <PCopyableText>
+                                <span class="mx-6">@_model.SecretKey</span>
+                            </PCopyableText>
+                            <SIcon Size=20 Color="emphasis2" Class="ml-6" OnClick="HandleRefresh">mdi-refresh</SIcon>
+                        </div>
+                        <STextField Class="mt-12" @bind-Value="_model.DisplayName" Label="@T(nameof(_model.DisplayName))"></STextField>
+                        <STextField Class="mt-12" @bind-Value="_model.Url" Label="@T(nameof(_model.Url))"></STextField>
+                        <MTextarea Class="mt-12" @bind-Value="_model.Description"
+                                   Label="@T(nameof(_model.Description))"
+                                   Outlined
+                                   HideDetails="@("auto")">
+                        </MTextarea>
+                    </div>
+                </AutoHeightContent>
+                <FooterContent>
+                    <div class="d-flex">
+                        <MSpacer></MSpacer>
+                        <SButton Medium Outlined　Class="ml-6">@T("Test")</SButton>
+                        <SButton Medium Class="ml-6">@T("Submit")</SButton>
+                    </div>
+                </FooterContent>
+            </AutoHeight>
+        </MForm>
+    </ChildContent>
+</DefaultSheetDialog>

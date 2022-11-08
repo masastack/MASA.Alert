@@ -92,7 +92,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     {
         Loading = true;
         Loading = false;
-        await SuccessMessageAsync(T("MessageTaskDeleteMessage"));
+        await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
         await LoadData();
     }
 

@@ -7,9 +7,8 @@ public partial class WebHookManagement : AdminCompontentBase
 {
     private GetWebHookInputDto _queryParam = new(20);
     private PaginatedListDto<WebHookListViewModel> _entities = new();
-    private bool advanced = false;
-    private bool isAnimate;
-
+    private WebHookUpsertModal? _upsertModal;
+    private WebHookTestModal? _testModal;
     protected override string? PageName { get; set; } = "WebHook";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -75,12 +74,6 @@ public partial class WebHookManagement : AdminCompontentBase
         await LoadData();
     }
 
-    private void ToggleAdvanced()
-    {
-        advanced = !advanced;
-        isAnimate = true;
-    }
-
     private async Task HandleDelAsync(Guid _entityId)
     {
         await ConfirmAsync(T("DeletionConfirmationMessage"), async () => { await DeleteAsync(_entityId); });
@@ -90,17 +83,7 @@ public partial class WebHookManagement : AdminCompontentBase
     {
         Loading = true;
         Loading = false;
-        await SuccessMessageAsync(T("MessageTaskDeleteMessage"));
+        await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
         await LoadData();
-    }
-
-    private async Task HandleAdd()
-    {
-        
-    }
-
-    private async Task HandleEdit(WebHookListViewModel item)
-    {
-        
     }
 }

@@ -46,7 +46,7 @@
                         case "Action":
                             @if (context.Item.Status == AlarmHistoryStatuses.Pending)
                             {
-                                <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("Handle"))" OnClick="()=>_handleAlarmModal?.OpenModalAsync(context.Item)!">mdi-skull-outline</SIcon>
+                                <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("Handle"))" OnClick="()=>_handleAlarmModal?.OpenModalAsync(context.Item)!">mdi-account-hard-hat</SIcon>
                             }
                             else{
                                 <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("View"))" OnClick="()=>_detailModal?.OpenModalAsync(context.Item)!">mdi-eye</SIcon>
