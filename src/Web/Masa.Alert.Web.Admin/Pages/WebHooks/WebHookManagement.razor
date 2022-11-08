@@ -1,0 +1,26 @@
+﻿@inherits AdminCompontentBase
+@page "/webHook"
+
+<AutoHeight Overflow>
+    <HeaderContent>
+        <div class="ma-0 search-panel my-6">
+            <div class="d-flex search-panel-right full-width">
+                <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
+                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="HandleAdd">@T("Permission.Create")</SButton>
+            </div>
+        </div>
+    </HeaderContent>
+    <AutoHeightContent>
+        <MRow Style="height:0px">
+            @foreach (var _entitie in _entities.Result)
+            {
+                <MCol Md="3">
+                    <WebHookCard WebHook="_entitie" OnEdit="()=> HandleEdit(_entitie)" />
+                </MCol>
+            }
+        </MRow>
+    </AutoHeightContent>
+    <FooterContent>
+        <SPagination Class="mt-6 rounded-2 pa-0 fill" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+    </FooterContent>
+</AutoHeight>

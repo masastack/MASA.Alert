@@ -54,3 +54,5 @@ global using Masa.Alert.Web.Admin.Components.Modules.Alarm;
 global using Masa.Alert.Web.Admin.Pages.AlarmHistory.Modules;
 global using System.Linq.Expressions;
 global using Masa.Stack.Components.Layouts;
+global using Masa.Alert.Application.Contracts.WebHooks.Dtos;
+global using Masa.Alert.Web.Admin.ViewModel.WebHooks;
