@@ -25,7 +25,7 @@
                 <FooterContent>
                     <div class="d-flex">
                         <MSpacer></MSpacer>
-                        <SButton Medium Outlined　Class="ml-6">@T("Test")</SButton>
+                        <SButton Medium Outlined　Class="ml-6" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</SButton>
                         <SButton Medium Class="ml-6">@T("Submit")</SButton>
                     </div>
                 </FooterContent>
@@ -33,3 +33,5 @@
         </MForm>
     </ChildContent>
 </DefaultSheetDialog>
+
+<WebHookTestModal @ref="_testModal"/>

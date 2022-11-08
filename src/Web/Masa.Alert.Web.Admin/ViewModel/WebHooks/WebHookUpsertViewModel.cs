@@ -5,6 +5,8 @@ namespace Masa.Alert.Web.Admin.ViewModel.WebHooks;
 
 public class WebHookUpsertViewModel
 {
+    public Guid Id { get; set; }
+
     public string DisplayName { get; set; } = default!;
 
     public string Url { get; set; } = default!;

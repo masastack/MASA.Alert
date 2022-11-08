@@ -12,7 +12,7 @@ public partial class WebHookUpsertModal : AdminCompontentBase
     private WebHookUpsertViewModel _model = new();
     private bool _visible;
 
-    private List<string> _items = new();
+    private WebHookTestModal? _testModal;
 
     protected override string? PageName { get; set; } = "WebHook";
 
