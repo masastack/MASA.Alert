@@ -43,10 +43,10 @@ export function addPolygon(domRef, d) {
     }).label('key', {
         htmlTemplate: function formatter(text, item, index) {
             let d = item._origin;
-            var html = `<p style="text-align: center;font-size: 12px;">${d.name}</p>`;
+            var html = `<p class="h5 default--text text-center">${d.name}</p>`;
             let items = d.items.slice(0.3);
             items.forEach(e => {
-                html += `<p style='width: max-content;background: #A3AED0;font-size: 10px;'>${e.name}</p>`
+                html += `<p class="pa-1 body fill--text regular3 rounded-sm" style='width: max-content;'>${e.name}</p>`
             });
             return html;
         }
@@ -74,14 +74,12 @@ export function init(domRef, data) {
         }
     });
     chart.coord().reflect(); // 视数据而定要不要翻转 Y 轴。
-    chart.tooltip({
-        showTitle: false
-    });
+
     chart.axis(false);
 
     chart.tooltip({
         showTitle: false,
-        itemTpl: `<p>MASA Project B</p>`
+        itemTpl: `<div>MASA Project B<br/>YDD2834190407104<br/>应用：12<br/>members to your team to start collaborating. Click here to edit this<div>`
     });
 }
 
