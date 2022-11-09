@@ -64,8 +64,8 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
                 AlarmRule = new AlarmRuleViewModel
                 {
                     DisplayName = "库存告警通知库存告警通知库存...",
-                    ProjectId = "Masa.Auth",
-                    AppId = "masa-auth-web-admin",
+                    ProjectIdentity = "Masa.Auth",
+                    AppIdentity = "masa-auth-web-admin",
                     IsEnabled = i % 6 != 0,
                     CheckFrequency = AlarmCheckFrequencyTypes.FixedInterval,
                     CheckIntervalTime = 60,

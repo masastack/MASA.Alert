@@ -7,9 +7,9 @@ public class AlarmRuleListViewModel
 {
     public string DisplayName { get; set; } = default!;
 
-    public string ProjectId { get; set; } = default!;
+    public string ProjectIdentity { get; set; } = default!;
 
-    public string AppId { get; set; } = default!;
+    public string AppIdentity { get; set; } = default!;
 
     public DateTime ModificationTime { get; set; }
 

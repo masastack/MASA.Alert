@@ -39,8 +39,8 @@ public partial class AlarmRuleManagement : AdminCompontentBase
             _entities.Result.Add(new AlarmRuleListViewModel
             {
                 DisplayName = "库存告警通知库存告警通知库存...",
-                ProjectId = "Masa.Auth",
-                AppId = "masa-auth-web-admin",
+                ProjectIdentity = "Masa.Auth",
+                AppIdentity = "masa-auth-web-admin",
                 ModifierName = "李西瓜",
                 ModificationTime = DateTime.Now,
                 IsEnabled = i%6!=0

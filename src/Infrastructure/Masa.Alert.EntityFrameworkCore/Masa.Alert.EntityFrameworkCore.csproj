@@ -18,9 +18,6 @@
     </PackageReference>
   </ItemGroup>
 <ItemGroup>
-  <Folder Include="EntityFrameworkCore\EntityTypeConfigurations\" />
-</ItemGroup>
-<ItemGroup>
   <ProjectReference Include="..\..\Domain\Masa.Alert.Domain\Masa.Alert.Domain.csproj" />
   <ProjectReference Include="..\Masa.Alert.Infrastructure.EntityFrameworkCore\Masa.Alert.Infrastructure.EntityFrameworkCore.csproj" />
 </ItemGroup>

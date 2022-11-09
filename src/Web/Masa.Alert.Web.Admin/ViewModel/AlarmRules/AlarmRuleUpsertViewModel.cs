@@ -7,9 +7,9 @@ public class AlarmRuleUpsertViewModel
 {
     public string DisplayName { get; set; } = default!;
 
-    public string ProjectId { get; set; } = default!;
+    public string ProjectIdentity { get; set; } = default!;
 
-    public string AppId { get; set; } = default!;
+    public string AppIdentity { get; set; } = default!;
 
     public int Step { get; set; } = 1;
 

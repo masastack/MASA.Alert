@@ -57,3 +57,4 @@ global using Masa.Stack.Components.Layouts;
 global using Masa.Alert.Application.Contracts.WebHooks.Dtos;
 global using Masa.Alert.Web.Admin.ViewModel.WebHooks;
 global using Masa.Alert.Web.Admin.Pages.WebHooks.Modules;
+global using Masa.Alert.Domain.Shared.Enums;

@@ -17,3 +17,5 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using Masa.Alert.Domain.Shared.AlarmRules;
 global using Masa.Alert.Domain.Shared.AlarmHistory;
+global using Masa.Alert.Domain.Shared.Enums;
+global using Masa.Alert.Application.Contracts.AlarmRules.Dtos;

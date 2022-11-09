@@ -1,6 +1,8 @@
-internal static class Check
+using System.Diagnostics.CodeAnalysis;
+
+public static class Check
 {
-    public static T NotNull<T>(T? obj, string parameterName)
+    public static T NotNull<T>([NotNull] T? obj, string parameterName)
         where T : class
     {
         if (obj is null)

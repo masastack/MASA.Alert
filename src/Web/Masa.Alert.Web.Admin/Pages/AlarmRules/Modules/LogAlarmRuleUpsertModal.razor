@@ -22,9 +22,9 @@
                         <AutoHeight>
                             <AutoHeightContent>
                                 <DefaultTitle Class="mb-4 mt-6">@T("SelectItem")</DefaultTitle>
-                                <SSelect @bind-Value="_model.ProjectId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(_model.ProjectId))" />
+                                <SSelect @bind-Value="_model.ProjectIdentity" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(_model.ProjectIdentity))" />
                                 <DefaultTitle Class="mb-4 mt-16">@T("SelectApp")</DefaultTitle>
-                                <SSelect @bind-Value="_model.AppId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(_model.AppId))" />
+                                <SSelect @bind-Value="_model.AppIdentity" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(_model.AppIdentity))" />
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">

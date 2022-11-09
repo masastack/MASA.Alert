@@ -7,3 +7,7 @@ global using Masa.Contrib.Isolation.UoW.EFCore;
 global using Masa.BuildingBlocks.Data.UoW;
 global using Masa.Contrib.Ddd.Domain.Repository.EFCore;
 global using System.Text.Json;
+global using Masa.Alert.Domain.AlarmRules;
+global using Masa.Alert.Domain.Shared.Consts;
+global using Masa.Alert.Infrastructure.EntityFrameworkCore.EntityFrameworkCore.ValueConverters;
+global using System.Threading.Channels;
