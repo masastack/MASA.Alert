@@ -46,25 +46,25 @@
 </STextField>
 <MRow Class="mt-3">
     <MCol Md="2">
-        <SSelect @bind-Value="Model.SilenceCycle" Items="Enum.GetValues<AlarmRuleSilenceCycle>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(Model.SilenceCycle))">
+        <SSelect @bind-Value="Model.SilenceCycle.Type" Items="Enum.GetValues<SilenceCycleTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(Model.SilenceCycle))">
             <AppendOuterContent>
                 <DefaultTooltip Class="ml-2" Tooltip="@T("SilenceCycleTip")" />
             </AppendOuterContent>
         </SSelect>
     </MCol>
-    @if (Model.SilenceCycle == AlarmRuleSilenceCycle.Time)
+    @if (Model.SilenceCycle.Type == SilenceCycleTypes.Time)
     {
         <MCol Md="2">
-            <STextField @bind-Value="Model.SilenceTimeValue" />
+            <STextField @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTime" />
         </MCol>
         <MCol Md="2">
-            <SSelect @bind-Value="Model.SilenceTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+            <SSelect @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
         </MCol>
     }
-    @if (Model.SilenceCycle == AlarmRuleSilenceCycle.Cycle)
+    @if (Model.SilenceCycle.Type == SilenceCycleTypes.Cycle)
     {
         <MCol Md="3">
-            <STextField @bind-Value="Model.SilenceCycleValue" Class="ml-2">
+            <STextField @bind-Value="Model.SilenceCycle.SilenceCycleValue" Class="ml-2">
                 <AppendOuterContent>
                     <span class="default--text subtitle2 my-auto">@T("Period")</span>
                 </AppendOuterContent>
@@ -81,6 +81,8 @@
     [Parameter]
     public EventCallback<AlarmRuleUpsertViewModel> ModelChanged { get; set; }
     private List<string> _items = new();
+
+    protected override string? PageName { get; set; } = "AlarmRule";
 
     private void HandleItemsAdd()
     {

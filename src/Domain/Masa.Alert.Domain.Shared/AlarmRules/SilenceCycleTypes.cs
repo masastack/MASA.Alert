@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Domain.Shared.AlarmRules;
 
-public enum AlarmRuleSilenceCycle
+public enum SilenceCycleTypes
 {
     Time = 1,
     Cycle

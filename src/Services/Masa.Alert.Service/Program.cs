@@ -1,12 +1,11 @@
-﻿using Masa.Alert.EntityFrameworkCore;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
     {
         opt.AppId = builder.Services.GetMasaConfiguration().Local.GetValue<string>("AppId");
+        //opt.AppIdSuffix = "";
         opt.DaprHttpPort = 20602;
         opt.DaprGrpcPort = 20601;
     });
@@ -45,11 +44,12 @@ builder.Services.AddHealthChecks()
     .AddDbContextCheck<AlertDbContext>();
 
 builder.Services.AddMapster();
-
-
-
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
+TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
+
+var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
+builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
 
 var app = builder.Services
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -80,7 +80,7 @@ var app = builder.Services
             }
         });
     })
-    .AddValidatorsFromAssemblyContaining<Program>()
+    .AddValidatorsFromAssemblies(assemblies)
     .AddDomainEventBus(dispatcherOptions =>
     {
         dispatcherOptions

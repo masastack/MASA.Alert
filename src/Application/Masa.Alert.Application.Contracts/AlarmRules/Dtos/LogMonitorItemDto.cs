@@ -5,11 +5,11 @@ namespace Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 
 public class LogMonitorItemDto
 {
-    public string Field { get; set; } = default!;
+    public string Field { get; set; } = string.Empty;
 
     public LogAggregationTypes AggregationType { get; set; }
 
-    public string Alias { get; set; } = default!;
+    public string Alias { get; set; } = string.Empty;
 
     public bool IsOffset { get; set; }
 

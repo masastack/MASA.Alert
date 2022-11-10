@@ -7,16 +7,16 @@
 <DefaultSubTitle>@T("CheckFrequency")</DefaultSubTitle>
 <div class="d-flex justify-space-between">
     <span class="regular--text body2">
-        @if (AlarmHistory.AlarmRule.CheckFrequency == AlarmCheckFrequencyTypes.FixedInterval)
+        @if (AlarmHistory.AlarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
         {
-            @AlarmHistory.AlarmRule.CheckIntervalTime @T(AlarmHistory.AlarmRule.CheckIntervalTimeType.ToString())
+            @AlarmHistory.AlarmRule.CheckFrequency.FixedInterval.IntervalTime @T(AlarmHistory.AlarmRule.CheckFrequency.FixedInterval.IntervalTimeType.ToString())
         }
-        @if (AlarmHistory.AlarmRule.CheckFrequency == AlarmCheckFrequencyTypes.Cron)
+        @if (AlarmHistory.AlarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
         {
-            @AlarmHistory.AlarmRule.CronExpression
+            @AlarmHistory.AlarmRule.CheckFrequency.CronExpression
         }
     </span>
-    <span class="regular3--text caption">@T(AlarmHistory.AlarmRule.CheckFrequency.ToString())</span>
+    <span class="regular3--text caption">@T(AlarmHistory.AlarmRule.CheckFrequency.Type.ToString())</span>
 </div>
 <DefaultSubTitle>@T("VariableInfo")</DefaultSubTitle>
 @foreach (var item in AlarmHistory.AlarmRule.LogMonitorItems)

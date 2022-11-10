@@ -27,25 +27,25 @@
                                 </MRow>
                                 <MRow>
                                     <MCol Md="2">
-                                        <SSelect @bind-Value="_model.CheckFrequency" Items="Enum.GetValues<AlarmCheckFrequencyTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(_model.CheckFrequency))" />
+                                        <SSelect @bind-Value="_model.CheckFrequency.Type" Items="Enum.GetValues<AlarmCheckFrequencyTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(_model.CheckFrequency))" />
                                     </MCol>
-                                    @if (_model.CheckFrequency == AlarmCheckFrequencyTypes.FixedInterval)
+                                    @if (_model.CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
                                     {
                                         <MCol Md="2">
-                                            <STextField @bind-Value="_model.CheckIntervalTime" />
+                                            <STextField @bind-Value="_model.CheckFrequency.FixedInterval.IntervalTime" />
                                         </MCol>
                                         <MCol Md="2">
-                                            <SSelect @bind-Value="_model.CheckIntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+                                            <SSelect @bind-Value="_model.CheckFrequency.FixedInterval.IntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
                                         </MCol>
                                     }
-                                    @if (_model.CheckFrequency == AlarmCheckFrequencyTypes.Cron)
+                                    @if (_model.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
                                     {
                                         <MCol Md="3">
-                                            <STextField @bind-Value="_model.CronExpression" Label="@T(nameof(_model.CronExpression))" AppendIcon="mdi-clock" OnAppendClick="OpenCronModal" OnChange="(string v)=>GetNextRunTime()" />
+                                            <STextField @bind-Value="_model.CheckFrequency.CronExpression" Label="@T(nameof(_model.CheckFrequency.CronExpression))" AppendIcon="mdi-clock" OnAppendClick="OpenCronModal" OnChange="(string v)=>GetNextRunTime()" />
                                         </MCol>
                                     }
                                 </MRow>
-                                @if (!string.IsNullOrEmpty(_model.CronExpression))
+                                @if (!string.IsNullOrEmpty(_model.CheckFrequency.CronExpression))
                                 {
                                     <div>
                                         @((MarkupString)_nextRunTimeStr)

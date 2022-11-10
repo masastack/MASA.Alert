@@ -22,9 +22,9 @@
                         <AutoHeight>
                             <AutoHeightContent>
                                 <DefaultTitle Class="mb-4 mt-6">@T("SelectItem")</DefaultTitle>
-                                <SSelect @bind-Value="_model.ProjectIdentity" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(_model.ProjectIdentity))" />
+                                <SSelect @bind-Value="_model.ProjectIdentity" Items="_projectItems" ItemText="v => v.Name" ItemValue="v=> v.Identity" TItem="ProjectModel" TItemValue="string" TValue="string" Label="@T(nameof(_model.ProjectIdentity))" OnChange="HandleProjectChange" />
                                 <DefaultTitle Class="mb-4 mt-16">@T("SelectApp")</DefaultTitle>
-                                <SSelect @bind-Value="_model.AppIdentity" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(_model.AppIdentity))" />
+                                <SSelect @bind-Value="_model.AppIdentity" Items="_appItems" ItemText="v => v.Name" ItemValue="v=> v.Identity" Label="@T(nameof(_model.AppIdentity))" />
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">
@@ -49,30 +49,30 @@
                                 <DefaultTitle Class="mt-5 mb-3">@T("VariableConfiguration")</DefaultTitle>
                                 <MRow>
                                     <MCol Md="2">
-                                        <SSelect @bind-Value="_model.CheckFrequency" Items="Enum.GetValues<AlarmCheckFrequencyTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(_model.CheckFrequency))" />
+                                        <SSelect @bind-Value="_model.CheckFrequency.Type" Items="Enum.GetValues<AlarmCheckFrequencyTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(_model.CheckFrequency))" />
                                     </MCol>
-                                    @if (_model.CheckFrequency == AlarmCheckFrequencyTypes.FixedInterval)
+                                    @if (_model.CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
                                     {
                                         <MCol Md="2">
-                                            <STextField @bind-Value="_model.CheckIntervalTime" />
+                                            <STextField @bind-Value="_model.CheckFrequency.FixedInterval.IntervalTime" />
                                         </MCol>
                                         <MCol Md="2">
-                                            <SSelect @bind-Value="_model.CheckIntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+                                            <SSelect @bind-Value="_model.CheckFrequency.FixedInterval.IntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
                                         </MCol>
                                     }
-                                    @if (_model.CheckFrequency == AlarmCheckFrequencyTypes.Cron)
+                                    @if (_model.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
                                     {
                                         <MCol Md="3">
-                                            <STextField @bind-Value="_model.CronExpression" Label="@T(nameof(_model.CronExpression))" AppendIcon="mdi-clock" OnAppendClick="OpenCronModal" OnChange="(string v)=>GetNextRunTime()" />
+                                            <STextField @bind-Value="_model.CheckFrequency.CronExpression" Label="@T(nameof(_model.CheckFrequency.CronExpression))" AppendIcon="mdi-clock" OnAppendClick="OpenCronModal" OnChange="(string v)=>GetNextRunTime()" />
                                         </MCol>
                                     }
                                 </MRow>
-                                @if (!string.IsNullOrEmpty(_model.CronExpression))
+                                @*@if (!string.IsNullOrEmpty(_model.CheckFrequency.CronExpression))
                                 {
                                     <div>
                                         @((MarkupString)_nextRunTimeStr)
                                     </div>
-                                }
+                                }*@
                                 <MRow Class="my-8">
                                     <MSwitch @bind-Value="_model.IsGetTotal" Inset Class="label my-auto ml-4" Label="@T("GetTotal")" />
                                     @if (_model.IsGetTotal)
@@ -93,11 +93,11 @@
                                             </SSelect>
                                         </MCol>
                                         <MCol Md="2">
-                                            <SSelect Class="ml-2" @bind-Value="item.Alias" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Alias))">
+                                            <STextField Class="ml-2" @bind-Value="item.Alias" Label="@T(nameof(item.Alias))">
                                                 <PrependContent>
                                                     <span class="default--text subtitle2 my-auto" >@T("as")</span>
                                                 </PrependContent>
-                                            </SSelect>
+                                            </STextField>
                                         </MCol>
                                         <MCol Md="4" Class="d-flex">
                                             <MSwitch @bind-Value="item.IsOffset" Inset Class="label my-auto ml-4">
@@ -154,7 +154,7 @@
                                     <MSpacer></MSpacer>
                                     <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=2" Outlined　Class="ml-6">@T("PreviousStep")</SButton>
-                                    <SButton Medium Class="ml-6">@T("Submit")</SButton>
+                                    <SButton Medium Class="ml-6" OnClick="HandleOk">@T("Submit")</SButton>
                                 </div>
                             </FooterContent>
                         </AutoHeight>

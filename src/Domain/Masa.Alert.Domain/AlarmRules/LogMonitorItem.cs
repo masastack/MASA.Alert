@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Domain.AlarmRules;
 
-public class LogMonitorItem : Entity<Guid>
+public class LogMonitorItem : ValueObject
 {
     public string Field { get; protected set; } = default!;
 
@@ -14,4 +14,22 @@ public class LogMonitorItem : Entity<Guid>
     public bool IsOffset { get; protected set; }
 
     public int OffsetPeriod { get; protected set; }
+
+    protected override IEnumerable<object> GetEqualityValues()
+    {
+        yield return Field;
+        yield return AggregationType;
+        yield return Alias;
+        yield return IsOffset;
+        yield return OffsetPeriod;
+    }
+
+    public LogMonitorItem(string field, LogAggregationTypes aggregationType,string alias, bool isOffset, int offsetPeriod)
+    {
+        Field = field;
+        AggregationType = aggregationType;
+        Alias = alias;
+        IsOffset = isOffset;
+        OffsetPeriod = offsetPeriod;
+    }
 }

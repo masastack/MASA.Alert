@@ -4,6 +4,7 @@ using Masa.Alert.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Masa.Alert.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AlertDbContext))]
-    partial class AlertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221110070450_AlarmRuleHasColumnName")]
+    partial class AlarmRuleHasColumnName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,7 +184,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
             modelBuilder.Entity("Masa.Alert.Domain.AlarmRules.AlarmRule", b =>
                 {
-                    b.OwnsOne("Masa.Alert.Domain.AlarmRules.AlarmRule.CheckFrequency#Masa.Alert.Domain.AlarmRules.CheckFrequency", "CheckFrequency", b1 =>
+                    b.OwnsOne("Masa.Alert.Domain.AlarmRules.CheckFrequency", "CheckFrequency", b1 =>
                         {
                             b1.Property<Guid>("AlarmRuleId")
                                 .HasColumnType("uniqueidentifier");
@@ -204,7 +206,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AlarmRuleId");
 
-                            b1.OwnsOne("Masa.Alert.Domain.AlarmRules.AlarmRule.CheckFrequency#Masa.Alert.Domain.AlarmRules.CheckFrequency.FixedInterval#Masa.Alert.Domain.AlarmRules.TimeInterval", "FixedInterval", b2 =>
+                            b1.OwnsOne("Masa.Alert.Domain.AlarmRules.TimeInterval", "FixedInterval", b2 =>
                                 {
                                     b2.Property<Guid>("CheckFrequencyAlarmRuleId")
                                         .HasColumnType("uniqueidentifier");
@@ -229,7 +231,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("Masa.Alert.Domain.AlarmRules.AlarmRule.SilenceCycle#Masa.Alert.Domain.AlarmRules.SilenceCycle", "SilenceCycle", b1 =>
+                    b.OwnsOne("Masa.Alert.Domain.AlarmRules.SilenceCycle", "SilenceCycle", b1 =>
                         {
                             b1.Property<Guid>("AlarmRuleId")
                                 .HasColumnType("uniqueidentifier");
@@ -249,7 +251,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AlarmRuleId");
 
-                            b1.OwnsOne("Masa.Alert.Domain.AlarmRules.AlarmRule.SilenceCycle#Masa.Alert.Domain.AlarmRules.SilenceCycle.TimeInterval#Masa.Alert.Domain.AlarmRules.TimeInterval", "TimeInterval", b2 =>
+                            b1.OwnsOne("Masa.Alert.Domain.AlarmRules.TimeInterval", "TimeInterval", b2 =>
                                 {
                                     b2.Property<Guid>("SilenceCycleAlarmRuleId")
                                         .HasColumnType("uniqueidentifier");

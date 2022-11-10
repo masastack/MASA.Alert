@@ -5,5 +5,5 @@ namespace Masa.Alert.Domain.AlarmRules;
 
 public interface IAlarmRuleRepository : IRepository<AlarmRule>
 {
-
+    Task<IQueryable<AlarmRule>> WithDetailsAsync();
 }

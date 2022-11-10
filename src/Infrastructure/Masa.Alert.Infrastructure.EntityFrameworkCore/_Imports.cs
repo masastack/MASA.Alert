@@ -5,3 +5,6 @@ global using System.Text.Json;
 global using System.Collections.ObjectModel;
 global using System.Collections.Concurrent;
 global using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+global using Microsoft.EntityFrameworkCore;
+global using System.Linq.Expressions;
+global using System.Reflection;

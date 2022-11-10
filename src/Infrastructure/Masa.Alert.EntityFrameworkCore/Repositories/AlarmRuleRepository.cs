@@ -8,5 +8,17 @@ public class AlarmRuleRepository : Repository<AlertDbContext, AlarmRule>, IAlarm
     public AlarmRuleRepository(AlertDbContext context, IUnitOfWork unitOfWork)
         : base(context, unitOfWork)
     {
+
+    }
+
+    private async Task<IQueryable<AlarmRule>> GetQueryableAsync()
+    {
+        return await Task.FromResult(Context.Set<AlarmRule>().AsQueryable());
+    }
+
+    public async Task<IQueryable<AlarmRule>> WithDetailsAsync()
+    {
+        var query = await GetQueryableAsync();
+        return query.IncludeDetails();
     }
 }

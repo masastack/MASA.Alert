@@ -74,3 +74,4 @@ global using Masa.Alert.Domain.Shared.AlarmRules;
 global using static Masa.Alert.Application.Contracts.AlarmRules.Dtos.GetAlarmRuleInputDto;
 global using Masa.Alert.Application.AlarmRules.Queries;
 global using Masa.Alert.Application.AlarmRules.Commands;
+global using Masa.Contrib.Caching.Distributed.StackExchangeRedis;

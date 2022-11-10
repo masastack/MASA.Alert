@@ -8,6 +8,10 @@ public class AlertCaller : BaseDaprCaller
 
     public override string? Name { get; set; } = nameof(AlertCaller);
 
+    private AlarmRuleService? _alarmRuleService;
+
+    public AlarmRuleService AlarmRuleService => _alarmRuleService ??= new(Caller);
+
     public AlertCaller(IServiceProvider serviceProvider
         , TokenProvider tokenProvider)
         : base(serviceProvider)

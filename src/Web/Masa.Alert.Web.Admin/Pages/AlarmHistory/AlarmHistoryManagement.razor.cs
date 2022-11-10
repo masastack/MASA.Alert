@@ -67,9 +67,15 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
                     ProjectIdentity = "Masa.Auth",
                     AppIdentity = "masa-auth-web-admin",
                     IsEnabled = i % 6 != 0,
-                    CheckFrequency = AlarmCheckFrequencyTypes.FixedInterval,
-                    CheckIntervalTime = 60,
-                    CheckIntervalTimeType = TimeTypes.Minute,
+                    CheckFrequency = new CheckFrequencyViewModel
+                    {
+                        Type = AlarmCheckFrequencyTypes.FixedInterval,
+                        FixedInterval = new TimeIntervalViewModel
+                        {
+                            IntervalTime = 60,
+                            IntervalTimeType = TimeTypes.Minute,
+                        }
+                    },
                     LogMonitorItems = new List<LogMonitorItemViewModel>
                     {
                         new LogMonitorItemViewModel

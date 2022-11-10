@@ -6,7 +6,7 @@ public class AlarmRuleService : ServiceBase
 
     public AlarmRuleService(ICaller caller) : base(caller)
     {
-        BaseUrl = "api/app";
+        BaseUrl = "api/alarm-rule";
     }
 
     public async Task<AlarmRuleDto> GetAsync(Guid id)
@@ -14,14 +14,9 @@ public class AlarmRuleService : ServiceBase
         return await GetAsync<AlarmRuleDto>($"{id}");
     }
 
-    public async Task<PaginatedListDto<AlarmRuleDto>> GetPageListAsync(GetAlarmRuleInputDto inputDto)
+    public async Task<PaginatedListDto<AlarmRuleDto>> GetListAsync(GetAlarmRuleInputDto inputDto)
     {
         return await GetAsync<GetAlarmRuleInputDto, PaginatedListDto<AlarmRuleDto>>(string.Empty, inputDto) ?? new();
-    }
-
-    public async Task<IEnumerable<AlarmRuleDto>> GetListAsyncAsync(GetAlarmRuleInputDto inputDto)
-    {
-        return await GetAsync<GetAlarmRuleInputDto, IEnumerable<AlarmRuleDto>>(string.Empty, inputDto) ?? new List<AlarmRuleDto>();
     }
 
     public async Task CreateAsync(AlarmRuleUpsertDto inputDto)

@@ -10,11 +10,11 @@ public abstract class BaseDaprCaller : DaprCallerBase
         {
             var appIdSuffix = NetworkUtils.GetPhysicalAddress();
 
-            AppId = $"{AppId}-{appIdSuffix}";
+            //AppId = $"{AppId}-{appIdSuffix}";
         }
         else if (!webHostEnvironment.IsProduction())
         {
-            AppId = $"{AppId}-{webHostEnvironment.EnvironmentName.ToLower()}";
+            //AppId = $"{AppId}-{webHostEnvironment.EnvironmentName.ToLower()}";
         }
     }
 }

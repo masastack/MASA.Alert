@@ -4,6 +4,8 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 {
     public string DisplayName { get; protected set; } = default!;
 
+    public AlarmRuleTypes AlarmRuleType { get; set; }
+
     public string ProjectIdentity { get; protected set; } = default!;
 
     public string AppIdentity { get; protected set; } = default!;
@@ -12,13 +14,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public string ChartYAxisUnit { get; protected set; } = default!;
 
-    public AlarmCheckFrequencyTypes CheckFrequency { get; protected set; }
-
-    public int CheckIntervalTime { get; protected set; }
-
-    public TimeTypes CheckIntervalTimeType { get; protected set; } = TimeTypes.Minute;
-
-    public string CronExpression { get; protected set; } = default!;
+    public CheckFrequency CheckFrequency { get; protected set; } = default!;
 
     public bool IsGetTotal { get; protected set; }
 
@@ -28,45 +24,92 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public int ContinuousTriggerThreshold { get; protected set; }
 
-    public AlarmRuleSilenceCycle SilenceCycle { get; protected set; }
-
-    public int SilenceTimeValue { get; protected set; }
-
-    public TimeTypes SilenceTimeType { get; protected set; } = TimeTypes.Minute;
-
-    public int SilenceCycleValue { get; protected set; }
+    public SilenceCycle SilenceCycle { get; protected set; } = default!;
 
     public List<LogMonitorItem> LogMonitorItems { get; protected set; } = new();
 
     public ICollection<AlarmRuleItem> Items { get; protected set; } = new Collection<AlarmRuleItem>();
 
-    public AlarmRule()
-    {
+    private AlarmRule() { }
 
+    public AlarmRule(string displayName, AlarmRuleTypes alarmRuleType, string projectIdentity, string appIdentity, bool isEnabled, string chartYAxisUnit
+        , CheckFrequency checkFrequency, bool isGetTotal, string totalVariable, string whereExpression, int continuousTriggerThreshold, SilenceCycle silenceCycle)
+    {
+        DisplayName = displayName;
+        AlarmRuleType = alarmRuleType;
+        ProjectIdentity = projectIdentity;
+        AppIdentity = appIdentity;
+        IsEnabled = isEnabled;
+        IsGetTotal = isGetTotal;
+        TotalVariable = totalVariable;
+        WhereExpression = whereExpression;
+
+        SetChartConfig(chartYAxisUnit);
+        CheckFrequency = checkFrequency;
+        SetAdvancedConfig(continuousTriggerThreshold, silenceCycle);
     }
 
     public string GetCronExpression()
     {
-        if (CheckFrequency == AlarmCheckFrequencyTypes.Cron)
+        if (CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
         {
-            return CronExpression;
+            return CheckFrequency.CronExpression;
         }
 
-        if (CheckFrequency == AlarmCheckFrequencyTypes.FixedInterval)
+        if (CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
         {
-            switch (CheckIntervalTimeType)
-            {
-                case TimeTypes.Minute:
-                    return $"* 0/{CheckIntervalTime} * * * ? ";
-                case TimeTypes.Hour:
-                    return $"* * 0/{CheckIntervalTime} * * ? ";
-                case TimeTypes.Day:
-                    return $"* * * 1/{CheckIntervalTime} * ? ";
-                default:
-                    return string.Empty;
-            }
+            throw new NotImplementedException();
+            //switch (CheckFrequency.FixedInterval.IntervalTimeType)
+            //{
+            //    case TimeTypes.Minute:
+            //        return $"* 0/{CheckFrequency.FixedInterval.IntervalTime} * * * ? ";
+            //    case TimeTypes.Hour:
+            //        return $"* * 0/{CheckFrequency.FixedInterval.IntervalTime} * * ? ";
+            //    case TimeTypes.Day:
+            //        return $"* * * 1/{CheckFrequency.FixedInterval.IntervalTime} * ? ";
+            //    default:
+            //        return string.Empty;
+            //}
         }
 
         return string.Empty;
+    }
+
+    public void SetChartConfig(string chartYAxisUnit)
+    {
+        ChartYAxisUnit = chartYAxisUnit;
+    }
+
+    //public void SetCheckFrequency(AlarmCheckFrequencyTypes checkFrequencyType, int checkIntervalTime, TimeTypes checkIntervalTimeType, string cronExpression)
+    //{
+    //    if (checkFrequencyType == AlarmCheckFrequencyTypes.FixedInterval)
+    //    {
+    //        var fixedInterval = new TimeInterval(checkIntervalTime, checkIntervalTimeType);
+    //        CheckFrequency = new CheckFrequency(fixedInterval);
+    //    }
+
+    //    if (checkFrequencyType == AlarmCheckFrequencyTypes.Cron)
+    //    {
+    //        CheckFrequency = new CheckFrequency(cronExpression);
+    //    }
+    //}
+
+    public void SetLogMonitorConfig(List<LogMonitorItem> items, bool isGetTotal, string totalVariable, string whereExpression)
+    {
+        LogMonitorItems = items;
+        IsGetTotal = isGetTotal;
+        TotalVariable = totalVariable;
+        WhereExpression = whereExpression;
+    }
+
+    public void SetTriggerRules(ICollection<AlarmRuleItem> items)
+    {
+        Items = items;
+    }
+
+    public void SetAdvancedConfig(int continuousTriggerThreshold, SilenceCycle silenceCycle)
+    {
+        ContinuousTriggerThreshold = continuousTriggerThreshold;
+        SilenceCycle = silenceCycle;
     }
 }

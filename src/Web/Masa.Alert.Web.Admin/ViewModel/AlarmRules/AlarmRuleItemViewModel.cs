@@ -5,13 +5,13 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules;
 
 public class AlarmRuleItemViewModel
 {
-    public string Expression { get; set; } = default!;
+    public string Expression { get; set; } = string.Empty;
 
     public AlertSeverity AlertSeverity { get; set; }
 
-    public string MessageTemplateId { get; set; } = default!;
+    public string MessageTemplateId { get; set; } = string.Empty;
 
-    public string MessageTemplateName { get; set; } = default!;
+    public string MessageTemplateName { get; set; } = string.Empty;
 
     public bool IsRecoveryNotification { get; set; }
 

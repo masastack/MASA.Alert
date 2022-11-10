@@ -5,6 +5,8 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules;
 
 public class AlarmRuleListViewModel
 {
+    public Guid Id { get; set; }
+
     public string DisplayName { get; set; } = default!;
 
     public string ProjectIdentity { get; set; } = default!;

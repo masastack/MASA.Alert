@@ -118,6 +118,9 @@
   "MessageTemplate": "消息模板",
   "Handler": "处理人",
   "Test": "测试",
+  "Minute": "分钟",
+  "Hour": "小时",
+  "Day": "天",
   "AlarmRule": {
     "Log": "日志监控",
     "Metric": "指标监控",

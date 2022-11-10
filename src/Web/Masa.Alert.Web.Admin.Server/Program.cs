@@ -5,6 +5,18 @@ using Masa.Alert.ApiGateways.Caller.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDaprStarter(opt =>
+    {
+        opt.AppId = builder.Services.GetMasaConfiguration().Local.GetValue<string>("AppId");
+        //opt.AppIdSuffix = "";
+        opt.DaprHttpPort = 20604;
+        opt.DaprGrpcPort = 20603;
+    });
+}
+
+builder.Services.AddDaprClient();
 builder.WebHost.UseKestrel(option =>
 {
     option.ConfigureHttpsDefaults(options =>
