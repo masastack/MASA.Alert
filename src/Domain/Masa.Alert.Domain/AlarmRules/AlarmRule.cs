@@ -49,6 +49,16 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         SetAdvancedConfig(continuousTriggerThreshold, silenceCycle);
     }
 
+    public void SetEnabled()
+    {
+        IsEnabled = true;
+    }
+
+    public void SetDisable()
+    {
+        IsEnabled = false;
+    }
+
     public string GetCronExpression()
     {
         if (CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
@@ -59,17 +69,6 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         if (CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
         {
             throw new NotImplementedException();
-            //switch (CheckFrequency.FixedInterval.IntervalTimeType)
-            //{
-            //    case TimeTypes.Minute:
-            //        return $"* 0/{CheckFrequency.FixedInterval.IntervalTime} * * * ? ";
-            //    case TimeTypes.Hour:
-            //        return $"* * 0/{CheckFrequency.FixedInterval.IntervalTime} * * ? ";
-            //    case TimeTypes.Day:
-            //        return $"* * * 1/{CheckFrequency.FixedInterval.IntervalTime} * ? ";
-            //    default:
-            //        return string.Empty;
-            //}
         }
 
         return string.Empty;

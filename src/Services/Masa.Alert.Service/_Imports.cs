@@ -60,7 +60,7 @@ global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 global using Masa.BuildingBlocks.Configuration;
 global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Masa.BuildingBlocks.Authentication.Identity;
-global using Masa.Alert.Infrastructure.Tsc;
+//global using Masa.Alert.Infrastructure.Tsc;
 global using Masa.BuildingBlocks.Data;
 global using System.Net;
 global using System.Text.RegularExpressions;

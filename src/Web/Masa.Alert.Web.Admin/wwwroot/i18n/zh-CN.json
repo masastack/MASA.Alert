@@ -179,7 +179,9 @@
     "ChartPreview": "图表预览",
     "ChartPreviewTips": "本图仅用于预览效果的参考",
     "UpdateChart": "更新图表",
-    "YAxisUnits": "Y轴单位"
+    "YAxisUnits": "Y轴单位",
+    "LogSamplingPreview": "日志采样预览",
+    "LogSamplingPreviewTips": "默认获取上一周期符合规则的最近一条日志数据"
   },
   "AlarmHistory": {
     "Alarming": "正在告警",

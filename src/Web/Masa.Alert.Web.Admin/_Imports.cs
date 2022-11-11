@@ -66,3 +66,6 @@ global using Masa.BuildingBlocks.StackSdks.Auth;
 global using Masa.Contrib.StackSdks.Auth;
 global using Masa.BuildingBlocks.StackSdks.Pm;
 global using Masa.BuildingBlocks.StackSdks.Pm.Model;
+global using Masa.BuildingBlocks.StackSdks.Tsc;
+global using Masa.Alert.Contracts.Admin.Tsc;
+global using Masa.BuildingBlocks.StackSdks.Tsc.Model;

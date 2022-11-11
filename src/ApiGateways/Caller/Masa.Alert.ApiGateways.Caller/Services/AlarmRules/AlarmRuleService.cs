@@ -33,4 +33,9 @@ public class AlarmRuleService : ServiceBase
     {
         await DeleteAsync($"{id}");
     }
+
+    public async Task SetIsEnabledAsync(Guid id, bool isEnabled)
+    {
+        await PutAsync($"{id}/enabled/{isEnabled}", new { });
+    }
 }

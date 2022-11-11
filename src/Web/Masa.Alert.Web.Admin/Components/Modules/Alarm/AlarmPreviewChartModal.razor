@@ -1,6 +1,12 @@
 ﻿@inherits AdminCompontentBase
 <SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
     <AlarmPreviewChart AlarmRule="_alarmRule"></AlarmPreviewChart>
+    <DefaultTitle>
+        @T("LogSamplingPreview")
+        <DefaultTooltip Class="ml-2" Tooltip="@T("LogSamplingPreviewTips")" />
+    </DefaultTitle>
+    <MTextarea @bind-Value="_logStr" Readonly Outlined Rows="11">
+    </MTextarea>
 </SModal>
 
 @code {
@@ -9,7 +15,10 @@
 
     [EditorRequired]
     [Parameter]
-    public AlarmRuleUpsertViewModel? AlarmRule { get; set; }
+    public AlarmRuleUpsertViewModel AlarmRule { get; set; } = new();
+
+    [Inject]
+    public ITscClient TscClient { get; set; } = default!;
 
     private AlarmRuleViewModel _alarmRule = new();
 
@@ -17,13 +26,33 @@
 
     private bool _visible = false;
 
+    private LogDto _log = new();
+    private string _logStr = string.Empty;
+
     public async Task OpenModalAsync()
     {
         _alarmRule = AlarmRule?.Adapt<AlarmRuleViewModel>() ?? new();
+        await GetLatestAsync();
         await InvokeAsync(() =>
         {
             _visible = true;
             StateHasChanged();
         });
+    }
+
+    public async Task GetLatestAsync()
+    {
+        var request = new LogLatestRequest
+            {
+                Query = AlarmRule.WhereExpression,
+                Start = DateTime.Now.AddDays(-20),
+                End = DateTime.Now,
+                IsDesc = true
+            };
+        var logObj = await TscClient.LogService.GetLatestAsync(request);
+        _log = JsonSerializer.Deserialize<LogDto>(JsonSerializer.Serialize(logObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+        _logStr = JsonSerializer.Serialize(_log);
+
+        CronExpression ce = new CronExpression("0 0 1 * * ?");
     }
 }

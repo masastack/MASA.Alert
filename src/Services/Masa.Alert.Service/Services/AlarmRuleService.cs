@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Mc.Service.Admin.Application.MessageTasks.Commands;
+
 namespace Masa.Mc.Service.Services;
 
 public class AlarmRuleService : ServiceBase
@@ -42,5 +44,20 @@ public class AlarmRuleService : ServiceBase
     {
         var command = new DeleteAlarmRuleCommand(id);
         await eventBus.PublishAsync(command);
+    }
+
+    [RoutePattern("{id}/enabled/{isEnabled}", StartWithBaseUri = true, HttpMethod = "Put")]
+    public async Task SetIsEnabledAsync(IEventBus eventBus, Guid id, bool isEnabled)
+    {
+        if (isEnabled)
+        {
+            var command = new EnabledAlarmRuleCommand(id);
+            await eventBus.PublishAsync(command);
+        }
+        else
+        {
+            var command = new DisableAlarmRuleCommand(id);
+            await eventBus.PublishAsync(command);
+        }
     }
 }

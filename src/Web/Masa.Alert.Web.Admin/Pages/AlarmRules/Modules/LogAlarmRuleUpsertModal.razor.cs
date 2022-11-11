@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.StackSdks.Tsc;
-
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 
 public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
@@ -13,8 +11,8 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     [Inject]
     public IPmClient PmClient { get; set; } = default!;
 
-    //[Inject]
-    //public ITscClient TscClient { get; set; } = default!;
+    [Inject]
+    public ITscClient TscClient { get; set; } = default!;
 
     private MForm? _form;
     private AlarmRuleUpsertViewModel _model = new();
@@ -27,7 +25,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     private AlarmPreviewChartModal? _previewChart;
     private List<ProjectModel> _projectItems = new();
     private List<AppDetailModel> _appItems = new();
-    private List<string> _fields = new();
+    private List<MappingResponse> _fields = new();
 
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
@@ -38,7 +36,18 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         await base.OnInitializedAsync();
 
         _projectItems = await PmClient.ProjectService.GetListAsync() ?? new();
-        //_fields = (await TscClient.LogService.GetFieldsAsync()).ToList();
+        var fieldsObj = await TscClient.LogService.GetFieldsAsync();
+        _fields = JsonSerializer.Deserialize<List<MappingResponse>>(JsonSerializer.Serialize(fieldsObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+
+        var q = new LogLatestRequest
+        {
+            Query = "{\"match_all\": {}}",
+            Start = DateTime.Now.AddDays(-20),
+            End = DateTime.Now,
+            IsDesc = true
+        };
+        var logObj = await TscClient.LogService.GetLatestAsync(q);
+        var log = JsonSerializer.Deserialize<LogDto>(JsonSerializer.Serialize(logObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
     }
 
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)

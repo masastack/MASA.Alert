@@ -2,6 +2,7 @@
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 using Masa.Alert.Infrastructure.Common.Extensions;
+using Masa.Mc.Service.Admin.Application.MessageTasks.Commands;
 
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
@@ -48,6 +49,26 @@ public class AlarmRuleCommandHandler
         Check.NotNull(entity, "alarmRule not found");
 
         await _repository.RemoveAsync(entity);
+    }
+
+    [EventHandler]
+    public async Task EnabledAsync(EnabledAlarmRuleCommand command)
+    {
+        var entity = await _repository.FindAsync(x => x.Id == command.AlarmRuleId);
+
+        Check.NotNull(entity, "alarmRule not found");
+
+        entity.SetEnabled();
+    }
+
+    [EventHandler]
+    public async Task DisableAsync(DisableAlarmRuleCommand command)
+    {
+        var entity = await _repository.FindAsync(x => x.Id == command.AlarmRuleId);
+
+        Check.NotNull(entity, "alarmRule not found");
+
+        entity.SetDisable();
     }
 
     private async Task ValidateAlarmRuleNameAsync(string displayName, Guid? id)

@@ -50,6 +50,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\..\MASA.Framework\src\Contrib\StackSdks\Masa.Contrib.StackSdks.Tsc\Masa.Contrib.StackSdks.Tsc.csproj" />
 	  <ProjectReference Include="..\..\Application\Masa.Alert.Application\Masa.Alert.Application.csproj" />
 	  <ProjectReference Include="..\..\Contracts\Masa.Alert.Contracts.Admin\Masa.Alert.Contracts.Admin.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.EntityFrameworkCore\Masa.Alert.EntityFrameworkCore.csproj" />
