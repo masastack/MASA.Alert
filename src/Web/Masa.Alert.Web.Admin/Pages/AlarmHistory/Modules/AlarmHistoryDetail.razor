@@ -58,7 +58,7 @@
         <div class="regular--text body2">
             <div>@item.Expression</div>
             <div class="d-flex">
-                <span class="my-auto">@(item.IsNotification ? item.MessageTemplateName : T("NoNotice"))</span>
+                <span class="my-auto">@(item.IsNotification ? item.NotificationConfig.MessageTemplateName : T("NoNotice"))</span>
                 <MSwitch Value="item.IsRecoveryNotification" Inset Class="label my-auto ml-6" Label="@T("RecoveryNotification")" />
             </div>
         </div>

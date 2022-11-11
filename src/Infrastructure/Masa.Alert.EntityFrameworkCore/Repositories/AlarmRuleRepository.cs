@@ -11,7 +11,7 @@ public class AlarmRuleRepository : Repository<AlertDbContext, AlarmRule>, IAlarm
 
     }
 
-    private async Task<IQueryable<AlarmRule>> GetQueryableAsync()
+    public async Task<IQueryable<AlarmRule>> GetQueryableAsync()
     {
         return await Task.FromResult(Context.Set<AlarmRule>().AsQueryable());
     }

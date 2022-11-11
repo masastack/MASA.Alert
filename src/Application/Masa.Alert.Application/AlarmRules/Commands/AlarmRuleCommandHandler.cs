@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Alert.Infrastructure.Common.Extensions;
+
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class AlarmRuleCommandHandler
@@ -27,10 +29,12 @@ public class AlarmRuleCommandHandler
     {
         await ValidateAlarmRuleNameAsync(updateCommand.AlarmRule.DisplayName, updateCommand.AlarmRuleId);
 
-        var entity = await _repository.FindAsync(x => x.Id == updateCommand.AlarmRuleId);
+        var queryable = await _repository.WithDetailsAsync();
+        var entity = await queryable.FirstOrDefaultAsync(x => x.Id == updateCommand.AlarmRuleId);
 
         Check.NotNull(entity, "alarmRule not found");
 
+        entity.Items.RemoveAll(x => !updateCommand.AlarmRule.Items.Any(y => y.Id == x.Id));
         updateCommand.AlarmRule.Adapt(entity);
 
         await _repository.UpdateAsync(entity);

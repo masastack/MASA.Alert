@@ -17,7 +17,8 @@ public class AlarmRuleQueryHandler
     [EventHandler]
     public async Task GetAsync(GetAlarmRuleQuery query)
     {
-        var entity = await _repository.FindAsync(x => x.Id == query.AlarmRuleId);
+        var queryable = await _repository.WithDetailsAsync();
+        var entity = await queryable.FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
 
         Check.NotNull(entity, "alarmRule not found");
 
@@ -29,7 +30,7 @@ public class AlarmRuleQueryHandler
     {
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
-        var queryable = await _repository.WithDetailsAsync();
+        var queryable = await _repository.GetQueryableAsync();
         var resultList = await queryable.GetPaginatedListAsync(condition, new()
         {
             Page = options.Page,

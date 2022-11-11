@@ -27,7 +27,6 @@ public partial class AlarmHistoryDetailModal : AdminCompontentBase
         {
             AlertSeverity = AlertSeverity.High,
             Expression = "表达式XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            MessageTemplateName = "商品库存小于0的通知",
             IsRecoveryNotification = true,
             IsNotification = true,
         });
@@ -35,7 +34,6 @@ public partial class AlarmHistoryDetailModal : AdminCompontentBase
         {
             AlertSeverity = AlertSeverity.Low,
             Expression = "表达式XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            MessageTemplateName = "商品库存小于0的通知",
             IsRecoveryNotification = true,
             IsNotification = true,
         });

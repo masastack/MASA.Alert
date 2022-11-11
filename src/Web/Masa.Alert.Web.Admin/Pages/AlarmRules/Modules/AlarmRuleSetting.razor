@@ -1,4 +1,5 @@
-﻿@inherits AdminCompontentBase
+﻿@using Masa.Alert.Web.Admin.Components.Modules.Subjects
+@inherits AdminCompontentBase
 
 <DefaultTitle Class="mb-3">@T("BaseInfo")</DefaultTitle>
 <STextField @bind-Value="Model.DisplayName" Label="@T(nameof(Model.DisplayName))" />
@@ -10,24 +11,21 @@
             <DefaultTooltip Class="ml-2" Tooltip="@T("ExpressionTip")" />
         </AppendOuterContent>
     </STextarea>
-    <MRow NoGutters Class="mt-2 mb-8">
+    <MRow NoGutters Class="mt-4">
         <MCol Md="2">
-            <SSelect @bind-Value="item.AlertSeverity" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.AlertSeverity))">
+            <SSelect @bind-Value="item.AlertSeverity" Items="Enum.GetValues<AlertSeverity>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(item.AlertSeverity))">
             </SSelect>
         </MCol>
-        <MCol Md="3">
-            <SSelect Class="ml-2" @bind-Value="item.MessageTemplateId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.MessageTemplateId))">
-            </SSelect>
-        </MCol>
+
         <MCol Class="my-auto d-flex">
-            <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label ml-5 my-auto">
-                <LabelContent>
-                    <span class="default--text subtitle2">@T("IsRecoveryNotification")</span>
-                </LabelContent>
-            </MSwitch>
             <MSwitch @bind-Value="item.IsNotification" Inset Class="label ml-5 my-auto">
                 <LabelContent>
                     <span class="default--text subtitle2">@T("IsNotification")</span>
+                </LabelContent>
+            </MSwitch>
+            <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label ml-5 my-auto">
+                <LabelContent>
+                    <span class="default--text subtitle2">@T("IsRecoveryNotification")</span>
                 </LabelContent>
             </MSwitch>
             <SIcon Size="24" OnClick="HandleItemsAdd" Class="ml-5 my-auto">mdi-plus-circle</SIcon>
@@ -37,13 +35,47 @@
             }
         </MCol>
     </MRow>
+    @if (item.IsNotification)
+    {
+        <MRow NoGutters Class="mt-4">
+            <MCol Md="3">
+                <SSelect @bind-Value="item.NotificationConfig.MessageTemplateCode" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MessageTemplate")">
+                    <PrependContent>
+                        <span class="default--text subtitle2 my-auto">@T("AlarmNotification")</span>
+                    </PrependContent>
+                </SSelect>
+            </MCol>
+            <MCol Md="3">
+                <UserAutoComplete @bind-Value="item.NotificationConfig.Receivers" Class="ml-2"></UserAutoComplete>
+            </MCol>
+        </MRow>
+    }
+    @if (item.IsRecoveryNotification)
+    {
+        <MRow NoGutters Class="mt-4">
+            <MCol Md="3">
+                <SSelect @bind-Value="item.RecoveryNotificationConfig.MessageTemplateCode" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MessageTemplate")">
+                    <PrependContent>
+                        <span class="default--text subtitle2 my-auto">@T("RecoveryNotification")</span>
+                    </PrependContent>
+                </SSelect>
+            </MCol>
+            <MCol Md="3">
+                <UserAutoComplete @bind-Value="item.RecoveryNotificationConfig.Receivers" Class="ml-2"></UserAutoComplete>
+            </MCol>
+        </MRow>
+    }
 }
-<DefaultTitle Class="mb-3">@T("AdvancedConfiguration")</DefaultTitle>
-<STextField @bind-Value="Model.ContinuousTriggerThreshold" Label="@T(nameof(Model.ContinuousTriggerThreshold))">
-    <AppendOuterContent>
-        <DefaultTooltip Class="ml-2" Tooltip="@T("ContinuousTriggerThresholdTip")" />
-    </AppendOuterContent>
-</STextField>
+<DefaultTitle Class="mt-6">@T("AdvancedConfiguration")</DefaultTitle>
+<MRow NoGutters Class="mt-3">
+    <MCol Md="2">
+        <STextField @bind-Value="Model.ContinuousTriggerThreshold" Label="@T(nameof(Model.ContinuousTriggerThreshold))">
+            <AppendOuterContent>
+                <DefaultTooltip Class="ml-2" Tooltip="@T("ContinuousTriggerThresholdTip")" />
+            </AppendOuterContent>
+        </STextField>
+    </MCol>
+</MRow>
 <MRow Class="mt-3">
     <MCol Md="2">
         <SSelect @bind-Value="Model.SilenceCycle.Type" Items="Enum.GetValues<SilenceCycleTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(Model.SilenceCycle))">

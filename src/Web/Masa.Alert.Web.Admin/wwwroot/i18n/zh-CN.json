@@ -121,6 +121,8 @@
   "Minute": "分钟",
   "Hour": "小时",
   "Day": "天",
+  "AlarmNotification": "告警通知",
+  "RecoveryNotification": "恢复通知",
   "AlarmRule": {
     "Log": "日志监控",
     "Metric": "指标监控",
@@ -156,8 +158,9 @@
     "TriggerRules": "触发规则",
     "AlertSeverity": "严重程度",
     "MessageTemplateId": "消息模板",
+    "MessageTemplate": "消息模板",
     "IsRecoveryNotification": "恢复通知",
-    "IsNotification": "无需通知",
+    "IsNotification": "是否通知",
     "AdvancedConfiguration": "高级配置",
     "ContinuousTriggerThreshold": "连续触发阈值",
     "ContinuousTriggerThresholdTip": "连续多少次执行检查评估都满足触发条件时，才会触发告警。",
@@ -169,8 +172,8 @@
     "MetricMonitor.Name": "监控指标",
     "MetricMonitor.Tag": "Tag",
     "MetricMonitor.Alias": "变量",
-    "SilenceCycle.Time": "按时间",
-    "SilenceCycle.Cycle": "按周期"
+    "Time": "按时间",
+    "Cycle": "按周期"
   },
   "AlarmChart": {
     "ChartPreview": "图表预览",

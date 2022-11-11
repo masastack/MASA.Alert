@@ -2,6 +2,7 @@
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 using Masa.Alert.ApiGateways.Caller.Extensions;
+using Masa.BuildingBlocks.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,9 @@ builder.Services.AddGlobalForServer();
 
 builder.Services.AddScoped<TokenProvider>();
 builder.AddMasaStackComponentsForServer("wwwroot/i18n");
+var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
+var tscClientUrl = publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url");
+builder.Services.AddTscClient(tscClientUrl);
 
 builder.Services.AddMapster();
 var oidcOptions = builder.Services.GetMasaConfiguration().Local.GetSection("$public.OIDC:AuthClient").Get<MasaOpenIdConnectOptions>();
