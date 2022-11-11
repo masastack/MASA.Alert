@@ -59,6 +59,7 @@ public class AlarmRuleCommandHandler
         Check.NotNull(entity, "alarmRule not found");
 
         entity.SetEnabled();
+        await _repository.UpdateAsync(entity);
     }
 
     [EventHandler]
@@ -69,6 +70,7 @@ public class AlarmRuleCommandHandler
         Check.NotNull(entity, "alarmRule not found");
 
         entity.SetDisable();
+        await _repository.UpdateAsync(entity);
     }
 
     private async Task ValidateAlarmRuleNameAsync(string displayName, Guid? id)

@@ -88,6 +88,8 @@
     [Parameter]
     public EventCallback OnEdit { get; set; }
 
+    AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
+
     private async Task HandleEdit()
     {
         if (OnEdit.HasDelegate)
@@ -96,13 +98,15 @@
         }
     }
 
-    private void HandleDisable()
+    private async Task HandleDisable()
     {
+        await AlarmRuleService.SetIsEnabledAsync(AlarmRule.Id, false);
         AlarmRule.IsEnabled = false;
     }
 
-    private void HandleEnabled()
+    private async Task HandleEnabled()
     {
+        await AlarmRuleService.SetIsEnabledAsync(AlarmRule.Id, true);
         AlarmRule.IsEnabled = true;
     }
 }

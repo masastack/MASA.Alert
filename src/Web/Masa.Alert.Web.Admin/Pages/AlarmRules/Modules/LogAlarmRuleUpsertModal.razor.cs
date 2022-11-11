@@ -38,16 +38,6 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         _projectItems = await PmClient.ProjectService.GetListAsync() ?? new();
         var fieldsObj = await TscClient.LogService.GetFieldsAsync();
         _fields = JsonSerializer.Deserialize<List<MappingResponse>>(JsonSerializer.Serialize(fieldsObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
-
-        var q = new LogLatestRequest
-        {
-            Query = "{\"match_all\": {}}",
-            Start = DateTime.Now.AddDays(-20),
-            End = DateTime.Now,
-            IsDesc = true
-        };
-        var logObj = await TscClient.LogService.GetLatestAsync(q);
-        var log = JsonSerializer.Deserialize<LogDto>(JsonSerializer.Serialize(logObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
     }
 
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)
