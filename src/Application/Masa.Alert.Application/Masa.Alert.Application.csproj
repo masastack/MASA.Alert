@@ -19,6 +19,7 @@
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.22" />
   </ItemGroup>
 <ItemGroup>
+  <ProjectReference Include="..\..\..\..\MASA.Framework\src\BuildingBlocks\StackSdks\Masa.BuildingBlocks.StackSdk.Tsc\Masa.BuildingBlocks.StackSdks.Tsc.csproj" />
   <ProjectReference Include="..\..\Domain\Masa.Alert.Domain\Masa.Alert.Domain.csproj" />
   <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.EntityFrameworkCore\Masa.Alert.Infrastructure.EntityFrameworkCore.csproj" />
   <ProjectReference Include="..\Masa.Alert.Application.Contracts\Masa.Alert.Application.Contracts.csproj" />

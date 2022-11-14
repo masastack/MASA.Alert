@@ -18,3 +18,8 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Components.Forms;
 global using static Masa.Alert.Application.Contracts.AlarmRules.Dtos.GetAlarmRuleInputDto;
 global using Masa.Alert.Infrastructure.Common.Extensions;
+global using Masa.BuildingBlocks.StackSdks.Tsc;
+global using System.Xml.Linq;
+global using Masa.Alert.Domain.Shared.AlarmRules;
+global using Masa.BuildingBlocks.StackSdks.Tsc.Enums;
+global using Masa.BuildingBlocks.StackSdks.Tsc.Model;

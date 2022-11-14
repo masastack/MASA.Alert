@@ -7,6 +7,8 @@ public class LogMonitorItemViewModel
 {
     public string Field { get; set; } = string.Empty;
 
+    public LogAggregationTypes AggregationType { get; set; } = LogAggregationTypes.Count;
+
     public string Alias { get; set; } = string.Empty;
 
     public bool IsOffset { get; set; }
