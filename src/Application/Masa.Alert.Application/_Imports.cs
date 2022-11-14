@@ -17,3 +17,4 @@ global using Masa.Alert.Infrastructure.EntityFrameworkCore.Extensions;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Components.Forms;
 global using static Masa.Alert.Application.Contracts.AlarmRules.Dtos.GetAlarmRuleInputDto;
+global using Masa.Alert.Infrastructure.Common.Extensions;

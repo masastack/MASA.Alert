@@ -79,20 +79,6 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         ChartYAxisUnit = chartYAxisUnit;
     }
 
-    //public void SetCheckFrequency(AlarmCheckFrequencyTypes checkFrequencyType, int checkIntervalTime, TimeTypes checkIntervalTimeType, string cronExpression)
-    //{
-    //    if (checkFrequencyType == AlarmCheckFrequencyTypes.FixedInterval)
-    //    {
-    //        var fixedInterval = new TimeInterval(checkIntervalTime, checkIntervalTimeType);
-    //        CheckFrequency = new CheckFrequency(fixedInterval);
-    //    }
-
-    //    if (checkFrequencyType == AlarmCheckFrequencyTypes.Cron)
-    //    {
-    //        CheckFrequency = new CheckFrequency(cronExpression);
-    //    }
-    //}
-
     public void SetLogMonitorConfig(List<LogMonitorItem> items, bool isGetTotal, string totalVariable, string whereExpression)
     {
         LogMonitorItems = items;

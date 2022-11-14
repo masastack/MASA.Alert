@@ -1,26 +1,26 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Alert.Infrastructure.Common.Extensions;
-using Masa.Mc.Service.Admin.Application.MessageTasks.Commands;
-
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class AlarmRuleCommandHandler
 {
     private readonly IAlarmRuleRepository _repository;
+    private readonly AlarmRuleDomainService _domainService;
 
-    public AlarmRuleCommandHandler(IAlarmRuleRepository repository)
+    public AlarmRuleCommandHandler(IAlarmRuleRepository repository
+        , AlarmRuleDomainService domainService)
     {
         _repository = repository;
+        _domainService = domainService;
     }
 
     [EventHandler]
     public async Task CreateAsync(CreateAlarmRuleCommand createCommand)
     {
-        await ValidateAlarmRuleNameAsync(createCommand.AlarmRule.DisplayName, null);
-
         var entity = createCommand.AlarmRule.Adapt<AlarmRule>();
+
+        await _domainService.ValidateRuleAsync(entity);
 
         await _repository.AddAsync(entity);
     }
@@ -28,8 +28,6 @@ public class AlarmRuleCommandHandler
     [EventHandler]
     public async Task UpdateAsync(UpdateAlarmRuleCommand updateCommand)
     {
-        await ValidateAlarmRuleNameAsync(updateCommand.AlarmRule.DisplayName, updateCommand.AlarmRuleId);
-
         var queryable = await _repository.WithDetailsAsync();
         var entity = await queryable.FirstOrDefaultAsync(x => x.Id == updateCommand.AlarmRuleId);
 
@@ -37,6 +35,8 @@ public class AlarmRuleCommandHandler
 
         entity.Items.RemoveAll(x => !updateCommand.AlarmRule.Items.Any(y => y.Id == x.Id));
         updateCommand.AlarmRule.Adapt(entity);
+
+        await _domainService.ValidateRuleAsync(entity);
 
         await _repository.UpdateAsync(entity);
     }
@@ -71,13 +71,5 @@ public class AlarmRuleCommandHandler
 
         entity.SetDisable();
         await _repository.UpdateAsync(entity);
-    }
-
-    private async Task ValidateAlarmRuleNameAsync(string displayName, Guid? id)
-    {
-        if (await _repository.FindAsync(x => x.DisplayName == displayName && x.Id != id) != null)
-        {
-            throw new UserFriendlyException("alarmRule name cannot be repeated");
-        }
     }
 }

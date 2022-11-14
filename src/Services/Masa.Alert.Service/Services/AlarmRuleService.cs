@@ -1,9 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Mc.Service.Admin.Application.MessageTasks.Commands;
-
-namespace Masa.Mc.Service.Services;
+namespace Masa.Alert.Service.Admin.Services;
 
 public class AlarmRuleService : ServiceBase
 {

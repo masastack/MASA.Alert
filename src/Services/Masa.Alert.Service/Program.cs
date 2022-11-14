@@ -51,6 +51,11 @@ builder.Services.AddAutoInject(assemblies);
 var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
 builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
 
+builder.Services.AddRulesEngine(rulesEngineOptions =>
+{
+    rulesEngineOptions.UseMicrosoftRulesEngine();
+});
+
 var app = builder.Services
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     .AddEndpointsApiExplorer()

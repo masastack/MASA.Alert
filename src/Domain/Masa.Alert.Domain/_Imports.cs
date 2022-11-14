@@ -8,3 +8,7 @@ global using System.Collections.ObjectModel;
 global using Masa.BuildingBlocks.Ddd.Domain.Repositories;
 global using Masa.Alert.Domain.Shared.Enums;
 global using Masa.BuildingBlocks.Ddd.Domain.Values;
+global using Masa.Contrib.Ddd.Domain;
+global using Masa.BuildingBlocks.Ddd.Domain.Events;
+global using Masa.BuildingBlocks.RulesEngine;
+global using Masa.Contrib.RulesEngine.MicrosoftRulesEngine;
