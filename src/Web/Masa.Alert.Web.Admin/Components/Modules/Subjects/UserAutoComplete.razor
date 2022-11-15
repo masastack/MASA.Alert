@@ -1,0 +1,60 @@
+﻿@inherits AdminCompontentBase
+
+<SAutoComplete Medium Value="Value"
+               ValueChanged="HandleValueChanged"
+               TValue="List<Guid>"
+               TItem="UserSelectModel"
+               TItemValue="Guid"
+               OnSearchInputUpdate=OnSearchChanged
+               Items="Items"
+               Color="primary"
+               Label="@T("Search")"
+               ItemText="u=>TextView(u)"
+               ItemValue="u=>u.Id"
+               Filter="(item,search,value) => true"
+               Flat
+               Dense
+               Solo
+               BackgroundColor="fill-background"
+               Clearable
+               HideDetails="@("auto")"
+               Style="@($"width:340px;height:40px;{Style}")"
+               Class="@($"{Class} rounded-2")"
+               Multiple
+               HideSelected="false">
+    <PrependInnerContent>
+        <MIcon Size=16 Class="mr-2 default-lighten-1--text">mdi-magnify</MIcon>
+    </PrependInnerContent>
+    <ItemContent Context="data">
+        <MListItem Class="pa-4 pl-0">
+            <ItemContent>
+                <MListItemAvatar Size=40 Class="ma-0" Color="primary">
+                    @if (string.IsNullOrEmpty(data.Item.Avatar))
+                    {
+                        <SEmptyAvatar Value="@(data.Item.Name)" />
+                    }
+                    else
+                    {
+                        <MImage Src="@data.Item.Avatar"></MImage>
+                    }
+                </MListItemAvatar>
+                <MListItemContent Class="ml-2 pa-0">
+                    <MListItemTitle>
+                        <span class="btn emphasis2--text">@(data.Item.Name)</span>
+                        <div class="d-inline-flex mx-2" style="height: 8px">
+                            <MDivider Vertical />
+                        </div>
+                        <span class="overline regular2--text">@T("DisplayName.SubjectTypes.User")</span>
+                    </MListItemTitle>
+                    <MListItemSubtitle>
+                        <span class="body2 regular2--text">@(data.Item.PhoneNumber)</span>
+                        <div class="d-inline-flex mx-1" style="height: 8px">
+                            <MDivider Vertical />
+                        </div>
+                        <span class="body2 regular2--text">@(data.Item.Email)</span>
+                    </MListItemSubtitle>
+                </MListItemContent>
+            </ItemContent>
+        </MListItem>
+    </ItemContent>
+</SAutoComplete>

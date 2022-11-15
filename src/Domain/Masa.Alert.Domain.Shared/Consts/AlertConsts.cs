@@ -6,5 +6,5 @@ namespace Masa.Alert.Domain.Shared.Consts;
 public static class AlertConsts
 {
     public const string DbTablePrefix = null;
-    public const string DbSchema = null;
+    public const string DbSchema = "alert";
 }

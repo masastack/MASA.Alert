@@ -1,11 +1,11 @@
 ﻿@inherits AdminCompontentBase
 <MRow Justify="JustifyTypes.SpaceBetween" Align="AlignTypes.Center">
     <MCol>
-        <span class="emphasis--text btn">@T("YAxisUnits")：@AlarmRule?.ChartYAxisUnit</span>
+        <span class="emphasis--text btn">@T("YAxisUnits")：@ChartYAxisUnit</span>
         <span class="emphasis--text caption">@T("ChartPreviewTips")</span>
     </MCol>
     <MCol>
-        <SDateTimeRangePicker @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none" />
+        <SDateTimeRangePicker @bind-StartTime="_startTime" @bind-EndTime="_endTime"  Style="border:none" />
     </MCol>
 </MRow>
 <div class="d-flex align-center justify-center">
@@ -22,7 +22,10 @@
 
     [EditorRequired]
     [Parameter]
-    public AlarmRuleViewModel? AlarmRule { get; set; }
+    public List<AlarmPreviewChartDataItemModel> ChartData { get; set; } = new();
+
+    [Parameter]
+    public string ChartYAxisUnit { get; set; } = string.Empty;
 
     protected override string? PageName { get; set; } = "AlarmChart";
 
@@ -30,49 +33,51 @@
 
     private DateTime? _endTime { get; set; }
 
-    private object _option = new
+    private object _option = new();
+
+    protected override void OnParametersSet()
     {
-        Tooltip = new
+        if (ChartData.Count==0)
         {
-            Trigger = "axis",
-        },
-        Legend = new
+            return;
+        }
+
+        var legendData = ChartData.Select(x => x.Name);
+        var seriesData = ChartData.Select(x => new
         {
-            Left = "3%",
-            Data = new[] { "别名A", "别名B" }
-        },
-        Grid = new
+            Name = x.Name,
+            Type = "line",
+            Stack = "Total",
+            Data = x.Data
+        });
+        _option = new
         {
-            Left = "3%",
-            Right = "4%",
-            Bottom = "3%",
-            ContainLabel = true
-        },
-        XAxis = new
-        {
-            BoundaryGap = false,
-            Data = new[] { "10-1", "10-2", "10-3", "10-4", "10-5", "10-6", "10-7", "10-8", "10-9", "10-10" }
-        },
-        YAxis = new
-        {
-            Type = "value"
-        },
-        Series = new[]
-        {
-            new
+            Tooltip = new
             {
-                Name = "别名A",
-                Type = "line",
-                Stack = "Total",
-                Data = new []{ 5, 20, 36, 10, 10, 20 , 20, 20, 20, 20}
+                Trigger = "axis",
             },
-            new
+            Legend = new
             {
-                Name = "别名B",
-                Type = "line",
-                Stack = "Total",
-                Data = new []{ 35, 11, 44, 23, 5, 41 , 33, 20, 20, 20}
-            }
+                Left = "3%",
+                Data = legendData
+            },
+            Grid = new
+            {
+                Left = "3%",
+                Right = "4%",
+                Bottom = "3%",
+                ContainLabel = true
+            },
+            XAxis = new
+            {
+                Type = "time",
+                BoundaryGap = false
+            },
+            YAxis = new
+            {
+                Type = "value"
+            },
+            Series = seriesData
+        };
     }
-    };
 }

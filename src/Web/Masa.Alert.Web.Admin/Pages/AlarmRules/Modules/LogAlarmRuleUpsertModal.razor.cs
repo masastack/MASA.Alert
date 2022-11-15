@@ -8,27 +8,62 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     [Parameter]
     public EventCallback OnOk { get; set; }
 
+    [Inject]
+    public IPmClient PmClient { get; set; } = default!;
+
+    [Inject]
+    public ITscClient TscClient { get; set; } = default!;
+
     private MForm? _form;
     private AlarmRuleUpsertViewModel _model = new();
     private bool _visible;
-
+    private Guid _entityId;
     private bool _cronVisible;
     private string _tempCron = string.Empty;
     private string _nextRunTimeStr = string.Empty;
     private List<string> _items = new();
     private AlarmPreviewChartModal? _previewChart;
+    private List<ProjectModel> _projectItems = new();
+    private List<AppDetailModel> _appItems = new();
+    private List<MappingResponse> _fields = new();
+
+    AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
     protected override string? PageName { get; set; } = "AlarmRule";
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        _projectItems = await PmClient.ProjectService.GetListAsync() ?? new();
+        var fieldsObj = await TscClient.LogService.GetFieldsAsync();
+        _fields = JsonSerializer.Deserialize<List<MappingResponse>>(JsonSerializer.Serialize(fieldsObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+    }
+
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)
     {
+        _entityId = listModel?.Id ?? default;
         _model = listModel?.Adapt<AlarmRuleUpsertViewModel>() ?? new();
+
+        if (_entityId != default)
+        {
+            await GetFormDataAsync();
+        }
+
         FillData();
+
         await InvokeAsync(() =>
         {
             _visible = true;
             StateHasChanged();
         });
+    }
+
+    private async Task GetFormDataAsync()
+    {
+        var dto = await AlarmRuleService.GetAsync(_entityId) ?? new();
+        _model = dto.Adapt<AlarmRuleUpsertViewModel>();
+        await HandleProjectChange();
     }
 
     private void FillData()
@@ -68,7 +103,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     {
         if (CronExpression.IsValidExpression(_tempCron))
         {
-            _model.CronExpression = _tempCron;
+            _model.CheckFrequency.CronExpression = _tempCron;
             GetNextRunTime();
             _cronVisible = false;
         }
@@ -80,7 +115,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
 
     private void GetNextRunTime(int showCount = 5)
     {
-        if (!CronExpression.IsValidExpression(_model.CronExpression))
+        if (!CronExpression.IsValidExpression(_model.CheckFrequency.CronExpression))
         {
             _nextRunTimeStr = T("CronExpressionNotHasNextRunTime");
             return;
@@ -90,7 +125,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
 
         var startTime = DateTimeOffset.Now;
 
-        var cronExpression = new CronExpression(_model.CronExpression);
+        var cronExpression = new CronExpression(_model.CheckFrequency.CronExpression);
 
         var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == TimezoneOffset);
 
@@ -121,7 +156,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     private void OpenCronModal()
     {
         _cronVisible = true;
-        _tempCron = _model.CronExpression;
+        _tempCron = _model.CheckFrequency.CronExpression;
     }
 
     private void HandleLogMonitorItemsAdd()
@@ -132,5 +167,49 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     private void HandleLogMonitorItemsRemove(LogMonitorItemViewModel item)
     {
         _model.LogMonitorItems.Remove(item);
+    }
+
+    private async Task HandleOk()
+    {
+        Check.NotNull(_form, "form not found");
+
+        if (!_form.Validate())
+        {
+            return;
+        }
+
+        Loading = true;
+
+        var inputDto = _model.Adapt<AlarmRuleUpsertDto>();
+
+        if (_entityId == default)
+        {
+            await AlarmRuleService.CreateAsync(inputDto);
+        }
+        else
+        {
+            await AlarmRuleService.UpdateAsync(_entityId, inputDto);
+        }
+
+        Loading = false;
+        _visible = false;
+
+        ResetForm();
+
+        await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
+    }
+
+    private async Task HandleProjectChange()
+    {
+        var projectId = _projectItems.FirstOrDefault(x => x.Identity == _model.ProjectIdentity)?.Id;
+        if (projectId != null)
+        {
+            _appItems = await PmClient.AppService.GetListByProjectIdsAsync(new List<int> { projectId.Value }) ?? new();
+        };
     }
 }

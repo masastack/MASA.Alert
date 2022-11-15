@@ -118,12 +118,17 @@
   "MessageTemplate": "消息模板",
   "Handler": "处理人",
   "Test": "测试",
+  "Minute": "分钟",
+  "Hour": "小时",
+  "Day": "天",
+  "AlarmNotification": "告警通知",
+  "RecoveryNotification": "恢复通知",
   "AlarmRule": {
     "Log": "日志监控",
     "Metric": "指标监控",
     "TimeType": "时间类型",
-    "ProjectId": "项目",
-    "AppId": "应用",
+    "ProjectIdentity": "项目",
+    "AppIdentity": "应用",
     "MetricId": "指标",
     "AlarmHistory": "告警历史",
     "Disable": "禁用",
@@ -153,8 +158,9 @@
     "TriggerRules": "触发规则",
     "AlertSeverity": "严重程度",
     "MessageTemplateId": "消息模板",
+    "MessageTemplate": "消息模板",
     "IsRecoveryNotification": "恢复通知",
-    "IsNotification": "无需通知",
+    "IsNotification": "是否通知",
     "AdvancedConfiguration": "高级配置",
     "ContinuousTriggerThreshold": "连续触发阈值",
     "ContinuousTriggerThresholdTip": "连续多少次执行检查评估都满足触发条件时，才会触发告警。",
@@ -166,14 +172,16 @@
     "MetricMonitor.Name": "监控指标",
     "MetricMonitor.Tag": "Tag",
     "MetricMonitor.Alias": "变量",
-    "SilenceCycle.Time": "按时间",
-    "SilenceCycle.Cycle": "按周期"
+    "Time": "按时间",
+    "Cycle": "按周期"
   },
   "AlarmChart": {
     "ChartPreview": "图表预览",
     "ChartPreviewTips": "本图仅用于预览效果的参考",
     "UpdateChart": "更新图表",
-    "YAxisUnits": "Y轴单位"
+    "YAxisUnits": "Y轴单位",
+    "LogSamplingPreview": "日志采样预览",
+    "LogSamplingPreviewTips": "默认获取上一周期符合规则的最近一条日志数据"
   },
   "AlarmHistory": {
     "Alarming": "正在告警",

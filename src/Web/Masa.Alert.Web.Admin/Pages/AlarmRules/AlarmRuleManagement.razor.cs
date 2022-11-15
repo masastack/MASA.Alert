@@ -12,6 +12,8 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private LogAlarmRuleUpsertModal? _logUpsertModal;
     private MetricAlarmRuleUpsertModal? _metricUpsertModal;
 
+    AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
+
     protected override string? PageName { get; set; } = "AlarmRule";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -26,26 +28,10 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private async Task LoadData()
     {
         Loading = true;
-        FillData();
-        await Task.CompletedTask;
+        var dtos = (await AlarmRuleService.GetListAsync(_queryParam));
+        _entities = dtos?.Adapt<PaginatedListDto<AlarmRuleListViewModel>>() ?? new();
         Loading = false;
         StateHasChanged();
-    }
-
-    private void FillData()
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            _entities.Result.Add(new AlarmRuleListViewModel
-            {
-                DisplayName = "库存告警通知库存告警通知库存...",
-                ProjectId = "Masa.Auth",
-                AppId = "masa-auth-web-admin",
-                ModifierName = "李西瓜",
-                ModificationTime = DateTime.Now,
-                IsEnabled = i%6!=0
-            });
-        }
     }
 
     private async Task HandleOk()

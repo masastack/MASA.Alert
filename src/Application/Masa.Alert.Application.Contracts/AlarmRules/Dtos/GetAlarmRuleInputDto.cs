@@ -15,9 +15,9 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto
 
     public DateTime? EndTime { get; set; }
 
-    public string ProjectId { get; set; } = default!;
+    public string ProjectIdentity { get; set; } = default!;
 
-    public string AppId { get; set; } = default!;
+    public string AppIdentity { get; set; } = default!;
 
     public string MetricId { get; set; } = default!;
 
@@ -29,15 +29,17 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto
     {
     }
 
-    public GetAlarmRuleInputDto(string filter, AlarmRuleSearchTimeTypes timeType, DateTime? startTime,
-       DateTime? endTime, string projectId, string appId, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
+    public GetAlarmRuleInputDto(string filter, AlarmRuleTypes alarmRuleType, AlarmRuleSearchTimeTypes timeType, DateTime? startTime,
+       DateTime? endTime, string projectIdentity, string appIdentity, string metricId, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
     {
         Filter = filter;
+        AlarmRuleType = alarmRuleType;
         TimeType = timeType;
         StartTime = startTime;
         EndTime = endTime;
-        ProjectId = projectId;
-        AppId = appId;
+        ProjectIdentity = projectIdentity;
+        AppIdentity = appIdentity;
+        MetricId = metricId;
     }
 
     public enum AlarmRuleSearchTimeTypes

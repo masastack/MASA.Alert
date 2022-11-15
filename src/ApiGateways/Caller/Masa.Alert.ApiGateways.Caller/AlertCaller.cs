@@ -1,12 +1,16 @@
 ﻿namespace Masa.Alert.ApiGateways.Caller;
 
-public class AlertCaller : BaseDaprCaller
+public class AlertCaller : DaprCallerBase
 {
     TokenProvider _tokenProvider;
 
     protected override string AppId { get; set; } = App.APP;
 
     public override string? Name { get; set; } = nameof(AlertCaller);
+
+    private AlarmRuleService? _alarmRuleService;
+
+    public AlarmRuleService AlarmRuleService => _alarmRuleService ??= new(Caller);
 
     public AlertCaller(IServiceProvider serviceProvider
         , TokenProvider tokenProvider)

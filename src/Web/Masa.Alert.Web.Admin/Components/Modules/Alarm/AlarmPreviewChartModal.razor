@@ -1,6 +1,12 @@
 ﻿@inherits AdminCompontentBase
 <SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
-    <AlarmPreviewChart AlarmRule="_alarmRule"></AlarmPreviewChart>
+    <AlarmPreviewChart ChartData="_chartData" ChartYAxisUnit="@AlarmRule.ChartYAxisUnit"></AlarmPreviewChart>
+    <DefaultTitle>
+        @T("LogSamplingPreview")
+        <DefaultTooltip Class="ml-2" Tooltip="@T("LogSamplingPreviewTips")" />
+    </DefaultTitle>
+    <MTextarea @bind-Value="_logStr" Readonly Outlined Rows="11">
+    </MTextarea>
 </SModal>
 
 @code {
@@ -9,21 +15,126 @@
 
     [EditorRequired]
     [Parameter]
-    public AlarmRuleUpsertViewModel? AlarmRule { get; set; }
+    public AlarmRuleUpsertViewModel AlarmRule { get; set; } = new();
+
+    [Inject]
+    public ITscClient TscClient { get; set; } = default!;
 
     private AlarmRuleViewModel _alarmRule = new();
+
+    private List<AlarmPreviewChartDataItemModel> _chartData { get; set; } = new();
 
     protected override string? PageName { get; set; } = "AlarmChart";
 
     private bool _visible = false;
 
+    private LogDto _log = new();
+    private string _logStr = string.Empty;
+
     public async Task OpenModalAsync()
     {
         _alarmRule = AlarmRule?.Adapt<AlarmRuleViewModel>() ?? new();
+        await GetLatestAsync();
+        FillData();
         await InvokeAsync(() =>
         {
             _visible = true;
             StateHasChanged();
         });
+    }
+
+    public async Task GetLatestAsync()
+    {
+        var request = new LogLatestRequest
+            {
+                Query = AlarmRule.WhereExpression,
+                Start = DateTime.Now.AddDays(-20),
+                End = DateTime.Now,
+                IsDesc = true
+            };
+        var logObj = await TscClient.LogService.GetLatestAsync(request);
+        _log = JsonSerializer.Deserialize<LogDto>(JsonSerializer.Serialize(logObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+        _logStr = JsonSerializer.Serialize(_log);
+    }
+
+    private void FillData()
+    {
+        var timeList = new List<long>();
+        var chartData = new List<AlarmPreviewChartDataItemModel>();
+
+        if (_alarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
+        {
+            timeList = GetTimeListByFixedInterval();
+        }
+
+        if (_alarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
+        {
+            timeList = GetTimeListByCron();
+        }
+        Random a = new Random();
+        foreach (var item in _alarmRule.LogMonitorItems)
+        {
+            var data = timeList.Select(x => new List<long> { x, a.Next(100) }).ToList()!;
+            chartData.Add(new AlarmPreviewChartDataItemModel
+                {
+                    Name = item.Alias,
+                    Data = data
+                });
+        }
+
+        _chartData = chartData;
+    }
+
+    private List<long> GetTimeListByFixedInterval(int count = 10)
+    {
+        var timeList = new List<long>();
+        var time = DateTimeOffset.Now;
+
+        for (int i = 0; i < count; i++)
+        {
+            timeList.Add(time.ToUnixTimeMilliseconds());
+
+            switch (_alarmRule.CheckFrequency.FixedInterval.IntervalTimeType)
+            {
+                case TimeTypes.Minute:
+                    time = time.AddMinutes(_alarmRule.CheckFrequency.FixedInterval.IntervalTime);
+                    break;
+                case TimeTypes.Hour:
+                    time = time.AddHours(_alarmRule.CheckFrequency.FixedInterval.IntervalTime);
+                    break;
+                case TimeTypes.Day:
+                    time = time.AddDays(_alarmRule.CheckFrequency.FixedInterval.IntervalTime);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return timeList;
+    }
+
+    private List<long> GetTimeListByCron(int count = 10)
+    {
+        var timeList = new List<long>();
+
+        var cronExpression = new CronExpression(_alarmRule.CheckFrequency.CronExpression);
+
+        var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == TimezoneOffset);
+
+        if (timezone != null)
+            cronExpression.TimeZone = timezone;
+
+        var time = DateTimeOffset.Now;
+        for (int i = 0; i < count; i++)
+        {
+            timeList.Add(time.ToUnixTimeMilliseconds());
+
+            var nextExcuteTime = cronExpression.GetNextValidTimeAfter(time);
+            if (nextExcuteTime.HasValue)
+            {
+                time = nextExcuteTime.Value;
+            }
+        }
+
+        return timeList;
     }
 }

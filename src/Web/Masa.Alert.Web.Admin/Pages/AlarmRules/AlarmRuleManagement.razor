@@ -16,8 +16,8 @@
                     <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" />
                     @if (_queryParam.AlarmRuleType == AlarmRuleTypes.Log)
                     {
-                        <SSimpleSelect @bind-Value="@_queryParam.ProjectId" DefaultText="@T(nameof(_queryParam.ProjectId))" Class="ml-6"></SSimpleSelect>
-                        <SSimpleSelect @bind-Value="@_queryParam.AppId" DefaultText="@T(nameof(_queryParam.AppId))" Class="ml-6"></SSimpleSelect>
+                        <SSimpleSelect @bind-Value="@_queryParam.ProjectIdentity" DefaultText="@T(nameof(_queryParam.ProjectIdentity))" Class="ml-6"></SSimpleSelect>
+                        <SSimpleSelect @bind-Value="@_queryParam.AppIdentity" DefaultText="@T(nameof(_queryParam.AppIdentity))" Class="ml-6"></SSimpleSelect>
                     }
                     @if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
                     {

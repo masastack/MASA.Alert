@@ -5,9 +5,9 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules;
 
 public class LogMonitorItemViewModel
 {
-    public string Field { get; set; } = default!;
+    public string Field { get; set; } = string.Empty;
 
-    public string Alias { get; set; } = default!;
+    public string Alias { get; set; } = string.Empty;
 
     public bool IsOffset { get; set; }
 

@@ -5,12 +5,13 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddDaprStarter(opt =>
     {
         opt.AppId = builder.Services.GetMasaConfiguration().Local.GetValue<string>("AppId");
+        //opt.AppIdSuffix = "";
         opt.DaprHttpPort = 20602;
         opt.DaprGrpcPort = 20601;
     });
 }
 
-builder.AddObservability();
+builder.Services.AddObservable(builder.Logging, builder.Configuration);
 builder.Services.AddDaprClient();
 builder.Services.AddMasaConfiguration(configurationBuilder =>
 {
@@ -43,11 +44,17 @@ builder.Services.AddHealthChecks()
     .AddDbContextCheck<AlertDbContext>();
 
 builder.Services.AddMapster();
-
-
-
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
+TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
+
+var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
+builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
+
+builder.Services.AddRulesEngine(rulesEngineOptions =>
+{
+    rulesEngineOptions.UseMicrosoftRulesEngine();
+});
 
 var app = builder.Services
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -78,7 +85,7 @@ var app = builder.Services
             }
         });
     })
-    .AddValidatorsFromAssemblyContaining<Program>()
+    .AddValidatorsFromAssemblies(assemblies)
     .AddDomainEventBus(dispatcherOptions =>
     {
         dispatcherOptions

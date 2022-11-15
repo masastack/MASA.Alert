@@ -1,10 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Domain.Shared.AlarmRules;
+namespace Masa.Alert.Application.AlarmRules.Commands;
 
-public enum AlarmRuleSilenceCycle
+public record DisableAlarmRuleCommand(Guid AlarmRuleId) : Command
 {
-    Time = 1,
-    Cycle
 }

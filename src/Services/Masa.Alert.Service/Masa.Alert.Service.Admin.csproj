@@ -19,8 +19,8 @@
 	
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
-		<PackageReference Include="FluentValidation" Version="11.2.1" />
-		<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
+		<PackageReference Include="FluentValidation" Version="11.2.2" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
 		<PackageReference Include="Dapr.Actors.AspNetCore" Version="1.8.0" />
 		<PackageReference Include="Dapr.AspNetCore" Version="1.8.0" />
 		<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
@@ -38,6 +38,7 @@
 		<PackageReference Include="Masa.Contrib.Service.MinimalAPIs" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.Development.DaprStarter.AspNetCore" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Utils.Extensions.DependencyInjection" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Auth" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
 		  <PrivateAssets>all</PrivateAssets>
@@ -48,6 +49,8 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\..\MASA.Framework\src\Contrib\StackSdks\Masa.Contrib.StackSdks.Tsc\Masa.Contrib.StackSdks.Tsc.csproj" />
+	  <ProjectReference Include="..\..\Application\Masa.Alert.Application\Masa.Alert.Application.csproj" />
 	  <ProjectReference Include="..\..\Contracts\Masa.Alert.Contracts.Admin\Masa.Alert.Contracts.Admin.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.EntityFrameworkCore\Masa.Alert.EntityFrameworkCore.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Common\Masa.Alert.Infrastructure.Common.csproj" />
@@ -55,9 +58,5 @@
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.EntityFrameworkCore\Masa.Alert.Infrastructure.EntityFrameworkCore.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Middleware\Masa.Alert.Infrastructure.Middleware.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Tsc\Masa.Alert.Infrastructure.Tsc.csproj" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <Folder Include="Services\" />
 	</ItemGroup>
 </Project>

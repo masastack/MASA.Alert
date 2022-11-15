@@ -68,7 +68,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     {
         if (CronExpression.IsValidExpression(_tempCron))
         {
-            _model.CronExpression = _tempCron;
+            _model.CheckFrequency.CronExpression = _tempCron;
             GetNextRunTime();
             _cronVisible = false;
         }
@@ -80,7 +80,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
 
     private void GetNextRunTime(int showCount = 5)
     {
-        if (!CronExpression.IsValidExpression(_model.CronExpression))
+        if (!CronExpression.IsValidExpression(_model.CheckFrequency.CronExpression))
         {
             _nextRunTimeStr = T("CronExpressionNotHasNextRunTime");
             return;
@@ -90,7 +90,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
 
         var startTime = DateTimeOffset.Now;
 
-        var cronExpression = new CronExpression(_model.CronExpression);
+        var cronExpression = new CronExpression(_model.CheckFrequency.CronExpression);
 
         var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == TimezoneOffset);
 
@@ -121,7 +121,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     private void OpenCronModal()
     {
         _cronVisible = true;
-        _tempCron = _model.CronExpression;
+        _tempCron = _model.CheckFrequency.CronExpression;
     }
 
     private void HandleMetricMonitorItemsAdd()

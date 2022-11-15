@@ -5,11 +5,13 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules;
 
 public class AlarmRuleListViewModel
 {
+    public Guid Id { get; set; }
+
     public string DisplayName { get; set; } = default!;
 
-    public string ProjectId { get; set; } = default!;
+    public string ProjectIdentity { get; set; } = default!;
 
-    public string AppId { get; set; } = default!;
+    public string AppIdentity { get; set; } = default!;
 
     public DateTime ModificationTime { get; set; }
 

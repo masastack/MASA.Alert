@@ -1,4 +1,4 @@
-﻿namespace Masa.Alert.EntityFrameworkCore.EntityFrameworkCore;
+﻿namespace Masa.Alert.EntityFrameworkCore;
 
 public class AlertDbContext : IsolationDbContext
 {
