@@ -6,13 +6,13 @@ public class PaginatedOptions
 
     public int PageSize { get; set; }
 
-    public Dictionary<string, bool>? Sorting { get; set; }
+    public Dictionary<string, bool> Sorting { get; set; } = new();
 
     public PaginatedOptions()
     {
     }
 
-    public PaginatedOptions(int page, int pageSize, Dictionary<string, bool>? sorting = null)
+    public PaginatedOptions(int page, int pageSize, Dictionary<string, bool> sorting)
     {
         Page = page;
         PageSize = pageSize;

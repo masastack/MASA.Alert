@@ -5,5 +5,5 @@ namespace Masa.Alert.Application.AlarmRules.Queries;
 
 public record GetAlarmRuleListQuery(GetAlarmRuleInputDto Input) : Query<PaginatedListDto<AlarmRuleDto>>
 {
-    public override PaginatedListDto<AlarmRuleDto> Result { get; set; } = default!;
+    public override PaginatedListDto<AlarmRuleDto> Result { get; set; } = new();
 }

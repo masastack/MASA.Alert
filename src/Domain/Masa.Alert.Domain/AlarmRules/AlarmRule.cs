@@ -2,17 +2,17 @@
 
 public class AlarmRule : FullAggregateRoot<Guid, Guid>
 {
-    public string DisplayName { get; protected set; } = default!;
+    public string DisplayName { get; protected set; } = string.Empty;
 
     public AlarmRuleTypes AlarmRuleType { get; set; }
 
-    public string ProjectIdentity { get; protected set; } = default!;
+    public string ProjectIdentity { get; protected set; } = string.Empty;
 
-    public string AppIdentity { get; protected set; } = default!;
+    public string AppIdentity { get; protected set; } = string.Empty;
 
     public bool IsEnabled { get; protected set; }
 
-    public string ChartYAxisUnit { get; protected set; } = default!;
+    public string ChartYAxisUnit { get; protected set; } = string.Empty;
 
     public CheckFrequency CheckFrequency { get; protected set; } = default!;
 
@@ -20,7 +20,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public string TotalVariable { get; protected set; } = "total";
 
-    public string WhereExpression { get; protected set; } = default!;
+    public string WhereExpression { get; protected set; } = string.Empty;
 
     public int ContinuousTriggerThreshold { get; protected set; }
 
