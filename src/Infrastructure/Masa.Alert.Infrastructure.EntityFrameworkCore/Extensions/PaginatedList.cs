@@ -6,5 +6,5 @@ public class PaginatedList<TEntity> where TEntity : class
 
     public int TotalPages { get; set; }
 
-    public List<TEntity> Result { get; set; } = default!;
+    public List<TEntity> Result { get; set; } = new();
 }

@@ -9,7 +9,7 @@ public class CheckFrequency : ValueObject
 
     public TimeInterval FixedInterval { get; protected set; } = default!;
 
-    public string CronExpression { get; protected set; } = default!;
+    public string CronExpression { get; protected set; } = string.Empty;
 
     protected override IEnumerable<object> GetEqualityValues()
     {
