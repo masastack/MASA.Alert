@@ -2,7 +2,7 @@
 
 public class AlertQueryContext : MasaDbContext, IAlertQueryContext
 {
-    public IQueryable<AlarmRuleRecordQuery> AlarmRuleRecordQueries => Set<AlarmRuleRecordQuery>().AsQueryable();
+    public IQueryable<AlarmRuleRecordQueryModel> AlarmRuleRecordQueries => Set<AlarmRuleRecordQueryModel>().AsQueryable();
 
     public AlertQueryContext(MasaDbContextOptions<AlertQueryContext> options) : base(options)
     {
@@ -10,7 +10,7 @@ public class AlertQueryContext : MasaDbContext, IAlertQueryContext
 
     protected override void OnModelCreatingExecuting(ModelBuilder builder)
     {
-        builder.Entity<AlarmRuleRecordQuery>(eb =>
+        builder.Entity<AlarmRuleRecordQueryModel>(eb =>
         {
             eb.HasNoKey();
             eb.ToView(AlertConsts.DbTablePrefix + "AlarmRuleRecords", AlertConsts.DbSchema);

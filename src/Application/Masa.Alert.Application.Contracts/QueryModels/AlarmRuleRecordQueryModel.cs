@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Application.Contracts.QueryModels;
 
-public class AlarmRuleRecordQuery
+public class AlarmRuleRecordQueryModel
 {
     public Guid AlarmRuleId { get; set; }
 

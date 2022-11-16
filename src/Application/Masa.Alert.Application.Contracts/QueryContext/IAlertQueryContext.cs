@@ -2,5 +2,5 @@
 
 public interface IAlertQueryContext
 {
-    public IQueryable<AlarmRuleRecordQuery> AlarmRuleRecordQueries { get; }
+    public IQueryable<AlarmRuleRecordQueryModel> AlarmRuleRecordQueries { get; }
 }

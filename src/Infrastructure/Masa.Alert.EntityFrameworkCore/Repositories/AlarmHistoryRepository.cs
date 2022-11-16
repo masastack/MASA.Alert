@@ -6,10 +6,7 @@ namespace Masa.Alert.EntityFrameworkCore.Repositories;
 public class AlarmHistoryRepository : Repository<AlertDbContext, AlarmHistory>, IAlarmHistoryRepository
 {
     public AlarmHistoryRepository(AlertDbContext context, IUnitOfWork unitOfWork)
-        : base(context, unitOfWork)
-    {
-
-    }
+        : base(context, unitOfWork) { }
 
     public async Task<IQueryable<AlarmHistory>> GetQueryableAsync()
     {
@@ -18,6 +15,6 @@ public class AlarmHistoryRepository : Repository<AlertDbContext, AlarmHistory>, 
 
     public async Task<AlarmHistory?> GetLastAsync(Guid alarmRuleId)
     {
-        return await Context.Set<AlarmHistory>().Where(x=>x.AlarmRuleId== alarmRuleId).OrderByDescending(x=>x.CreationTime).FirstOrDefaultAsync();
+        return await Context.Set<AlarmHistory>().Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.CreationTime).FirstOrDefaultAsync();
     }
 }
