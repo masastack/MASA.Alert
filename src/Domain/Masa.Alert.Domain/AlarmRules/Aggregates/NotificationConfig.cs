@@ -5,7 +5,11 @@ namespace Masa.Alert.Domain.AlarmRules.Aggregates;
 
 public class NotificationConfig
 {
-    public string MessageTemplateCode { get; set; } = default!;
+    public string ChannelCode { get; set; } = default!;
+
+    public string TemplateCode { get; set; } = default!;
+
+    public int ChannelType { get; set; }
 
     public List<Guid> Receivers { get; set; } = new();
 }

@@ -3,13 +3,13 @@
 
 namespace Masa.Alert.Application.AlarmRules.EventHandler;
 
-public class SendAlarmNotificationEventHandler
+public class SendAlarmRecoveryNotificationEventHandler
 {
     private readonly IMcClient _mcClient;
     private readonly IAuthClient _authClient;
     private readonly IAlarmHistoryRepository _repository;
 
-    public SendAlarmNotificationEventHandler(IMcClient mcClient
+    public SendAlarmRecoveryNotificationEventHandler(IMcClient mcClient
         , IAuthClient authClient
         , IAlarmHistoryRepository repository)
     {
@@ -26,9 +26,9 @@ public class SendAlarmNotificationEventHandler
 
         foreach (var item in alarm.AlarmRuleItems)
         {
-            if (!item.IsNotification) continue;
+            if (!item.IsRecoveryNotification) continue;
 
-            var notificationConfig = item.NotificationConfig;
+            var notificationConfig = item.RecoveryNotificationConfig;
             var receivers = await GeReceivers(notificationConfig);
 
             var request = new BuildingBlocks.StackSdks.Mc.Model.SendTemplateMessageModel
@@ -42,9 +42,6 @@ public class SendAlarmNotificationEventHandler
 
             await _mcClient.MessageTaskService.SendTemplateMessageAsync(request);
         }
-
-        alarm.Notification();
-        await _repository.UpdateAsync(alarm);
     }
 
     private async Task<List<MessageTaskReceiverModel>> GeReceivers(NotificationConfig notificationConfig)

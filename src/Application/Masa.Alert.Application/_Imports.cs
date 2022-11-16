@@ -29,3 +29,8 @@ global using Masa.Alert.Domain.AlarmRules.Repositories;
 global using Masa.Alert.Domain.AlarmRules.Services;
 global using Masa.Alert.Domain.AlarmRules.Aggregates;
 global using Masa.Alert.Domain.AlarmRules.Events;
+global using Masa.BuildingBlocks.StackSdks.Mc;
+global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Model;
+global using Masa.BuildingBlocks.StackSdks.Mc.Enum;
+global using Masa.BuildingBlocks.StackSdks.Mc.Model;
+global using Masa.Alert.Domain.AlarmHistorys.Repositories;

@@ -33,13 +33,16 @@ public class TriggerAlarmEventHandler
             alarm.TriggerAlarm();
             await _repository.UpdateAsync(alarm);
         }
+    }
 
-        var alarmRule = await _alarmRulerepository.FindAsync(x => x.Id == eto.AlarmRuleId);
+    private async Task HandleNotification(AlarmHistory alarm)
+    {
+        var alarmRule = await _alarmRulerepository.FindAsync(x => x.Id == alarm.Id);
         if (alarmRule != null)
         {
             if (alarm.LastNotificationTime == null)
             {
-                await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm));
+                await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm.Id));
                 return;
             }
 
@@ -47,7 +50,7 @@ public class TriggerAlarmEventHandler
 
             if (DateTimeOffset.Now > silenceEndTime)
             {
-                await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm));
+                await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm.Id));
             }
         }
     }

@@ -1,6 +1,4 @@
-﻿using Masa.Alert.Application.Contracts.QueryContext;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
@@ -53,6 +51,7 @@ builder.Services.AddSequentialGuidGenerator();
 var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
 builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
 builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
+builder.Services.AddMcClient(publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"));
 builder.Services.AddRulesEngine(rulesEngineOptions =>
 {
     rulesEngineOptions.UseMicrosoftRulesEngine();
