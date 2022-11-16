@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Domain.AlarmRules;
+namespace Masa.Alert.Domain.AlarmRules.Aggregates;
 
 public class LogMonitorItem : ValueObject
 {
@@ -24,7 +24,7 @@ public class LogMonitorItem : ValueObject
         yield return OffsetPeriod;
     }
 
-    public LogMonitorItem(string field, LogAggregationTypes aggregationType,string alias, bool isOffset, int offsetPeriod)
+    public LogMonitorItem(string field, LogAggregationTypes aggregationType, string alias, bool isOffset, int offsetPeriod)
     {
         Field = field;
         AggregationType = aggregationType;

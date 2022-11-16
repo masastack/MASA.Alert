@@ -15,6 +15,7 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
         builder.Property(x => x.TotalVariable).HasMaxLength(64);
         builder.Property(x => x.LogMonitorItems).HasConversion(new JsonValueConverter<List<LogMonitorItem>>());
         builder.HasMany(x => x.Items).WithOne().HasForeignKey(x => x.AlarmRuleId).IsRequired();
+        builder.HasMany(x => x.AlarmRuleRecords).WithOne();
         builder.OwnsOne(x => x.CheckFrequency, y =>
         {
             y.OwnsOne(z => z.FixedInterval, z =>

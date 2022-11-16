@@ -5,4 +5,13 @@ namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public record CheckAlarmRuleCommand(Guid AlarmRuleId) : Command
 {
+    public AlarmRule AlarmRule { get; set; } = default!;
+
+    public ConcurrentDictionary<string, long> AggregateResult { get; set; } = new();
+
+    public ConcurrentDictionary<string, bool> RulesResult { get; set; } = new();
+
+    public int ConsecutiveCount { get; set; }
+
+    public bool IsStop { get; set; }
 }

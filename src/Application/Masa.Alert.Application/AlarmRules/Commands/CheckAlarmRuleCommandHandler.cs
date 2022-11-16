@@ -5,29 +5,81 @@ namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class CheckAlarmRuleCommandHandler
 {
-    private readonly MessageTaskDomainService _domainService;
-    private readonly IMessageInfoRepository _messageInfoRepository;
+    private readonly AlarmRuleDomainService _domainService;
+    private readonly IAlarmRuleRepository _repository;
+    private readonly ITscClient _tscClient;
+    private readonly IRulesEngineClient _rulesEngineClient;
 
-    public CheckAlarmRuleCommandHandler(MessageTaskDomainService domainService, IMessageInfoRepository messageInfoRepositor)
+    public CheckAlarmRuleCommandHandler(AlarmRuleDomainService domainService
+        , IAlarmRuleRepository repository
+        , ITscClient tscClient
+        , IRulesEngineClient rulesEngineClient)
     {
         _domainService = domainService;
-        _messageInfoRepository = messageInfoRepositor;
+        _repository = repository;
+        _tscClient = tscClient;
+        _rulesEngineClient = rulesEngineClient;
     }
 
     [EventHandler(1)]
-    public async Task CreateMessageInfoAsync(CreateOrdinaryMessageTaskCommand createCommand)
+    public async Task QueryRulesAsync(CheckAlarmRuleCommand command)
     {
-        var messageInfo = createCommand.MessageTask.MessageInfo.Adapt<MessageInfo>();
-        await _messageInfoRepository.AddAsync(messageInfo);
-        await _messageInfoRepository.UnitOfWork.SaveChangesAsync();
-        createCommand.MessageTask.EntityId = messageInfo.Id;
-        createCommand.MessageTask.DisplayName = messageInfo.Title;
+        var queryable = await _repository.WithDetailsAsync();
+        var entity = await queryable.FirstOrDefaultAsync(x => x.Id == command.AlarmRuleId);
+
+        Check.NotNull(entity, "alarmRule not found");
+
+        command.AlarmRule = entity;
     }
 
     [EventHandler(2)]
-    public async Task CreateOrdinaryMessageTaskAsync(CreateOrdinaryMessageTaskCommand createCommand)
+    public async Task QueryLogAggregationAsync(CheckAlarmRuleCommand command)
     {
-        var entity = createCommand.MessageTask.Adapt<MessageTask>();
-        await _domainService.CreateAsync(entity, createCommand.MessageTask.OperatorId);
+        var alarmRule = command.AlarmRule;
+        var checkTime = DateTime.Now;
+        var latest = alarmRule.GetLatest();
+        command.ConsecutiveCount = latest?.ConsecutiveCount ?? 0;
+        var startTime = _domainService.GetStartCheckTime(alarmRule, checkTime, latest);
+
+        if (startTime == null)
+        {
+            alarmRule.SkipCheck();
+            command.IsStop = true;
+            return;
+        }
+
+        Random a = new Random();
+
+        foreach (var item in alarmRule.LogMonitorItems)
+        {
+            var fieldMaps = new List<FieldAggregationRequest>
+            {
+                new FieldAggregationRequest
+                {
+                    Name = item.Field,
+                    Alias = item.Alias,
+                    AggregationType = (AggregationTypes)item.AggregationType
+                }
+            };
+
+            var request = new LogAggregationRequest
+            {
+                FieldMaps = fieldMaps,
+                Query = alarmRule.WhereExpression,
+                Start = startTime.Value,
+                End = checkTime,
+            };
+
+            var result = await _tscClient.LogService.GetAggregationAsync(request);
+            command.AggregateResult.TryAdd(item.Alias, a.Next(100));
+        }
+    }
+
+    [EventHandler(3)]
+    public async Task ExecuteRulesAsync(CheckAlarmRuleCommand command)
+    {
+        if (command.IsStop) return;
+
+        await _domainService.CheckRuleAsync(command.AlarmRule, command.AggregateResult);
     }
 }

@@ -18,4 +18,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Masa.Alert.Domain.Shared\Masa.Alert.Domain.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AlarmRules\EventHandler\" />
+    <Folder Include="AlarmRules\Events\" />
+  </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Masa.Alert.Domain.AlarmRules;
+﻿namespace Masa.Alert.Domain.AlarmRules.Aggregates;
 
 public class AlarmRule : FullAggregateRoot<Guid, Guid>
 {
@@ -30,7 +30,16 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public ICollection<AlarmRuleItem> Items { get; protected set; } = new Collection<AlarmRuleItem>();
 
-    private AlarmRule() { }
+    public virtual IEnumerable<AlarmRuleRecord> AlarmRuleRecords => LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords))!;
+
+    List<AlarmRuleRecord> _alarmRuleRecords = default!;
+
+    private Action<object, string> LazyLoader { get; set; } = default!;
+
+    private AlarmRule(Action<object, string> lazyLoader)
+    {
+        LazyLoader = lazyLoader;
+    }
 
     public AlarmRule(string displayName, AlarmRuleTypes alarmRuleType, string projectIdentity, string appIdentity, bool isEnabled, string chartYAxisUnit
         , CheckFrequency checkFrequency, bool isGetTotal, string totalVariable, string whereExpression, int continuousTriggerThreshold, SilenceCycle silenceCycle)
@@ -47,6 +56,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         SetChartConfig(chartYAxisUnit);
         CheckFrequency = checkFrequency;
         SetAdvancedConfig(continuousTriggerThreshold, silenceCycle);
+        _alarmRuleRecords = new List<AlarmRuleRecord>();
     }
 
     public void SetEnabled()
@@ -96,5 +106,60 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
     {
         ContinuousTriggerThreshold = continuousTriggerThreshold;
         SilenceCycle = silenceCycle;
+    }
+
+    public AlarmRuleRecord? GetLatest()
+    {
+        LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
+        return _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).FirstOrDefault();
+    }
+
+    public void Check(ConcurrentDictionary<string, long> aggregateResult, List<AlarmRuleItem> triggerRuleItems)
+    {
+        var latestRecord = GetLatest();
+        var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
+        var isTrigger = triggerRuleItems.Any();
+
+        if (isTrigger)
+        {
+            consecutiveCount++;
+        }
+        else
+        {
+            consecutiveCount = 0;
+        }
+
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount));
+
+        if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
+        {
+            var alertSeverity = triggerRuleItems.Min(x=>x.AlertSeverity);
+
+            AddDomainEvent(new AddAlarmHistoryEvent(Id, alertSeverity, triggerRuleItems));
+        }
+        else if (latestRecord != null && latestRecord.IsTrigger)
+        {
+            AddDomainEvent(new RecoveryAlarmEvent(Id));
+        }
+    }
+
+    public void SkipCheck()
+    {
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0));
+    }
+
+    public DateTime? GetStartTime(DateTime checkTime)
+    {
+        switch (CheckFrequency.FixedInterval.IntervalTimeType)
+        {
+            case TimeTypes.Minute:
+                return checkTime.AddMinutes(-CheckFrequency.FixedInterval.IntervalTime);
+            case TimeTypes.Hour:
+                return checkTime.AddHours(-CheckFrequency.FixedInterval.IntervalTime);
+            case TimeTypes.Day:
+                return checkTime.AddDays(-CheckFrequency.FixedInterval.IntervalTime);
+            default:
+                return null;
+        }
     }
 }

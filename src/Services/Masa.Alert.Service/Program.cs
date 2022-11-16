@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Masa.Alert.Application.Contracts.QueryContext;
+
+var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
@@ -47,7 +49,7 @@ builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
-
+builder.Services.AddSequentialGuidGenerator();
 var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
 builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
 builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
@@ -86,6 +88,13 @@ var app = builder.Services
         });
     })
     .AddValidatorsFromAssemblies(assemblies)
+    .AddMasaDbContext<AlertQueryContext>(builder =>
+    {
+        builder.UseSqlServer();
+        builder.UseFilter();
+        builder.EnableSoftDelete = true;
+    })
+    .AddScoped<IAlertQueryContext, AlertQueryContext>()
     .AddDomainEventBus(dispatcherOptions =>
     {
         dispatcherOptions

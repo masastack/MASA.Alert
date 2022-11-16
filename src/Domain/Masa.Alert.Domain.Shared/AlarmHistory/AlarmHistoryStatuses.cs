@@ -8,5 +8,6 @@ public enum AlarmHistoryStatuses
     Pending = 1,
     InProcess,
     ProcessingCompleted,
-    Notified
+    Notified,
+    Recovery
 }
