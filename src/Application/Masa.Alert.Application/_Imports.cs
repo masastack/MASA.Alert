@@ -28,3 +28,4 @@ global using Masa.BuildingBlocks.RulesEngine;
 global using Masa.Alert.Domain.AlarmRules.Repositories;
 global using Masa.Alert.Domain.AlarmRules.Services;
 global using Masa.Alert.Domain.AlarmRules.Aggregates;
+global using Masa.Alert.Domain.AlarmRules.Events;

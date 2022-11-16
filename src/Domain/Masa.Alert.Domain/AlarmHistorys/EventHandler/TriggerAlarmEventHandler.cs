@@ -3,16 +3,19 @@
 
 namespace Masa.Alert.Domain.AlarmHistorys.EventHandler;
 
-public class AlarmEventHandler
+public class TriggerAlarmEventHandler
 {
     private readonly IAlarmHistoryRepository _repository;
     private readonly IAlarmRuleRepository _alarmRulerepository;
+    private readonly IEventBus _eventBus;
 
-    public AlarmEventHandler(IAlarmHistoryRepository repository
-        , IAlarmRuleRepository alarmRulerepository)
+    public TriggerAlarmEventHandler(IAlarmHistoryRepository repository
+        , IAlarmRuleRepository alarmRulerepository
+        , IEventBus eventBus)
     {
         _repository = repository;
         _alarmRulerepository = alarmRulerepository;
+        _eventBus = eventBus;
     }
 
     [EventHandler]
@@ -36,15 +39,15 @@ public class AlarmEventHandler
         {
             if (alarm.LastNotificationTime == null)
             {
-                // 通知
+                await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm));
                 return;
             }
 
             var silenceEndTime = alarmRule.GetSilenceEndTime(alarm.LastNotificationTime.Value);
+
             if (DateTimeOffset.Now > silenceEndTime)
             {
-                // 通知
-                return;
+                await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm));
             }
         }
     }
