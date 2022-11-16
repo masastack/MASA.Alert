@@ -20,4 +20,19 @@ public class TimeInterval : ValueObject
         IntervalTime = intervalTime;
         IntervalTimeType = intervalTimeType;
     }
+
+    public TimeSpan? GetIntervalTime()
+    {
+        switch (IntervalTimeType)
+        {
+            case TimeTypes.Minute:
+                return TimeSpan.FromMinutes(IntervalTime);
+            case TimeTypes.Hour:
+                return TimeSpan.FromHours(IntervalTime);
+            case TimeTypes.Day:
+                return TimeSpan.FromDays(IntervalTime);
+            default:
+                return null;
+        }
+    }
 }

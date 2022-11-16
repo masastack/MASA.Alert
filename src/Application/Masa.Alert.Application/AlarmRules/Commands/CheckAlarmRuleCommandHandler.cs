@@ -39,7 +39,7 @@ public class CheckAlarmRuleCommandHandler
         var checkTime = DateTime.Now;
         var latest = alarmRule.GetLatest();
         command.ConsecutiveCount = latest?.ConsecutiveCount ?? 0;
-        var startTime = _domainService.GetStartCheckTime(alarmRule, checkTime, latest);
+        var startTime = alarmRule.GetStartCheckTime(checkTime, latest);
 
         if (startTime == null)
         {

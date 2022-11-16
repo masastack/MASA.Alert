@@ -19,6 +19,8 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     public DateTimeOffset? RecoveryTime { get; protected set; }
 
+    public DateTimeOffset? LastNotificationTime { get; protected set; }
+
     public List<AlarmRuleItem> AlarmRuleItems { get; protected set; } = new();
 
     private AlarmHistory() { }
@@ -37,5 +39,10 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
     public void Recovery()
     {
         RecoveryTime = DateTimeOffset.Now;
+    }
+
+    public void TriggerAlarm()
+    {
+        AlarmCount++;
     }
 }

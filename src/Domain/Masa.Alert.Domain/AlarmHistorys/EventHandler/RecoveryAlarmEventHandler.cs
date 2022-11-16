@@ -15,8 +15,7 @@ public class RecoveryAlarmEventHandler
     [EventHandler]
     public async Task HandleEventAsync(RecoveryAlarmEvent eto)
     {
-        var queryable = await _repository.GetQueryableAsync();
-        var alarm = queryable.Where(x => x.AlarmRuleId == eto.AlarmRuleId).OrderByDescending(x => x.CreationTime).FirstOrDefault();
+        var alarm = await _repository.GetLastAsync(eto.AlarmRuleId);
 
         if (alarm == null) return;
 

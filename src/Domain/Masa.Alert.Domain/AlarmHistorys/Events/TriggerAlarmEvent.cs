@@ -3,6 +3,6 @@
 
 namespace Masa.Alert.Domain.AlarmHistorys.Events;
 
-public record AddAlarmHistoryEvent(Guid AlarmRuleId, AlertSeverity AlertSeverity, List<AlarmRuleItem> AlarmRuleItems) : DomainEvent
+public record TriggerAlarmEvent(Guid AlarmRuleId, AlertSeverity AlertSeverity, List<AlarmRuleItem> AlarmRuleItems) : DomainEvent
 {
 }

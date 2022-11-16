@@ -27,3 +27,4 @@ global using Masa.Alert.Domain.Shared;
 global using Masa.Alert.Domain.AlarmHistorys.Aggregates;
 global using Masa.Alert.Domain.AlarmHistorys.Repositories;
 global using Masa.BuildingBlocks.ReadWriteSplitting.Cqrs.Commands;
+global using Masa.Alert.Infrastructure.Common.Utils;

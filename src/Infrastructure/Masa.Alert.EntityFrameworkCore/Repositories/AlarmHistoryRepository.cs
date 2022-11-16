@@ -15,4 +15,9 @@ public class AlarmHistoryRepository : Repository<AlertDbContext, AlarmHistory>, 
     {
         return await Task.FromResult(Context.Set<AlarmHistory>().AsQueryable());
     }
+
+    public async Task<AlarmHistory?> GetLastAsync(Guid alarmRuleId)
+    {
+        return await Context.Set<AlarmHistory>().Where(x=>x.AlarmRuleId== alarmRuleId).OrderByDescending(x=>x.CreationTime).FirstOrDefaultAsync();
+    }
 }

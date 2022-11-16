@@ -6,4 +6,6 @@ namespace Masa.Alert.Domain.AlarmHistorys.Repositories;
 public interface IAlarmHistoryRepository : IRepository<AlarmHistory>
 {
     Task<IQueryable<AlarmHistory>> GetQueryableAsync();
+
+    Task<AlarmHistory?> GetLastAsync(Guid alarmRuleId);
 }

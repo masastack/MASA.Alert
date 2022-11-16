@@ -47,24 +47,4 @@ public class AlarmRuleDomainService : DomainService
         alarmRule.Check(aggregateResult, triggerRuleItems);
         await _repository.UpdateAsync(alarmRule);
     }
-
-    public DateTime? GetStartCheckTime(AlarmRule alarmRule, DateTime checkTime, AlarmRuleRecord? latest)
-    {
-        if (alarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron && latest == null)
-        {
-            return null;
-        }
-
-        if (alarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
-        {
-            return latest?.CreationTime;
-        }
-
-        if (alarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
-        {
-            return alarmRule.GetStartTime(checkTime);
-        }
-
-        return null;
-    }
 }
