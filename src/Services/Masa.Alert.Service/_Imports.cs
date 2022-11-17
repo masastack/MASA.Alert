@@ -75,3 +75,5 @@ global using static Masa.Alert.Application.Contracts.AlarmRules.Dtos.GetAlarmRul
 global using Masa.Alert.Application.AlarmRules.Queries;
 global using Masa.Alert.Application.AlarmRules.Commands;
 global using Masa.Contrib.Caching.Distributed.StackExchangeRedis;
+global using Masa.Alert.Application.Contracts.QueryContext;
+global using Microsoft.Extensions.DependencyInjection;

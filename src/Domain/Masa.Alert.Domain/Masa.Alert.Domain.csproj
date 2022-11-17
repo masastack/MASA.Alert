@@ -16,6 +16,10 @@
     <PackageReference Include="Masa.Contrib.RulesEngine.MicrosoftRulesEngine" Version="$(MasaFrameworkPackageVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Common\Masa.Alert.Infrastructure.Common.csproj" />
     <ProjectReference Include="..\Masa.Alert.Domain.Shared\Masa.Alert.Domain.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AlarmRules\EventHandler\" />
   </ItemGroup>
 </Project>

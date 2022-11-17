@@ -47,10 +47,11 @@ builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
-
+builder.Services.AddSequentialGuidGenerator();
 var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
 builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
-
+builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
+builder.Services.AddMcClient(publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"));
 builder.Services.AddRulesEngine(rulesEngineOptions =>
 {
     rulesEngineOptions.UseMicrosoftRulesEngine();
@@ -86,6 +87,13 @@ var app = builder.Services
         });
     })
     .AddValidatorsFromAssemblies(assemblies)
+    .AddMasaDbContext<AlertQueryContext>(builder =>
+    {
+        builder.UseSqlServer();
+        builder.UseFilter();
+        builder.EnableSoftDelete = true;
+    })
+    .AddScoped<IAlertQueryContext, AlertQueryContext>()
     .AddDomainEventBus(dispatcherOptions =>
     {
         dispatcherOptions

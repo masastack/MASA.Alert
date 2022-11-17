@@ -4,6 +4,7 @@ using Masa.Alert.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Masa.Alert.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AlertDbContext))]
-    partial class AlertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221115091525_AlarmHistory")]
+    partial class AlarmHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,9 +56,6 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset>("LastAlarmTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("LastNotificationTime")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<DateTime>("ModificationTime")
@@ -219,8 +218,6 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AlarmRuleId");
 
                     b.ToTable("AlarmRuleRecords", "alert");
                 });
@@ -385,19 +382,8 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Masa.Alert.Domain.AlarmRules.Aggregates.AlarmRuleRecord", b =>
-                {
-                    b.HasOne("Masa.Alert.Domain.AlarmRules.Aggregates.AlarmRule", null)
-                        .WithMany("AlarmRuleRecords")
-                        .HasForeignKey("AlarmRuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Masa.Alert.Domain.AlarmRules.Aggregates.AlarmRule", b =>
                 {
-                    b.Navigation("AlarmRuleRecords");
-
                     b.Navigation("Items");
                 });
 #pragma warning restore 612, 618

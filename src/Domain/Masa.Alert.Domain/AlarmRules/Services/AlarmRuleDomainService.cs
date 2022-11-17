@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Domain.AlarmRules;
+namespace Masa.Alert.Domain.AlarmRules.Services;
 
 public class AlarmRuleDomainService : DomainService
 {
@@ -28,5 +28,23 @@ public class AlarmRuleDomainService : DomainService
             }
         }
         await Task.CompletedTask;
+    }
+
+    public async Task CheckRuleAsync(AlarmRule alarmRule, ConcurrentDictionary<string, long> aggregateResult)
+    {
+        var triggerRuleItems = new List<AlarmRuleItem>();
+
+        foreach (var item in alarmRule.Items)
+        {
+            var result = await _rulesEngineClient.ExecuteAsync(item.Expression, aggregateResult);
+
+            if (result[0].IsValid)
+            {
+                triggerRuleItems.Add(item);
+            }
+        }
+
+        alarmRule.Check(aggregateResult, triggerRuleItems);
+        await _repository.UpdateAsync(alarmRule);
     }
 }
