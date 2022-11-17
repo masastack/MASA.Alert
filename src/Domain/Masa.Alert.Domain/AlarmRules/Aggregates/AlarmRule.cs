@@ -129,7 +129,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
             consecutiveCount = 0;
         }
 
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount));
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, triggerRuleItems));
 
         if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
         {
@@ -145,7 +145,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public void SkipCheck()
     {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0));
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, new List<AlarmRuleItem>()));
     }
 
     public DateTime? GetStartCheckTime(DateTime checkTime, AlarmRuleRecord? latest)
@@ -231,5 +231,27 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         }
 
         return null;
+    }
+
+    public bool CheckIsNotification(DateTimeOffset? lastNotificationTime)
+    {
+        if (!Items.Any(x => x.IsNotification))
+        {
+            return false;
+        }
+
+        if (!lastNotificationTime.HasValue)
+        {
+            return true;
+        }
+
+        var silenceEndTime = GetSilenceEndTime(lastNotificationTime.Value);
+
+        if (DateTimeOffset.Now > silenceEndTime)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

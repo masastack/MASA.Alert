@@ -21,15 +21,18 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     public DateTimeOffset? LastNotificationTime { get; protected set; }
 
-    public List<AlarmRuleItem> AlarmRuleItems { get; protected set; } = new();
+    public bool IsNotification { get; protected set; }
+
+    public List<AlarmRuleItem> TriggerRuleItems { get; protected set; } = new();
 
     private AlarmHistory() { }
 
-    public AlarmHistory(Guid alarmRuleId, AlertSeverity alertSeverity, List<AlarmRuleItem> alarmRuleItems)
+    public AlarmHistory(Guid alarmRuleId, AlertSeverity alertSeverity, bool isNotification, List<AlarmRuleItem> triggerRuleItems)
     {
         AlarmRuleId = alarmRuleId;
         AlertSeverity = alertSeverity;
-        AlarmRuleItems = alarmRuleItems;
+        IsNotification = isNotification;
+        TriggerRuleItems = triggerRuleItems;
         Status = AlarmHistoryStatuses.Pending;
         AlarmCount = 1;
         FirstAlarmTime = DateTimeOffset.Now;
@@ -49,5 +52,10 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
     public void Notification()
     {
         LastNotificationTime = DateTimeOffset.Now;
+    }
+
+    public void SetIsNotification(bool isNotification)
+    {
+        IsNotification = isNotification;
     }
 }

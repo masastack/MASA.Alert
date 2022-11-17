@@ -24,7 +24,7 @@ public class SendAlarmNotificationEventHandler
         var alarm = await _repository.FindAsync(x => x.Id == eto.AlarmHistoryId);
         if (alarm == null) return;
 
-        foreach (var item in alarm.AlarmRuleItems)
+        foreach (var item in alarm.TriggerRuleItems)
         {
             if (!item.IsNotification) continue;
 

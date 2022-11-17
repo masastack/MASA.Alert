@@ -19,12 +19,12 @@ public class SendAlarmRecoveryNotificationEventHandler
     }
 
     [EventHandler]
-    public async Task HandleEventAsync(SendAlarmNotificationEvent eto)
+    public async Task HandleEventAsync(SendAlarmRecoveryNotificationEvent eto)
     {
         var alarm = await _repository.FindAsync(x => x.Id == eto.AlarmHistoryId);
         if (alarm == null) return;
 
-        foreach (var item in alarm.AlarmRuleItems)
+        foreach (var item in alarm.TriggerRuleItems)
         {
             if (!item.IsRecoveryNotification) continue;
 

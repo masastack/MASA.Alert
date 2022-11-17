@@ -21,37 +21,27 @@ public class TriggerAlarmEventHandler
     [EventHandler]
     public async Task HandleEventAsync(TriggerAlarmEvent eto)
     {
+        var alarmRule = await _alarmRulerepository.FindAsync(x => x.Id == eto.AlarmRuleId);
+        if (alarmRule == null) return;
+
         var alarm = await _repository.GetLastAsync(eto.AlarmRuleId);
+        var isNotification = alarmRule.CheckIsNotification(alarm?.LastNotificationTime);
 
         if (alarm == null)
         {
-            alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, eto.AlarmRuleItems);
+            alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
             await _repository.AddAsync(alarm);
         }
         else
         {
             alarm.TriggerAlarm();
+            alarm.SetIsNotification(isNotification);
             await _repository.UpdateAsync(alarm);
         }
-    }
 
-    private async Task HandleNotification(AlarmHistory alarm)
-    {
-        var alarmRule = await _alarmRulerepository.FindAsync(x => x.Id == alarm.Id);
-        if (alarmRule != null)
+        if (alarm.IsNotification)
         {
-            if (alarm.LastNotificationTime == null)
-            {
-                await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm.Id));
-                return;
-            }
-
-            var silenceEndTime = alarmRule.GetSilenceEndTime(alarm.LastNotificationTime.Value);
-
-            if (DateTimeOffset.Now > silenceEndTime)
-            {
-                await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm.Id));
-            }
+            await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm.Id));
         }
     }
 }
