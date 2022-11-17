@@ -5,6 +5,8 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory;
 
 public class AlarmHistoryListViewModel
 {
+    public Guid Id { get; set; }
+
     public AlertSeverity AlertSeverity { get; set; }
 
     public string DisplayName { get; set; } = default!;
@@ -18,6 +20,4 @@ public class AlarmHistoryListViewModel
     public DateTimeOffset LastAlarmTime { get; set; }
 
     public AlarmHistoryStatuses Status { get; set; }
-
-    public AlarmRuleViewModel AlarmRule { get; set; } = new();
 }

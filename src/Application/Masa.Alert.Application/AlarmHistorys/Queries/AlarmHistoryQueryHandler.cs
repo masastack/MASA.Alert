@@ -1,9 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using System.Linq.Expressions;
-using Masa.Alert.Domain.Shared.AlarmHistory;
-
 namespace Masa.Alert.Application.AlarmHistorys.Queries;
 
 public class AlarmHistoryQueryHandler
@@ -13,6 +10,16 @@ public class AlarmHistoryQueryHandler
     public AlarmHistoryQueryHandler(IAlertQueryContext context)
     {
         _context = context;
+    }
+
+    [EventHandler]
+    public async Task GetAsync(GetAlarmRuleQuery query)
+    {
+        var entity = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
+
+        Check.NotNull(entity, "alarmRule not found");
+
+        query.Result = entity.Adapt<AlarmRuleDto>();
     }
 
     [EventHandler]
@@ -26,7 +33,7 @@ public class AlarmHistoryQueryHandler
             PageSize = options.PageSize,
             Sorting = new Dictionary<string, bool>
             {
-                [nameof(AlarmHistory.ModificationTime)] = true
+                [nameof(AlarmHistoryQueryModel.ModificationTime)] = true
             }
         });
 
@@ -48,6 +55,7 @@ public class AlarmHistoryQueryHandler
                 condition = condition.And(x => x.Status >= AlarmHistoryStatuses.ProcessingCompleted);
                 break;
             case AlarmHistorySearchTypes.NoNotice:
+                condition = condition.And(x => !x.IsNotification);
                 break;
             default:
                 break;

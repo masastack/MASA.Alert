@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Application.Contracts.AlarmHistory.Dtos;
+namespace Masa.Alert.Application.Contracts.AlarmHistorys.Dtos;
 
 public class GetAlarmHistoryInputDto : PaginatedOptionsDto
 {
@@ -25,6 +25,17 @@ public class GetAlarmHistoryInputDto : PaginatedOptionsDto
 
     public GetAlarmHistoryInputDto(int pageSize) : base("", 1, pageSize)
     {
+    }
+
+    public GetAlarmHistoryInputDto(string filter, AlarmHistorySearchTypes searchType, AlarmHistorySearchTimeTypes timeType, DateTime? startTime, DateTime? endTime, AlertSeverity alertSeverity, AlarmHistoryStatuses status, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
+    {
+        Filter = filter;
+        SearchType = searchType;
+        TimeType = timeType;
+        StartTime = startTime;
+        EndTime = endTime;
+        AlertSeverity = alertSeverity;
+        Status = status;
     }
 
     public enum AlarmHistorySearchTypes

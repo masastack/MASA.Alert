@@ -17,3 +17,5 @@ global using Masa.Contrib.Service.Caller.Authentication.OpenIdConnect;
 global using Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 global using Masa.Alert.Infrastructure.Ddd.Application.Contracts.Dtos;
 global using Masa.Alert.ApiGateways.Caller.Services.AlarmRules;
+global using Masa.Alert.Application.Contracts.AlarmHistorys.Dtos;
+global using Masa.Alert.ApiGateways.Caller.Services.AlarmHistorys;

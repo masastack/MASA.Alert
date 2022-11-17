@@ -47,6 +47,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
     public void TriggerAlarm()
     {
         AlarmCount++;
+        LastAlarmTime = DateTimeOffset.Now;
     }
 
     public void Notification()

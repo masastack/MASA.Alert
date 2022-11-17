@@ -5,11 +5,13 @@ namespace Masa.Alert.Application.Contracts.QueryModels;
 
 public class AlarmRuleQueryModel
 {
-    public string DisplayName { get; protected set; } = string.Empty;
+    public Guid Id { get; set; }
+
+    public string DisplayName { get; set; } = string.Empty;
 
     public AlarmRuleTypes AlarmRuleType { get; set; }
 
-    public string ProjectIdentity { get; protected set; } = string.Empty;
+    public string ProjectIdentity { get; set; } = string.Empty;
 
-    public string AppIdentity { get; protected set; } = string.Empty;
+    public string AppIdentity { get; set; } = string.Empty;
 }

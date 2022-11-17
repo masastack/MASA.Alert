@@ -6,6 +6,7 @@ namespace Masa.Alert.Application.Contracts.QueryModels;
 public class AlarmHistoryQueryModel
 {
     public Guid Id { get; set; }
+
     public Guid AlarmRuleId { get; set; }
 
     public AlarmRuleQueryModel AlarmRule { get; set; } = new();
@@ -14,7 +15,7 @@ public class AlarmHistoryQueryModel
 
     public DateTimeOffset FirstAlarmTime { get; set; }
 
-    public int AlarmCount { get; protected set; }
+    public int AlarmCount { get; set; }
 
     public DateTimeOffset LastAlarmTime { get; set; }
 
@@ -24,5 +25,7 @@ public class AlarmHistoryQueryModel
 
     public DateTimeOffset? LastNotificationTime { get; set; }
 
-    public List<AlarmRuleItemDto> AlarmRuleItems { get; set; } = new();
+    public bool IsNotification { get; set; }
+
+    public DateTime ModificationTime { get; set; }
 }

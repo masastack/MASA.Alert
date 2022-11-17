@@ -7,11 +7,13 @@ public class AlarmHistoryDto : AuditEntityDto<Guid, Guid>
 {
     public Guid AlarmRuleId { get; set; }
 
+    public AlarmRuleDto AlarmRule { get; set; } = new();
+
     public AlertSeverity AlertSeverity { get; set; }
 
     public DateTimeOffset FirstAlarmTime { get; set; }
 
-    public int AlarmCount { get; protected set; }
+    public int AlarmCount { get; set; }
 
     public DateTimeOffset LastAlarmTime { get; set; }
 
