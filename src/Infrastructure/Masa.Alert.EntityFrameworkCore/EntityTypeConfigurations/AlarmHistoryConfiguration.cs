@@ -8,6 +8,6 @@ public class AlarmHistoryConfiguration : IEntityTypeConfiguration<AlarmHistory>
     public void Configure(EntityTypeBuilder<AlarmHistory> builder)
     {
         builder.ToTable(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
-        builder.Property(x => x.TriggerRuleItems).HasConversion(new JsonValueConverter<List<AlarmRuleItem>>());
+        builder.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItem>>());
     }
 }

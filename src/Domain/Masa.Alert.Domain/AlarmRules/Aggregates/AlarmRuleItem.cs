@@ -18,4 +18,14 @@ public class AlarmRuleItem : Entity<Guid>
     public NotificationConfig RecoveryNotificationConfig { get; protected set; } = new();
 
     public NotificationConfig NotificationConfig { get; protected set; } = new();
+
+    public AlarmRuleItem(string expression, AlertSeverity alertSeverity, bool isRecoveryNotification, bool isNotification, NotificationConfig recoveryNotificationConfig, NotificationConfig notificationConfig)
+    {
+        Expression = expression;
+        AlertSeverity = alertSeverity;
+        IsRecoveryNotification = isRecoveryNotification;
+        IsNotification = isNotification;
+        NotificationConfig = notificationConfig;
+        RecoveryNotificationConfig = recoveryNotificationConfig;
+    }
 }

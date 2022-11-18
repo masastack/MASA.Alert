@@ -34,7 +34,7 @@ public class TriggerAlarmEventHandler
         }
         else
         {
-            alarm.TriggerAlarm();
+            alarm.Update(eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
             alarm.SetIsNotification(isNotification);
             await _repository.UpdateAsync(alarm);
         }

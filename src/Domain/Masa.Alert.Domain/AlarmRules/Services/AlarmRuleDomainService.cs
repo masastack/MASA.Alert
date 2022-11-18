@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Alert.Domain.AlarmRules.Aggregates;
+
 namespace Masa.Alert.Domain.AlarmRules.Services;
 
 public class AlarmRuleDomainService : DomainService
@@ -32,19 +34,17 @@ public class AlarmRuleDomainService : DomainService
 
     public async Task CheckRuleAsync(AlarmRule alarmRule, ConcurrentDictionary<string, long> aggregateResult)
     {
-        var triggerRuleItems = new List<AlarmRuleItem>();
+        var ruleResult = new List<RuleResultItem>();
 
         foreach (var item in alarmRule.Items)
         {
+            var ruleResultItem = new RuleResultItem(item.Expression,item.AlertSeverity,item.IsRecoveryNotification,item.IsNotification, item.RecoveryNotificationConfig, item.NotificationConfig);
             var result = await _rulesEngineClient.ExecuteAsync(item.Expression, aggregateResult);
-
-            if (result[0].IsValid)
-            {
-                triggerRuleItems.Add(item);
-            }
+            ruleResultItem.IsValid = result[0].IsValid;
+            ruleResult.Add(ruleResultItem);
         }
 
-        alarmRule.Check(aggregateResult, triggerRuleItems);
+        alarmRule.Check(aggregateResult, ruleResult);
         await _repository.UpdateAsync(alarmRule);
     }
 }
