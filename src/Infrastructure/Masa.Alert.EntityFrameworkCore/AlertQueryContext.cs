@@ -16,20 +16,17 @@ public class AlertQueryContext : MasaDbContext, IAlertQueryContext
     {
         builder.Entity<AlarmRuleQueryModel>(eb =>
         {
-            eb.HasNoKey();
             eb.ToView(AlertConsts.DbTablePrefix + "AlarmRules", AlertConsts.DbSchema);
         });
 
         builder.Entity<AlarmRuleRecordQueryModel>(eb =>
         {
-            eb.HasNoKey();
             eb.ToView(AlertConsts.DbTablePrefix + "AlarmRuleRecords", AlertConsts.DbSchema);
             eb.Property(x => x.AggregateResult).HasConversion(new JsonValueConverter<ConcurrentDictionary<string, long>>());
         });
 
         builder.Entity<AlarmHistoryQueryModel>(eb =>
         {
-            eb.HasNoKey();
             eb.ToView(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
             eb.HasOne(x => x.AlarmRule);
         });

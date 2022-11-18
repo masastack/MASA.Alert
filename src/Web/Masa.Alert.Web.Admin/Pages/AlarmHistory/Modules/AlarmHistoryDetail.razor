@@ -3,7 +3,7 @@
     <span>@AlarmHistory.AlarmRule.ProjectIdentity</span>
     <span class="ml-4">@AlarmHistory.AlarmRule.AppIdentity</span>
 </div>
-<AlarmPreviewChart AlarmRule="AlarmHistory.AlarmRule" ChartYAxisUnit="@AlarmHistory.AlarmRule.ChartYAxisUnit" />
+<AlarmChart AlarmHistory="AlarmHistory" />
 <DefaultSubTitle>@T("CheckFrequency")</DefaultSubTitle>
 <div class="d-flex justify-space-between">
     <span class="regular--text body2">
@@ -58,7 +58,7 @@
         <div class="regular--text body2">
             <div>@item.Expression</div>
             <div class="d-flex">
-                <span class="my-auto">@(item.IsNotification ? item.NotificationConfig.MessageTemplateName : T("NoNotice"))</span>
+                <span class="my-auto">@(item.IsNotification ? item.NotificationConfig.TemplateName : T("NoNotice"))</span>
                 <MSwitch Value="item.IsRecoveryNotification" Inset Class="label my-auto ml-6" Label="@T("RecoveryNotification")" />
             </div>
         </div>

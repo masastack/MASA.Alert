@@ -9,6 +9,8 @@ public class NotificationConfig
 
     public string TemplateCode { get; set; } = default!;
 
+    public string TemplateName { get; set; } = default!;
+
     public int ChannelType { get; set; }
 
     public List<Guid> Receivers { get; set; } = new();

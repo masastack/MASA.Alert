@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Masa.Alert.Application.AlarmHistorys.Queries;
 
 public class AlarmHistoryQueryHandler
@@ -13,13 +15,13 @@ public class AlarmHistoryQueryHandler
     }
 
     [EventHandler]
-    public async Task GetAsync(GetAlarmRuleQuery query)
+    public async Task GetAsync(GetAlarmHistoryQuery query)
     {
-        var entity = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
+        var entity = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).FirstOrDefaultAsync(x => x.Id == query.AlarmHistoryId);
 
-        Check.NotNull(entity, "alarmRule not found");
+        Check.NotNull(entity, "alarmHistory not found");
 
-        query.Result = entity.Adapt<AlarmRuleDto>();
+        query.Result = entity.Adapt<AlarmHistoryDto>();
     }
 
     [EventHandler]

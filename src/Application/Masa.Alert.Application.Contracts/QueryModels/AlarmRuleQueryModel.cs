@@ -14,4 +14,16 @@ public class AlarmRuleQueryModel
     public string ProjectIdentity { get; set; } = string.Empty;
 
     public string AppIdentity { get; set; } = string.Empty;
+
+    public bool IsEnabled { get; set; }
+
+    public string ChartYAxisUnit { get; set; } = string.Empty;
+
+    public int CheckFrequencyIntervalTime { get; set; }
+
+    public TimeTypes CheckFrequencyIntervalTimeType { get; set; }
+
+    public string CheckFrequencyCron { get; set; } = string.Empty;
+
+    public AlarmCheckFrequencyTypes CheckFrequencyType { get; set; }
 }

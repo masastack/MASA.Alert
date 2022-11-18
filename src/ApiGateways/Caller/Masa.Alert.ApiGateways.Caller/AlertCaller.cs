@@ -10,9 +10,11 @@ public class AlertCaller : DaprCallerBase
 
     private AlarmRuleService? _alarmRuleService;
     private AlarmHistoryService? _alarmHistoryService;
+    private AlarmRuleRecordService? _alarmRuleRecordService;
 
     public AlarmRuleService AlarmRuleService => _alarmRuleService ??= new(Caller);
     public AlarmHistoryService AlarmHistoryService => _alarmHistoryService ??= new(Caller);
+    public AlarmRuleRecordService AlarmRuleRecordService => _alarmRuleRecordService ??= new(Caller);
 
     public AlertCaller(IServiceProvider serviceProvider
         , TokenProvider tokenProvider)

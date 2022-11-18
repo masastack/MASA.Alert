@@ -1,0 +1,114 @@
+﻿@inherits AdminCompontentBase
+<MRow NoGutters Justify="JustifyTypes.SpaceBetween" Align="AlignTypes.Center">
+    <MCol>
+        <span class="emphasis--text btn">@AlarmHistory.AlarmRule.DisplayName</span>
+        <span class="emphasis--text caption">(@AlarmHistory.AlarmRule.ChartYAxisUnit)</span>
+    </MCol>
+    <MCol>
+        <SDateTimeRangePicker StartTime="AlarmHistory.FirstAlarmTime.DateTime" EndTime="AlarmHistory.LastAlarmTime.DateTime" Style="border:none" />
+    </MCol>
+</MRow>
+<div class="d-flex align-center justify-center">
+    <MECharts Option="_option" Width="Width" Height="Height">
+    </MECharts>
+</div>
+
+@code {
+    [Parameter]
+    public StringNumber Width { get; set; } = 761;
+
+    [Parameter]
+    public StringNumber Height { get; set; } = 219;
+
+    [EditorRequired]
+    [Parameter]
+    public AlarmHistoryViewModel AlarmHistory { get; set; } = new();
+
+    protected override string? PageName { get; set; } = "AlarmChart";
+
+    private object _option = new();
+
+    AlarmRuleRecordService AlarmRuleRecordService => AlertCaller.AlarmRuleRecordService;
+
+    protected override async void OnParametersSet()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        var queryParam = new GetAlarmRuleRecordInputDto(10)
+            {
+                StartTime = AlarmHistory.FirstAlarmTime.UtcDateTime,
+                EndTime = AlarmHistory.LastAlarmTime.UtcDateTime
+            };
+
+        var dtos = (await AlarmRuleRecordService.GetListAsync(queryParam));
+        var paginatedList = dtos?.Adapt<PaginatedListDto<AlarmRuleRecordListViewModel>>() ?? new();
+        var records = paginatedList.Result;
+        var legendData = new List<string>();
+
+        foreach (var item in records)
+        {
+            foreach (var key in item.AggregateResult.Keys)
+            {
+                if (!legendData.Contains(key))
+                {
+                    legendData.Add(key);
+                }
+            }
+        }
+
+        var seriesData = legendData.Select(key =>
+        {
+            var data = records.Select(x =>
+            {
+                var val = x.AggregateResult.FirstOrDefault(x => x.Key == key).Value;
+                return new List<long> { new DateTimeOffset(x.CreationTime).ToUnixTimeMilliseconds(), val };
+            });
+
+            return new
+            {
+                Name = key,
+                Type = "line",
+                Stack = "Total",
+                Data = data
+            };
+        });
+
+        RenderCharts(legendData, seriesData);
+    }
+
+    private void RenderCharts(List<string> legendData, object seriesData)
+    {
+        _option = new
+        {
+            Tooltip = new
+            {
+                Trigger = "axis",
+            },
+            Legend = new
+            {
+                Left = "3%",
+                Data = legendData
+            },
+            Grid = new
+            {
+                Left = "3%",
+                Right = "4%",
+                Bottom = "3%",
+                ContainLabel = true
+            },
+            XAxis = new
+            {
+                Type = "time",
+                BoundaryGap = false
+            },
+            YAxis = new
+            {
+                Type = "value"
+            },
+            Series = seriesData
+        };
+    }
+}

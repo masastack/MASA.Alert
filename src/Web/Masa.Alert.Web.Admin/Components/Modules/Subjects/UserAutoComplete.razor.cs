@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.StackSdks.Mc;
+
 namespace Masa.Alert.Web.Admin.Components.Modules.Subjects;
 
 public partial class UserAutoComplete : AdminCompontentBase
@@ -30,6 +32,19 @@ public partial class UserAutoComplete : AdminCompontentBase
     {
         get => _autocompleteClient ?? throw new Exception("Please inject IAutoCompleteClient");
         set => _autocompleteClient = value;
+    }
+
+    [Inject]
+    public IAuthClient AuthClient { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var users = await AuthClient.UserService.GetUserPortraitsAsync(Value.ToArray());
+            Items = users?.Adapt<List<UserSelectModel>>() ?? new();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     public async Task OnSearchChanged(string search)
