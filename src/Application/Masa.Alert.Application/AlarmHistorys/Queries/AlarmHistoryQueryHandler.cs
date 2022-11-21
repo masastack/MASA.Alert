@@ -17,7 +17,7 @@ public class AlarmHistoryQueryHandler
     {
         var entity = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).FirstOrDefaultAsync(x => x.Id == query.AlarmHistoryId);
 
-        Check.NotNull(entity, "alarmHistory not found");
+        Check.NotNull(entity, "AlarmHistory not found");
 
         query.Result = entity.Adapt<AlarmHistoryDto>();
     }
@@ -62,13 +62,13 @@ public class AlarmHistoryQueryHandler
         }
         if (options.TimeType == AlarmHistorySearchTimeTypes.FirstAlarmTime)
         {
-            condition = condition.And(options.StartTime.HasValue, x => x.FirstAlarmTime >= options.StartTime);
-            condition = condition.And(options.EndTime.HasValue, x => x.FirstAlarmTime <= options.EndTime);
+            condition = condition.And(options.StartTime.HasValue, x => x.FirstAlarmTime >= options.StartTime)
+                .And(options.EndTime.HasValue, x => x.FirstAlarmTime <= options.EndTime);
         }
         if (options.TimeType == AlarmHistorySearchTimeTypes.LastAlarmTime)
         {
-            condition = condition.And(options.StartTime.HasValue, x => x.LastAlarmTime >= options.StartTime);
-            condition = condition.And(options.EndTime.HasValue, x => x.LastAlarmTime <= options.EndTime);
+            condition = condition.And(options.StartTime.HasValue, x => x.LastAlarmTime >= options.StartTime)
+                .And(options.EndTime.HasValue, x => x.LastAlarmTime <= options.EndTime);
         }
         condition = condition.And(options.AlertSeverity != default, x => x.AlertSeverity == options.AlertSeverity);
         condition = condition.And(options.Status != default, x => x.Status == options.Status);
