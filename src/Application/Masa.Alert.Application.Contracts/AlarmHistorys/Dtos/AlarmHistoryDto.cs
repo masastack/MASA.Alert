@@ -23,5 +23,5 @@ public class AlarmHistoryDto : AuditEntityDto<Guid, Guid>
 
     public DateTimeOffset? LastNotificationTime { get; set; }
 
-    public List<AlarmRuleItemDto> TriggerRuleItems { get; set; } = new();
+    public List<RuleResultItemDto> RuleResultItems { get; set; } = new();
 }

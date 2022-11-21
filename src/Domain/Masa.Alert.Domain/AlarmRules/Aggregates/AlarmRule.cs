@@ -32,7 +32,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public virtual IEnumerable<AlarmRuleRecord> AlarmRuleRecords => LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords))!;
 
-    List<AlarmRuleRecord> _alarmRuleRecords = default!;
+    private List<AlarmRuleRecord> _alarmRuleRecords = default!;
 
     private Action<object, string> LazyLoader { get; set; } = default!;
 
@@ -133,7 +133,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
         if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
         {
-            var alertSeverity = ruleResult.Where(x=>x.IsValid).Min(x => x.AlertSeverity);
+            var alertSeverity = ruleResult.Where(x=>x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
 
             AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
         }

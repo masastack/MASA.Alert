@@ -26,9 +26,9 @@ public class SendAlarmRecoveryNotificationEventHandler
 
         foreach (var item in alarm.RuleResultItems)
         {
-            if (!item.IsRecoveryNotification) continue;
+            if (!item.AlarmRuleItem.IsRecoveryNotification) continue;
 
-            var notificationConfig = item.RecoveryNotificationConfig;
+            var notificationConfig = item.AlarmRuleItem.RecoveryNotificationConfig;
             var receivers = await GeReceivers(notificationConfig);
 
             var request = new BuildingBlocks.StackSdks.Mc.Model.SendTemplateMessageModel

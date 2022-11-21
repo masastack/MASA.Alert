@@ -15,7 +15,7 @@ public class AlarmRuleRecordListViewModel
 
     public int ConsecutiveCount { get; set; }
 
-    public List<AlarmRuleItemDto> TriggerRuleItems { get; set; } = new();
+    public List<RuleResultItemViewModel> RuleResultItems { get; set; } = new();
 
     public DateTime CreationTime { get; set; }
 }

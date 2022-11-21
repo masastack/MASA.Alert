@@ -26,9 +26,9 @@ public class SendAlarmNotificationEventHandler
 
         foreach (var item in alarm.RuleResultItems)
         {
-            if (!item.IsNotification) continue;
+            if (!item.AlarmRuleItem.IsNotification) continue;
 
-            var notificationConfig = item.NotificationConfig;
+            var notificationConfig = item.AlarmRuleItem.NotificationConfig;
             var receivers = await GeReceivers(notificationConfig);
 
             var request = new BuildingBlocks.StackSdks.Mc.Model.SendTemplateMessageModel

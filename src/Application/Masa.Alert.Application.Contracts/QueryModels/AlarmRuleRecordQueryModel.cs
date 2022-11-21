@@ -18,4 +18,6 @@ public class AlarmRuleRecordQueryModel
     public DateTime ModificationTime { get; set; }
 
     public DateTime CreationTime { get; set; }
+
+    public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
 }

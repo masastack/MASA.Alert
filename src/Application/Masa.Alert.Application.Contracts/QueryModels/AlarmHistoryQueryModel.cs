@@ -28,4 +28,6 @@ public class AlarmHistoryQueryModel
     public bool IsNotification { get; set; }
 
     public DateTime ModificationTime { get; set; }
+
+    public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
 }

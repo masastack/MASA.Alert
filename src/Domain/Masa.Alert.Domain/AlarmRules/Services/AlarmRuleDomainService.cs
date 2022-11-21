@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Alert.Domain.AlarmRules.Aggregates;
-
 namespace Masa.Alert.Domain.AlarmRules.Services;
 
 public class AlarmRuleDomainService : DomainService
@@ -38,9 +36,8 @@ public class AlarmRuleDomainService : DomainService
 
         foreach (var item in alarmRule.Items)
         {
-            var ruleResultItem = new RuleResultItem(item.Expression,item.AlertSeverity,item.IsRecoveryNotification,item.IsNotification, item.RecoveryNotificationConfig, item.NotificationConfig);
             var result = await _rulesEngineClient.ExecuteAsync(item.Expression, aggregateResult);
-            ruleResultItem.IsValid = result[0].IsValid;
+            var ruleResultItem = new RuleResultItem(result[0].IsValid, item);
             ruleResult.Add(ruleResultItem);
         }
 

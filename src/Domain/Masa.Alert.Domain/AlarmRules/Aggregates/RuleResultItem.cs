@@ -3,12 +3,21 @@
 
 namespace Masa.Alert.Domain.AlarmRules.Aggregates;
 
-public class RuleResultItem : AlarmRuleItem
+public class RuleResultItem : ValueObject
 {
     public bool IsValid { get; set; }
 
-    public RuleResultItem(string expression, AlertSeverity alertSeverity, bool isRecoveryNotification, bool isNotification, NotificationConfig recoveryNotificationConfig, NotificationConfig notificationConfig):base(expression, alertSeverity, isRecoveryNotification, isNotification, recoveryNotificationConfig, notificationConfig)
-    {
+    public AlarmRuleItem AlarmRuleItem { get; set; }
 
+    public RuleResultItem(bool isValid, AlarmRuleItem alarmRuleItem)
+    {
+        IsValid = isValid;
+        AlarmRuleItem = alarmRuleItem;
+    }
+
+    protected override IEnumerable<object> GetEqualityValues()
+    {
+        yield return IsValid;
+        yield return AlarmRuleItem;
     }
 }

@@ -13,5 +13,5 @@ public class AlarmRuleRecordDto : AuditEntityDto<Guid, Guid>
 
     public int ConsecutiveCount { get; set; }
 
-    public List<AlarmRuleItemDto> TriggerRuleItems { get; set; } = new();
+    public List<RuleResultItemDto> RuleResultItems { get; set; } = new();
 }
