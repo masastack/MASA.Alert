@@ -9,7 +9,7 @@ public class AlarmRuleRecordService : ServiceBase
 
     public AlarmRuleRecordService(ICaller caller) : base(caller)
     {
-        BaseUrl = "api/alarm-rule-record";
+        BaseUrl = "api/v1/AlarmRuleRecords";
     }
 
     public async Task<PaginatedListDto<AlarmRuleRecordDto>> GetListAsync(GetAlarmRuleRecordInputDto inputDto)

@@ -5,7 +5,7 @@ namespace Masa.Alert.Service.Admin.Services;
 
 public class AlarmRuleService : ServiceBase
 {
-    public AlarmRuleService(IServiceCollection services) : base("api/alarm-rule")
+    public AlarmRuleService(IServiceCollection services) : base()
     {
 
     }
