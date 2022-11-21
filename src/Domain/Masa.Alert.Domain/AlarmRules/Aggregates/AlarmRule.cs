@@ -97,11 +97,6 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         WhereExpression = whereExpression;
     }
 
-    public void SetTriggerRules(ICollection<AlarmRuleItem> items)
-    {
-        Items = items;
-    }
-
     public void SetAdvancedConfig(int continuousTriggerThreshold, SilenceCycle silenceCycle)
     {
         ContinuousTriggerThreshold = continuousTriggerThreshold;
@@ -167,15 +162,6 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         }
 
         return null;
-    }
-
-    public DateTime? GetStartTime(DateTime checkTime)
-    {
-        var intervalTime = CheckFrequency.FixedInterval.GetIntervalTime();
-
-        if (intervalTime == null) return null;
-
-        return checkTime.Add(intervalTime.Value);
     }
 
     public DateTimeOffset? GetSilenceEndTime(DateTimeOffset lastNotificationTime)
