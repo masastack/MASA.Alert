@@ -94,19 +94,11 @@
         {
             timeList.Add(time.ToUnixTimeMilliseconds());
 
-            switch (_alarmRule.CheckFrequency.FixedInterval.IntervalTimeType)
+            var intervalTime = _alarmRule.CheckFrequency.FixedInterval.GetIntervalTime();
+
+            if (intervalTime.HasValue)
             {
-                case TimeTypes.Minute:
-                    time = time.AddMinutes(_alarmRule.CheckFrequency.FixedInterval.IntervalTime);
-                    break;
-                case TimeTypes.Hour:
-                    time = time.AddHours(_alarmRule.CheckFrequency.FixedInterval.IntervalTime);
-                    break;
-                case TimeTypes.Day:
-                    time = time.AddDays(_alarmRule.CheckFrequency.FixedInterval.IntervalTime);
-                    break;
-                default:
-                    break;
+                time = time.Add(intervalTime.Value);
             }
         }
         return timeList;

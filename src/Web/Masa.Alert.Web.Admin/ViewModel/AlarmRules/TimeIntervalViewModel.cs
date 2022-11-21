@@ -8,4 +8,19 @@ public class TimeIntervalViewModel
     public int IntervalTime { get; set; } = 15;
 
     public TimeTypes IntervalTimeType { get; set; } = TimeTypes.Minute;
+
+    public TimeSpan? GetIntervalTime()
+    {
+        switch (IntervalTimeType)
+        {
+            case TimeTypes.Minute:
+                return TimeSpan.FromMinutes(IntervalTime);
+            case TimeTypes.Hour:
+                return TimeSpan.FromHours(IntervalTime);
+            case TimeTypes.Day:
+                return TimeSpan.FromDays(IntervalTime);
+            default:
+                return null;
+        }
+    }
 }
