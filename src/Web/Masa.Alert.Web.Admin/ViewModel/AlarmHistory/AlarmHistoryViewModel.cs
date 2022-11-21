@@ -17,7 +17,7 @@ public class AlarmHistoryViewModel
 
     public DateTimeOffset LastAlarmTime { get; set; }
 
-    public AlarmHistoryStatuses Status { get; set; }
+    public AlarmHistoryHandleStatuses HandleStatus { get; set; }
 
     public AlarmRuleViewModel AlarmRule { get; set; } = new();
 
@@ -26,4 +26,5 @@ public class AlarmHistoryViewModel
     public List<AlarmHistoryStatusCommitViewModel> StatusCommits { get; set; } = new();
 
     public AlarmHandleViewModel Handle { get; set; } = new();
+    //public AlarmHandleNotification HandleNotification { get; set; } = new();
 }

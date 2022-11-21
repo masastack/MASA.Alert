@@ -196,7 +196,7 @@
     "FirstAlarmTime": "初次告警时间",
     "AlarmCount": "告警次数",
     "LastAlarmTime": "最近告警时间",
-    "Status": "状态",
+    "HandleStatus": "状态",
     "ViewAlarmHistory": "查看告警",
     "AlarmDetails": "告警详情",
     "HandleAlarm": "处理告警",

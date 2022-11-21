@@ -33,6 +33,7 @@
                                                 <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label mt-8 ml-4" Label="@T("SendNotificationAfterProcessing")" />
                                                 @if (_model.Handle.IsHandleNotice)
                                                 {
+                                                    @*<NotificationConfig @bind-value="item.NotificationConfig"></NotificationConfig>*@
                                                     <SSelect Class="ml-2 mt-8 fill flex-none" @bind-Value="_model.Handle.MessageTemplateId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MessageTemplate")" />
                                                 }
                                             </div>

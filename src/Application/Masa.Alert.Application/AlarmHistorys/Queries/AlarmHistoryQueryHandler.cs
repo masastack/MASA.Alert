@@ -52,7 +52,7 @@ public class AlarmHistoryQueryHandler
                 condition = condition.And(x => !x.RecoveryTime.HasValue);
                 break;
             case AlarmHistorySearchTypes.Processed:
-                condition = condition.And(x => x.Status >= AlarmHistoryStatuses.ProcessingCompleted);
+                condition = condition.And(x => x.HandleStatus >= AlarmHistoryHandleStatuses.ProcessingCompleted);
                 break;
             case AlarmHistorySearchTypes.NoNotice:
                 condition = condition.And(x => !x.IsNotification);
@@ -71,7 +71,7 @@ public class AlarmHistoryQueryHandler
             condition = condition.And(options.EndTime.HasValue, x => x.LastAlarmTime <= options.EndTime);
         }
         condition = condition.And(options.AlertSeverity != default, x => x.AlertSeverity == options.AlertSeverity);
-        condition = condition.And(options.Status != default, x => x.Status == options.Status);
+        condition = condition.And(options.HandleStatus != default, x => x.HandleStatus == options.HandleStatus);
         return await Task.FromResult(condition); ;
     }
 }

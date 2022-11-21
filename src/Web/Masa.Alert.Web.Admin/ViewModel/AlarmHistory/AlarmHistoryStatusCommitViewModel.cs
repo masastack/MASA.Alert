@@ -5,7 +5,7 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory;
 
 public class AlarmHistoryStatusCommitViewModel
 {
-    public AlarmHistoryStatuses Status { get; set; }
+    public AlarmHistoryHandleStatuses Status { get; set; }
 
     public string Operator { get; set; } = default!;
 

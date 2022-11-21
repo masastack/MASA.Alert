@@ -17,11 +17,15 @@ public class AlarmHistoryDto : AuditEntityDto<Guid, Guid>
 
     public DateTimeOffset LastAlarmTime { get; set; }
 
-    public AlarmHistoryStatuses Status { get; set; }
+    public AlarmHistoryHandleStatuses HandleStatus { get; set; }
 
     public DateTimeOffset? RecoveryTime { get; set; }
 
     public DateTimeOffset? LastNotificationTime { get; set; }
 
     public List<RuleResultItemDto> RuleResultItems { get; set; } = new();
+
+    public AlarmHandleDto Handle { get; set; } = new();
+
+    public List<AlarmHandleStatusCommitDto> HandleStatusCommits { get; set; } = new();
 }

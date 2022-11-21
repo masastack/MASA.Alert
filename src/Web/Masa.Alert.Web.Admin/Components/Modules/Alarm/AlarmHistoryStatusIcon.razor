@@ -1,21 +1,21 @@
 ﻿@switch (Value)
 {
-    case AlarmHistoryStatuses.Pending:
+    case AlarmHistoryHandleStatuses.Pending:
         <MIcon Size=@Size Dark Color="remind">
             mdi-timer-check-outline
         </MIcon>
         break;
-    case AlarmHistoryStatuses.InProcess:
+    case AlarmHistoryHandleStatuses.InProcess:
         <MIcon Size=@Size Dark Color="primary">
             mdi-chart-donut
         </MIcon>
         break;
-    case AlarmHistoryStatuses.ProcessingCompleted:
+    case AlarmHistoryHandleStatuses.ProcessingCompleted:
         <MIcon Size=@Size Dark Color="success">
             mdi-check
         </MIcon>
         break;
-    case AlarmHistoryStatuses.Notified:
+    case AlarmHistoryHandleStatuses.Notified:
         <MIcon Size=@Size Dark Color="info">
             mdi-message-text
         </MIcon>
@@ -24,7 +24,7 @@
 
 @code {
     [Parameter]
-    public AlarmHistoryStatuses Value { get; set; }
+    public AlarmHistoryHandleStatuses Value { get; set; }
 
     [Parameter]
     public StringNumber? Size { get; set; } = 16;

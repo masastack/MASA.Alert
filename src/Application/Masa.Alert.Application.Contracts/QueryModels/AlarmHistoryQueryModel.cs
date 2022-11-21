@@ -19,7 +19,7 @@ public class AlarmHistoryQueryModel
 
     public DateTimeOffset LastAlarmTime { get; set; }
 
-    public AlarmHistoryStatuses Status { get; set; }
+    public AlarmHistoryHandleStatuses HandleStatus { get; set; }
 
     public DateTimeOffset? RecoveryTime { get; set; }
 
@@ -30,4 +30,8 @@ public class AlarmHistoryQueryModel
     public DateTime ModificationTime { get; set; }
 
     public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
+
+    public AlarmHandleQueryModel Handle { get; set; } = new();
+
+    public List<AlarmHandleStatusCommitQueryModel> HandleStatusCommits { get; set; } = new();
 }

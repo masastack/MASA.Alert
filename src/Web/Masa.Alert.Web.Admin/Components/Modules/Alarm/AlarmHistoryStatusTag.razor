@@ -2,7 +2,7 @@
 <span class="@($"pa-2 rounded-4 subtitle2 {Class}")">@T(Value.ToString())</span>
 @code {
     [Parameter]
-    public AlarmHistoryStatuses Value { get; set; }
+    public AlarmHistoryHandleStatuses Value { get; set; }
 
     public string Class { get; set; }
 
@@ -10,10 +10,10 @@
     {
         switch (Value)
         {
-            case AlarmHistoryStatuses.Pending:
+            case AlarmHistoryHandleStatuses.Pending:
                 Class = "warning--text warning-lighten";
                 break;
-            case AlarmHistoryStatuses.InProcess:
+            case AlarmHistoryHandleStatuses.InProcess:
                 Class = "yellow-lighten";
                 break;
             default:

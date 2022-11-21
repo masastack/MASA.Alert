@@ -4,6 +4,7 @@ using Masa.Alert.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Masa.Alert.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AlertDbContext))]
-    partial class AlertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221121064756_AlarmHandleStatusCommit")]
+    partial class AlarmHandleStatusCommit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,7 +252,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
             modelBuilder.Entity("Masa.Alert.Domain.AlarmHistorys.Aggregates.AlarmHistory", b =>
                 {
-                    b.OwnsOne("Masa.Alert.Domain.AlarmHistorys.Aggregates.AlarmHandle", "Handle", b1 =>
+                    b.OwnsOne("Masa.Alert.Domain.AlarmHistorys.Aggregates.AlarmHandleNotification", "HandleNotification", b1 =>
                         {
                             b1.Property<Guid>("AlarmHistoryId")
                                 .HasColumnType("uniqueidentifier");
@@ -273,7 +275,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
                             b1.HasKey("AlarmHistoryId");
 
-                            b1.ToTable("AlarmHandles", "alert");
+                            b1.ToTable("HandleNotifications", "alert");
 
                             b1.WithOwner()
                                 .HasForeignKey("AlarmHistoryId");
@@ -315,7 +317,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                                 .HasForeignKey("AlarmHistoryId");
                         });
 
-                    b.Navigation("Handle")
+                    b.Navigation("HandleNotification")
                         .IsRequired();
 
                     b.Navigation("HandleStatusCommits");

@@ -32,39 +32,39 @@
         StatusCommits = new List<AlarmHistoryStatusCommitViewModel>
         {
             new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryStatuses.Notified,
+                Status = AlarmHistoryHandleStatuses.Notified,
                 Remarks = "" ,
                 CreationTime =DateTime.Now
             },
             new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryStatuses.ProcessingCompleted,
+                Status = AlarmHistoryHandleStatuses.ProcessingCompleted,
                 Remarks = "李冬瓜分配处理人：李西瓜" ,
                 CreationTime =DateTime.Now
             },
             new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryStatuses.InProcess,
+                Status = AlarmHistoryHandleStatuses.InProcess,
                 Remarks = "李西瓜" ,
                 CreationTime =DateTime.Now
             },
             new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryStatuses.Pending,
+                Status = AlarmHistoryHandleStatuses.Pending,
                 Remarks = "库存不足处理完成的通知" ,
                 CreationTime =DateTime.Now
             }
         };
     }
 
-    private string GetStatusColor(AlarmHistoryStatuses Status)
+    private string GetStatusColor(AlarmHistoryHandleStatuses Status)
     {
         switch (Status)
         {
-            case AlarmHistoryStatuses.Notified:
+            case AlarmHistoryHandleStatuses.Notified:
                 return "info--text";
-            case AlarmHistoryStatuses.ProcessingCompleted:
+            case AlarmHistoryHandleStatuses.ProcessingCompleted:
                 return "success--text";
-            case AlarmHistoryStatuses.InProcess:
+            case AlarmHistoryHandleStatuses.InProcess:
                 return "primary--text";
-            case AlarmHistoryStatuses.Pending:
+            case AlarmHistoryHandleStatuses.Pending:
                 return "remind--text";
             default:
                 return "";
