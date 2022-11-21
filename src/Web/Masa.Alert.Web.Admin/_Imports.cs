@@ -71,3 +71,4 @@ global using Masa.Alert.Contracts.Admin.Tsc;
 global using Masa.BuildingBlocks.StackSdks.Tsc.Model;
 global using Masa.Alert.ApiGateways.Caller.Services.AlarmHistorys;
 global using Masa.Alert.Web.Admin.Components.Modules.Alarm.Model;
+global using Masa.BuildingBlocks.StackSdks.Mc;
