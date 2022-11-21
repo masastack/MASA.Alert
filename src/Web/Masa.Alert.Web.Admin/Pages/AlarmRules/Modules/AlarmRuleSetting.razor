@@ -36,11 +36,11 @@
     </MRow>
     @if (item.IsNotification)
     {
-        <NotificationConfig @bind-value="item.NotificationConfig"></NotificationConfig>
+        <NotificationConfig @bind-value="item.NotificationConfig" PrependText="@T("AlarmNotification")" Class="mt-4 d-flex"></NotificationConfig>
     }
     @if (item.IsRecoveryNotification)
     {
-        <NotificationConfig @bind-value="item.RecoveryNotificationConfig"></NotificationConfig>
+        <NotificationConfig @bind-value="item.RecoveryNotificationConfig" PrependText="@T("RecoveryNotification")" Class="mt-4 d-flex"></NotificationConfig>
     }
 }
 <DefaultTitle Class="mt-6">@T("AdvancedConfiguration")</DefaultTitle>

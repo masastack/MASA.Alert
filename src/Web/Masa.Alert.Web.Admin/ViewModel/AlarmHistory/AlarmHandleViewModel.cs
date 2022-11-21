@@ -5,13 +5,13 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory;
 
 public class AlarmHandleViewModel
 {
-    public string MessageTemplateId { get; set; } = default!;
-
-    public bool? IsThirdParty { get; set; }
+    public bool IsThirdParty { get; set; }
 
     public Guid Handler { get; set; }
 
-    public string WebHook { get; set; } = default!;
+    public Guid WebHookId { get; set; }
 
     public bool IsHandleNotice { get; set; }
+
+    public NotificationConfigViewModel NotificationConfig { get; set; } = new();
 }

@@ -29,9 +29,9 @@ public class AlarmHistoryQueryModel
 
     public DateTime ModificationTime { get; set; }
 
-    public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
+    //public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
 
-    public AlarmHandleQueryModel Handle { get; set; } = new();
+    //public AlarmHandleQueryModel Handle { get; set; } = new();
 
-    public List<AlarmHandleStatusCommitQueryModel> HandleStatusCommits { get; set; } = new();
+    //public List<AlarmHandleStatusCommitQueryModel> HandleStatusCommits { get; set; } = new();
 }

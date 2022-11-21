@@ -31,12 +31,12 @@
                                             <div class="h6 mt-6 regular--text">@T("Processed")</div>
                                             <div class="px-6 full-width">
                                                 <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label mt-8 ml-4" Label="@T("SendNotificationAfterProcessing")" />
-                                                @if (_model.Handle.IsHandleNotice)
-                                                {
-                                                    @*<NotificationConfig @bind-value="item.NotificationConfig"></NotificationConfig>*@
-                                                    <SSelect Class="ml-2 mt-8 fill flex-none" @bind-Value="_model.Handle.MessageTemplateId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MessageTemplate")" />
-                                                }
+                                                
                                             </div>
+                                            @if (_model.Handle.IsHandleNotice)
+                                            {
+                                                <NotificationConfig @bind-value="_model.Handle.NotificationConfig" Class="flex-row align-self-start px-6" ItemClass="mt-4" ItemBackgroundColor="fill-background"></NotificationConfig>
+                                            }
                                         }
                                         else
                                         {
@@ -49,17 +49,17 @@
                                     <MCard Height="500" Width="408" Class="@($"d-flex flex-column justify-center align-center fill-background")" OnClick="()=>_model.Handle.IsThirdParty = true">
                                         @if (_model.Handle.IsThirdParty == true)
                                         {
-                                            <div class="rounded-lg primary mt-6" style="height:100px;width:100px"></div>
-                                            <div class="h6 mt-6 regular--text">@T("ThirdPartyProcessing")</div>
+                                            <div class="rounded-lg primary mt-4" style="height:100px;width:100px"></div>
+                                            <div class="h6 mt-4 regular--text">@T("ThirdPartyProcessing")</div>
                                             <div class="px-6 full-width">
-                                                <SSelect Class="ml-2 mt-8 fill flex-none" @bind-Value="_model.Handle.WebHook" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("WebHook")" />
-                                                <SSelect Class="ml-2 mt-6 fill flex-none" @bind-Value="_model.Handle.Handler" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("Handler")" />
-                                                <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label mt-8 ml-4" Label="@T("SendNotificationAfterProcessing")" />
-                                                @if (_model.Handle.IsHandleNotice)
-                                                {
-                                                    <SSelect Class="ml-2 mt-8 fill flex-none" @bind-Value="_model.Handle.MessageTemplateId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MessageTemplate")" />
-                                                }
+                                                <SSelect Class="ml-2 mt-4 fill flex-none" @bind-Value="_model.Handle.WebHookId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("WebHook")" />
+                                                <SUserAutoComplete Class="ml-2 mt-4 fill flex-none" @bind-Value="_model.Handle.Handler" Label="@T("Handler")" />
+                                                <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label mt-4 ml-4" Label="@T("SendNotificationAfterProcessing")" />
                                             </div>
+                                            @if (_model.Handle.IsHandleNotice)
+                                            {
+                                                <NotificationConfig @bind-value="_model.Handle.NotificationConfig" Class="flex-row align-self-start px-6" ItemClass="mt-4" ItemBackgroundColor="fill-background"></NotificationConfig>
+                                            }
                                         }
                                         else
                                         {

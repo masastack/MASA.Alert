@@ -17,6 +17,9 @@ public partial class UserAutoComplete : AdminCompontentBase
     public int PageSize { get; set; } = 10;
 
     [Parameter]
+    public string BackgroundColor { get; set; } = string.Empty;
+
+    [Parameter]
     public EventCallback<List<Guid>> ValueChanged { get; set; }
 
     public List<UserSelectModel> Items { get; set; } = new();

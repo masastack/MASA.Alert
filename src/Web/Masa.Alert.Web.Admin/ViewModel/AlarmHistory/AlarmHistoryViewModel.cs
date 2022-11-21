@@ -26,5 +26,4 @@ public class AlarmHistoryViewModel
     public List<AlarmHistoryStatusCommitViewModel> StatusCommits { get; set; } = new();
 
     public AlarmHandleViewModel Handle { get; set; } = new();
-    //public AlarmHandleNotification HandleNotification { get; set; } = new();
 }

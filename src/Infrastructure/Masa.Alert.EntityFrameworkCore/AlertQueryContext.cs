@@ -30,9 +30,9 @@ public class AlertQueryContext : MasaDbContext, IAlertQueryContext
         {
             eb.ToView(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
             eb.HasOne(x => x.AlarmRule);
-            eb.HasOne(x => x.Handle);
-            eb.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
-            eb.HasMany(x => x.HandleStatusCommits);
+            //eb.HasOne(x => x.Handle);
+            //eb.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
+            //eb.HasMany(x => x.HandleStatusCommits);
         });
 
         base.OnModelCreatingExecuting(builder);
