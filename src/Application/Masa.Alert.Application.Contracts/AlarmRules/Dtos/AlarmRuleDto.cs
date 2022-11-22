@@ -11,8 +11,6 @@ public class AlarmRuleDto : AuditEntityDto<Guid, Guid>
 
     public string AppIdentity { get; set; } = string.Empty;
 
-    public int Step { get; set; } = 1;
-
     public string ChartYAxisUnit { get; set; } = string.Empty;
 
     public CheckFrequencyDto CheckFrequency { get; set; } = new();

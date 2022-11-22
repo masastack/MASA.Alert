@@ -33,7 +33,6 @@ public class AlarmRuleCommandHandler
 
         Check.NotNull(entity, "alarmRule not found");
 
-        entity.Items.RemoveAll(x => !updateCommand.AlarmRule.Items.Any(y => y.Id == x.Id));
         updateCommand.AlarmRule.Adapt(entity);
 
         await _domainService.ValidateRuleAsync(entity);

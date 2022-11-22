@@ -1,6 +1,8 @@
 // Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Stack.Components.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
@@ -42,6 +44,9 @@ var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationA
 builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
 
 builder.Services.AddMapster();
+var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
+TypeAdapterConfig.GlobalSettings.Scan(assemblies);
+builder.Services.AddAutoInject(assemblies);
 var oidcOptions = builder.Services.GetMasaConfiguration().Local.GetSection("$public.OIDC:AuthClient").Get<MasaOpenIdConnectOptions>();
 builder.Services.AddMasaOpenIdConnect(oidcOptions);
 

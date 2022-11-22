@@ -32,6 +32,19 @@ public partial class UserAutoComplete : AdminCompontentBase
         set => _autocompleteClient = value;
     }
 
+    [Inject]
+    public IAuthClient AuthClient { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var users = await AuthClient.UserService.GetUserPortraitsAsync(Value.ToArray());
+            Items = users?.Adapt<List<UserSelectModel>>() ?? new();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     public async Task OnSearchChanged(string search)
     {
         Search = search;

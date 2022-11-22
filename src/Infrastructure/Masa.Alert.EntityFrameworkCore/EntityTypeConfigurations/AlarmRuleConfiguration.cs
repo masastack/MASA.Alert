@@ -14,28 +14,35 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
         builder.Property(x => x.ChartYAxisUnit).HasMaxLength(128);
         builder.Property(x => x.TotalVariable).HasMaxLength(64);
         builder.Property(x => x.LogMonitorItems).HasConversion(new JsonValueConverter<List<LogMonitorItem>>());
-        builder.HasMany(x => x.Items).WithOne().HasForeignKey(x => x.AlarmRuleId).IsRequired();
-        builder.HasMany(x => x.AlarmRuleRecords).WithOne();
-        builder.OwnsOne(x => x.CheckFrequency, y =>
+        builder.OwnsMany(x => x.Items, b =>
         {
-            y.OwnsOne(z => z.FixedInterval, z =>
+            b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleItems", AlertConsts.DbSchema);
+            b.Property<Guid>("Id").ValueGeneratedOnAdd();
+            b.HasKey("Id");
+            b.Property(x => x.RecoveryNotificationConfig).HasConversion(new JsonValueConverter<NotificationConfig>());
+            b.Property(x => x.NotificationConfig).HasConversion(new JsonValueConverter<NotificationConfig>());
+        });
+        builder.HasMany(x => x.AlarmRuleRecords).WithOne();
+        builder.OwnsOne(x => x.CheckFrequency, b =>
+        {
+            b.OwnsOne(x => x.FixedInterval, b =>
             {
-                z.Property(z => z.IntervalTime).HasColumnName("CheckFrequencyIntervalTime");
-                z.Property(z => z.IntervalTimeType).HasColumnName("CheckFrequencyIntervalTimeType");
+                b.Property(x => x.IntervalTime).HasColumnName("CheckFrequencyIntervalTime");
+                b.Property(x => x.IntervalTimeType).HasColumnName("CheckFrequencyIntervalTimeType");
             });
-            y.Property(z => z.CronExpression).HasMaxLength(128).HasColumnName("CheckFrequencyCron");
-            y.Property(z => z.Type).HasColumnName("CheckFrequencyType");
+            b.Property(x => x.CronExpression).HasMaxLength(128).HasColumnName("CheckFrequencyCron");
+            b.Property(x => x.Type).HasColumnName("CheckFrequencyType");
             
         });
-        builder.OwnsOne(x => x.SilenceCycle, y =>
+        builder.OwnsOne(x => x.SilenceCycle, b =>
         {
-            y.OwnsOne(z => z.TimeInterval, z =>
+            b.OwnsOne(x => x.TimeInterval, b =>
             {
-                z.Property(z => z.IntervalTime).HasColumnName("SilenceCycleIntervalTime");
-                z.Property(z => z.IntervalTimeType).HasColumnName("SilenceCycleIntervalTimeType");
+                b.Property(x => x.IntervalTime).HasColumnName("SilenceCycleIntervalTime");
+                b.Property(x => x.IntervalTimeType).HasColumnName("SilenceCycleIntervalTimeType");
             });
-            y.Property(z => z.SilenceCycleValue).HasColumnName("SilenceCycleValue");
-            y.Property(z => z.Type).HasColumnName("SilenceCycleType");
+            b.Property(x => x.SilenceCycleValue).HasColumnName("SilenceCycleValue");
+            b.Property(x => x.Type).HasColumnName("SilenceCycleType");
         });
     }
 }

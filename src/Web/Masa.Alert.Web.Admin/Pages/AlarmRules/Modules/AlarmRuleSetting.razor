@@ -1,5 +1,4 @@
-﻿@using Masa.Alert.Web.Admin.Components.Modules.Subjects
-@inherits AdminCompontentBase
+﻿@inherits AdminCompontentBase
 
 <DefaultTitle Class="mb-3">@T("BaseInfo")</DefaultTitle>
 <STextField @bind-Value="Model.DisplayName" Label="@T(nameof(Model.DisplayName))" />
@@ -37,33 +36,11 @@
     </MRow>
     @if (item.IsNotification)
     {
-        <MRow NoGutters Class="mt-4">
-            <MCol Md="3">
-                <SSelect @bind-Value="item.NotificationConfig.MessageTemplateCode" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MessageTemplate")">
-                    <PrependContent>
-                        <span class="default--text subtitle2 my-auto">@T("AlarmNotification")</span>
-                    </PrependContent>
-                </SSelect>
-            </MCol>
-            <MCol Md="3">
-                <UserAutoComplete @bind-Value="item.NotificationConfig.Receivers" Class="ml-2"></UserAutoComplete>
-            </MCol>
-        </MRow>
+        <NotificationConfig @bind-value="item.NotificationConfig"></NotificationConfig>
     }
     @if (item.IsRecoveryNotification)
     {
-        <MRow NoGutters Class="mt-4">
-            <MCol Md="3">
-                <SSelect @bind-Value="item.RecoveryNotificationConfig.MessageTemplateCode" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MessageTemplate")">
-                    <PrependContent>
-                        <span class="default--text subtitle2 my-auto">@T("RecoveryNotification")</span>
-                    </PrependContent>
-                </SSelect>
-            </MCol>
-            <MCol Md="3">
-                <UserAutoComplete @bind-Value="item.RecoveryNotificationConfig.Receivers" Class="ml-2"></UserAutoComplete>
-            </MCol>
-        </MRow>
+        <NotificationConfig @bind-value="item.RecoveryNotificationConfig"></NotificationConfig>
     }
 }
 <DefaultTitle Class="mt-6">@T("AdvancedConfiguration")</DefaultTitle>

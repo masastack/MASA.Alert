@@ -25,3 +25,5 @@ global using Microsoft.AspNetCore.Authentication.Cookies;
 global using Masa.Alert.ApiGateways.Caller.Extensions;
 global using Masa.BuildingBlocks.Configuration;
 global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
+global using Masa.Alert.Infrastructure.Common.Extensions;
+global using Masa.Stack.Components.Models;

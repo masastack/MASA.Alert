@@ -32,19 +32,16 @@ public class AlarmRuleDomainService : DomainService
 
     public async Task CheckRuleAsync(AlarmRule alarmRule, ConcurrentDictionary<string, long> aggregateResult)
     {
-        var triggerRuleItems = new List<AlarmRuleItem>();
+        var ruleResult = new List<RuleResultItem>();
 
         foreach (var item in alarmRule.Items)
         {
             var result = await _rulesEngineClient.ExecuteAsync(item.Expression, aggregateResult);
-
-            if (result[0].IsValid)
-            {
-                triggerRuleItems.Add(item);
-            }
+            var ruleResultItem = new RuleResultItem(result[0].IsValid, item);
+            ruleResult.Add(ruleResultItem);
         }
 
-        alarmRule.Check(aggregateResult, triggerRuleItems);
+        alarmRule.Check(aggregateResult, ruleResult);
         await _repository.UpdateAsync(alarmRule);
     }
 }

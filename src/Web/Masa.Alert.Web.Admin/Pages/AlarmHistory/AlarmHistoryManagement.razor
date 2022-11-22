@@ -2,7 +2,7 @@
 @page "/alarmHistory"
 <AutoHeight Overflow>
     <HeaderContent>
-        <SLabeledRadioGroup @bind-Value="@_queryParam.SearchType" Dense Class="default-tab" >
+        <SLabeledRadioGroup @bind-Value="@_queryParam.SearchType" Dense Class="default-tab" OnChange="RefreshAsync">
             @foreach (var item in Enum.GetValues<AlarmHistorySearchTypes>())
             {
                 <SLabeledRadio Value="item" Class="px-6">@T(item.ToString())</SLabeledRadio>
@@ -12,10 +12,10 @@
             @if (advanced)
             {
                 <div class="fold d-inline-flex">
-                    <EnumSimpleSelect TValue="AlarmHistorySearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))" />
-                    <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" />
-                    <EnumSimpleSelect TValue="AlertSeverity" @bind-Value="@_queryParam.AlertSeverity" DefaultText="@T(nameof(_queryParam.AlertSeverity))" Class="ml-6" />
-                    <EnumSimpleSelect TValue="AlarmHistoryStatuses" @bind-Value="@_queryParam.Status" DefaultText="@T(nameof(_queryParam.Status))" Class="ml-6" />
+                    <EnumSimpleSelect TValue="AlarmHistorySearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))" OnChange="RefreshAsync" />
+                    <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" OnChange="RefreshAsync" />
+                    <EnumSimpleSelect TValue="AlertSeverity" @bind-Value="@_queryParam.AlertSeverity" DefaultText="@T(nameof(_queryParam.AlertSeverity))" Class="ml-6" OnChange="RefreshAsync" />
+                    <EnumSimpleSelect TValue="AlarmHistoryStatuses" @bind-Value="@_queryParam.Status" DefaultText="@T(nameof(_queryParam.Status))" Class="ml-6" OnChange="RefreshAsync" />
                 </div>
             }
             <div class="d-flex search-panel-right @(!isAnimate?"full-width":"") @(isAnimate?"animate__animated":"") @(!advanced?"animate__searchOpen":"animate__searchShrink")">
@@ -30,7 +30,7 @@
     </HeaderContent>
     <AutoHeightContent>
         <MCard Class="page-content">
-            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" ItemsPerPage="_queryParam.PageSize" HideDefaultFooter FixedRight Width="@("120%")" Class="d-flex full-height flex-column">
+            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" ItemsPerPage="_queryParam.PageSize" HideDefaultFooter FixedRight Class="d-flex full-height flex-column">
                 <HeaderColContent Context="header">
                     <span class="text-btn">@header.Text</span>
                 </HeaderColContent>

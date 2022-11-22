@@ -5,6 +5,8 @@ namespace Masa.Alert.Application.Contracts.QueryModels;
 
 public class AlarmRuleRecordQueryModel
 {
+    public Guid Id { get; set; }
+
     public Guid AlarmRuleId { get; set; }
 
     public ConcurrentDictionary<string, long> AggregateResult { get; set; } = new();
@@ -12,4 +14,10 @@ public class AlarmRuleRecordQueryModel
     public bool IsTrigger { get; set; }
 
     public int ConsecutiveCount { get; set; }
+
+    public DateTime ModificationTime { get; set; }
+
+    public DateTime CreationTime { get; set; }
+
+    public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
 }

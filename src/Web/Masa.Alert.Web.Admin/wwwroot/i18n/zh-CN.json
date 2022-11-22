@@ -123,6 +123,9 @@
   "Day": "天",
   "AlarmNotification": "告警通知",
   "RecoveryNotification": "恢复通知",
+  "ChannelType": "渠道类型",
+  "Channel": "渠道",
+  "Template": "模板",
   "AlarmRule": {
     "Log": "日志监控",
     "Metric": "指标监控",

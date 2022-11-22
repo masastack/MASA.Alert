@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Domain.AlarmHistorys.Aggregates;
+namespace Masa.Alert.Domain.AlarmHistories.Aggregates;
 
 public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 {
@@ -21,15 +21,18 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     public DateTimeOffset? LastNotificationTime { get; protected set; }
 
-    public List<AlarmRuleItem> AlarmRuleItems { get; protected set; } = new();
+    public bool IsNotification { get; protected set; }
+
+    public List<RuleResultItem> RuleResultItems { get; protected set; } = new();
 
     private AlarmHistory() { }
 
-    public AlarmHistory(Guid alarmRuleId, AlertSeverity alertSeverity, List<AlarmRuleItem> alarmRuleItems)
+    public AlarmHistory(Guid alarmRuleId, AlertSeverity alertSeverity, bool isNotification, List<RuleResultItem> ruleResultItems)
     {
         AlarmRuleId = alarmRuleId;
         AlertSeverity = alertSeverity;
-        AlarmRuleItems = alarmRuleItems;
+        IsNotification = isNotification;
+        RuleResultItems = ruleResultItems;
         Status = AlarmHistoryStatuses.Pending;
         AlarmCount = 1;
         FirstAlarmTime = DateTimeOffset.Now;
@@ -41,13 +44,22 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         RecoveryTime = DateTimeOffset.Now;
     }
 
-    public void TriggerAlarm()
+    public void Update(AlertSeverity alertSeverity, bool isNotification, List<RuleResultItem> ruleResultItems)
     {
+        AlertSeverity = alertSeverity;
+        IsNotification = isNotification;
+        RuleResultItems = ruleResultItems;
         AlarmCount++;
+        LastAlarmTime = DateTimeOffset.Now;
     }
 
     public void Notification()
     {
         LastNotificationTime = DateTimeOffset.Now;
+    }
+
+    public void SetIsNotification(bool isNotification)
+    {
+        IsNotification = isNotification;
     }
 }

@@ -13,11 +13,14 @@ public class AlarmRuleRecord : FullEntity<Guid, Guid>
 
     public int ConsecutiveCount { get; protected set; }
 
-    public AlarmRuleRecord(Guid alarmRuleId, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount)
+    public List<RuleResultItem> RuleResultItems { get; protected set; } = new();
+
+    public AlarmRuleRecord(Guid alarmRuleId, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems)
     {
         AlarmRuleId = alarmRuleId;
         AggregateResult = aggregateResult;
         IsTrigger = isTrigger;
         ConsecutiveCount = consecutiveCount;
+        RuleResultItems = ruleResultItems;
     }
 }

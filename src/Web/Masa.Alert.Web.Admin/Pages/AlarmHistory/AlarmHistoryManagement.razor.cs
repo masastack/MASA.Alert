@@ -13,6 +13,8 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private AlarmHistoryDetailModal? _detailModal;
     private HandleAlarmModal? _handleAlarmModal;
 
+    AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
+
     protected override string? PageName { get; set; } = "AlarmHistory";
 
     protected override void OnInitialized()
@@ -21,7 +23,6 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         {
             new() { Text = T(nameof(AlarmHistoryListViewModel.AlertSeverity)), Value = nameof(AlarmHistoryListViewModel.AlertSeverity),Sortable=false},
             new() { Text = T(nameof(AlarmHistoryListViewModel.DisplayName)), Value = nameof(AlarmHistoryListViewModel.DisplayName),Sortable=false},
-            new() { Text = T(nameof(AlarmHistoryListViewModel.TriggerRules)), Value = nameof(AlarmHistoryListViewModel.TriggerRules), Sortable = false},
             new() { Text = T(nameof(AlarmHistoryListViewModel.FirstAlarmTime)), Value = nameof(AlarmHistoryListViewModel.FirstAlarmTime)},
             new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount)},
             new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime)},
@@ -42,53 +43,10 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private async Task LoadData()
     {
         Loading = true;
-        FillData();
-        await Task.CompletedTask;
+        var dtos = (await AlarmHistoryService.GetListAsync(_queryParam));
+        _entities = dtos?.Adapt<PaginatedListDto<AlarmHistoryListViewModel>>() ?? new();
         Loading = false;
         StateHasChanged();
-    }
-
-    private void FillData()
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            _entities.Result.Add(new AlarmHistoryListViewModel
-            {
-                DisplayName = "库存告警通知库存告警通知库存告警通知",
-                AlertSeverity = (AlertSeverity)(i % 5) + 1,
-                TriggerRules = "商品库存数量小于20 ",
-                FirstAlarmTime = DateTime.Now,
-                AlarmCount = 1,
-                LastAlarmTime = DateTime.Now,
-                Status = (AlarmHistoryStatuses)(i % 2) + 1,
-                AlarmRule = new AlarmRuleViewModel
-                {
-                    DisplayName = "库存告警通知库存告警通知库存...",
-                    ProjectIdentity = "Masa.Auth",
-                    AppIdentity = "masa-auth-web-admin",
-                    IsEnabled = i % 6 != 0,
-                    CheckFrequency = new CheckFrequencyViewModel
-                    {
-                        Type = AlarmCheckFrequencyTypes.FixedInterval,
-                        FixedInterval = new TimeIntervalViewModel
-                        {
-                            IntervalTime = 60,
-                            IntervalTimeType = TimeTypes.Minute,
-                        }
-                    },
-                    LogMonitorItems = new List<LogMonitorItemViewModel>
-                    {
-                        new LogMonitorItemViewModel
-                        {
-                            Field="_goodsid_",
-                            IsOffset=true,
-                            OffsetPeriod=15,
-                            Alias="_goodsidcount_"
-                        }
-                    }
-                },
-            });
-        }
     }
 
     private async Task RefreshAsync()

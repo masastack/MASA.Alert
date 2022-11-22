@@ -1,15 +1,18 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Domain.AlarmHistorys.EventHandler;
+namespace Masa.Alert.Domain.AlarmHistories.EventHandler;
 
 public class RecoveryAlarmEventHandler
 {
     private readonly IAlarmHistoryRepository _repository;
+    private readonly IEventBus _eventBus;
 
-    public RecoveryAlarmEventHandler(IAlarmHistoryRepository repository)
+    public RecoveryAlarmEventHandler(IAlarmHistoryRepository repository
+        , IEventBus eventBus)
     {
         _repository = repository;
+        _eventBus = eventBus;
     }
 
     [EventHandler]
@@ -21,5 +24,7 @@ public class RecoveryAlarmEventHandler
 
         alarm.Recovery();
         await _repository.UpdateAsync(alarm);
+
+        await _eventBus.PublishAsync(new SendAlarmRecoveryNotificationEvent(alarm.Id));
     }
 }

@@ -5,9 +5,13 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules;
 
 public class NotificationConfigViewModel
 {
-    public string MessageTemplateCode { get; set; } = default!;
+    public string ChannelCode { get; set; } = default!;
 
-    public string MessageTemplateName { get; set; } = default!;
+    public string TemplateCode { get; set; } = default!;
+
+    public string TemplateName { get; set; } = default!;
+
+    public int ChannelType { get; set; }
 
     public List<Guid> Receivers { get; set; } = new();
 }

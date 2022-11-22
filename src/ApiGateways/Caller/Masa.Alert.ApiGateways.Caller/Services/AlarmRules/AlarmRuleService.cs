@@ -6,7 +6,7 @@ public class AlarmRuleService : ServiceBase
 
     public AlarmRuleService(ICaller caller) : base(caller)
     {
-        BaseUrl = "api/alarm-rule";
+        BaseUrl = "api/v1/AlarmRules";
     }
 
     public async Task<AlarmRuleDto> GetAsync(Guid id)

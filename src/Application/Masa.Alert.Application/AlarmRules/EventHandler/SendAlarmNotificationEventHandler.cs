@@ -24,11 +24,11 @@ public class SendAlarmNotificationEventHandler
         var alarm = await _repository.FindAsync(x => x.Id == eto.AlarmHistoryId);
         if (alarm == null) return;
 
-        foreach (var item in alarm.AlarmRuleItems)
+        foreach (var item in alarm.RuleResultItems)
         {
-            if (!item.IsNotification) continue;
+            if (!item.AlarmRuleItem.IsNotification) continue;
 
-            var notificationConfig = item.NotificationConfig;
+            var notificationConfig = item.AlarmRuleItem.NotificationConfig;
             var receivers = await GeReceivers(notificationConfig);
 
             var request = new BuildingBlocks.StackSdks.Mc.Model.SendTemplateMessageModel

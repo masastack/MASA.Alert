@@ -6,9 +6,12 @@ namespace Masa.Alert.Web.Admin.Pages.AlarmHistory.Modules;
 public partial class HandleAlarmModal : AdminCompontentBase
 {
     private bool _visible;
+    private Guid _entityId;
     private AlarmHistoryViewModel _model = new();
     private string _tab = "";
     private List<string> _items = new();
+
+    AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
 
     protected override string? PageName { get; set; } = "AlarmHistory";
 
@@ -23,8 +26,14 @@ public partial class HandleAlarmModal : AdminCompontentBase
 
     public async Task OpenModalAsync(AlarmHistoryListViewModel? listModel = null)
     {
+        _entityId = listModel?.Id ?? default;
         _model = listModel?.Adapt<AlarmHistoryViewModel>() ?? new();
-        FillData();
+
+        if (_entityId != default)
+        {
+            await GetFormDataAsync();
+        }
+
         await InvokeAsync(() =>
         {
             _visible = true;
@@ -32,22 +41,10 @@ public partial class HandleAlarmModal : AdminCompontentBase
         });
     }
 
-    private void FillData()
+    private async Task GetFormDataAsync()
     {
-        _model.AlarmRuleItems.Add(new AlarmRuleItemViewModel
-        {
-            AlertSeverity = AlertSeverity.High,
-            Expression = "表达式XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            IsRecoveryNotification = true,
-            IsNotification = true,
-        });
-        _model.AlarmRuleItems.Add(new AlarmRuleItemViewModel
-        {
-            AlertSeverity = AlertSeverity.Low,
-            Expression = "表达式XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            IsRecoveryNotification = true,
-            IsNotification = true,
-        });
+        var dto = await AlarmHistoryService.GetAsync(_entityId) ?? new();
+        _model = dto.Adapt<AlarmHistoryViewModel>();
     }
 
     private void HandleCancel()

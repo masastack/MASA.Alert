@@ -2,7 +2,11 @@
 
 public class AlertQueryContext : MasaDbContext, IAlertQueryContext
 {
+    public IQueryable<AlarmRuleQueryModel> AlarmRuleQueries => Set<AlarmRuleQueryModel>().AsQueryable();
+
     public IQueryable<AlarmRuleRecordQueryModel> AlarmRuleRecordQueries => Set<AlarmRuleRecordQueryModel>().AsQueryable();
+
+    public IQueryable<AlarmHistoryQueryModel> AlarmHistoryQueries => Set<AlarmHistoryQueryModel>().AsQueryable();
 
     public AlertQueryContext(MasaDbContextOptions<AlertQueryContext> options) : base(options)
     {
@@ -10,10 +14,23 @@ public class AlertQueryContext : MasaDbContext, IAlertQueryContext
 
     protected override void OnModelCreatingExecuting(ModelBuilder builder)
     {
-        builder.Entity<AlarmRuleRecordQueryModel>(eb =>
+        builder.Entity<AlarmRuleQueryModel>(b =>
         {
-            eb.HasNoKey();
-            eb.ToView(AlertConsts.DbTablePrefix + "AlarmRuleRecords", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DbTablePrefix + "AlarmRules", AlertConsts.DbSchema);
+        });
+
+        builder.Entity<AlarmRuleRecordQueryModel>(b =>
+        {
+            b.ToView(AlertConsts.DbTablePrefix + "AlarmRuleRecords", AlertConsts.DbSchema);
+            b.Property(x => x.AggregateResult).HasConversion(new JsonValueConverter<ConcurrentDictionary<string, long>>());
+            b.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
+        });
+
+        builder.Entity<AlarmHistoryQueryModel>(b =>
+        {
+            b.ToView(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
+            b.HasOne(x => x.AlarmRule);
+            b.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
         });
 
         base.OnModelCreatingExecuting(builder);
