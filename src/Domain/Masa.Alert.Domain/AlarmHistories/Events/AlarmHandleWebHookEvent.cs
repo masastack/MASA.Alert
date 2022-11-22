@@ -3,6 +3,6 @@
 
 namespace Masa.Alert.Domain.AlarmHistories.Events;
 
-public record AlarmHandleNotifyThirdPartyEvent(AlarmHandle AlarmHandle) : DomainEvent
+public record AlarmHandleWebHookEvent(AlarmHandle AlarmHandle) : DomainEvent
 {
 }

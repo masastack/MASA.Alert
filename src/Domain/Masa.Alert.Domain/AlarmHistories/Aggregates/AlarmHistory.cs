@@ -79,7 +79,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
         if (Handle.WebHookId != default)
         {
-            AddDomainEvent(new AlarmHandleNotifyThirdPartyEvent(Handle));
+            AddDomainEvent(new AlarmHandleWebHookEvent(Handle));
 
             var commit = Handle.HandleAlarm(operatorId, remark);
             _handleStatusCommits.Add(commit);

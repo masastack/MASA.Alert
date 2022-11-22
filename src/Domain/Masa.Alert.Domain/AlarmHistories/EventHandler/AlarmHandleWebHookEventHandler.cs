@@ -3,15 +3,15 @@
 
 namespace Masa.Alert.Domain.AlarmHistories.EventHandler;
 
-public class AlarmHandleNotifyThirdPartyEventHandler
+public class AlarmHandleWebHookEventHandler
 {
-    public AlarmHandleNotifyThirdPartyEventHandler()
+    public AlarmHandleWebHookEventHandler()
     {
 
     }
 
     [EventHandler]
-    public async Task HandleEventAsync(AlarmHandleNotifyThirdPartyEvent eto)
+    public async Task HandleEventAsync(AlarmHandleWebHookEvent eto)
     {
         
     }
