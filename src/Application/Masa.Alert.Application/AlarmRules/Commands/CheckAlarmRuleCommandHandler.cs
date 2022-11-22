@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.StackSdks.Tsc.Contracts.Model.Aggregate;
+
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class CheckAlarmRuleCommandHandler
@@ -52,25 +54,17 @@ public class CheckAlarmRuleCommandHandler
 
         foreach (var item in alarmRule.LogMonitorItems)
         {
-            var fieldMaps = new List<FieldAggregationRequest>
+            var request = new SimpleAggregateRequestDto
             {
-                new FieldAggregationRequest
-                {
-                    Name = item.Field,
-                    Alias = item.Alias,
-                    AggregationType = (AggregationTypes)item.AggregationType
-                }
-            };
-
-            var request = new LogAggregationRequest
-            {
-                FieldMaps = fieldMaps,
-                Query = alarmRule.WhereExpression,
+                Name = item.Field,
+                Alias = item.Alias,
+                Type = (AggregateTypes)item.AggregationType,
+                RawQuery = alarmRule.WhereExpression,
                 Start = startTime.Value,
                 End = checkTime,
             };
 
-            var result = await _tscClient.LogService.GetAggregationAsync(request);
+            var result = await _tscClient.LogService.GetAggregationAsync<object>(request);
             command.AggregateResult.TryAdd(item.Alias, a.Next(100));
         }
     }

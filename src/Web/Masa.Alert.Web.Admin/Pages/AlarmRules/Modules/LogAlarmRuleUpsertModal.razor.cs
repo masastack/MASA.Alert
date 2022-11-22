@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.StackSdks.Tsc.Contracts.Model;
+
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 
 public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
@@ -25,7 +27,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     private AlarmPreviewChartModal? _previewChart;
     private List<ProjectModel> _projectItems = new();
     private List<AppDetailModel> _appItems = new();
-    private List<MappingResponse> _fields = new();
+    private List<MappingResponseDto> _fields = new();
 
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
@@ -36,8 +38,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         await base.OnInitializedAsync();
 
         _projectItems = await PmClient.ProjectService.GetListAsync() ?? new();
-        var fieldsObj = await TscClient.LogService.GetFieldsAsync();
-        _fields = JsonSerializer.Deserialize<List<MappingResponse>>(JsonSerializer.Serialize(fieldsObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+        _fields = (await TscClient.LogService.GetMappingAsync()).ToList();
     }
 
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)

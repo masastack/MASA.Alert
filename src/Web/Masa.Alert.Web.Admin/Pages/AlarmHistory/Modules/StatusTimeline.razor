@@ -23,36 +23,9 @@
 
 @code {
     [Parameter]
-    public List<AlarmHistoryStatusCommitViewModel> StatusCommits { get; set; } = new();
+    public List<AlarmHandleStatusCommitViewModel> StatusCommits { get; set; } = new();
 
     private string _class = string.Empty;
-
-    protected override void OnInitialized()
-    {
-        StatusCommits = new List<AlarmHistoryStatusCommitViewModel>
-        {
-            new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryHandleStatuses.Notified,
-                Remarks = "" ,
-                CreationTime =DateTime.Now
-            },
-            new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryHandleStatuses.ProcessingCompleted,
-                Remarks = "李冬瓜分配处理人：李西瓜" ,
-                CreationTime =DateTime.Now
-            },
-            new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryHandleStatuses.InProcess,
-                Remarks = "李西瓜" ,
-                CreationTime =DateTime.Now
-            },
-            new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryHandleStatuses.Pending,
-                Remarks = "库存不足处理完成的通知" ,
-                CreationTime =DateTime.Now
-            }
-        };
-    }
 
     private string GetStatusColor(AlarmHistoryHandleStatuses Status)
     {

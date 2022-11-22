@@ -3,13 +3,15 @@
 
 namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory;
 
-public class AlarmHistoryStatusCommitViewModel
+public class AlarmHandleStatusCommitViewModel
 {
     public AlarmHistoryHandleStatuses Status { get; set; }
 
-    public string Operator { get; set; } = default!;
+    public DateTimeOffset CreationTime { get; set; }
 
-    public string Remarks { get; set; } = default!;
+    public Guid UserId { get; set; }
 
-    public DateTime CreationTime { get; set; }
+    public string UserName { get; set; } = string.Empty;
+
+    public string Remarks { get; set; } = string.Empty;
 }

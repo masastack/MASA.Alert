@@ -15,7 +15,7 @@ public class AlarmHistoryQueryHandler
     [EventHandler]
     public async Task GetAsync(GetAlarmHistoryQuery query)
     {
-        var entity = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).FirstOrDefaultAsync(x => x.Id == query.AlarmHistoryId);
+        var entity = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).Include(x=>x.HandleStatusCommits).FirstOrDefaultAsync(x => x.Id == query.AlarmHistoryId);
 
         Check.NotNull(entity, "AlarmHistory not found");
 

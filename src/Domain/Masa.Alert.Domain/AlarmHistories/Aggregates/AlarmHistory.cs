@@ -42,12 +42,16 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         AlarmCount = 1;
         FirstAlarmTime = DateTimeOffset.Now;
         LastAlarmTime = DateTimeOffset.Now;
+
+        _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Pending, default, string.Empty));
     }
 
     public void Recovery()
     {
         RecoveryTime = DateTimeOffset.Now;
         Duration = (long)(RecoveryTime - FirstAlarmTime).Value.TotalSeconds;
+
+        AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
     }
 
     public void Update(AlertSeverity alertSeverity, bool isNotification, List<RuleResultItem> ruleResultItems)
@@ -84,7 +88,6 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         {
             Completed(operatorId, remark);
         }
-
     }
 
     public void Completed(Guid operatorId, string remark)

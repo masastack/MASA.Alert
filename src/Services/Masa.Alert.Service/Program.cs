@@ -1,4 +1,14 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Masa.Alert.Domain.NotificationService;
+using Masa.Alert.NotificationService.Provider.Mc;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddObservable(builder.Logging, builder.Configuration);
+builder.Services.AddDaprClient();
+builder.Services.AddMasaConfiguration(configurationBuilder =>
+{
+    configurationBuilder.UseDcc();
+});
 
 if (builder.Environment.IsDevelopment())
 {
@@ -11,12 +21,6 @@ if (builder.Environment.IsDevelopment())
     });
 }
 
-builder.Services.AddObservable(builder.Logging, builder.Configuration);
-builder.Services.AddDaprClient();
-builder.Services.AddMasaConfiguration(configurationBuilder =>
-{
-    configurationBuilder.UseDcc();
-});
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
 builder.Services.AddMasaIdentity(options =>
 {
@@ -47,6 +51,7 @@ builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
+builder.Services.AddScoped<INotificationSender, McNotificationSender>();
 builder.Services.AddSequentialGuidGenerator();
 var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
 builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);

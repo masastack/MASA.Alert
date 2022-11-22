@@ -17,11 +17,8 @@ global using Masa.Alert.Infrastructure.EntityFrameworkCore.Extensions;
 global using Microsoft.EntityFrameworkCore;
 global using static Masa.Alert.Application.Contracts.AlarmRules.Dtos.GetAlarmRuleInputDto;
 global using Masa.Alert.Infrastructure.Common.Extensions;
-global using Masa.BuildingBlocks.StackSdks.Tsc;
 global using System.Xml.Linq;
 global using Masa.Alert.Domain.Shared.AlarmRules;
-global using Masa.BuildingBlocks.StackSdks.Tsc.Enums;
-global using Masa.BuildingBlocks.StackSdks.Tsc.Model;
 global using System.Collections.Concurrent;
 global using Masa.BuildingBlocks.Ddd.Domain.Entities;
 global using Masa.BuildingBlocks.RulesEngine;
@@ -45,3 +42,5 @@ global using static Masa.Alert.Application.Contracts.AlarmHistories.Dtos.GetAlar
 global using Masa.Alert.Domain.AlarmHistories.Events;
 global using Masa.Alert.Application.AlarmRules.Commands;
 global using Masa.BuildingBlocks.Authentication.Identity;
+global using Masa.BuildingBlocks.StackSdks.Tsc;
+global using Masa.Alert.Domain.NotificationService;

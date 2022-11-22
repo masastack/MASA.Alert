@@ -21,7 +21,7 @@ public class AlarmHistoryViewModel
 
     public List<RuleResultItemViewModel> RuleResultItems { get; set; } = new();
 
-    public List<AlarmHistoryStatusCommitViewModel> StatusCommits { get; set; } = new();
+    public List<AlarmHandleStatusCommitViewModel> HandleStatusCommits { get; set; } = new();
 
     public AlarmHandleViewModel Handle { get; set; } = new();
 }

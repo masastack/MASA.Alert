@@ -23,9 +23,9 @@ public class AlertCaller : DaprCallerBase
         _tokenProvider = tokenProvider;
     }
 
-    protected override void ConfigHttpRequestMessage(HttpRequestMessage requestMessage)
+    protected override async Task ConfigHttpRequestMessageAsync(HttpRequestMessage requestMessage)
     {
         requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenProvider.AccessToken);
-        base.ConfigHttpRequestMessage(requestMessage);
+        await base.ConfigHttpRequestMessageAsync(requestMessage);
     }
 }

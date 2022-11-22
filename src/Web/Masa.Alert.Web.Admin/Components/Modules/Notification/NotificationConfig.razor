@@ -46,10 +46,10 @@
     </MRow>
     <MRow Class="mt-6">
         <MCol>
-            <SAutoComplete Items="_templateItems" @bind-Value="Value.TemplateName"
+            <SAutoComplete Items="_templateItems" @bind-Value="Value.TemplateCode"
                            Label="@T("Template")"
                            ItemText="x=>x.DisplayName"
-                           ItemValue="x=>x.DisplayName"
+                           ItemValue="x=>x.Code"
                            Dense
                            Outlined
                            HideDetails="@("auto")"
@@ -127,7 +127,7 @@
 
     private void HandleTemplateSelectedAsync(MessageTemplateModel item)
     {
-        Value.TemplateCode = item.Id.ToString();
+        Value.TemplateCode = item.Code;
         Value.TemplateName = item.DisplayName;
     }
 

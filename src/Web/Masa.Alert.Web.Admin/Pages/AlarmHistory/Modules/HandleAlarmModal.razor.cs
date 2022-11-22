@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Humanizer;
-
 namespace Masa.Alert.Web.Admin.Pages.AlarmHistory.Modules;
 
 public partial class HandleAlarmModal : AdminCompontentBase
@@ -66,6 +64,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
         var inputDto = _model.Handle.Adapt<AlarmHandleDto>();
         await AlarmHistoryService.HandleAsync(_entityId, inputDto);
         Loading = false;
+        _visible = false;
         await SuccessMessageAsync(T("OperationSuccessfulMessage"));
     }
 
