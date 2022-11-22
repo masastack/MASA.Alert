@@ -82,3 +82,5 @@ global using Masa.Alert.Application.Contracts.AlarmHistories.Dtos;
 global using Masa.Alert.Domain.Shared.AlarmHistory;
 global using static Masa.Alert.Application.Contracts.AlarmHistories.Dtos.GetAlarmHistoryInputDto;
 global using Masa.Alert.Application.AlarmHistories.Commands;
+global using Masa.Alert.Domain.NotificationService;
+global using Masa.Alert.NotificationService.Provider.Mc;

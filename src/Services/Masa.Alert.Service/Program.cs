@@ -1,7 +1,4 @@
-﻿using Masa.Alert.Domain.NotificationService;
-using Masa.Alert.NotificationService.Provider.Mc;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddObservable(builder.Logging, builder.Configuration);
 builder.Services.AddDaprClient();
