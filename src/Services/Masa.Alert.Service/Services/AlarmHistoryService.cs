@@ -5,7 +5,7 @@ namespace Masa.Alert.Service.Admin.Services;
 
 public class AlarmHistoryService : ServiceBase
 {
-    public AlarmHistoryService(IServiceCollection services) : base("api/alarm-history")
+    public AlarmHistoryService(IServiceCollection services) : base()
     {
 
     }

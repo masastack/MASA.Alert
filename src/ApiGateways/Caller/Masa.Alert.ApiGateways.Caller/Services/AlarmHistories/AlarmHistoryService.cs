@@ -1,7 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.ApiGateways.Caller.Services.AlarmHistorys;
+namespace Masa.Alert.ApiGateways.Caller.Services.AlarmHistories;
 
 public class AlarmHistoryService : ServiceBase
 {
@@ -9,7 +9,7 @@ public class AlarmHistoryService : ServiceBase
 
     public AlarmHistoryService(ICaller caller) : base(caller)
     {
-        BaseUrl = "api/alarm-history";
+        BaseUrl = "api/v1/AlarmHistories";
     }
 
     public async Task<AlarmHistoryDto> GetAsync(Guid id)

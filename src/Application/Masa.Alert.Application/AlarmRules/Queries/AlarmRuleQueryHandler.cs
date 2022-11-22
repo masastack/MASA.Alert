@@ -20,7 +20,7 @@ public class AlarmRuleQueryHandler
         var queryable = await _repository.WithDetailsAsync();
         var entity = await queryable.FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
 
-        Check.NotNull(entity, "alarmRule not found");
+        Check.NotNull(entity, "AlarmRule not found");
 
         query.Result = entity.Adapt<AlarmRuleDto>();
     }
