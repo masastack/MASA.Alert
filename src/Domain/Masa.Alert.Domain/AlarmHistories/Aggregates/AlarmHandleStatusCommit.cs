@@ -11,16 +11,13 @@ public class AlarmHandleStatusCommit : ValueObject
 
     public Guid UserId { get; protected set; }
 
-    public string UserName { get; protected set; } = string.Empty;
-
     public string Remarks { get; protected set; } = string.Empty;
 
-    public AlarmHandleStatusCommit(AlarmHistoryHandleStatuses status, DateTimeOffset creationTime, Guid userId, string userName,  string remarks)
+    public AlarmHandleStatusCommit(AlarmHistoryHandleStatuses status, Guid userId, string remarks)
     {
         Status = status;
-        CreationTime = creationTime;
+        CreationTime = DateTimeOffset.Now;
         UserId = userId;
-        UserName = userName;
         Remarks = remarks;
     }
 
@@ -29,7 +26,6 @@ public class AlarmHandleStatusCommit : ValueObject
         yield return Status;
         yield return CreationTime;
         yield return UserId;
-        yield return UserName;
         yield return Remarks;
     }
 }

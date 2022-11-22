@@ -4,6 +4,7 @@ using Masa.Alert.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Masa.Alert.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AlertDbContext))]
-    partial class AlertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221122095731_AlarmHandleMappingFields")]
+    partial class AlarmHandleMappingFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,7 +260,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
                             b1.Property<bool>("IsHandleNotice")
                                 .HasColumnType("bit")
-                                .HasColumnName("IsHandleNotice");
+                                .HasColumnName("HandleIsHandleNotice");
 
                             b1.Property<string>("NotificationConfig")
                                 .IsRequired()

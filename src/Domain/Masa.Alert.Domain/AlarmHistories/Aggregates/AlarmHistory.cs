@@ -15,8 +15,6 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     public DateTimeOffset LastAlarmTime { get; protected set; }
 
-    public AlarmHistoryHandleStatuses HandleStatus { get; protected set; }
-
     public DateTimeOffset? RecoveryTime { get; protected set; }
 
     public DateTimeOffset? LastNotificationTime { get; protected set; }
@@ -41,7 +39,6 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         AlertSeverity = alertSeverity;
         IsNotification = isNotification;
         RuleResultItems = ruleResultItems;
-        HandleStatus = AlarmHistoryHandleStatuses.Pending;
         AlarmCount = 1;
         FirstAlarmTime = DateTimeOffset.Now;
         LastAlarmTime = DateTimeOffset.Now;
@@ -70,5 +67,34 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
     public void SetIsNotification(bool isNotification)
     {
         IsNotification = isNotification;
+    }
+
+    public void HandleAlarm(AlarmHandle handle, Guid operatorId, string remark)
+    {
+        Handle = handle;
+
+        if (Handle.WebHookId != default)
+        {
+            AddDomainEvent(new AlarmHandleNotifyThirdPartyEvent(Handle));
+
+            var commit = Handle.HandleAlarm(operatorId, remark);
+            _handleStatusCommits.Add(commit);
+        }
+        else
+        {
+            Completed(operatorId, remark);
+        }
+
+    }
+
+    public void Completed(Guid operatorId, string remark)
+    {
+        var commit = Handle.Completed(operatorId, remark);
+        _handleStatusCommits.Add(commit);
+
+        if (Handle.IsHandleNotice)
+        {
+            AddDomainEvent(new NoticeAlarmHandleEvent(Handle));
+        }
     }
 }

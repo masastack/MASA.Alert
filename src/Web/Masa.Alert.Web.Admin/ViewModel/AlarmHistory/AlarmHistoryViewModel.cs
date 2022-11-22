@@ -17,8 +17,6 @@ public class AlarmHistoryViewModel
 
     public DateTimeOffset LastAlarmTime { get; set; }
 
-    public AlarmHistoryHandleStatuses HandleStatus { get; set; }
-
     public AlarmRuleViewModel AlarmRule { get; set; } = new();
 
     public List<RuleResultItemViewModel> RuleResultItems { get; set; } = new();

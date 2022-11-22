@@ -14,25 +14,30 @@ public class AlertQueryContext : MasaDbContext, IAlertQueryContext
 
     protected override void OnModelCreatingExecuting(ModelBuilder builder)
     {
-        builder.Entity<AlarmRuleQueryModel>(eb =>
+        builder.Entity<AlarmRuleQueryModel>(b =>
         {
-            eb.ToView(AlertConsts.DbTablePrefix + "AlarmRules", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DbTablePrefix + "AlarmRules", AlertConsts.DbSchema);
         });
 
-        builder.Entity<AlarmRuleRecordQueryModel>(eb =>
+        builder.Entity<AlarmRuleRecordQueryModel>(b =>
         {
-            eb.ToView(AlertConsts.DbTablePrefix + "AlarmRuleRecords", AlertConsts.DbSchema);
-            eb.Property(x => x.AggregateResult).HasConversion(new JsonValueConverter<ConcurrentDictionary<string, long>>());
-            eb.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
+            b.ToView(AlertConsts.DbTablePrefix + "AlarmRuleRecords", AlertConsts.DbSchema);
+            b.Property(x => x.AggregateResult).HasConversion(new JsonValueConverter<ConcurrentDictionary<string, long>>());
+            b.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
         });
 
-        builder.Entity<AlarmHistoryQueryModel>(eb =>
+        builder.Entity<AlarmHistoryQueryModel>(b =>
         {
-            eb.ToView(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
-            eb.HasOne(x => x.AlarmRule);
-            //eb.HasOne(x => x.Handle);
-            //eb.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
-            //eb.HasMany(x => x.HandleStatusCommits);
+            b.ToView(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
+            b.HasOne(x => x.AlarmRule);
+            b.Property(x => x.HandleNotificationConfig).HasConversion(new JsonValueConverter<NotificationConfigQueryModel>());
+            b.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
+            b.HasMany(x => x.HandleStatusCommits).WithOne().HasForeignKey(x => x.AlarmHistoryId).IsRequired();
+        });
+
+        builder.Entity<AlarmHandleStatusCommitQueryModel>(b =>
+        {
+            b.ToView(AlertConsts.DbTablePrefix + "AlarmHandleStatusCommits", AlertConsts.DbSchema);
         });
 
         base.OnModelCreatingExecuting(builder);

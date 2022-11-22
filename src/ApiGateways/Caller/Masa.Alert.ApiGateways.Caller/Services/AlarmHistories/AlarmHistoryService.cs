@@ -21,4 +21,9 @@ public class AlarmHistoryService : ServiceBase
     {
         return await GetAsync<GetAlarmHistoryInputDto, PaginatedListDto<AlarmHistoryDto>>(string.Empty, inputDto) ?? new();
     }
+
+    public async Task HandleAsync(Guid id, AlarmHandleDto inputDto)
+    {
+        await PostAsync($"{id}/handle", inputDto);
+    }
 }

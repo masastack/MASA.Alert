@@ -5,13 +5,15 @@ namespace Masa.Alert.Application.Contracts.QueryModels;
 
 public class AlarmHandleStatusCommitQueryModel
 {
+    public Guid Id { get; set; }
+
+    public Guid AlarmHistoryId { get; set; }
+
     public AlarmHistoryHandleStatuses Status { get; set; }
 
     public DateTimeOffset CreationTime { get; set; }
 
     public Guid UserId { get; set; }
-
-    public string UserName { get; set; } = string.Empty;
 
     public string Remarks { get; set; } = string.Empty;
 }

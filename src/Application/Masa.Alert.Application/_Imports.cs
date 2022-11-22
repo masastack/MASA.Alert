@@ -42,3 +42,6 @@ global using Microsoft.EntityFrameworkCore.Query;
 global using Masa.Alert.Application.Contracts.QueryModels;
 global using Masa.Alert.Domain.Shared.AlarmHistory;
 global using static Masa.Alert.Application.Contracts.AlarmHistories.Dtos.GetAlarmHistoryInputDto;
+global using Masa.Alert.Domain.AlarmHistories.Events;
+global using Masa.Alert.Application.AlarmRules.Commands;
+global using Masa.BuildingBlocks.Authentication.Identity;

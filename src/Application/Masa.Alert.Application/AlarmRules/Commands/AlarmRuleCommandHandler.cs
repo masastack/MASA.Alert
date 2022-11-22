@@ -31,7 +31,7 @@ public class AlarmRuleCommandHandler
         var queryable = await _repository.WithDetailsAsync();
         var entity = await queryable.FirstOrDefaultAsync(x => x.Id == updateCommand.AlarmRuleId);
 
-        Check.NotNull(entity, "alarmRule not found");
+        Check.NotNull(entity, "AlarmRule not found");
 
         updateCommand.AlarmRule.Adapt(entity);
 
@@ -45,7 +45,7 @@ public class AlarmRuleCommandHandler
     {
         var entity = await _repository.FindAsync(x => x.Id == createCommand.AlarmRuleId);
 
-        Check.NotNull(entity, "alarmRule not found");
+        Check.NotNull(entity, "AlarmRule not found");
 
         await _repository.RemoveAsync(entity);
     }
@@ -55,7 +55,7 @@ public class AlarmRuleCommandHandler
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmRuleId);
 
-        Check.NotNull(entity, "alarmRule not found");
+        Check.NotNull(entity, "AlarmRule not found");
 
         entity.SetEnabled();
         await _repository.UpdateAsync(entity);
@@ -66,7 +66,7 @@ public class AlarmRuleCommandHandler
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmRuleId);
 
-        Check.NotNull(entity, "alarmRule not found");
+        Check.NotNull(entity, "AlarmRule not found");
 
         entity.SetDisable();
         await _repository.UpdateAsync(entity);

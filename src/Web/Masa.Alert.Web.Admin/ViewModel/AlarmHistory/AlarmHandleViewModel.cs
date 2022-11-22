@@ -5,7 +5,7 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory;
 
 public class AlarmHandleViewModel
 {
-    public bool IsThirdParty { get; set; }
+    public AlarmHistoryHandleStatuses Status { get; set; }
 
     public Guid Handler { get; set; }
 

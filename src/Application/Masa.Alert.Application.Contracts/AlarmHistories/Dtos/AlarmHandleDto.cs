@@ -5,7 +5,7 @@ namespace Masa.Alert.Application.Contracts.AlarmHistories.Dtos;
 
 public class AlarmHandleDto
 {
-    public bool IsThirdParty { get; set; }
+    public AlarmHistoryHandleStatuses Status { get; set; }
 
     public Guid Handler { get; set; }
 

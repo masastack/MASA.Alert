@@ -24,8 +24,8 @@
                         <MContainer Fluid Class="full-height">
                             <MRow Align="AlignTypes.Center" Justify="JustifyTypes.Center" Class="full-height">
                                 <MCol Cols="4">
-                                    <MCard Height="500" Width="408" Class="@($"d-flex flex-column justify-center align-center fill-background")" OnClick="()=>_model.Handle.IsThirdParty = false">
-                                        @if (_model.Handle.IsThirdParty == false)
+                                    <MCard Height="500" Width="408" Class="@($"d-flex flex-column justify-center align-center fill-background")" OnClick="()=>SelectAlarmHandle(false)">
+                                        @if (_isThirdParty == false)
                                         {
                                             <div class="rounded-lg primary mt-6" style="height:100px;width:100px"></div>
                                             <div class="h6 mt-6 regular--text">@T("Processed")</div>
@@ -46,8 +46,8 @@
                                     </MCard>
                                 </MCol>
                                 <MCol Cols="4">
-                                    <MCard Height="500" Width="408" Class="@($"d-flex flex-column justify-center align-center fill-background")" OnClick="()=>_model.Handle.IsThirdParty = true">
-                                        @if (_model.Handle.IsThirdParty == true)
+                                    <MCard Height="500" Width="408" Class="@($"d-flex flex-column justify-center align-center fill-background")" OnClick="()=>SelectAlarmHandle(true)">
+                                        @if (_isThirdParty == true)
                                         {
                                             <div class="rounded-lg primary mt-4" style="height:100px;width:100px"></div>
                                             <div class="h6 mt-4 regular--text">@T("ThirdPartyProcessing")</div>
@@ -75,7 +75,7 @@
                         <div class="d-flex">
                             <SButton Class="btn" Text Color="error">@T("Delete")</SButton>
                             <MSpacer></MSpacer>
-                            <SButton Medium>@T("HandleAlarm")</SButton>
+                            <SButton Medium OnClick="HandleAlarm">@T("HandleAlarm")</SButton>
                         </div>
                     </FooterContent>
                 </AutoHeight>

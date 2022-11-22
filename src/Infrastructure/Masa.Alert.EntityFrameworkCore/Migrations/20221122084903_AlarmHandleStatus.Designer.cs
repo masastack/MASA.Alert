@@ -4,6 +4,7 @@ using Masa.Alert.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Masa.Alert.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AlertDbContext))]
-    partial class AlertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221122084903_AlarmHandleStatus")]
+    partial class AlarmHandleStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,29 +255,24 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<Guid>("Handler")
-                                .HasColumnType("uniqueidentifier")
-                                .HasColumnName("Handler");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<bool>("IsHandleNotice")
-                                .HasColumnType("bit")
-                                .HasColumnName("IsHandleNotice");
+                                .HasColumnType("bit");
 
                             b1.Property<string>("NotificationConfig")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("HandleNotificationConfig");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<int>("Status")
-                                .HasColumnType("int")
-                                .HasColumnName("HandleStatus");
+                                .HasColumnType("int");
 
                             b1.Property<Guid>("WebHookId")
-                                .HasColumnType("uniqueidentifier")
-                                .HasColumnName("WebHookId");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.HasKey("AlarmHistoryId");
 
-                            b1.ToTable("AlarmHistorys", "alert");
+                            b1.ToTable("AlarmHandles", "alert");
 
                             b1.WithOwner()
                                 .HasForeignKey("AlarmHistoryId");

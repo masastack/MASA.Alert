@@ -25,4 +25,11 @@ public class AlarmHistoryService : ServiceBase
         await eventBus.PublishAsync(query);
         return query.Result;
     }
+
+    [RoutePattern("{id}/handle", StartWithBaseUri = true, HttpMethod = "Post")]
+    public async Task HandleAsync(IEventBus eventBus, Guid id, [FromBody] AlarmHandleDto inputDto)
+    {
+        var command = new HandleAlarmHistoryCommand(id, inputDto);
+        await eventBus.PublishAsync(command);
+    }
 }

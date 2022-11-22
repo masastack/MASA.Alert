@@ -19,8 +19,6 @@ public class AlarmHistoryQueryModel
 
     public DateTimeOffset LastAlarmTime { get; set; }
 
-    public AlarmHistoryHandleStatuses HandleStatus { get; set; }
-
     public DateTimeOffset? RecoveryTime { get; set; }
 
     public DateTimeOffset? LastNotificationTime { get; set; }
@@ -29,9 +27,17 @@ public class AlarmHistoryQueryModel
 
     public DateTime ModificationTime { get; set; }
 
-    //public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
+    public Guid Handler { get; set; }
 
-    //public AlarmHandleQueryModel Handle { get; set; } = new();
+    public Guid WebHookId { get;set; }
 
-    //public List<AlarmHandleStatusCommitQueryModel> HandleStatusCommits { get; set; } = new();
+    public AlarmHistoryHandleStatuses HandleStatus { get; set; }
+
+    public bool IsHandleNotice { get; set; }
+
+    public NotificationConfigQueryModel HandleNotificationConfig { get; set; } = new();
+
+    public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
+
+    public List<AlarmHandleStatusCommitQueryModel> HandleStatusCommits { get; set; } = new();
 }
