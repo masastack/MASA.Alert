@@ -1,7 +1,7 @@
 ﻿@inherits AdminCompontentBase
 <div class="@($"{Class}")">
     <div class="@ItemClass" @onclick="HandleTemplateClick">
-        <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly>
+        <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly BackgroundColor="@ItemBackgroundColor">
                 <PrependContent>
                     @if (!string.IsNullOrEmpty(PrependText))
                     {
