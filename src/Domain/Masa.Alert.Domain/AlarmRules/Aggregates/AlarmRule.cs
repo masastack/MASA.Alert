@@ -59,14 +59,10 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         _alarmRuleRecords = new List<AlarmRuleRecord>();
     }
 
-    public void SetEnabled()
+    public AlarmRuleRecord? GetLatest()
     {
-        IsEnabled = true;
-    }
-
-    public void SetDisable()
-    {
-        IsEnabled = false;
+        LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
+        return _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).FirstOrDefault();
     }
 
     public string GetCronExpression()
@@ -82,65 +78,6 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         }
 
         return string.Empty;
-    }
-
-    public void SetChartConfig(string chartYAxisUnit)
-    {
-        ChartYAxisUnit = chartYAxisUnit;
-    }
-
-    public void SetLogMonitorConfig(List<LogMonitorItem> items, bool isGetTotal, string totalVariable, string whereExpression)
-    {
-        LogMonitorItems = items;
-        IsGetTotal = isGetTotal;
-        TotalVariable = totalVariable;
-        WhereExpression = whereExpression;
-    }
-
-    public void SetAdvancedConfig(int continuousTriggerThreshold, SilenceCycle silenceCycle)
-    {
-        ContinuousTriggerThreshold = continuousTriggerThreshold;
-        SilenceCycle = silenceCycle;
-    }
-
-    public AlarmRuleRecord? GetLatest()
-    {
-        LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
-        return _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).FirstOrDefault();
-    }
-
-    public void Check(ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
-    {
-        var latestRecord = GetLatest();
-        var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
-        var isTrigger = ruleResult.Any(x=>x.IsValid);
-
-        if (isTrigger)
-        {
-            consecutiveCount++;
-        }
-        else
-        {
-            consecutiveCount = 0;
-        }
-
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, ruleResult));
-
-        if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
-        {
-            var alertSeverity = ruleResult.Where(x=>x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
-
-            AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
-        }
-        else if (latestRecord != null && latestRecord.IsTrigger)
-        {
-            AddDomainEvent(new RecoveryAlarmEvent(Id));
-        }
-    }
-
-    public void SkipCheck()
-    {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, new List<RuleResultItem>()));
     }
 
     public DateTime? GetStartCheckTime(DateTime checkTime, AlarmRuleRecord? latest)
@@ -217,6 +154,69 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         }
 
         return null;
+    }
+
+    public void SetEnabled()
+    {
+        IsEnabled = true;
+    }
+
+    public void SetDisable()
+    {
+        IsEnabled = false;
+    }
+
+    public void SetChartConfig(string chartYAxisUnit)
+    {
+        ChartYAxisUnit = chartYAxisUnit;
+    }
+
+    public void SetLogMonitorConfig(List<LogMonitorItem> items, bool isGetTotal, string totalVariable, string whereExpression)
+    {
+        LogMonitorItems = items;
+        IsGetTotal = isGetTotal;
+        TotalVariable = totalVariable;
+        WhereExpression = whereExpression;
+    }
+
+    public void SetAdvancedConfig(int continuousTriggerThreshold, SilenceCycle silenceCycle)
+    {
+        ContinuousTriggerThreshold = continuousTriggerThreshold;
+        SilenceCycle = silenceCycle;
+    }
+
+    public void Check(ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
+    {
+        var latestRecord = GetLatest();
+        var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
+        var isTrigger = ruleResult.Any(x=>x.IsValid);
+
+        if (isTrigger)
+        {
+            consecutiveCount++;
+        }
+        else
+        {
+            consecutiveCount = 0;
+        }
+
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, ruleResult));
+
+        if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
+        {
+            var alertSeverity = ruleResult.Where(x=>x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
+
+            AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
+        }
+        else if (latestRecord != null && latestRecord.IsTrigger)
+        {
+            AddDomainEvent(new RecoveryAlarmEvent(Id));
+        }
+    }
+
+    public void SkipCheck()
+    {
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, new List<RuleResultItem>()));
     }
 
     public bool CheckIsNotification(DateTimeOffset? lastNotificationTime)
