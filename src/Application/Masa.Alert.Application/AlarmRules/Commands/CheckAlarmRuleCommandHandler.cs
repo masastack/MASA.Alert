@@ -38,7 +38,6 @@ public class CheckAlarmRuleCommandHandler
         var alarmRule = command.AlarmRule;
         var checkTime = DateTime.Now;
         var latest = alarmRule.GetLatest();
-        command.ConsecutiveCount = latest?.ConsecutiveCount ?? 0;
         var startTime = alarmRule.GetStartCheckTime(checkTime, latest);
 
         if (startTime == null)
@@ -47,8 +46,6 @@ public class CheckAlarmRuleCommandHandler
             command.IsStop = true;
             return;
         }
-
-        Random a = new Random();
 
         foreach (var item in alarmRule.LogMonitorItems)
         {
@@ -63,8 +60,8 @@ public class CheckAlarmRuleCommandHandler
                 End = checkTime,
             };
 
-            var result = await _tscClient.LogService.GetAggregationAsync<object>(request);
-            command.AggregateResult.TryAdd(item.Alias, a.Next(100));
+            var result = await _tscClient.LogService.GetAggregationAsync<long>(request);
+            command.AggregateResult.TryAdd(item.Alias, result);
         }
     }
 

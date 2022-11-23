@@ -95,7 +95,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         if (CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
         {
             var intervalTime = CheckFrequency.FixedInterval.GetIntervalTime();
-            return intervalTime == null ? null : checkTime.Add(intervalTime.Value);
+            return intervalTime == null ? null : checkTime.Add(-intervalTime.Value);
         }
 
         return null;

@@ -11,7 +11,5 @@ public record CheckAlarmRuleCommand(Guid AlarmRuleId) : Command
 
     public ConcurrentDictionary<string, bool> RulesResult { get; set; } = new();
 
-    public int ConsecutiveCount { get; set; }
-
     public bool IsStop { get; set; }
 }
