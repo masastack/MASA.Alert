@@ -11,6 +11,8 @@ public partial class WebHookTestModal : AdminCompontentBase
     private WebHookTestViewModal _model = new();
     private bool _visible;
 
+    WebHookService WebHookService => AlertCaller.WebHookService;
+
     public async Task OpenModalAsync(Guid webHookId)
     {
         _model.WebHookId = webHookId;
@@ -30,7 +32,7 @@ public partial class WebHookTestModal : AdminCompontentBase
     private async Task HandleOkAsync()
     {
         Loading = true;
-  
+        await WebHookService.TestAsync(_model.WebHookId, new WebHookTestDto { Handler = _model.UserId });
         Loading = false;
         await SuccessMessageAsync(T("OperationSuccessfulMessage"));
         _visible = false;

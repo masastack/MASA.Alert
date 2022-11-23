@@ -24,9 +24,13 @@
                 </AutoHeightContent>
                 <FooterContent>
                     <div class="d-flex">
+                        @if (_entityId != default)
+                        {
+                            <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
+                        }
                         <MSpacer></MSpacer>
                         <SButton Medium Outlined　Class="ml-6" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</SButton>
-                        <SButton Medium Class="ml-6">@T("Submit")</SButton>
+                        <SButton Medium Class="ml-6" OnClick="HandleOk">@T("Submit")</SButton>
                     </div>
                 </FooterContent>
             </AutoHeight>
@@ -34,4 +38,4 @@
     </ChildContent>
 </DefaultSheetDialog>
 
-<WebHookTestModal @ref="_testModal"/>
+<WebHookTestModal @ref="_testModal" />

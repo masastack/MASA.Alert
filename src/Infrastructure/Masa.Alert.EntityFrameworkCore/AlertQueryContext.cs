@@ -8,6 +8,8 @@ public class AlertQueryContext : MasaDbContext, IAlertQueryContext
 
     public IQueryable<AlarmHistoryQueryModel> AlarmHistoryQueries => Set<AlarmHistoryQueryModel>().AsQueryable();
 
+    public IQueryable<WebHookQueryModel> WebHookQueries => Set<WebHookQueryModel>().AsQueryable();
+
     public AlertQueryContext(MasaDbContextOptions<AlertQueryContext> options) : base(options)
     {
     }
@@ -38,6 +40,11 @@ public class AlertQueryContext : MasaDbContext, IAlertQueryContext
         builder.Entity<AlarmHandleStatusCommitQueryModel>(b =>
         {
             b.ToView(AlertConsts.DbTablePrefix + "AlarmHandleStatusCommits", AlertConsts.DbSchema);
+        });
+
+        builder.Entity<WebHookQueryModel>(b =>
+        {
+            b.ToView(AlertConsts.DbTablePrefix + "WebHooks", AlertConsts.DbSchema);
         });
 
         base.OnModelCreatingExecuting(builder);

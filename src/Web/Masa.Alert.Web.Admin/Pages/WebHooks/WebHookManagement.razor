@@ -15,7 +15,7 @@
             @foreach (var _entitie in _entities.Result)
             {
                 <MCol Md="3">
-                    <WebHookCard WebHook="_entitie" OnEdit="()=> _upsertModal?.OpenModalAsync()!" OnTest="()=> _testModal?.OpenModalAsync(_entitie.Id)!" />
+                    <WebHookCard WebHook="_entitie" OnEdit="()=> _upsertModal?.OpenModalAsync(_entitie)!" OnTest="()=> _testModal?.OpenModalAsync(_entitie.Id)!" />
                 </MCol>
             }
         </MRow>

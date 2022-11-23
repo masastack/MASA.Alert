@@ -26,6 +26,12 @@ public class AlarmHistoryService : ServiceBase
         return query.Result;
     }
 
+    public async Task DeleteAsync(IEventBus eventBus, Guid id)
+    {
+        var command = new DeleteAlarmHistoryCommand(id);
+        await eventBus.PublishAsync(command);
+    }
+
     [RoutePattern("{id}/handle", StartWithBaseUri = true, HttpMethod = "Post")]
     public async Task HandleAsync(IEventBus eventBus, Guid id, [FromBody] AlarmHandleDto inputDto)
     {

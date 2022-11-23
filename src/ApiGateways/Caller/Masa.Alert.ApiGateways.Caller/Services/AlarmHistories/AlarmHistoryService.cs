@@ -26,4 +26,9 @@ public class AlarmHistoryService : ServiceBase
     {
         await PostAsync($"{id}/handle", inputDto);
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await DeleteAsync($"{id}");
+    }
 }

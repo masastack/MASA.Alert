@@ -12,7 +12,10 @@
                     </AutoHeightContent>
                     <FooterContent>
                         <div class="d-flex">
-                            <SButton Class="btn" Text Color="error">@T("Delete")</SButton>
+                            @if (_entityId != default)
+                            {
+                                <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
+                            }
                             <MSpacer></MSpacer>
                         </div>
                     </FooterContent>
@@ -73,7 +76,10 @@
                     </AutoHeightContent>
                     <FooterContent>
                         <div class="d-flex">
-                            <SButton Class="btn" Text Color="error">@T("Delete")</SButton>
+                            @if (_entityId != default)
+                            {
+                                <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
+                            }
                             <MSpacer></MSpacer>
                             <SButton Medium OnClick="HandleAlarm">@T("HandleAlarm")</SButton>
                         </div>
