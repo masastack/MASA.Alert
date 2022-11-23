@@ -19,3 +19,5 @@ global using Masa.Alert.Infrastructure.Ddd.Application.Contracts.Dtos;
 global using Masa.Alert.ApiGateways.Caller.Services.AlarmRules;
 global using Masa.Alert.Application.Contracts.AlarmHistories.Dtos;
 global using Masa.Alert.ApiGateways.Caller.Services.AlarmHistories;
+global using Masa.Alert.Application.Contracts.WebHooks.Dtos;
+global using Masa.Alert.ApiGateways.Caller.Services.WebHooks;

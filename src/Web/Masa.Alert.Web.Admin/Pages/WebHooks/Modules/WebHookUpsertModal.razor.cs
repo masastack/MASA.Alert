@@ -11,19 +11,34 @@ public partial class WebHookUpsertModal : AdminCompontentBase
     private MForm? _form;
     private WebHookUpsertViewModel _model = new();
     private bool _visible;
-
+    private Guid _entityId;
     private WebHookTestModal? _testModal;
 
     protected override string? PageName { get; set; } = "WebHook";
 
+    WebHookService WebHookService => AlertCaller.WebHookService;
+
     public async Task OpenModalAsync(WebHookListViewModel? listModel = null)
     {
+        _entityId = listModel?.Id ?? default;
         _model = listModel?.Adapt<WebHookUpsertViewModel>() ?? new();
+
+        if (_entityId != default)
+        {
+            await GetFormDataAsync();
+        }
+
         await InvokeAsync(() =>
         {
             _visible = true;
             StateHasChanged();
         });
+    }
+
+    private async Task GetFormDataAsync()
+    {
+        var dto = await WebHookService.GetAsync(_entityId) ?? new();
+        _model = dto.Adapt<WebHookUpsertViewModel>();
     }
 
     private void HandleCancel()
@@ -46,5 +61,59 @@ public partial class WebHookUpsertModal : AdminCompontentBase
     private void HandleRefresh()
     {
         _model.SecretKey = Guid.NewGuid().ToString();
+    }
+
+    private async Task HandleOk()
+    {
+        Check.NotNull(_form, "form not found");
+
+        if (!_form.Validate())
+        {
+            return;
+        }
+
+        Loading = true;
+
+        var inputDto = _model.Adapt<WebHookUpsertDto>();
+
+        if (_entityId == default)
+        {
+            await WebHookService.CreateAsync(inputDto);
+        }
+        else
+        {
+            await WebHookService.UpdateAsync(_entityId, inputDto);
+        }
+
+        Loading = false;
+        _visible = false;
+
+        ResetForm();
+
+        await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
+    }
+
+    private async Task HandleDel()
+    {
+        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+    }
+
+    private async Task DeleteAsync()
+    {
+        Loading = true;
+        await WebHookService.DeleteAsync(_entityId);
+        Loading = false;
+        await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
+        _visible = false;
+        ResetForm();
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
     }
 }

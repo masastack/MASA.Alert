@@ -18,3 +18,6 @@ global using Masa.Alert.Domain.AlarmHistories.Aggregates;
 global using Masa.Alert.Domain.AlarmHistories.Repositories;
 global using Masa.Alert.Application.Contracts.QueryContext;
 global using Masa.Alert.Application.Contracts.QueryModels;
+global using Masa.Alert.Domain.WebHooks;
+global using Masa.Alert.Domain.WebHooks.Aggregates;
+global using Masa.Alert.Domain.WebHooks.Repositories;

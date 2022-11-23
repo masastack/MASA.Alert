@@ -60,7 +60,6 @@ global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 global using Masa.BuildingBlocks.Configuration;
 global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Masa.BuildingBlocks.Authentication.Identity;
-//global using Masa.Alert.Infrastructure.Tsc;
 global using Masa.BuildingBlocks.Data;
 global using System.Net;
 global using System.Text.RegularExpressions;
@@ -84,3 +83,6 @@ global using static Masa.Alert.Application.Contracts.AlarmHistories.Dtos.GetAlar
 global using Masa.Alert.Application.AlarmHistories.Commands;
 global using Masa.Alert.Domain.NotificationService;
 global using Masa.Alert.NotificationService.Provider.Mc;
+global using Masa.Alert.Application.Contracts.WebHooks.Dtos;
+global using Masa.Alert.Application.WebHooks.Commands;
+global using Masa.Alert.Application.WebHooks.Queries;

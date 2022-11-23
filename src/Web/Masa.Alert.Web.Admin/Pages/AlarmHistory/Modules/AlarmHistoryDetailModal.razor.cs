@@ -5,6 +5,9 @@ namespace Masa.Alert.Web.Admin.Pages.AlarmHistory.Modules;
 
 public partial class AlarmHistoryDetailModal : AdminCompontentBase
 {
+    [Parameter]
+    public EventCallback OnOk { get; set; }
+
     private bool _visible;
     private Guid _entityId;
     private AlarmHistoryViewModel _model = new();
@@ -44,5 +47,23 @@ public partial class AlarmHistoryDetailModal : AdminCompontentBase
     private void HandleVisibleChanged(bool val)
     {
         if (!val) HandleCancel();
+    }
+
+    private async Task HandleDel()
+    {
+        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+    }
+
+    private async Task DeleteAsync()
+    {
+        Loading = true;
+        await AlarmHistoryService.DeleteAsync(_entityId);
+        Loading = false;
+        await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
+        _visible = false;
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
     }
 }

@@ -28,6 +28,10 @@
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">
+                                    @if (_entityId != default)
+                                    {
+                                        <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
+                                    }
                                     <MSpacer></MSpacer>
                                     <SButton Medium OnClick="()=>_model.Step=2">@T("NextStep")</SButton>
                                 </div>
@@ -37,12 +41,13 @@
                     <MStepperContent Class="full-height" Step="2">
                         <AutoHeight Overflow>
                             <AutoHeightContent>
-                                <DefaultTitle Class="mb-3">@T("ChartSetting")
+                                <DefaultTitle Class="mb-3">
+                                    @T("ChartSetting")
                                     <DefaultTooltip Class="ml-2" Tooltip="@T("ChartSettingTip")" />
                                 </DefaultTitle>
                                 <MRow>
                                     <MCol Md="3">
-                                        <STextField @bind-Value="_model.ChartYAxisUnit" Label="@T(nameof(_model.ChartYAxisUnit))"/>
+                                        <STextField @bind-Value="_model.ChartYAxisUnit" Label="@T(nameof(_model.ChartYAxisUnit))" />
                                     </MCol>
                                 </MRow>
 
@@ -95,7 +100,7 @@
                                         <MCol Md="2">
                                             <STextField Class="ml-2" @bind-Value="item.Alias" Label="@T(nameof(item.Alias))">
                                                 <PrependContent>
-                                                    <span class="default--text subtitle2 my-auto" >@T("as")</span>
+                                                    <span class="default--text subtitle2 my-auto">@T("as")</span>
                                                 </PrependContent>
                                             </STextField>
                                         </MCol>
@@ -136,6 +141,10 @@
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">
+                                    @if (_entityId != default)
+                                    {
+                                        <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
+                                    }
                                     <MSpacer></MSpacer>
                                     <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=1" Outlined　Class="ml-6">@T("PreviousStep")</SButton>
@@ -151,6 +160,10 @@
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">
+                                    @if (_entityId != default)
+                                    {
+                                        <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
+                                    }
                                     <MSpacer></MSpacer>
                                     <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=2" Outlined　Class="ml-6">@T("PreviousStep")</SButton>

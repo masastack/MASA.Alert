@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.StackSdks.Tsc.Contracts.Model;
-
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 
 public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
@@ -212,5 +210,24 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         {
             _appItems = await PmClient.AppService.GetListByProjectIdsAsync(new List<int> { projectId.Value }) ?? new();
         };
+    }
+
+    private async Task HandleDel()
+    {
+        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+    }
+
+    private async Task DeleteAsync()
+    {
+        Loading = true;
+        await AlarmRuleService.DeleteAsync(_entityId);
+        Loading = false;
+        await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
+        _visible = false;
+        ResetForm();
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
     }
 }

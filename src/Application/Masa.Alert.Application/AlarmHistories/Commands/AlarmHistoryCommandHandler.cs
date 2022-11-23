@@ -45,4 +45,14 @@ public class AlarmHistoryCommandHandler
 
         await _repository.UpdateAsync(entity);
     }
+
+    [EventHandler]
+    public async Task DeleteAsync(DeleteAlarmHistoryCommand command)
+    {
+        var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
+
+        Check.NotNull(entity, "AlarmHistory not found");
+
+        await _repository.RemoveAsync(entity);
+    }
 }

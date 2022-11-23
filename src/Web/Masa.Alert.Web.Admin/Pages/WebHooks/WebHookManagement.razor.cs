@@ -11,6 +11,8 @@ public partial class WebHookManagement : AdminCompontentBase
     private WebHookTestModal? _testModal;
     protected override string? PageName { get; set; } = "WebHook";
 
+    WebHookService WebHookService => AlertCaller.WebHookService;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -23,26 +25,10 @@ public partial class WebHookManagement : AdminCompontentBase
     private async Task LoadData()
     {
         Loading = true;
-        FillData();
-        await Task.CompletedTask;
+        var dtos = (await WebHookService.GetListAsync(_queryParam));
+        _entities = dtos?.Adapt<PaginatedListDto<WebHookListViewModel>>() ?? new();
         Loading = false;
         StateHasChanged();
-    }
-
-    private void FillData()
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            _entities.Result.Add(new WebHookListViewModel
-            {
-                DisplayName = "名称XXXX",
-                Url = "www.masastack.com",
-                Description = "描述说明描述说明描述说明",
-                ModifierName = "李西瓜",
-                ModificationTime = DateTime.Now,
-                SecretKey = "6F9619FF-8B86-D011-B42D-00C04FC964FF"
-            });
-        }
     }
 
     private async Task HandleOk()
@@ -71,19 +57,6 @@ public partial class WebHookManagement : AdminCompontentBase
     private async Task HandleClearAsync()
     {
         _queryParam = new(20);
-        await LoadData();
-    }
-
-    private async Task HandleDelAsync(Guid _entityId)
-    {
-        await ConfirmAsync(T("DeletionConfirmationMessage"), async () => { await DeleteAsync(_entityId); });
-    }
-
-    private async Task DeleteAsync(Guid _entityId)
-    {
-        Loading = true;
-        Loading = false;
-        await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
         await LoadData();
     }
 }
