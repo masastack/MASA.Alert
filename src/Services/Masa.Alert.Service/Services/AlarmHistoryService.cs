@@ -11,7 +11,7 @@ public class AlarmHistoryService : ServiceBase
     }
 
     [RoutePattern("", StartWithBaseUri = true, HttpMethod = "Get")]
-    public async Task<PaginatedListDto<AlarmHistoryDto>> GetListAsync(IEventBus eventbus, [FromQuery] DateTime? startTime, [FromQuery] DateTime? endTime, [FromQuery] AlarmHistorySearchTypes searchType = default, [FromQuery] AlarmHistorySearchTimeTypes timeType = default, [FromQuery] AlertSeverity alertSeverity = default, [FromQuery] AlarmHistoryStatuses status = default, [FromQuery] string filter = "", [FromQuery] string sorting = "", [FromQuery] int page = 1, [FromQuery] int pagesize = 10)
+    public async Task<PaginatedListDto<AlarmHistoryDto>> GetListAsync(IEventBus eventbus, [FromQuery] DateTime? startTime, [FromQuery] DateTime? endTime, [FromQuery] AlarmHistorySearchTypes searchType = default, [FromQuery] AlarmHistorySearchTimeTypes timeType = default, [FromQuery] AlertSeverity alertSeverity = default, [FromQuery] AlarmHistoryHandleStatuses status = default, [FromQuery] string filter = "", [FromQuery] string sorting = "", [FromQuery] int page = 1, [FromQuery] int pagesize = 10)
     {
         var inputDto = new GetAlarmHistoryInputDto(filter, searchType, timeType, startTime, endTime, alertSeverity, status, sorting, page, pagesize);
         var query = new GetAlarmHistoryListQuery(inputDto);
@@ -24,5 +24,12 @@ public class AlarmHistoryService : ServiceBase
         var query = new GetAlarmHistoryQuery(id);
         await eventBus.PublishAsync(query);
         return query.Result;
+    }
+
+    [RoutePattern("{id}/handle", StartWithBaseUri = true, HttpMethod = "Post")]
+    public async Task HandleAsync(IEventBus eventBus, Guid id, [FromBody] AlarmHandleDto inputDto)
+    {
+        var command = new HandleAlarmHistoryCommand(id, inputDto);
+        await eventBus.PublishAsync(command);
     }
 }

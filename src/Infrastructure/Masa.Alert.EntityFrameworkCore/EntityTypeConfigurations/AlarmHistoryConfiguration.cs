@@ -9,5 +9,20 @@ public class AlarmHistoryConfiguration : IEntityTypeConfiguration<AlarmHistory>
     {
         builder.ToTable(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
         builder.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItem>>());
+        builder.OwnsMany(x => x.HandleStatusCommits, b =>
+        {
+            b.ToTable(AlertConsts.DbTablePrefix + "AlarmHandleStatusCommits", AlertConsts.DbSchema);
+            b.Property<Guid>("Id").ValueGeneratedOnAdd();
+            b.HasKey("Id");
+        });
+        builder.OwnsOne(x => x.Handle, b =>
+        {
+            //b.ToTable(AlertConsts.DbTablePrefix + "AlarmHandles", AlertConsts.DbSchema);
+            b.Property(x => x.Handler).HasColumnName("Handler");
+            b.Property(x => x.WebHookId).HasColumnName("WebHookId");
+            b.Property(x => x.Status).HasColumnName("HandleStatus");
+            b.Property(x => x.IsHandleNotice).HasColumnName("IsHandleNotice");
+            b.Property(x => x.NotificationConfig).HasConversion(new JsonValueConverter<NotificationConfig>()).HasColumnName("HandleNotificationConfig");
+        });
     }
 }

@@ -15,15 +15,21 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     public DateTimeOffset LastAlarmTime { get; protected set; }
 
-    public AlarmHistoryStatuses Status { get; protected set; }
-
     public DateTimeOffset? RecoveryTime { get; protected set; }
 
     public DateTimeOffset? LastNotificationTime { get; protected set; }
 
+    public long Duration { get; protected set; }
+
     public bool IsNotification { get; protected set; }
 
     public List<RuleResultItem> RuleResultItems { get; protected set; } = new();
+
+    public AlarmHandle Handle { get; protected set; } = default!;
+
+    public IReadOnlyCollection<AlarmHandleStatusCommit> HandleStatusCommits => _handleStatusCommits.AsReadOnly();
+
+    private List<AlarmHandleStatusCommit> _handleStatusCommits = new();
 
     private AlarmHistory() { }
 
@@ -33,15 +39,19 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         AlertSeverity = alertSeverity;
         IsNotification = isNotification;
         RuleResultItems = ruleResultItems;
-        Status = AlarmHistoryStatuses.Pending;
         AlarmCount = 1;
         FirstAlarmTime = DateTimeOffset.Now;
         LastAlarmTime = DateTimeOffset.Now;
+
+        _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Pending, default, string.Empty));
     }
 
     public void Recovery()
     {
         RecoveryTime = DateTimeOffset.Now;
+        Duration = (long)(RecoveryTime - FirstAlarmTime).Value.TotalSeconds;
+
+        AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
     }
 
     public void Update(AlertSeverity alertSeverity, bool isNotification, List<RuleResultItem> ruleResultItems)
@@ -61,5 +71,33 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
     public void SetIsNotification(bool isNotification)
     {
         IsNotification = isNotification;
+    }
+
+    public void HandleAlarm(AlarmHandle handle, Guid operatorId, string remark)
+    {
+        Handle = handle;
+
+        if (Handle.WebHookId != default)
+        {
+            AddDomainEvent(new AlarmHandleWebHookEvent(Handle));
+
+            var commit = Handle.HandleAlarm(operatorId, remark);
+            _handleStatusCommits.Add(commit);
+        }
+        else
+        {
+            Completed(operatorId, remark);
+        }
+    }
+
+    public void Completed(Guid operatorId, string remark)
+    {
+        var commit = Handle.Completed(operatorId, remark);
+        _handleStatusCommits.Add(commit);
+
+        if (Handle.IsHandleNotice)
+        {
+            AddDomainEvent(new NoticeAlarmHandleEvent(Handle));
+        }
     }
 }

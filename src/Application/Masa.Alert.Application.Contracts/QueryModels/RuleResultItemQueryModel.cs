@@ -7,5 +7,5 @@ public class RuleResultItemQueryModel
 {
     public bool IsValid { get; set; }
 
-    public AlarmRuleItemQueryModel AlarmRuleItem { get; set; }
+    public AlarmRuleItemQueryModel AlarmRuleItem { get; set; } = new();
 }

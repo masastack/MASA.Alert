@@ -24,7 +24,5 @@ public class RecoveryAlarmEventHandler
 
         alarm.Recovery();
         await _repository.UpdateAsync(alarm);
-
-        await _eventBus.PublishAsync(new SendAlarmRecoveryNotificationEvent(alarm.Id));
     }
 }

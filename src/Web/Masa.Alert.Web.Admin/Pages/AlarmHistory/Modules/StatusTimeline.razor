@@ -23,48 +23,21 @@
 
 @code {
     [Parameter]
-    public List<AlarmHistoryStatusCommitViewModel> StatusCommits { get; set; } = new();
+    public List<AlarmHandleStatusCommitViewModel> StatusCommits { get; set; } = new();
 
     private string _class = string.Empty;
 
-    protected override void OnInitialized()
-    {
-        StatusCommits = new List<AlarmHistoryStatusCommitViewModel>
-        {
-            new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryStatuses.Notified,
-                Remarks = "" ,
-                CreationTime =DateTime.Now
-            },
-            new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryStatuses.ProcessingCompleted,
-                Remarks = "李冬瓜分配处理人：李西瓜" ,
-                CreationTime =DateTime.Now
-            },
-            new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryStatuses.InProcess,
-                Remarks = "李西瓜" ,
-                CreationTime =DateTime.Now
-            },
-            new AlarmHistoryStatusCommitViewModel{
-                Status = AlarmHistoryStatuses.Pending,
-                Remarks = "库存不足处理完成的通知" ,
-                CreationTime =DateTime.Now
-            }
-        };
-    }
-
-    private string GetStatusColor(AlarmHistoryStatuses Status)
+    private string GetStatusColor(AlarmHistoryHandleStatuses Status)
     {
         switch (Status)
         {
-            case AlarmHistoryStatuses.Notified:
+            case AlarmHistoryHandleStatuses.Notified:
                 return "info--text";
-            case AlarmHistoryStatuses.ProcessingCompleted:
+            case AlarmHistoryHandleStatuses.ProcessingCompleted:
                 return "success--text";
-            case AlarmHistoryStatuses.InProcess:
+            case AlarmHistoryHandleStatuses.InProcess:
                 return "primary--text";
-            case AlarmHistoryStatuses.Pending:
+            case AlarmHistoryHandleStatuses.Pending:
                 return "remind--text";
             default:
                 return "";

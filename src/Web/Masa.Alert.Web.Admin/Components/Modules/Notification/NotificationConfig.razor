@@ -1,18 +1,19 @@
 ﻿@inherits AdminCompontentBase
-<MRow NoGutters Class="mt-4">
-    <MCol Md="3">
-        <div @onclick="HandleTemplateClick">
-            <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly>
+<div class="@($"{Class}")">
+    <div class="@ItemClass" @onclick="HandleTemplateClick">
+        <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly BackgroundColor="@ItemBackgroundColor">
                 <PrependContent>
-                    <span class="default--text subtitle2 my-auto">@T("AlarmNotification")</span>
+                    @if (!string.IsNullOrEmpty(PrependText))
+                    {
+                        <span class="default--text subtitle2 my-auto">@PrependText</span>
+                    }
                 </PrependContent>
             </STextField>
         </div>
-    </MCol>
-    <MCol Md="3">
-        <UserAutoComplete @bind-Value="Value.Receivers" Class="ml-2"></UserAutoComplete>
-    </MCol>
-</MRow>
+    <div class="@ItemClass">
+        <UserAutoComplete @bind-Value="Value.Receivers" BackgroundColor="@ItemBackgroundColor" Class="ml-2"></UserAutoComplete>
+    </div>
+</div>
 
 <SModal Value="@_visible" Title="@T("MessageTemplate")" HeaderClass="py-2" BodyClass="pt-0" OnSave="()=>_visible=false" OnCancel="()=>_visible=false">
     <MRow Class="mt-0">
@@ -45,10 +46,10 @@
     </MRow>
     <MRow Class="mt-6">
         <MCol>
-            <SAutoComplete Items="_templateItems" @bind-Value="Value.TemplateName"
+            <SAutoComplete Items="_templateItems" @bind-Value="Value.TemplateCode"
                            Label="@T("Template")"
                            ItemText="x=>x.DisplayName"
-                           ItemValue="x=>x.DisplayName"
+                           ItemValue="x=>x.Code"
                            Dense
                            Outlined
                            HideDetails="@("auto")"
@@ -65,6 +66,15 @@
 @code {
     [Parameter]
     public NotificationConfigViewModel Value { get; set; } = new();
+
+    [Parameter]
+    public string PrependText { get; set; } = string.Empty;
+
+    [Parameter]
+    public string ItemClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public string ItemBackgroundColor { get; set; } = string.Empty;
 
     private List<string> _items = new();
 
@@ -117,7 +127,7 @@
 
     private void HandleTemplateSelectedAsync(MessageTemplateModel item)
     {
-        Value.TemplateCode = item.Id.ToString();
+        Value.TemplateCode = item.Code;
         Value.TemplateName = item.DisplayName;
     }
 

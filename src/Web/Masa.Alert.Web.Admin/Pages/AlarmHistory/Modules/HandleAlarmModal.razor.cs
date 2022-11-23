@@ -10,6 +10,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
     private AlarmHistoryViewModel _model = new();
     private string _tab = "";
     private List<string> _items = new();
+    private bool _isThirdParty;
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
 
@@ -55,5 +56,25 @@ public partial class HandleAlarmModal : AdminCompontentBase
     private void HandleVisibleChanged(bool val)
     {
         if (!val) HandleCancel();
+    }
+
+    private async void HandleAlarm()
+    {
+        Loading = true;
+        var inputDto = _model.Handle.Adapt<AlarmHandleDto>();
+        await AlarmHistoryService.HandleAsync(_entityId, inputDto);
+        Loading = false;
+        _visible = false;
+        await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+    }
+
+    private void SelectAlarmHandle(bool isThirdParty)
+    {
+        _isThirdParty = isThirdParty;
+
+        if (!isThirdParty)
+        {
+            _model.Handle.WebHookId = default;
+        }
     }
 }

@@ -5,16 +5,13 @@ namespace Masa.Alert.Application.AlarmRules.EventHandler;
 
 public class SendAlarmNotificationEventHandler
 {
-    private readonly IMcClient _mcClient;
-    private readonly IAuthClient _authClient;
+    private readonly INotificationSender _notificationSender;
     private readonly IAlarmHistoryRepository _repository;
 
-    public SendAlarmNotificationEventHandler(IMcClient mcClient
-        , IAuthClient authClient
+    public SendAlarmNotificationEventHandler(INotificationSender notificationSender
         , IAlarmHistoryRepository repository)
     {
-        _mcClient = mcClient;
-        _authClient = authClient;
+        _notificationSender = notificationSender;
         _repository = repository;
     }
 
@@ -29,61 +26,11 @@ public class SendAlarmNotificationEventHandler
             if (!item.AlarmRuleItem.IsNotification) continue;
 
             var notificationConfig = item.AlarmRuleItem.NotificationConfig;
-            var receivers = await GeReceivers(notificationConfig);
 
-            var request = new BuildingBlocks.StackSdks.Mc.Model.SendTemplateMessageModel
-            {
-                ChannelCode = notificationConfig.ChannelCode,
-                ChannelType = (ChannelTypes)notificationConfig.ChannelType,
-                TemplateCode = notificationConfig.TemplateCode,
-                ReceiverType = SendTargets.Assign,
-                Receivers = receivers
-            };
-
-            await _mcClient.MessageTaskService.SendTemplateMessageAsync(request);
+            await _notificationSender.SendAsync(notificationConfig);
         }
 
         alarm.Notification();
         await _repository.UpdateAsync(alarm);
-    }
-
-    private async Task<List<MessageTaskReceiverModel>> GeReceivers(NotificationConfig notificationConfig)
-    {
-        var receivers = new List<MessageTaskReceiverModel>();
-        foreach (var item in notificationConfig.Receivers)
-        {
-            var user = await _authClient.UserService.FindByIdAsync(item);
-
-            if (user == null) continue;
-
-            var receiver = GetReceiverModel(user, notificationConfig.ChannelType);
-            receivers.Add(receiver);
-        }
-        return receivers;
-    }
-
-    private MessageTaskReceiverModel GetReceiverModel(UserModel user, int channelType)
-    {
-        var receiver = new MessageTaskReceiverModel
-        {
-            Type = MessageTaskReceiverTypes.User
-        };
-
-        switch (channelType)
-        {
-            case (int)ChannelTypes.Sms:
-                receiver.PhoneNumber = user.PhoneNumber ?? string.Empty;
-                break;
-            case (int)ChannelTypes.Email:
-                receiver.Email = user.Email ?? string.Empty;
-                break;
-            case (int)ChannelTypes.WebsiteMessage:
-                receiver.SubjectId = user.Id;
-                break;
-            default:
-                break;
-        }
-
-        return receiver;
     }
 }

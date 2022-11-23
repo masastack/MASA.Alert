@@ -17,7 +17,7 @@ public class GetAlarmHistoryInputDto : PaginatedOptionsDto
 
     public AlertSeverity AlertSeverity { get; set; }
 
-    public AlarmHistoryStatuses Status { get; set; }
+    public AlarmHistoryHandleStatuses HandleStatus { get; set; }
 
     public GetAlarmHistoryInputDto()
     {
@@ -27,7 +27,7 @@ public class GetAlarmHistoryInputDto : PaginatedOptionsDto
     {
     }
 
-    public GetAlarmHistoryInputDto(string filter, AlarmHistorySearchTypes searchType, AlarmHistorySearchTimeTypes timeType, DateTime? startTime, DateTime? endTime, AlertSeverity alertSeverity, AlarmHistoryStatuses status, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
+    public GetAlarmHistoryInputDto(string filter, AlarmHistorySearchTypes searchType, AlarmHistorySearchTimeTypes timeType, DateTime? startTime, DateTime? endTime, AlertSeverity alertSeverity, AlarmHistoryHandleStatuses handleStatus, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
     {
         Filter = filter;
         SearchType = searchType;
@@ -35,7 +35,7 @@ public class GetAlarmHistoryInputDto : PaginatedOptionsDto
         StartTime = startTime;
         EndTime = endTime;
         AlertSeverity = alertSeverity;
-        Status = status;
+        HandleStatus = handleStatus;
     }
 
     public enum AlarmHistorySearchTypes

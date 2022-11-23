@@ -17,13 +17,11 @@ public class AlarmHistoryViewModel
 
     public DateTimeOffset LastAlarmTime { get; set; }
 
-    public AlarmHistoryStatuses Status { get; set; }
-
     public AlarmRuleViewModel AlarmRule { get; set; } = new();
 
     public List<RuleResultItemViewModel> RuleResultItems { get; set; } = new();
 
-    public List<AlarmHistoryStatusCommitViewModel> StatusCommits { get; set; } = new();
+    public List<AlarmHandleStatusCommitViewModel> HandleStatusCommits { get; set; } = new();
 
     public AlarmHandleViewModel Handle { get; set; } = new();
 }

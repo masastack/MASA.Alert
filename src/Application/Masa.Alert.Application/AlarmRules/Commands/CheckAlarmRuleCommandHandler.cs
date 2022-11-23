@@ -38,7 +38,6 @@ public class CheckAlarmRuleCommandHandler
         var alarmRule = command.AlarmRule;
         var checkTime = DateTime.Now;
         var latest = alarmRule.GetLatest();
-        command.ConsecutiveCount = latest?.ConsecutiveCount ?? 0;
         var startTime = alarmRule.GetStartCheckTime(checkTime, latest);
 
         if (startTime == null)
@@ -48,30 +47,21 @@ public class CheckAlarmRuleCommandHandler
             return;
         }
 
-        Random a = new Random();
-
         foreach (var item in alarmRule.LogMonitorItems)
         {
-            var fieldMaps = new List<FieldAggregationRequest>
+            var request = new SimpleAggregateRequestDto
             {
-                new FieldAggregationRequest
-                {
-                    Name = item.Field,
-                    Alias = item.Alias,
-                    AggregationType = (AggregationTypes)item.AggregationType
-                }
-            };
-
-            var request = new LogAggregationRequest
-            {
-                FieldMaps = fieldMaps,
-                Query = alarmRule.WhereExpression,
+                Service = alarmRule.AppIdentity,
+                Name = item.Field,
+                Alias = item.Alias,
+                Type = (AggregateTypes)item.AggregationType,
+                RawQuery = alarmRule.WhereExpression,
                 Start = startTime.Value,
                 End = checkTime,
             };
 
-            var result = await _tscClient.LogService.GetAggregationAsync(request);
-            command.AggregateResult.TryAdd(item.Alias, a.Next(100));
+            var result = await _tscClient.LogService.GetAggregationAsync<long>(request);
+            command.AggregateResult.TryAdd(item.Alias, result);
         }
     }
 

@@ -6,12 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <!--<ItemGroup>
-    <PackageReference Include="Masa.Contrib.StackSdks.Tsc" Version="$(MasaFrameworkPackageVersion)" />
-  </ItemGroup>-->
-
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\MASA.Framework\src\Contrib\StackSdks\Masa.Contrib.StackSdks.Tsc\Masa.Contrib.StackSdks.Tsc.csproj" />
+    <PackageReference Include="Masa.Contrib.StackSdks.Tsc" Version="$(MasaFrameworkPackageVersion)" />
   </ItemGroup>
 
 </Project>
