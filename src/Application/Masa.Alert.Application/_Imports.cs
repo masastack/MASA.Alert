@@ -44,3 +44,4 @@ global using Masa.Alert.Application.AlarmRules.Commands;
 global using Masa.BuildingBlocks.Authentication.Identity;
 global using Masa.BuildingBlocks.StackSdks.Tsc;
 global using Masa.Alert.Domain.NotificationService;
+global using Masa.BuildingBlocks.StackSdks.Tsc.Contracts.Model.Aggregate;

@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.StackSdks.Tsc.Contracts.Model.Aggregate;
-
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class CheckAlarmRuleCommandHandler
@@ -56,6 +54,7 @@ public class CheckAlarmRuleCommandHandler
         {
             var request = new SimpleAggregateRequestDto
             {
+                Service = alarmRule.AppIdentity,
                 Name = item.Field,
                 Alias = item.Alias,
                 Type = (AggregateTypes)item.AggregationType,
