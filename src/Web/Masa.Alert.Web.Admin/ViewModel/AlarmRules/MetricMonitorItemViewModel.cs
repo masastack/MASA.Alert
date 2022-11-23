@@ -9,15 +9,21 @@ public class MetricMonitorItemViewModel
 
     public string Tag { get; set; } = string.Empty;
 
-    public ComparisonOperator ComparisonOperator { get; set; } = ComparisonOperator.GreaterThan;
+    public MetricComparisonOperator ComparisonOperator { get; set; } = MetricComparisonOperator.GreaterThan;
 
     public string Value { get; set; } = string.Empty;
 
-    public AggregationTypes AggregationType { get; set; } = AggregationTypes.BeEqualTo;
+    public MetricAggregationTypes AggregationType { get; set; } = MetricAggregationTypes.BeEqualTo;
 
     public string Alias { get; set; } = string.Empty;
 
     public bool IsOffset { get; set; }
 
     public int OffsetPeriod { get; set; }
+
+    public List<string> TagItems { get; set; } = new();
+
+    public List<string> ValueItems { get; set; } = new();
+
+    public Dictionary<string, List<string>> LabelValues = new();
 }

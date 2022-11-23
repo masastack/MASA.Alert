@@ -5,6 +5,8 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules;
 
 public class AlarmRuleUpsertViewModel
 {
+    public AlarmRuleTypes AlarmRuleType { get; set; }
+
     public string DisplayName { get; set; } = string.Empty;
 
     public string ProjectIdentity { get; set; } = string.Empty;

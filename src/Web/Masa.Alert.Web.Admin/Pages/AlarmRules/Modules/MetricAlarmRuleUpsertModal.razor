@@ -63,28 +63,28 @@
                                 @foreach (var item in _model.MetricMonitorItems){
                                     <MRow NoGutters Class="mt-6">
                                         <MCol Md="2">
-                                            <SSelect Class="ml-2" @bind-Value="item.Name" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MetricMonitor.Name")" />
+                                            <SSelect Class="ml-2" @bind-Value="item.Name" Items="_names" ItemText="v => v" ItemValue="v=> v" TValue="string" TItem="string" TItemValue="string" Label="@T("MetricMonitor.Name")" OnChange="(v)=>HandleMetricNameChange(v,item)" />
                                         </MCol>
                                         <MCol Md="2">
-                                            <SSelect Class="ml-2" @bind-Value="item.Tag" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MetricMonitor.Tag")" />
+                                            <SSelect Class="ml-2" @bind-Value="item.Tag" Items="item.TagItems" ItemText="v => v" ItemValue="v=> v" TValue="string" TItem="string" TItemValue="string" Label="@T("MetricMonitor.Tag")" OnChange="(v)=>HandleMetricTagChange(v,item)" />
                                         </MCol>
                                         <MCol Md="2">
-                                            <SSelect Class="ml-2" @bind-Value="item.ComparisonOperator" Items="Enum.GetValues<ComparisonOperator>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+                                            <SSelect Class="ml-2" @bind-Value="item.ComparisonOperator" Items="Enum.GetValues<MetricComparisonOperator>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
                                         </MCol>
                                         <MCol Md="2">
-                                            <SSelect Class="ml-2" @bind-Value="item.Value" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Value))" />
+                                            <SSelect Class="ml-2" @bind-Value="item.Value" Items="item.ValueItems" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Value))" />
                                         </MCol>
                                     </MRow>
                                     <MRow NoGutters Class="mt-3">
                                         <MCol Md="2">
-                                            <SSelect Class="ml-2" @bind-Value="item.AggregationType" Items="Enum.GetValues<AggregationTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+                                            <SSelect Class="ml-2" @bind-Value="item.AggregationType" Items="Enum.GetValues<MetricAggregationTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
                                         </MCol>
                                         <MCol Md="3">
-                                            <SSelect @bind-Value="item.Alias" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("MetricMonitor.Alias")">
+                                            <STextField Class="ml-2" @bind-Value="item.Alias" Label="@T("MetricMonitor.Alias")">
                                                 <PrependContent>
                                                     <span class="default--text subtitle2 my-auto ml-2">@T("as")</span>
                                                 </PrependContent>
-                                            </SSelect>
+                                            </STextField>
                                         </MCol>
                                         <MCol Md="4" Class="d-flex">
                                             <MSwitch @bind-Value="item.IsOffset" Inset Class="label my-auto ml-4">
@@ -132,7 +132,7 @@
                                     <MSpacer></MSpacer>
                                     <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=1" Outlined　Class="ml-6">@T("PreviousStep")</SButton>
-                                    <SButton Medium Class="ml-6">@T("Submit")</SButton>
+                                    <SButton Medium Class="ml-6" OnClick="HandleOk">@T("Submit")</SButton>
                                 </div>
                             </FooterContent>
                         </AutoHeight>

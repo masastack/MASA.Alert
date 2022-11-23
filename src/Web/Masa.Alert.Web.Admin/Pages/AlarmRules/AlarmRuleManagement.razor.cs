@@ -97,12 +97,12 @@ public partial class AlarmRuleManagement : AdminCompontentBase
 
     private async Task HandleEdit(AlarmRuleListViewModel item)
     {
-        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Log)
+        if (item.AlarmRuleType == AlarmRuleTypes.Log)
         {
             await _logUpsertModal?.OpenModalAsync(item)!;
         }
 
-        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
+        if (item.AlarmRuleType == AlarmRuleTypes.Metric)
         {
             await _metricUpsertModal?.OpenModalAsync(item)!;
         }

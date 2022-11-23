@@ -43,6 +43,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     {
         _entityId = listModel?.Id ?? default;
         _model = listModel?.Adapt<AlarmRuleUpsertViewModel>() ?? new();
+        _model.AlarmRuleType = AlarmRuleTypes.Log;
 
         if (_entityId != default)
         {

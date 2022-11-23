@@ -35,5 +35,7 @@ public class AlarmRuleUpsertDto
 
     public List<LogMonitorItemDto> LogMonitorItems { get; set; } = new();
 
+    public List<MetricMonitorItemDto> MetricMonitorItems { get; set; } = new();
+
     public List<AlarmRuleItemDto> Items { get; set; } = new();
 }

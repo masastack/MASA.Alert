@@ -28,6 +28,8 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public List<LogMonitorItem> LogMonitorItems { get; protected set; } = new();
 
+    public List<MetricMonitorItem> MetricMonitorItems { get; protected set; } = new();
+
     public ICollection<AlarmRuleItem> Items { get; protected set; } = new Collection<AlarmRuleItem>();
 
     public virtual IEnumerable<AlarmRuleRecord> AlarmRuleRecords => LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords))!;

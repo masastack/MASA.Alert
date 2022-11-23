@@ -5,6 +5,8 @@ namespace Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 
 public class AlarmRuleDto : AuditEntityDto<Guid, Guid>
 {
+    public AlarmRuleTypes AlarmRuleType { get; set; }
+
     public string DisplayName { get; set; } = string.Empty;
 
     public string ProjectIdentity { get; set; } = string.Empty;
@@ -30,6 +32,8 @@ public class AlarmRuleDto : AuditEntityDto<Guid, Guid>
     public bool IsEnabled { get; set; }
 
     public List<LogMonitorItemDto> LogMonitorItems { get; set; } = new();
+
+    public List<MetricMonitorItemDto> MetricMonitorItems { get; set; } = new();
 
     public List<AlarmRuleItemDto> Items { get; set; } = new();
 

@@ -54,17 +54,30 @@
     <MCardText class="flex-grow-1 px-4 d-flex flex-column">
         <div class="h6 text-truncate regular--text">@AlarmRule.DisplayName</div>
         <div class="subtitle2 mt-5">
-            <MChip Color="emphasis2"
-                   Small
-                   Outlined>
-                @AlarmRule.ProjectIdentity
-            </MChip>
-            <MChip Class="ml-2"
-                   Color="emphasis2"
-                   Small
-                   Outlined>
-                @AlarmRule.AppIdentity
-            </MChip>
+            @if (AlarmRule.AlarmRuleType == AlarmRuleTypes.Log)
+            {
+                <MChip Color="emphasis2" Small Outlined>
+                    @AlarmRule.ProjectIdentity
+                </MChip>
+                <MChip Class="ml-2" Color="emphasis2" Small Outlined>
+                    @AlarmRule.AppIdentity
+                </MChip>
+            }
+            @if (AlarmRule.AlarmRuleType == AlarmRuleTypes.Metric)
+            {
+                if (AlarmRule.MetricMonitorItems.Any())
+                {
+                    <MChip Color="emphasis2" Small Outlined>
+                        @AlarmRule.MetricMonitorItems[0].Name
+                    </MChip>
+                }
+                if (AlarmRule.MetricMonitorItems.Count > 1)
+                {
+                    <MChip Class="ml-2" Color="emphasis2" Small Outlined>
+                        @AlarmRule.MetricMonitorItems[1].Name
+                    </MChip>
+                }
+            }
         </div>
     </MCardText>
     <MCardActions class="px-3 pb-3">

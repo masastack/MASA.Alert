@@ -7,6 +7,8 @@ public class AlarmRuleListViewModel
 {
     public Guid Id { get; set; }
 
+    public AlarmRuleTypes AlarmRuleType { get; set; }
+
     public string DisplayName { get; set; } = default!;
 
     public string ProjectIdentity { get; set; } = default!;
@@ -18,4 +20,6 @@ public class AlarmRuleListViewModel
     public string ModifierName { get; set; } = string.Empty;
 
     public bool IsEnabled { get; set; }
+
+    public List<MetricMonitorItemViewModel> MetricMonitorItems { get; set; } = new();
 }
