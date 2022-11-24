@@ -31,4 +31,14 @@ public class MetricMonitorItem : ValueObject
         IsOffset = isOffset;
         OffsetPeriod = offsetPeriod;
     }
+
+    public string GetExpression()
+    {
+        if (IsExpression)
+        {
+            return Expression;
+        }
+
+        return Aggregation.GetExpression();
+    }
 }

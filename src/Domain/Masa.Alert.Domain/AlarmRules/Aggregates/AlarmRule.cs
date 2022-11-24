@@ -67,6 +67,15 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         return _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).FirstOrDefault();
     }
 
+    public long? GetOffsetResult(int offsetPeriod, string alias)
+    {
+        LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
+
+        var offsetRecord = _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).Skip(offsetPeriod - 1).FirstOrDefault();
+
+        return offsetRecord?.AggregateResult.FirstOrDefault(x => x.Key == alias).Value;
+    }
+
     public string GetCronExpression()
     {
         if (CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
@@ -191,7 +200,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
     {
         var latestRecord = GetLatest();
         var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
-        var isTrigger = ruleResult.Any(x=>x.IsValid);
+        var isTrigger = ruleResult.Any(x => x.IsValid);
 
         if (isTrigger)
         {
@@ -206,7 +215,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
         if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
         {
-            var alertSeverity = ruleResult.Where(x=>x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
+            var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
 
             AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
         }

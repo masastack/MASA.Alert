@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using System.Collections.Generic;
+
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class CheckAlarmRuleCommandHandler
@@ -72,6 +74,16 @@ public class CheckAlarmRuleCommandHandler
 
         foreach (var item in alarmRule.LogMonitorItems)
         {
+            if (item.IsOffset && item.OffsetPeriod > 0)
+            {
+                var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
+                if (offsetResult.HasValue)
+                {
+                    aggregateResult.TryAdd(item.Alias, offsetResult.Value);
+                }
+                continue;
+            }
+
             var request = new SimpleAggregateRequestDto
             {
                 Service = alarmRule.AppIdentity,
@@ -96,15 +108,25 @@ public class CheckAlarmRuleCommandHandler
 
         foreach (var item in alarmRule.MetricMonitorItems)
         {
-            //var match = $"{item.AggregationType.Name}({item.Name}{{{item.Tag} {item.ComparisonOperator.Name} {item.Value}}})";
-            //var req = new ValuesRequest
-            //{
-            //    Match = match,
-            //    Start = startTime,
-            //    End = endTime,
-            //};
-            //var result = await _tscClient.MetricService.GetValuesAsync(req);
-            //aggregateResult.TryAdd(item.Alias, 0);
+            if (item.IsOffset && item.OffsetPeriod > 0)
+            {
+                var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
+                if (offsetResult.HasValue)
+                {
+                    aggregateResult.TryAdd(item.Alias, offsetResult.Value);
+                }
+                continue;
+            }
+
+            var req = new ValuesRequest
+            {
+                Match = item.GetExpression(),
+                Start = startTime,
+                End = endTime,
+            };
+
+            var result = await _tscClient.MetricService.GetValuesAsync(req);
+            aggregateResult.TryAdd(item.Alias, Convert.ToInt64(result));
         }
 
         return aggregateResult;

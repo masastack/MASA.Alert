@@ -32,4 +32,9 @@ public class MetricAggregation : ValueObject
         Value = value;
         AggregationType = aggregationType;
     }
+
+    public string GetExpression()
+    {
+        return $"{AggregationType.Name}({Name}{{{Tag} {ComparisonOperator.Name} \"{Value}\"}})";
+    }
 }
