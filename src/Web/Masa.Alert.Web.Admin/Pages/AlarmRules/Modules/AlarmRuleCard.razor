@@ -65,16 +65,10 @@
             }
             @if (AlarmRule.AlarmRuleType == AlarmRuleTypes.Metric)
             {
-                if (AlarmRule.MetricMonitorItems.Any())
-                {
-                    <MChip Color="emphasis2" Small Outlined>
-                        @AlarmRule.MetricMonitorItems[0].Name
-                    </MChip>
-                }
-                if (AlarmRule.MetricMonitorItems.Count > 1)
+                foreach (var item in _metricMonitorItems)
                 {
                     <MChip Class="ml-2" Color="emphasis2" Small Outlined>
-                        @AlarmRule.MetricMonitorItems[1].Name
+                        @item.Aggregation.Name
                     </MChip>
                 }
             }
@@ -100,6 +94,8 @@
 
     [Parameter]
     public EventCallback OnEdit { get; set; }
+
+    private List<MetricMonitorItemViewModel> _metricMonitorItems => AlarmRule.MetricMonitorItems.Where(x => !string.IsNullOrEmpty(x.Aggregation.Name)).Take(2).ToList();
 
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 

@@ -38,10 +38,6 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     private async Task LoadData()
     {
         _names = (await TscClient.MetricService.GetNamesAsync(null)).ToList();
-        await InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
     }
 
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)
@@ -69,11 +65,11 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
 
         foreach (var item in _model.MetricMonitorItems)
         {
-            if (string.IsNullOrEmpty(item.Name)) continue;
-            await HandleMetricNameChange(item.Name, item);
+            if (string.IsNullOrEmpty(item.Aggregation.Name)) continue;
+            await HandleMetricNameChange(item.Aggregation.Name, item);
 
-            if (string.IsNullOrEmpty(item.Tag)) continue;
-            HandleMetricTagChange(item.Tag, item);
+            if (string.IsNullOrEmpty(item.Aggregation.Tag)) continue;
+            HandleMetricTagChange(item.Aggregation.Tag, item);
         }
     }
 
@@ -189,13 +185,13 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
             End = DateTime.Now,
         };
         var labelValues = (await TscClient.MetricService.GetLabelValuesAsync(query));
-        item.LabelValues = labelValues;
-        item.TagItems = labelValues.Select(x => x.Key).ToList();
+        item.Aggregation.LabelValues = labelValues;
+        item.Aggregation.TagItems = labelValues.Select(x => x.Key).ToList();
     }
 
     private void HandleMetricTagChange(string newVal, MetricMonitorItemViewModel item)
     {
-        item.ValueItems = item.LabelValues.FirstOrDefault(x => x.Key == newVal).Value;
+        item.Aggregation.ValueItems = item.Aggregation.LabelValues.FirstOrDefault(x => x.Key == newVal).Value;
     }
 
     private async Task HandleOk()

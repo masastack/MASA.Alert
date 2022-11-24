@@ -3,11 +3,12 @@
 
 namespace Masa.Alert.Domain.Shared.AlarmRules;
 
-public enum MetricAggregationTypes
+
+public class MetricAggregationTypes : Enumeration
 {
-    BeEqualTo = 1,
-    NotEqualTo,
-    Count,
-    Sum,
-    Avg
+    public static MetricAggregationTypes Count = new(1, "Count");
+    public static MetricAggregationTypes Sum = new(2, "Sum");
+    public static MetricAggregationTypes Avg = new(3, "Avg");
+
+    public MetricAggregationTypes(int id, string name) : base(id, name) { }
 }

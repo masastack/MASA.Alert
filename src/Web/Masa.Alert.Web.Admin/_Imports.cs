@@ -73,3 +73,4 @@ global using Masa.Alert.Web.Admin.Components.Modules.Alarm.Model;
 global using Masa.BuildingBlocks.StackSdks.Mc;
 global using Masa.Alert.ApiGateways.Caller.Services.WebHooks;
 global using Masa.BuildingBlocks.StackSdks.Tsc.Contracts.Model;
+global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;

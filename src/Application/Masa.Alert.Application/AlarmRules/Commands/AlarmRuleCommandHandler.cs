@@ -35,6 +35,7 @@ public class AlarmRuleCommandHandler
 
         updateCommand.AlarmRule.Adapt(entity);
 
+
         await _domainService.ValidateRuleAsync(entity);
 
         await _repository.UpdateAsync(entity);

@@ -32,3 +32,4 @@ global using System.Threading.Channels;
 global using Masa.Alert.Domain.AlarmRules.Events;
 global using Masa.Alert.Domain.WebHooks.Aggregates;
 global using Masa.Alert.Domain.WebHooks.Events;
+global using System.Text.Json.Serialization;

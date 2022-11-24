@@ -65,4 +65,14 @@ public class AlarmRuleService : ServiceBase
         var command = new CheckAlarmRuleCommand(id);
         await eventBus.PublishAsync(command);
     }
+
+    [RoutePattern("test", StartWithBaseUri = true, HttpMethod = "Get")]
+    public async Task TestAsync()
+    {
+        var a = new MetricAggregationTypes(1, "Count");
+        var str = JsonSerializer.Serialize(a);
+
+        var b = JsonSerializer.Deserialize<MetricAggregationTypes>(str);
+
+    }
 }

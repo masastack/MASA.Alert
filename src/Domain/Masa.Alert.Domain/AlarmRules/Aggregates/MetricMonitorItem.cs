@@ -5,15 +5,11 @@ namespace Masa.Alert.Domain.AlarmRules.Aggregates;
 
 public class MetricMonitorItem : ValueObject
 {
-    public string Name { get; protected set; } = string.Empty;
+    public bool IsExpression { get; protected set; }
 
-    public string Tag { get; protected set; } = string.Empty;
+    public string Expression { get; protected set; } = string.Empty;
 
-    public MetricComparisonOperator ComparisonOperator { get; protected set; }
-
-    public string Value { get; protected set; } = string.Empty;
-
-    public MetricAggregationTypes AggregationType { get; protected set; }
+    public MetricAggregation Aggregation { get; set; }
 
     public string Alias { get; protected set; } = string.Empty;
 
@@ -23,22 +19,14 @@ public class MetricMonitorItem : ValueObject
 
     protected override IEnumerable<object> GetEqualityValues()
     {
-        yield return Name;
-        yield return Tag;
-        yield return ComparisonOperator;
-        yield return Value;
-        yield return AggregationType;
         yield return Alias;
-        yield return IsOffset;
-        yield return OffsetPeriod;
     }
-    public MetricMonitorItem(string name, string tag, MetricComparisonOperator comparisonOperator, string value, MetricAggregationTypes aggregationType, string alias, bool isOffset, int offsetPeriod)
+
+    public MetricMonitorItem(bool isExpression, string expression, MetricAggregation aggregation, string alias, bool isOffset, int offsetPeriod)
     {
-        Name = name;
-        Tag = tag;
-        ComparisonOperator = comparisonOperator;
-        Value = value;
-        AggregationType = aggregationType;
+        IsExpression = isExpression;
+        Expression = expression;
+        Aggregation = aggregation;
         Alias = alias;
         IsOffset = isOffset;
         OffsetPeriod = offsetPeriod;

@@ -58,3 +58,5 @@ global using Masa.BuildingBlocks.Ddd.Domain.Events;
 global using Masa.BuildingBlocks.Dispatcher.Events;
 global using Microsoft.AspNetCore.Components.Forms;
 global using Microsoft.AspNetCore.Mvc;
+global using Masa.BuildingBlocks.StackSdks.Tsc.Model;
+global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
