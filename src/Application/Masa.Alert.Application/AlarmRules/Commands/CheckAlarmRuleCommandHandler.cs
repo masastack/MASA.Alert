@@ -80,8 +80,8 @@ public class CheckAlarmRuleCommandHandler
                 if (offsetResult.HasValue)
                 {
                     aggregateResult.TryAdd(item.Alias, offsetResult.Value);
+                    continue;
                 }
-                continue;
             }
 
             var request = new SimpleAggregateRequestDto
@@ -114,8 +114,8 @@ public class CheckAlarmRuleCommandHandler
                 if (offsetResult.HasValue)
                 {
                     aggregateResult.TryAdd(item.Alias, offsetResult.Value);
+                    continue;
                 }
-                continue;
             }
 
             var req = new ValuesRequest
