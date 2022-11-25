@@ -7,7 +7,7 @@ public class AlarmRuleUpsertDto
 {
     public string DisplayName { get; set; } = string.Empty;
 
-    public AlarmRuleTypes AlarmRuleType { get; set; }
+    public AlarmRuleTypes Type { get; set; }
 
     public string ProjectIdentity { get; set; } = string.Empty;
 

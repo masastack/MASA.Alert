@@ -4,7 +4,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 {
     public string DisplayName { get; protected set; } = string.Empty;
 
-    public AlarmRuleTypes AlarmRuleType { get; set; }
+    public AlarmRuleTypes Type { get; protected set; }
 
     public string ProjectIdentity { get; protected set; } = string.Empty;
 
@@ -43,11 +43,11 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         LazyLoader = lazyLoader;
     }
 
-    public AlarmRule(string displayName, AlarmRuleTypes alarmRuleType, string projectIdentity, string appIdentity, bool isEnabled, string chartYAxisUnit
+    public AlarmRule(string displayName, AlarmRuleTypes type, string projectIdentity, string appIdentity, bool isEnabled, string chartYAxisUnit
         , CheckFrequency checkFrequency, bool isGetTotal, string totalVariable, string whereExpression, int continuousTriggerThreshold, SilenceCycle silenceCycle)
     {
         DisplayName = displayName;
-        AlarmRuleType = alarmRuleType;
+        Type = type;
         ProjectIdentity = projectIdentity;
         AppIdentity = appIdentity;
         IsEnabled = isEnabled;

@@ -47,6 +47,7 @@ public class WebHookCommandHandler
         await _repository.RemoveAsync(entity);
     }
 
+    [EventHandler]
     public async Task TestAsync(TestWebHookCommand command)
     {
         await _domainEventBus.PublishAsync(new PostWebHookEvent(command.WebHookId, command.Handler));

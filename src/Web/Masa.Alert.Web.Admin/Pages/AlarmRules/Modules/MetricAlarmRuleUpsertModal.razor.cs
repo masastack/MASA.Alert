@@ -44,7 +44,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     {
         _entityId = listModel?.Id ?? default;
         _model = listModel?.Adapt<AlarmRuleUpsertViewModel>() ?? new();
-        _model.AlarmRuleType = AlarmRuleTypes.Metric;
+        _model.Type = AlarmRuleTypes.Metric;
 
         if (_entityId != default)
         {

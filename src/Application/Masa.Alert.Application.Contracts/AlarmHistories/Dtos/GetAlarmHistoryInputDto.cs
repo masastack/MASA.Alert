@@ -37,17 +37,17 @@ public class GetAlarmHistoryInputDto : PaginatedOptionsDto
         AlertSeverity = alertSeverity;
         HandleStatus = handleStatus;
     }
+}
 
-    public enum AlarmHistorySearchTypes
-    {
-        Alarming = 1,
-        Processed,
-        NoNotice
-    }
+public enum AlarmHistorySearchTypes
+{
+    Alarming = 1,
+    Processed,
+    NoNotice
+}
 
-    public enum AlarmHistorySearchTimeTypes
-    {
-        FirstAlarmTime = 1,
-        LastAlarmTime,
-    }
+public enum AlarmHistorySearchTimeTypes
+{
+    FirstAlarmTime = 1,
+    LastAlarmTime,
 }
