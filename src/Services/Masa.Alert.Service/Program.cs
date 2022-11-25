@@ -89,11 +89,15 @@ var app = builder.Services
         });
     })
     .AddValidatorsFromAssemblies(assemblies)
+    .AddMasaDbContext<AlertDbContext>(builder =>
+    {
+        builder.UseSqlServer();
+        builder.UseFilter(options => options.EnableSoftDelete = true);
+    })
     .AddMasaDbContext<AlertQueryContext>(builder =>
     {
         builder.UseSqlServer();
-        builder.UseFilter();
-        builder.EnableSoftDelete = true;
+        builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddScoped<IAlertQueryContext, AlertQueryContext>()
     .AddDomainEventBus(dispatcherOptions =>
@@ -104,9 +108,7 @@ var app = builder.Services
         {
             eventBusBuilder.UseMiddleware(typeof(ValidatorMiddleware<>));
         })
-        .UseIsolationUoW<AlertDbContext>(
-            isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"),
-            dbOptions => dbOptions.UseSqlServer().UseFilter())
+        .UseIsolationUoW<AlertDbContext>(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"), null)
         .UseRepository<AlertDbContext>();
     })
     .AddServices(builder);

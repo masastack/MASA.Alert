@@ -1,10 +1,15 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Blazor.Presets;
+
 namespace Masa.Alert.Web.Admin.Pages.AlarmHistory;
 
 public partial class AlarmHistoryManagement : AdminCompontentBase
 {
+    [Parameter]
+    public string AlarmRuleId { get; set; } = string.Empty;
+
     private GetAlarmHistoryInputDto _queryParam = new(10);
     private bool advanced = false;
     private bool isAnimate;
@@ -38,6 +43,11 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
             await LoadData();
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override void OnParametersSet()
+    {
+        _queryParam.AlarmRuleId = string.IsNullOrEmpty(AlarmRuleId) ? null : Guid.Parse(AlarmRuleId);
     }
 
     private async Task LoadData()

@@ -52,9 +52,8 @@
                 End = DateTime.Now,
                 IsDesc = true
             };
-        var logObj = await TscClient.LogService.GetLatestAsync(request);
-        _log = JsonSerializer.Deserialize<LogDto>(JsonSerializer.Serialize(logObj), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
-        _logStr = JsonSerializer.Serialize(_log);
+        var log = await TscClient.LogService.GetLatestAsync(request);
+        _logStr = JsonSerializer.Serialize(log);
     }
 
     private void FillData()
@@ -72,14 +71,31 @@
             timeList = GetTimeListByCron();
         }
         Random a = new Random();
-        foreach (var item in _alarmRule.LogMonitorItems)
+
+        if (_alarmRule.Type == AlarmRuleTypes.Log)
         {
-            var data = timeList.Select(x => new List<long> { x, a.Next(100) }).ToList()!;
-            chartData.Add(new AlarmPreviewChartDataItemModel
-                {
-                    Name = item.Alias,
-                    Data = data
-                });
+            foreach (var item in _alarmRule.LogMonitorItems)
+            {
+                var data = timeList.Select(x => new List<long> { x, a.Next(100) }).ToList()!;
+                chartData.Add(new AlarmPreviewChartDataItemModel
+                    {
+                        Name = item.Alias,
+                        Data = data
+                    });
+            }
+        }
+
+        if (_alarmRule.Type == AlarmRuleTypes.Metric)
+        {
+            foreach (var item in _alarmRule.MetricMonitorItems)
+            {
+                var data = timeList.Select(x => new List<long> { x, a.Next(100) }).ToList()!;
+                chartData.Add(new AlarmPreviewChartDataItemModel
+                    {
+                        Name = item.Alias,
+                        Data = data
+                    });
+            }
         }
 
         _chartData = chartData;

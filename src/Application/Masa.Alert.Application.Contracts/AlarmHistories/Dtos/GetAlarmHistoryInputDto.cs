@@ -7,6 +7,8 @@ public class GetAlarmHistoryInputDto : PaginatedOptionsDto
 {
     public string Filter { get; set; } = default!;
 
+    public Guid? AlarmRuleId { get; set; }
+
     public AlarmHistorySearchTypes SearchType { get; set; } = AlarmHistorySearchTypes.Alarming;
 
     public AlarmHistorySearchTimeTypes TimeType { get; set; } = AlarmHistorySearchTimeTypes.FirstAlarmTime;
@@ -27,9 +29,10 @@ public class GetAlarmHistoryInputDto : PaginatedOptionsDto
     {
     }
 
-    public GetAlarmHistoryInputDto(string filter, AlarmHistorySearchTypes searchType, AlarmHistorySearchTimeTypes timeType, DateTime? startTime, DateTime? endTime, AlertSeverity alertSeverity, AlarmHistoryHandleStatuses handleStatus, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
+    public GetAlarmHistoryInputDto(string filter, Guid? alarmRuleId, AlarmHistorySearchTypes searchType, AlarmHistorySearchTimeTypes timeType, DateTime? startTime, DateTime? endTime, AlertSeverity alertSeverity, AlarmHistoryHandleStatuses handleStatus, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
     {
         Filter = filter;
+        AlarmRuleId = alarmRuleId;
         SearchType = searchType;
         TimeType = timeType;
         StartTime = startTime;
