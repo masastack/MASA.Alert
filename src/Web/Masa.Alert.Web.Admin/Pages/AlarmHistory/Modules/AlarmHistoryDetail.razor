@@ -34,9 +34,9 @@
 {
     <div class="d-flex justify-space-between">
         <div class="regular--text body2">
-            <span>@item.Name</span>
-            <span class="ml-2">@item.Tag @T(item.ComparisonOperator.ToString()) @item.Value</span>
-            <span class="ml-2">@T(item.AggregationType.ToString())</span>
+            <span>@item.Aggregation.Name</span>
+            <span class="ml-2">@item.Aggregation.Tag @T(item.Aggregation.ComparisonOperator.ToString()) @item.Aggregation.Value</span>
+            <span class="ml-2">@T(item.Aggregation.AggregationType.ToString())</span>
             <span class="ml-2">@(item.IsOffset ? string.Format(T("OffsetPeriod"), item.OffsetPeriod) : string.Empty)</span>
         </div>
         <div class="regular3--text caption">@item.Alias</div>

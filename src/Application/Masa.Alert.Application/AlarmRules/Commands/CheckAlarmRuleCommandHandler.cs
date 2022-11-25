@@ -9,16 +9,19 @@ public class CheckAlarmRuleCommandHandler
     private readonly IAlarmRuleRepository _repository;
     private readonly ITscClient _tscClient;
     private readonly IRulesEngineClient _rulesEngineClient;
+    private readonly ILogger<CheckAlarmRuleCommandHandler> _logger;
 
     public CheckAlarmRuleCommandHandler(AlarmRuleDomainService domainService
         , IAlarmRuleRepository repository
         , ITscClient tscClient
-        , IRulesEngineClient rulesEngineClient)
+        , IRulesEngineClient rulesEngineClient
+        , ILogger<CheckAlarmRuleCommandHandler> logger)
     {
         _domainService = domainService;
         _repository = repository;
         _tscClient = tscClient;
         _rulesEngineClient = rulesEngineClient;
+        _logger = logger;
     }
 
     [EventHandler(1)]
@@ -33,7 +36,7 @@ public class CheckAlarmRuleCommandHandler
     }
 
     [EventHandler(2)]
-    public async Task QueryLogAggregationAsync(CheckAlarmRuleCommand command)
+    public async Task QueryAggregationAsync(CheckAlarmRuleCommand command)
     {
         var alarmRule = command.AlarmRule;
         var checkTime = DateTime.Now;
@@ -47,21 +50,19 @@ public class CheckAlarmRuleCommandHandler
             return;
         }
 
-        foreach (var item in alarmRule.LogMonitorItems)
+        if (alarmRule.AlarmRuleType == AlarmRuleTypes.Log)
         {
-            var request = new SimpleAggregateRequestDto
-            {
-                Service = alarmRule.AppIdentity,
-                Name = item.Field,
-                Alias = item.Alias,
-                Type = (AggregateTypes)item.AggregationType,
-                RawQuery = alarmRule.WhereExpression,
-                Start = startTime.Value,
-                End = checkTime,
-            };
+            command.AggregateResult = await QueryLogAggregationAsync(alarmRule, startTime.Value, checkTime);
+        }
 
-            var result = await _tscClient.LogService.GetAggregationAsync<long>(request);
-            command.AggregateResult.TryAdd(item.Alias, result);
+        if (alarmRule.AlarmRuleType == AlarmRuleTypes.Metric)
+        {
+            command.AggregateResult = await QueryMetricAggregationAsync(alarmRule, startTime.Value, checkTime);
+        }
+
+        if (!command.AggregateResult.Any())
+        {
+            command.IsStop = true;
         }
     }
 
@@ -71,5 +72,71 @@ public class CheckAlarmRuleCommandHandler
         if (command.IsStop) return;
 
         await _domainService.CheckRuleAsync(command.AlarmRule, command.AggregateResult);
+    }
+
+    private async Task<ConcurrentDictionary<string, long>> QueryLogAggregationAsync(AlarmRule alarmRule, DateTime startTime, DateTime endTime)
+    {
+        var aggregateResult = new ConcurrentDictionary<string, long>();
+
+        foreach (var item in alarmRule.LogMonitorItems)
+        {
+            if (item.IsOffset && item.OffsetPeriod > 0)
+            {
+                var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
+                if (!offsetResult.HasValue)
+                {
+                    _logger.LogInformation("The offset data has not been generated");
+                    return aggregateResult;
+                }
+                aggregateResult.TryAdd(item.Alias, offsetResult.Value);
+            }
+
+            var request = new SimpleAggregateRequestDto
+            {
+                Service = alarmRule.AppIdentity,
+                Name = item.Field,
+                Alias = item.Alias,
+                Type = (AggregateTypes)item.AggregationType,
+                RawQuery = alarmRule.WhereExpression,
+                Start = startTime,
+                End = endTime,
+            };
+
+            var result = await _tscClient.LogService.GetAggregationAsync<long>(request);
+            aggregateResult.TryAdd(item.Alias, result);
+        }
+
+        return aggregateResult;
+    }
+
+    private async Task<ConcurrentDictionary<string, long>> QueryMetricAggregationAsync(AlarmRule alarmRule, DateTime startTime, DateTime endTime)
+    {
+        var aggregateResult = new ConcurrentDictionary<string, long>();
+
+        foreach (var item in alarmRule.MetricMonitorItems)
+        {
+            if (item.IsOffset && item.OffsetPeriod > 0)
+            {
+                var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
+                if (!offsetResult.HasValue)
+                {
+                    _logger.LogInformation("The offset data has not been generated");
+                    return aggregateResult;
+                }
+                aggregateResult.TryAdd(item.Alias, offsetResult.Value);
+            }
+
+            var req = new ValuesRequest
+            {
+                Match = item.GetExpression(),
+                Start = startTime,
+                End = endTime,
+            };
+
+            var result = await _tscClient.MetricService.GetValuesAsync(req);
+            aggregateResult.TryAdd(item.Alias, Convert.ToInt64(result));
+        }
+
+        return aggregateResult;
     }
 }

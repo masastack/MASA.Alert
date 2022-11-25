@@ -14,6 +14,7 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
         builder.Property(x => x.ChartYAxisUnit).HasMaxLength(128);
         builder.Property(x => x.TotalVariable).HasMaxLength(64);
         builder.Property(x => x.LogMonitorItems).HasConversion(new JsonValueConverter<List<LogMonitorItem>>());
+        builder.Property(x => x.MetricMonitorItems).HasConversion(new JsonValueConverter<List<MetricMonitorItem>>());
         builder.OwnsMany(x => x.Items, b =>
         {
             b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleItems", AlertConsts.DbSchema);

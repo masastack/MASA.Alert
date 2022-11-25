@@ -16,3 +16,5 @@ global using System.Runtime.Serialization;
 global using System.Net.NetworkInformation;
 global using System.Runtime.Loader;
 global using Masa.Alert.Infrastructure.Common.Utils;
+global using System.Text.Json;
+global using System.Text.Json.Serialization;

@@ -8,27 +8,69 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     [Parameter]
     public EventCallback OnOk { get; set; }
 
+    [Inject]
+    public ITscClient TscClient { get; set; } = default!;
+
     private MForm? _form;
     private AlarmRuleUpsertViewModel _model = new();
     private bool _visible;
-
+    private Guid _entityId;
     private bool _cronVisible;
     private string _tempCron = string.Empty;
     private string _nextRunTimeStr = string.Empty;
     private List<string> _items = new();
     private AlarmPreviewChartModal? _previewChart;
+    private List<string> _names = new();
 
     protected override string? PageName { get; set; } = "AlarmRule";
 
+    AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task LoadData()
+    {
+        _names = (await TscClient.MetricService.GetNamesAsync(null)).ToList();
+    }
+
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)
     {
+        _entityId = listModel?.Id ?? default;
         _model = listModel?.Adapt<AlarmRuleUpsertViewModel>() ?? new();
+        _model.AlarmRuleType = AlarmRuleTypes.Metric;
+
+        if (_entityId != default)
+        {
+            await GetFormDataAsync();
+        }
         FillData();
         await InvokeAsync(() =>
         {
             _visible = true;
             StateHasChanged();
         });
+    }
+
+    private async Task GetFormDataAsync()
+    {
+        var dto = await AlarmRuleService.GetAsync(_entityId) ?? new();
+        _model = dto.Adapt<AlarmRuleUpsertViewModel>();
+
+        foreach (var item in _model.MetricMonitorItems)
+        {
+            if (string.IsNullOrEmpty(item.Aggregation.Name)) continue;
+            await HandleMetricNameChange(item.Aggregation.Name, item);
+
+            if (string.IsNullOrEmpty(item.Aggregation.Tag)) continue;
+            HandleMetricTagChange(item.Aggregation.Tag, item);
+        }
     }
 
     private void FillData()
@@ -132,5 +174,58 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     private void HandleMetricMonitorItemsRemove(MetricMonitorItemViewModel item)
     {
         _model.MetricMonitorItems.Remove(item);
+    }
+
+    private async Task HandleMetricNameChange(string newVal, MetricMonitorItemViewModel item)
+    {
+        var query = new LableValuesRequest
+        {
+            Match = newVal,
+            Start = DateTime.Now.AddDays(-1),
+            End = DateTime.Now,
+        };
+        var labelValues = (await TscClient.MetricService.GetLabelValuesAsync(query));
+        item.Aggregation.LabelValues = labelValues;
+        item.Aggregation.TagItems = labelValues.Select(x => x.Key).ToList();
+    }
+
+    private void HandleMetricTagChange(string newVal, MetricMonitorItemViewModel item)
+    {
+        item.Aggregation.ValueItems = item.Aggregation.LabelValues.FirstOrDefault(x => x.Key == newVal).Value;
+    }
+
+    private async Task HandleOk()
+    {
+        Check.NotNull(_form, "form not found");
+
+        if (!_form.Validate())
+        {
+            return;
+        }
+
+        Loading = true;
+
+        var inputDto = _model.Adapt<AlarmRuleUpsertDto>();
+
+        if (_entityId == default)
+        {
+            await AlarmRuleService.CreateAsync(inputDto);
+        }
+        else
+        {
+            await AlarmRuleService.UpdateAsync(_entityId, inputDto);
+        }
+
+        Loading = false;
+        _visible = false;
+
+        ResetForm();
+
+        await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
     }
 }

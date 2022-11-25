@@ -28,6 +28,8 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public List<LogMonitorItem> LogMonitorItems { get; protected set; } = new();
 
+    public List<MetricMonitorItem> MetricMonitorItems { get; protected set; } = new();
+
     public ICollection<AlarmRuleItem> Items { get; protected set; } = new Collection<AlarmRuleItem>();
 
     public virtual IEnumerable<AlarmRuleRecord> AlarmRuleRecords => LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords))!;
@@ -63,6 +65,15 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
     {
         LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
         return _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).FirstOrDefault();
+    }
+
+    public long? GetOffsetResult(int offsetPeriod, string alias)
+    {
+        LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
+
+        var offsetRecord = _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).Skip(offsetPeriod - 1).FirstOrDefault();
+
+        return offsetRecord?.AggregateResult.FirstOrDefault(x => x.Key == alias).Value;
     }
 
     public string GetCronExpression()
@@ -189,7 +200,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
     {
         var latestRecord = GetLatest();
         var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
-        var isTrigger = ruleResult.Any(x=>x.IsValid);
+        var isTrigger = ruleResult.Any(x => x.IsValid);
 
         if (isTrigger)
         {
@@ -204,7 +215,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
         if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
         {
-            var alertSeverity = ruleResult.Where(x=>x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
+            var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
 
             AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
         }
