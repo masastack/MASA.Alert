@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using System.Collections.Generic;
-
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class CheckAlarmRuleCommandHandler
@@ -11,16 +9,19 @@ public class CheckAlarmRuleCommandHandler
     private readonly IAlarmRuleRepository _repository;
     private readonly ITscClient _tscClient;
     private readonly IRulesEngineClient _rulesEngineClient;
+    private readonly ILogger<CheckAlarmRuleCommandHandler> _logger;
 
     public CheckAlarmRuleCommandHandler(AlarmRuleDomainService domainService
         , IAlarmRuleRepository repository
         , ITscClient tscClient
-        , IRulesEngineClient rulesEngineClient)
+        , IRulesEngineClient rulesEngineClient
+        , ILogger<CheckAlarmRuleCommandHandler> logger)
     {
         _domainService = domainService;
         _repository = repository;
         _tscClient = tscClient;
         _rulesEngineClient = rulesEngineClient;
+        _logger = logger;
     }
 
     [EventHandler(1)]
@@ -58,6 +59,11 @@ public class CheckAlarmRuleCommandHandler
         {
             command.AggregateResult = await QueryMetricAggregationAsync(alarmRule, startTime.Value, checkTime);
         }
+
+        if (!command.AggregateResult.Any())
+        {
+            command.IsStop = true;
+        }
     }
 
     [EventHandler(3)]
@@ -77,11 +83,12 @@ public class CheckAlarmRuleCommandHandler
             if (item.IsOffset && item.OffsetPeriod > 0)
             {
                 var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
-                if (offsetResult.HasValue)
+                if (!offsetResult.HasValue)
                 {
-                    aggregateResult.TryAdd(item.Alias, offsetResult.Value);
-                    continue;
+                    _logger.LogInformation("The offset data has not been generated");
+                    return aggregateResult;
                 }
+                aggregateResult.TryAdd(item.Alias, offsetResult.Value);
             }
 
             var request = new SimpleAggregateRequestDto
@@ -111,11 +118,12 @@ public class CheckAlarmRuleCommandHandler
             if (item.IsOffset && item.OffsetPeriod > 0)
             {
                 var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
-                if (offsetResult.HasValue)
+                if (!offsetResult.HasValue)
                 {
-                    aggregateResult.TryAdd(item.Alias, offsetResult.Value);
-                    continue;
+                    _logger.LogInformation("The offset data has not been generated");
+                    return aggregateResult;
                 }
+                aggregateResult.TryAdd(item.Alias, offsetResult.Value);
             }
 
             var req = new ValuesRequest
