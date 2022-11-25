@@ -35,6 +35,10 @@ public class MetricAggregation : ValueObject
 
     public string GetExpression()
     {
+        if (string.IsNullOrEmpty(Tag))
+        {
+            return $"{AggregationType.Name}({Name} {ComparisonOperator.Name} {Value})";
+        }
         return $"{AggregationType.Name}({Name}{{{Tag} {ComparisonOperator.Name} \"{Value}\"}})";
     }
 }
