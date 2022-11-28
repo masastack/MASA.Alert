@@ -37,7 +37,7 @@ builder.Services.AddGlobalForServer();
 builder.Services.AddScoped<TokenProvider>();
 builder.AddMasaStackComponentsForServer("wwwroot/i18n");
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
-builder.Services.AddCallers(option => option.ServiceBaseAddress = publicConfiguration.GetValue<string>("$public.AppSettings:AlertClient:Url"));
+builder.Services.AddCallers();
 builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
 
 builder.Services.AddMapster();
