@@ -1,6 +1,4 @@
-﻿using Masa.Contrib.Service.Caller.HttpClient;
-
-namespace Masa.Alert.ApiGateways.Caller;
+﻿namespace Masa.Alert.ApiGateways.Caller;
 
 public class AlertCaller : HttpClientCallerBase
 {
