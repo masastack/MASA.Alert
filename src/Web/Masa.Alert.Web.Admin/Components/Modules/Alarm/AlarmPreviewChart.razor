@@ -5,7 +5,7 @@
         <span class="emphasis--text caption">@T("ChartPreviewTips")</span>
     </MCol>
     <MCol>
-        <SDateTimeRangePicker @bind-StartTime="_startTime" @bind-EndTime="_endTime"  Style="border:none" />
+        <SDateTimeRangePicker @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none" OnChange="TimeRangeChange" />
     </MCol>
 </MRow>
 <div class="d-flex align-center justify-center">
@@ -22,7 +22,7 @@
 
     [EditorRequired]
     [Parameter]
-    public List<AlarmPreviewChartDataItemModel> ChartData { get; set; } = new();
+    public AlarmRuleUpsertViewModel AlarmRule { get; set; } = new();
 
     [Parameter]
     public string ChartYAxisUnit { get; set; } = string.Empty;
@@ -37,19 +37,14 @@
 
     protected override void OnParametersSet()
     {
-        if (ChartData.Count==0)
-        {
-            return;
-        }
+        _startTime = null;
+        _endTime = null;
 
-        var legendData = ChartData.Select(x => x.Name);
-        var seriesData = ChartData.Select(x => new
-        {
-            Name = x.Name,
-            Type = "line",
-            Stack = "Total",
-            Data = x.Data
-        });
+        FillData();
+    }
+
+    private void RenderCharts(List<string> legendData, object seriesData)
+    {
         _option = new
         {
             Tooltip = new
@@ -79,5 +74,145 @@
             },
             Series = seriesData
         };
+    }
+
+    private void FillData()
+    {
+        var timeList = new List<long>();
+        var chartData = new List<AlarmPreviewChartDataItemModel>();
+
+        if (AlarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
+        {
+            timeList = GetTimeListByFixedInterval();
+        }
+
+        if (AlarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
+        {
+            timeList = GetTimeListByCron();
+        }
+        Random a = new Random();
+
+        if (AlarmRule.Type == AlarmRuleTypes.Log)
+        {
+            foreach (var item in AlarmRule.LogMonitorItems)
+            {
+                var data = timeList.Select(x => new List<long> { x, a.Next(100) }).ToList()!;
+                chartData.Add(new AlarmPreviewChartDataItemModel
+                    {
+                        Name = item.Alias,
+                        Data = data
+                    });
+            }
+        }
+
+        if (AlarmRule.Type == AlarmRuleTypes.Metric)
+        {
+            foreach (var item in AlarmRule.MetricMonitorItems)
+            {
+                var data = timeList.Select(x => new List<long> { x, a.Next(100) }).ToList()!;
+                chartData.Add(new AlarmPreviewChartDataItemModel
+                    {
+                        Name = item.Alias,
+                        Data = data
+                    });
+            }
+        }
+
+        var legendData = chartData.Select(x => x.Name).ToList();
+        var seriesData = chartData.Select(x => new
+        {
+            Name = x.Name,
+            Type = "line",
+            Stack = "Total",
+            Data = x.Data
+        });
+        RenderCharts(legendData, seriesData);
+    }
+
+    private List<long> GetTimeListByFixedInterval(int count = 10)
+    {
+        var timeList = new List<long>();
+        var time = new DateTimeOffset(_startTime ?? DateTime.Now);
+
+        var i = 0;
+        while (CheckIsAddTime(time, i))
+        {
+            timeList.Add(time.ToUnixTimeMilliseconds());
+
+            var intervalTime = AlarmRule.CheckFrequency.FixedInterval.GetIntervalTime();
+
+            if (intervalTime.HasValue)
+            {
+                time = time.Add(intervalTime.Value);
+            }
+
+            i++;
+        }
+        return timeList;
+    }
+
+    private List<long> GetTimeListByCron(int count = 10)
+    {
+        var timeList = new List<long>();
+
+        var cronExpression = new CronExpression(AlarmRule.CheckFrequency.CronExpression);
+
+        var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == TimezoneOffset);
+
+        if (timezone != null)
+            cronExpression.TimeZone = timezone;
+
+        var time = new DateTimeOffset(_startTime ?? DateTime.Now);
+
+        var i = 0;
+        while (CheckIsAddTime(time, i))
+        {
+            timeList.Add(time.ToUnixTimeMilliseconds());
+
+            var nextExcuteTime = cronExpression.GetNextValidTimeAfter(time);
+            if (nextExcuteTime.HasValue)
+            {
+                time = nextExcuteTime.Value;
+            }
+
+            i++;
+        }
+
+        return timeList;
+    }
+
+    private void TimeRangeChange()
+    {
+        FillData();
+    }
+
+    public int GetMonth(DateTime date1, DateTime date2)
+    {
+        int year1 = date1.Year;
+        int year2 = date2.Year;
+        int month1 = date1.Month;
+        int month2 = date2.Month;
+        int months = 12 * (year2 - year1) + (month2 - month1);
+        return months;
+    }
+
+    private bool CheckIsAddTime(DateTimeOffset time, int i)
+    {
+        if (i > 300)
+        {
+            return false;
+        }
+
+        if (_endTime.HasValue && time <= _endTime)
+        {
+            return true;
+        }
+
+        if (!_endTime.HasValue && i < 10)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

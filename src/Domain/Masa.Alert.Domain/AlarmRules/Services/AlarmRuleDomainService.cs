@@ -30,7 +30,7 @@ public class AlarmRuleDomainService : DomainService
         await Task.CompletedTask;
     }
 
-    public async Task CheckRuleAsync(AlarmRule alarmRule, ConcurrentDictionary<string, long> aggregateResult)
+    public async Task CheckRuleAsync(DateTimeOffset excuteTime, AlarmRule alarmRule, ConcurrentDictionary<string, long> aggregateResult)
     {
         var ruleResult = new List<RuleResultItem>();
 
@@ -41,7 +41,7 @@ public class AlarmRuleDomainService : DomainService
             ruleResult.Add(ruleResultItem);
         }
 
-        alarmRule.Check(aggregateResult, ruleResult);
+        alarmRule.Check(excuteTime, aggregateResult, ruleResult);
         await _repository.UpdateAsync(alarmRule);
     }
 }

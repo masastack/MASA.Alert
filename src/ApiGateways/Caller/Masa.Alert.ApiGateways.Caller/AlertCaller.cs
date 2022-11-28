@@ -1,10 +1,13 @@
-﻿namespace Masa.Alert.ApiGateways.Caller;
+﻿using Masa.Contrib.Service.Caller.HttpClient;
 
-public class AlertCaller : DaprCallerBase
+namespace Masa.Alert.ApiGateways.Caller;
+
+public class AlertCaller : HttpClientCallerBase
 {
     TokenProvider _tokenProvider;
 
-    protected override string AppId { get; set; } = App.APP;
+    //protected override string AppId { get; set; } = App.APP;
+    protected override string BaseAddress { get; set; }
 
     public override string? Name { get; set; } = nameof(AlertCaller);
 
@@ -19,10 +22,12 @@ public class AlertCaller : DaprCallerBase
     public WebHookService WebHookService => _webHookService ??= new(Caller);
 
     public AlertCaller(IServiceProvider serviceProvider
-        , TokenProvider tokenProvider)
+        , TokenProvider tokenProvider
+        , AlertApiOptions options)
         : base(serviceProvider)
     {
         _tokenProvider = tokenProvider;
+        BaseAddress = options.ServiceBaseAddress;
     }
 
     protected override async Task ConfigHttpRequestMessageAsync(HttpRequestMessage requestMessage)

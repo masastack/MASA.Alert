@@ -56,7 +56,7 @@
                                             <div class="h6 mt-4 regular--text">@T("ThirdPartyProcessing")</div>
                                             <div class="px-6 full-width">
                                                 <SSelect Class="ml-2 mt-4 fill flex-none" @bind-Value="_model.Handle.WebHookId" Items="_items" ItemText="v => v" ItemValue="v=> v" Label="@T("WebHook")" />
-                                                <SUserAutoComplete Class="ml-2 mt-4 fill flex-none" @bind-Value="_model.Handle.Handler" Label="@T("Handler")" Outlined FillBackground="true" />
+                                                <SUserAutoComplete Class="ml-2 mt-4 fill flex-none" @bind-Value="_model.Handle.Handler" Label="@T("Handler")" Outlined FillBackground="false" />
                                                 <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label mt-4 ml-4" Label="@T("SendNotificationAfterProcessing")" />
                                             </div>
                                             @if (_model.Handle.IsHandleNotice)

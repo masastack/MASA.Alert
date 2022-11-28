@@ -69,6 +69,11 @@ public partial class HandleAlarmModal : AdminCompontentBase
         Loading = false;
         _visible = false;
         await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
     }
 
     private void SelectAlarmHandle(bool isThirdParty)

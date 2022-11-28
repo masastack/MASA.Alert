@@ -1,6 +1,6 @@
 ﻿@inherits AdminCompontentBase
 <SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
-    <AlarmPreviewChart ChartData="_chartData" ChartYAxisUnit="@AlarmRule.ChartYAxisUnit"></AlarmPreviewChart>
+    <AlarmPreviewChart AlarmRule="AlarmRule" ChartYAxisUnit="@AlarmRule.ChartYAxisUnit"></AlarmPreviewChart>
     <DefaultTitle>
         @T("LogSamplingPreview")
         <DefaultTooltip Class="ml-2" Tooltip="@T("LogSamplingPreviewTips")" />
@@ -22,8 +22,6 @@
 
     private AlarmRuleViewModel _alarmRule = new();
 
-    private List<AlarmPreviewChartDataItemModel> _chartData { get; set; } = new();
-
     protected override string? PageName { get; set; } = "AlarmChart";
 
     private bool _visible = false;
@@ -35,7 +33,6 @@
     {
         _alarmRule = AlarmRule?.Adapt<AlarmRuleViewModel>() ?? new();
         await GetLatestAsync();
-        FillData();
         await InvokeAsync(() =>
         {
             _visible = true;
@@ -54,95 +51,5 @@
             };
         var log = await TscClient.LogService.GetLatestAsync(request);
         _logStr = JsonSerializer.Serialize(log);
-    }
-
-    private void FillData()
-    {
-        var timeList = new List<long>();
-        var chartData = new List<AlarmPreviewChartDataItemModel>();
-
-        if (_alarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
-        {
-            timeList = GetTimeListByFixedInterval();
-        }
-
-        if (_alarmRule.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
-        {
-            timeList = GetTimeListByCron();
-        }
-        Random a = new Random();
-
-        if (_alarmRule.Type == AlarmRuleTypes.Log)
-        {
-            foreach (var item in _alarmRule.LogMonitorItems)
-            {
-                var data = timeList.Select(x => new List<long> { x, a.Next(100) }).ToList()!;
-                chartData.Add(new AlarmPreviewChartDataItemModel
-                    {
-                        Name = item.Alias,
-                        Data = data
-                    });
-            }
-        }
-
-        if (_alarmRule.Type == AlarmRuleTypes.Metric)
-        {
-            foreach (var item in _alarmRule.MetricMonitorItems)
-            {
-                var data = timeList.Select(x => new List<long> { x, a.Next(100) }).ToList()!;
-                chartData.Add(new AlarmPreviewChartDataItemModel
-                    {
-                        Name = item.Alias,
-                        Data = data
-                    });
-            }
-        }
-
-        _chartData = chartData;
-    }
-
-    private List<long> GetTimeListByFixedInterval(int count = 10)
-    {
-        var timeList = new List<long>();
-        var time = DateTimeOffset.Now;
-
-        for (int i = 0; i < count; i++)
-        {
-            timeList.Add(time.ToUnixTimeMilliseconds());
-
-            var intervalTime = _alarmRule.CheckFrequency.FixedInterval.GetIntervalTime();
-
-            if (intervalTime.HasValue)
-            {
-                time = time.Add(intervalTime.Value);
-            }
-        }
-        return timeList;
-    }
-
-    private List<long> GetTimeListByCron(int count = 10)
-    {
-        var timeList = new List<long>();
-
-        var cronExpression = new CronExpression(_alarmRule.CheckFrequency.CronExpression);
-
-        var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == TimezoneOffset);
-
-        if (timezone != null)
-            cronExpression.TimeZone = timezone;
-
-        var time = DateTimeOffset.Now;
-        for (int i = 0; i < count; i++)
-        {
-            timeList.Add(time.ToUnixTimeMilliseconds());
-
-            var nextExcuteTime = cronExpression.GetNextValidTimeAfter(time);
-            if (nextExcuteTime.HasValue)
-            {
-                time = nextExcuteTime.Value;
-            }
-        }
-
-        return timeList;
-    }
+    }  
 }

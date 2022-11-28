@@ -23,7 +23,7 @@ public class PostWebHookEventHandler
         Check.NotNull(webHook, "WebHook not found");
 
         var client = _httpClientFactory.CreateClient();
-        var input = new StringContent(JsonSerializer.Serialize(new { eto.Handler }), Encoding.UTF8, "application/json");
+        var input = new StringContent(JsonSerializer.Serialize(new { eto.Handler, webHook.SecretKey }), Encoding.UTF8, "application/json");
 
         using var response = await client.PostAsync(webHook.Url, input);
 
