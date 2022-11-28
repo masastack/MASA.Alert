@@ -21,3 +21,4 @@ global using Masa.Alert.Domain.Shared.Enums;
 global using Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 global using Masa.Alert.Application.Contracts.QueryModels;
 global using static Masa.Alert.Application.Contracts.AlarmRules.Dtos.GetAlarmRuleInputDto;
+global using Masa.BuildingBlocks.Data;

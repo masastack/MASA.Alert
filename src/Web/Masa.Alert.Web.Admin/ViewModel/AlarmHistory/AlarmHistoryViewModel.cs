@@ -5,6 +5,8 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory;
 
 public class AlarmHistoryViewModel
 {
+    public Guid Id { get; set; }
+
     public AlertSeverity AlertSeverity { get; set; }
 
     public string DisplayName { get; set; } = default!;

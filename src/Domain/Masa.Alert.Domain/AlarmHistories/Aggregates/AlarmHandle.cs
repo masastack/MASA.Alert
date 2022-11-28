@@ -15,6 +15,11 @@ public class AlarmHandle : ValueObject
 
     public NotificationConfig NotificationConfig { get; protected set; } = new();
 
+    public AlarmHandle()
+    {
+        Status = AlarmHistoryHandleStatuses.Pending;
+    }
+
     public AlarmHandle(Guid handler, Guid webHookId, bool isHandleNotice, NotificationConfig notificationConfig)
     {
         Handler = handler;

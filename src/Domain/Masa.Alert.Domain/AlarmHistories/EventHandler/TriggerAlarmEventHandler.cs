@@ -27,7 +27,7 @@ public class TriggerAlarmEventHandler
         var alarm = await _repository.GetLastAsync(eto.AlarmRuleId);
         var isNotification = alarmRule.CheckIsNotification(alarm?.LastNotificationTime);
 
-        if (alarm == null)
+        if (alarm == null || alarm.RecoveryTime.HasValue)
         {
             alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
             await _repository.AddAsync(alarm);

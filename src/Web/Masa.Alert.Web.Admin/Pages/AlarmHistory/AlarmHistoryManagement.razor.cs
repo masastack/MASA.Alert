@@ -88,4 +88,9 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         _queryParam.PageSize = pageSize;
         await LoadData();
     }
+
+    private async Task HandleOk()
+    {
+        await LoadData();
+    }
 }
