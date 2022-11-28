@@ -7,7 +7,7 @@ public class AlarmRuleListViewModel
 {
     public Guid Id { get; set; }
 
-    public AlarmRuleTypes AlarmRuleType { get; set; }
+    public AlarmRuleTypes Type { get; set; }
 
     public string DisplayName { get; set; } = default!;
 

@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Application.Contracts.QueryModels;
 
-public class WebHookQueryModel
+public class WebHookQueryModel : ISoftDelete
 {
     public Guid Id { get; set; }
 
@@ -16,4 +16,6 @@ public class WebHookQueryModel
     public string SecretKey { get; set; } = default!;
 
     public DateTime ModificationTime { get; set; }
+
+    public bool IsDeleted { get; set; }
 }

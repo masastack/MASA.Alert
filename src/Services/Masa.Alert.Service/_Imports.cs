@@ -40,7 +40,7 @@ global using Masa.Alert.Infrastructure.Common.Extensions;
 global using System.Collections.ObjectModel;
 global using Masa.Contrib.Isolation.UoW.EFCore;
 global using Masa.Contrib.Isolation.MultiEnvironment;
-global using Masa.Contrib.Data.Contracts.EFCore;
+global using Masa.Contrib.Data.Contracts;
 global using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using System.Dynamic;

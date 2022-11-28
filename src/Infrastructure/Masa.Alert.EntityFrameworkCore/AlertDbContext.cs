@@ -11,4 +11,12 @@ public class AlertDbContext : IsolationDbContext
         builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         base.OnModelCreatingExecuting(builder);
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .LogTo(Console.WriteLine, LogLevel.Information)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    }
 }

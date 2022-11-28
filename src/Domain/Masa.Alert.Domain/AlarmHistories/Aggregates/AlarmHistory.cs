@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using System.Reflection.Metadata;
+
 namespace Masa.Alert.Domain.AlarmHistories.Aggregates;
 
 public class AlarmHistory : FullAggregateRoot<Guid, Guid>
@@ -43,7 +45,14 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         FirstAlarmTime = DateTimeOffset.Now;
         LastAlarmTime = DateTimeOffset.Now;
 
+        Handle = new();
         _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Pending, default, string.Empty));
+
+        if (Id == default)
+        {
+            Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
+            AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
+        }
     }
 
     public void Recovery()
@@ -51,7 +60,9 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         RecoveryTime = DateTimeOffset.Now;
         Duration = (long)(RecoveryTime - FirstAlarmTime).Value.TotalSeconds;
 
+        _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.ProcessingCompleted, default, "自动恢复"));
         AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
+        AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
     }
 
     public void Update(AlertSeverity alertSeverity, bool isNotification, List<RuleResultItem> ruleResultItems)
@@ -61,6 +72,8 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         RuleResultItems = ruleResultItems;
         AlarmCount++;
         LastAlarmTime = DateTimeOffset.Now;
+
+        AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
     }
 
     public void Notification()

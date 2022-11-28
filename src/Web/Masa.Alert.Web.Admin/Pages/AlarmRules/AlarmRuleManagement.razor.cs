@@ -5,12 +5,22 @@ namespace Masa.Alert.Web.Admin.Pages.AlarmRules;
 
 public partial class AlarmRuleManagement : AdminCompontentBase
 {
+    [Inject]
+    public IPmClient PmClient { get; set; } = default!;
+
+    [Inject]
+    public ITscClient TscClient { get; set; } = default!;
+
     private GetAlarmRuleInputDto _queryParam = new(20);
     private PaginatedListDto<AlarmRuleListViewModel> _entities = new();
     private bool advanced = false;
     private bool isAnimate;
     private LogAlarmRuleUpsertModal? _logUpsertModal;
     private MetricAlarmRuleUpsertModal? _metricUpsertModal;
+    private List<ProjectModel> _projects = new();
+    private List<SelectItem<string>> _projectItems = new();
+    private List<SelectItem<string>> _appsItems = new();
+    private List<SelectItem<string>> _metricItems = new();
 
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
@@ -20,9 +30,17 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     {
         if (firstRender)
         {
-            await LoadData();
+            await InitData();
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async Task InitData()
+    {
+        await LoadData();
+        _projects = await PmClient.ProjectService.GetListAsync();
+        _projectItems = _projects.Select(x => new SelectItem<string>(x.Identity, x.Name)).ToList();
+        _metricItems = (await TscClient.MetricService.GetNamesAsync(null)).Select(x => new SelectItem<string>(x, x)).ToList();
     }
 
     private async Task LoadData()
@@ -84,12 +102,12 @@ public partial class AlarmRuleManagement : AdminCompontentBase
 
     private async Task HandleAdd()
     {
-        if (_queryParam.AlarmRuleType== AlarmRuleTypes.Log)
+        if (_queryParam.Type == AlarmRuleTypes.Log)
         {
             await _logUpsertModal?.OpenModalAsync()!;
         }
 
-        if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
+        if (_queryParam.Type == AlarmRuleTypes.Metric)
         {
             await _metricUpsertModal?.OpenModalAsync()!;
         }
@@ -97,14 +115,28 @@ public partial class AlarmRuleManagement : AdminCompontentBase
 
     private async Task HandleEdit(AlarmRuleListViewModel item)
     {
-        if (item.AlarmRuleType == AlarmRuleTypes.Log)
+        if (item.Type == AlarmRuleTypes.Log)
         {
             await _logUpsertModal?.OpenModalAsync(item)!;
         }
 
-        if (item.AlarmRuleType == AlarmRuleTypes.Metric)
+        if (item.Type == AlarmRuleTypes.Metric)
         {
             await _metricUpsertModal?.OpenModalAsync(item)!;
         }
+    }
+
+    private async Task HandleProjectChange()
+    {
+        await RefreshAsync();
+
+        var projectId = _projects.FirstOrDefault(x => x.Identity == _queryParam.ProjectIdentity)?.Id;
+
+        if (projectId == null)
+        {
+            return;
+        }
+
+        _appsItems = (await PmClient.AppService.GetListByProjectIdsAsync(new List<int> { projectId.Value })).Select(x => new SelectItem<string>(x.Identity, x.Name)).ToList();
     }
 }

@@ -3,13 +3,13 @@
 
 namespace Masa.Alert.Application.Contracts.QueryModels;
 
-public class AlarmRuleQueryModel
+public class AlarmRuleQueryModel : ISoftDelete
 {
     public Guid Id { get; set; }
 
     public string DisplayName { get; set; } = string.Empty;
 
-    public AlarmRuleTypes AlarmRuleType { get; set; }
+    public AlarmRuleTypes Type { get; set; }
 
     public string ProjectIdentity { get; set; } = string.Empty;
 
@@ -26,4 +26,6 @@ public class AlarmRuleQueryModel
     public string CheckFrequencyCron { get; set; } = string.Empty;
 
     public AlarmCheckFrequencyTypes CheckFrequencyType { get; set; }
+
+    public bool IsDeleted { get; set; }
 }

@@ -34,9 +34,7 @@ public class AlarmRuleRecordQueryHandler
 
     private async Task<Expression<Func<AlarmRuleRecordQueryModel, bool>>> CreateFilteredPredicate(GetAlarmRuleRecordInputDto options)
     {
-        Expression<Func<AlarmRuleRecordQueryModel, bool>> condition = x => true;
-        condition = condition.And(options.StartTime.HasValue, x => x.CreationTime >= options.StartTime);
-        condition = condition.And(options.EndTime.HasValue, x => x.CreationTime <= options.EndTime);
+        Expression<Func<AlarmRuleRecordQueryModel, bool>> condition = x => x.AlarmHistoryId== options.AlarmHistoryId;
         return await Task.FromResult(condition); ;
     }
 }

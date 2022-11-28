@@ -1,5 +1,6 @@
 ﻿@inherits AdminCompontentBase
 @page "/alarmHistory"
+@page "/alarmHistory/{AlarmRuleId}"
 <AutoHeight Overflow>
     <HeaderContent>
         <SLabeledRadioGroup @bind-Value="@_queryParam.SearchType" Dense Class="default-tab" OnChange="RefreshAsync">
@@ -65,5 +66,5 @@
     </AutoHeightContent>
 </AutoHeight>
 
-<AlarmHistoryDetailModal @ref="_detailModal" />
-<HandleAlarmModal @ref="_handleAlarmModal" />
+<AlarmHistoryDetailModal @ref="_detailModal" OnOk="HandleOk"/>
+<HandleAlarmModal @ref="_handleAlarmModal" OnOk="HandleOk"/>

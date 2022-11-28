@@ -72,6 +72,7 @@ public class AlarmHistoryQueryHandler
         }
         condition = condition.And(options.AlertSeverity != default, x => x.AlertSeverity == options.AlertSeverity);
         condition = condition.And(options.HandleStatus != default, x => x.HandleStatus == options.HandleStatus);
+        condition = condition.And(options.AlarmRuleId.HasValue, x => x.AlarmRuleId == options.AlarmRuleId);
         return await Task.FromResult(condition); ;
     }
 }

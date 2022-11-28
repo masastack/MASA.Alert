@@ -8,7 +8,7 @@
 <ItemGroup>
   <PackageReference Include="Masa.BuildingBlocks.Data.UoW" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.Contrib.Ddd.Domain.Repository.EFCore" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.Contrib.Data.Contracts.EFCore" Version="$(MasaFrameworkPackageVersion)" />
+    <PackageReference Include="Masa.Contrib.Data.Contracts" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.Contrib.Data.EFCore" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.Contrib.Isolation.UoW.EFCore" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />

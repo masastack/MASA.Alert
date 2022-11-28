@@ -2,7 +2,7 @@
 @page "/alarmRules"
 <AutoHeight Overflow>
     <HeaderContent>
-        <SLabeledRadioGroup @bind-Value="@_queryParam.AlarmRuleType" Dense Class="default-tab" OnChange="RefreshAsync">
+        <SLabeledRadioGroup @bind-Value="@_queryParam.Type" Dense Class="default-tab" OnChange="RefreshAsync">
             @foreach (var item in Enum.GetValues<AlarmRuleTypes>())
             {
                 <SLabeledRadio Value="item" Class="px-6">@T(item.ToString())</SLabeledRadio>
@@ -12,16 +12,18 @@
             @if (advanced)
             {
                 <div class="fold d-inline-flex">
+
                     <EnumSimpleSelect TValue="AlarmRuleSearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))" OnChange="RefreshAsync"></EnumSimpleSelect>
                     <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" OnChange="RefreshAsync" />
-                    @if (_queryParam.AlarmRuleType == AlarmRuleTypes.Log)
+
+                    @if (_queryParam.Type == AlarmRuleTypes.Log)
                     {
-                        <SSimpleSelect @bind-Value="@_queryParam.ProjectIdentity" DefaultText="@T(nameof(_queryParam.ProjectIdentity))" Class="ml-6" OnChange="RefreshAsync"></SSimpleSelect>
-                        <SSimpleSelect @bind-Value="@_queryParam.AppIdentity" DefaultText="@T(nameof(_queryParam.AppIdentity))" Class="ml-6" OnChange="RefreshAsync"></SSimpleSelect>
+                        <DefaultSimpleSelect @bind-Value="@_queryParam.ProjectIdentity" Items="_projectItems" DefaultText="@T(nameof(_queryParam.ProjectIdentity))" Class="ml-6" OnChange="HandleProjectChange"></DefaultSimpleSelect>
+                        <DefaultSimpleSelect @bind-Value="@_queryParam.AppIdentity" Items="_appsItems" DefaultText="@T(nameof(_queryParam.AppIdentity))" Class="ml-6" OnChange="RefreshAsync"></DefaultSimpleSelect>
                     }
-                    @if (_queryParam.AlarmRuleType == AlarmRuleTypes.Metric)
+                    @if (_queryParam.Type == AlarmRuleTypes.Metric)
                     {
-                        <SSimpleSelect @bind-Value="@_queryParam.MetricId" DefaultText="@T(nameof(_queryParam.MetricId))" Class="ml-6" OnChange="RefreshAsync"></SSimpleSelect>
+                        <DefaultSimpleSelect @bind-Value="@_queryParam.MetricId" Items="_metricItems" DefaultText="@T(nameof(_queryParam.MetricId))" Class="ml-6" OnChange="RefreshAsync"></DefaultSimpleSelect>
                     }
                 </div>
             }

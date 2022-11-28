@@ -9,6 +9,8 @@ public class AlarmRuleRecordQueryModel
 
     public Guid AlarmRuleId { get; set; }
 
+    public Guid AlarmHistoryId { get; set; }
+
     public ConcurrentDictionary<string, long> AggregateResult { get; set; } = new();
 
     public bool IsTrigger { get; set; }

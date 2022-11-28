@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Application.Contracts.QueryModels;
 
-public class AlarmHistoryQueryModel
+public class AlarmHistoryQueryModel : ISoftDelete
 {
     public Guid Id { get; set; }
 
@@ -40,4 +40,6 @@ public class AlarmHistoryQueryModel
     public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
 
     public List<AlarmHandleStatusCommitQueryModel> HandleStatusCommits { get; set; } = new();
+
+    public bool IsDeleted { get; set; }
 }

@@ -7,6 +7,8 @@ public class AlarmRuleRecord : FullEntity<Guid, Guid>
 {
     public Guid AlarmRuleId { get; protected set; }
 
+    public Guid AlarmHistoryId { get; protected set; }
+
     public ConcurrentDictionary<string, long> AggregateResult { get; protected set; } = new();
 
     public bool IsTrigger { get; protected set; }
@@ -22,5 +24,10 @@ public class AlarmRuleRecord : FullEntity<Guid, Guid>
         IsTrigger = isTrigger;
         ConsecutiveCount = consecutiveCount;
         RuleResultItems = ruleResultItems;
+    }
+
+    public void SetAlarmHistoryId(Guid alarmHistoryId)
+    {
+        AlarmHistoryId = alarmHistoryId;
     }
 }

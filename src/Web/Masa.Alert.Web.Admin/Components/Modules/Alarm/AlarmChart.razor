@@ -38,10 +38,9 @@
     private async Task LoadData()
     {
         var queryParam = new GetAlarmRuleRecordInputDto(10)
-            {
-                StartTime = AlarmHistory.FirstAlarmTime.UtcDateTime,
-                EndTime = AlarmHistory.LastAlarmTime.UtcDateTime
-            };
+        {
+            AlarmHistoryId = AlarmHistory.Id
+        };
 
         var dtos = (await AlarmRuleRecordService.GetListAsync(queryParam));
         var paginatedList = dtos?.Adapt<PaginatedListDto<AlarmRuleRecordListViewModel>>() ?? new();

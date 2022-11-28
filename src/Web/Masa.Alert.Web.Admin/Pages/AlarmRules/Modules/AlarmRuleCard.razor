@@ -17,7 +17,7 @@
                                     </MListItemTitle>
                                 </MListItemContent>
                             </MListItem>
-                            <MListItem Link>
+                            <MListItem Link Href="@($"/alarmHistory/{AlarmRule.Id}")">
                                 <MListItemContent>
                                     <MListItemTitle>
                                         <span class="body regular--text">@T("AlarmHistory")</span>
@@ -54,7 +54,7 @@
     <MCardText class="flex-grow-1 px-4 d-flex flex-column">
         <div class="h6 text-truncate regular--text">@AlarmRule.DisplayName</div>
         <div class="subtitle2 mt-5">
-            @if (AlarmRule.AlarmRuleType == AlarmRuleTypes.Log)
+            @if (AlarmRule.Type == AlarmRuleTypes.Log)
             {
                 <MChip Color="emphasis2" Small Outlined>
                     @AlarmRule.ProjectIdentity
@@ -63,7 +63,7 @@
                     @AlarmRule.AppIdentity
                 </MChip>
             }
-            @if (AlarmRule.AlarmRuleType == AlarmRuleTypes.Metric)
+            @if (AlarmRule.Type == AlarmRuleTypes.Metric)
             {
                 foreach (var item in _metricMonitorItems)
                 {

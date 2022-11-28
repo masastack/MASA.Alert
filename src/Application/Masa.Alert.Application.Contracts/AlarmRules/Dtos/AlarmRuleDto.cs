@@ -5,7 +5,7 @@ namespace Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 
 public class AlarmRuleDto : AuditEntityDto<Guid, Guid>
 {
-    public AlarmRuleTypes AlarmRuleType { get; set; }
+    public AlarmRuleTypes Type { get; set; }
 
     public string DisplayName { get; set; } = string.Empty;
 
