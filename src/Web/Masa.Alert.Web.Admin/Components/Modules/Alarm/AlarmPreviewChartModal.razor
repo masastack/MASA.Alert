@@ -48,7 +48,6 @@
     {
         var request = new LogLatestRequest
             {
-                Query = AlarmRule.WhereExpression,
                 Start = DateTime.Now.AddDays(-20),
                 End = DateTime.Now,
                 IsDesc = true
