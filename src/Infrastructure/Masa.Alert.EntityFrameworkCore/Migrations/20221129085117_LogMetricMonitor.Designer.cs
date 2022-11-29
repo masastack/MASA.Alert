@@ -4,6 +4,7 @@ using Masa.Alert.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Masa.Alert.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AlertDbContext))]
-    partial class AlertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221129085117_LogMetricMonitor")]
+    partial class LogMetricMonitor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -532,12 +534,10 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                                         .HasColumnType("int");
 
                                     b2.Property<int>("AggregationType")
-                                        .HasColumnType("int")
-                                        .HasColumnName("AggregationType");
+                                        .HasColumnType("int");
 
                                     b2.Property<int>("ComparisonOperator")
-                                        .HasColumnType("int")
-                                        .HasColumnName("ComparisonOperator");
+                                        .HasColumnType("int");
 
                                     b2.Property<string>("Name")
                                         .IsRequired()
