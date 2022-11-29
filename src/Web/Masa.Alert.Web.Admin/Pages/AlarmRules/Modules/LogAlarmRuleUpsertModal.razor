@@ -74,7 +74,8 @@
                                 </MRow>
                                 @if (!string.IsNullOrEmpty(_model.CheckFrequency.CronExpression))
                                 {
-                                    <div>
+                                    <div class="mt-4 default--text caption">
+                                        <p>@T("NextRunTimeTip")</p>
                                         @((MarkupString)_nextRunTimeStr)
                                     </div>
                                 }

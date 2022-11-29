@@ -176,7 +176,8 @@
     "MetricMonitor.Tag": "Tag",
     "MetricMonitor.Alias": "变量",
     "Time": "按时间",
-    "Cycle": "按周期"
+    "Cycle": "按周期",
+    "NextRunTimeTip": "预计未来5次检查时间："
   },
   "AlarmChart": {
     "ChartPreview": "图表预览",
