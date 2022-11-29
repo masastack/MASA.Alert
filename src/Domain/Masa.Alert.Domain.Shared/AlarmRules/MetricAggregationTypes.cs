@@ -6,9 +6,9 @@ namespace Masa.Alert.Domain.Shared.AlarmRules;
 
 public class MetricAggregationTypes : Enumeration
 {
-    public static MetricAggregationTypes Count = new(1, "Count");
-    public static MetricAggregationTypes Sum = new(2, "Sum");
-    public static MetricAggregationTypes Avg = new(3, "Avg");
+    public static MetricAggregationTypes Count = new(1, "count");
+    public static MetricAggregationTypes Sum = new(2, "sum");
+    public static MetricAggregationTypes Avg = new(3, "avg");
 
     public MetricAggregationTypes(int id, string name) : base(id, name) { }
 }

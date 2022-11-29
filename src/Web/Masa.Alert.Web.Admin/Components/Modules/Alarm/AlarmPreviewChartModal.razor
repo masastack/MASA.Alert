@@ -1,12 +1,16 @@
 ﻿@inherits AdminCompontentBase
 <SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
-    <AlarmPreviewChart AlarmRule="AlarmRule" ChartYAxisUnit="@AlarmRule.ChartYAxisUnit"></AlarmPreviewChart>
-    <DefaultTitle>
-        @T("LogSamplingPreview")
-        <DefaultTooltip Class="ml-2" Tooltip="@T("LogSamplingPreviewTips")" />
-    </DefaultTitle>
-    <MTextarea @bind-Value="_logStr" Readonly Outlined Rows="11">
-    </MTextarea>
+    <AlarmPreviewChart AlarmRule="_alarmRule" ChartYAxisUnit="@AlarmRule.ChartYAxisUnit"></AlarmPreviewChart>
+    @if (AlarmRule.Type == AlarmRuleTypes.Log)
+    {
+        <DefaultTitle>
+            @T("LogSamplingPreview")
+            <DefaultTooltip Class="ml-2" Tooltip="@T("LogSamplingPreviewTips")" />
+        </DefaultTitle>
+        <MCard Outlined Flat Class="rounded-2" Color="fill-hover">
+            <JsonPre @bind-Value="@_logStr"></JsonPre>
+        </MCard>
+    }
 </SModal>
 
 @code {
@@ -20,7 +24,7 @@
     [Inject]
     public ITscClient TscClient { get; set; } = default!;
 
-    private AlarmRuleViewModel _alarmRule = new();
+    private AlarmRuleUpsertViewModel _alarmRule = new();
 
     protected override string? PageName { get; set; } = "AlarmChart";
 
@@ -31,7 +35,7 @@
 
     public async Task OpenModalAsync()
     {
-        _alarmRule = AlarmRule?.Adapt<AlarmRuleViewModel>() ?? new();
+        _alarmRule = AlarmRule;
         await GetLatestAsync();
         await InvokeAsync(() =>
         {
@@ -49,7 +53,15 @@
                 End = DateTime.Now,
                 IsDesc = true
             };
-        var log = await TscClient.LogService.GetLatestAsync(request);
-        _logStr = JsonSerializer.Serialize(log);
-    }  
+
+        try
+        {
+            var log = await TscClient.LogService.GetLatestAsync(request);
+            _logStr = JsonSerializer.Serialize(log);
+        }
+        catch (Exception)
+        {
+            _logStr = "{}";
+        }
+    }
 }

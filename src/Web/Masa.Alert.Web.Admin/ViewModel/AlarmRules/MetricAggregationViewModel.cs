@@ -9,7 +9,7 @@ public class MetricAggregationViewModel
 
     public string Tag { get; set; } = string.Empty;
 
-    public int ComparisonOperator { get; set; } = MetricComparisonOperator.EqualTo.Id;
+    public int ComparisonOperator { get; set; } = MetricComparisonOperator.Equal.Id;
 
     public string Value { get; set; } = string.Empty;
 
