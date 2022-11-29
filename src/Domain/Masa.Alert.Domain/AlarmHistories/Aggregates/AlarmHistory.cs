@@ -60,7 +60,8 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         RecoveryTime = DateTimeOffset.Now;
         Duration = (long)(RecoveryTime - FirstAlarmTime).Value.TotalSeconds;
 
-        _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.ProcessingCompleted, default, "自动恢复"));
+        var commit = Handle.Completed(default, "自动恢复");
+        _handleStatusCommits.Add(commit);
         AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
         AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
     }
@@ -111,6 +112,8 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         if (Handle.IsHandleNotice)
         {
             AddDomainEvent(new NoticeAlarmHandleEvent(Handle));
+
+            _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Notified, operatorId, Handle.NotificationConfig.TemplateName));
         }
     }
 }

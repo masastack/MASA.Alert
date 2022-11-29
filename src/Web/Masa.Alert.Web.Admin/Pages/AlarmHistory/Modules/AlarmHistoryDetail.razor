@@ -59,7 +59,7 @@
             <div>@item.AlarmRuleItem.Expression</div>
             <div class="d-flex">
                 <span class="my-auto">@(item.AlarmRuleItem.IsNotification ? item.AlarmRuleItem.NotificationConfig.TemplateName : T("NoNotice"))</span>
-                <MSwitch Value="item.AlarmRuleItem.IsRecoveryNotification" Inset Class="label my-auto ml-6" Label="@T("RecoveryNotification")" />
+                <MSwitch Value="item.AlarmRuleItem.IsRecoveryNotification" Inset Class="label my-auto ml-6" Label="@T("RecoveryNotification")" Readonly />
             </div>
         </div>
         <div class="regular3--text caption">@T("TriggerRules")</div>

@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
-public record CheckAlarmRuleCommand(Guid AlarmRuleId) : Command
+public record CheckAlarmRuleCommand(Guid AlarmRuleId, DateTimeOffset? ExcuteTime) : Command
 {
     public AlarmRule AlarmRule { get; set; } = default!;
 

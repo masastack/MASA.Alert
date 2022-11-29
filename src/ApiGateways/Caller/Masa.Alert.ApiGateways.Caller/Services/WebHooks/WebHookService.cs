@@ -36,6 +36,6 @@ public class WebHookService : ServiceBase
 
     public async Task TestAsync(Guid id, WebHookTestDto inputDto)
     {
-        await PutAsync($"{id}/test", inputDto);
+        await PostAsync($"{id}/test", inputDto);
     }
 }

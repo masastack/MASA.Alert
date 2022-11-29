@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Alert.Domain.AlarmHistories.Aggregates;
+
 namespace Masa.Alert.Domain.AlarmRules.Aggregates;
 
 public class AlarmRuleRecord : FullEntity<Guid, Guid>
@@ -15,15 +17,19 @@ public class AlarmRuleRecord : FullEntity<Guid, Guid>
 
     public int ConsecutiveCount { get; protected set; }
 
+    public DateTimeOffset ExcuteTime { get; protected set; }
+
     public List<RuleResultItem> RuleResultItems { get; protected set; } = new();
 
-    public AlarmRuleRecord(Guid alarmRuleId, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems)
+    public AlarmRuleRecord(Guid alarmRuleId, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, DateTimeOffset excuteTime, List<RuleResultItem> ruleResultItems)
     {
         AlarmRuleId = alarmRuleId;
         AggregateResult = aggregateResult;
         IsTrigger = isTrigger;
         ConsecutiveCount = consecutiveCount;
         RuleResultItems = ruleResultItems;
+        AlarmHistoryId = default;
+        ExcuteTime = excuteTime;
     }
 
     public void SetAlarmHistoryId(Guid alarmHistoryId)

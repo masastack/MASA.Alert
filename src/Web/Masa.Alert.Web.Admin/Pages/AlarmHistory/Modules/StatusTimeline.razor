@@ -1,7 +1,7 @@
 ﻿@inherits AdminCompontentBase
 <div class="status-time-line">
     <MTimeline Dense=false>
-        @foreach (var item in StatusCommits)
+        @foreach (var item in _statusCommits)
         {
             <MTimelineItem Color="fill" Small FillDot Right>
                 <OppositeContent>
@@ -24,6 +24,8 @@
 @code {
     [Parameter]
     public List<AlarmHandleStatusCommitViewModel> StatusCommits { get; set; } = new();
+
+    private List<AlarmHandleStatusCommitViewModel> _statusCommits => StatusCommits.OrderByDescending(x => x.CreationTime).ToList();
 
     private string _class = string.Empty;
 

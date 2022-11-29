@@ -64,14 +64,14 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
     public AlarmRuleRecord? GetLatest()
     {
         LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
-        return _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).FirstOrDefault();
+        return _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.ExcuteTime).FirstOrDefault();
     }
 
     public long? GetOffsetResult(int offsetPeriod, string alias)
     {
         LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
 
-        var offsetRecord = _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.CreationTime).Skip(offsetPeriod - 1).FirstOrDefault();
+        var offsetRecord = _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.ExcuteTime).Skip(offsetPeriod - 1).FirstOrDefault();
 
         return offsetRecord?.AggregateResult.FirstOrDefault(x => x.Key == alias).Value;
     }
@@ -91,7 +91,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         return string.Empty;
     }
 
-    public DateTime? GetStartCheckTime(DateTime checkTime, AlarmRuleRecord? latest)
+    public DateTimeOffset? GetStartCheckTime(DateTimeOffset checkTime, AlarmRuleRecord? latest)
     {
         if (CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron && latest == null)
         {
@@ -100,7 +100,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
         if (CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
         {
-            return latest?.CreationTime;
+            return latest?.ExcuteTime;
         }
 
         if (CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
@@ -196,7 +196,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         SilenceCycle = silenceCycle;
     }
 
-    public void Check(ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
+    public void Check(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
     {
         var latestRecord = GetLatest();
         var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
@@ -211,7 +211,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
             consecutiveCount = 0;
         }
 
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, ruleResult));
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResult));
 
         if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
         {
@@ -225,9 +225,9 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         }
     }
 
-    public void SkipCheck()
+    public void SkipCheck(DateTimeOffset excuteTime)
     {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, new List<RuleResultItem>()));
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, excuteTime, new List<RuleResultItem>()));
     }
 
     public bool CheckIsNotification(DateTimeOffset? lastNotificationTime)
