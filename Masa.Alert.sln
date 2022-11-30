@@ -66,7 +66,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.Domain.Shared", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.Application.Contracts", "src\Application\Masa.Alert.Application.Contracts\Masa.Alert.Application.Contracts.csproj", "{45550B8B-17A9-45D5-BA03-F2C9905E353D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Alert.NotificationService.Provider.Mc", "src\Infrastructure\Masa.Alert.NotificationService.Provider.Mc\Masa.Alert.NotificationService.Provider.Mc.csproj", "{603BEBB8-1563-4286-9CF1-73BC07749AD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.NotificationService.Provider.Mc", "src\Infrastructure\Masa.Alert.NotificationService.Provider.Mc\Masa.Alert.NotificationService.Provider.Mc.csproj", "{603BEBB8-1563-4286-9CF1-73BC07749AD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

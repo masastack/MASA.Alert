@@ -13,7 +13,7 @@
     [Inject]
     public IPopupService PopupService { get; set; } = default!;
 
-    private List<string> WhiteUris = new List<string> { "/alarmHistory/" };
+    private List<string> WhiteUris = new List<string> { "alarmHistory/*" };
 
     private Task OnError(Exception exception)
     {

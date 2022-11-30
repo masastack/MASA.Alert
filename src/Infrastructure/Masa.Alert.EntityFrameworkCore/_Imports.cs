@@ -21,3 +21,5 @@ global using Masa.Alert.Application.Contracts.QueryModels;
 global using Masa.Alert.Domain.WebHooks;
 global using Masa.Alert.Domain.WebHooks.Aggregates;
 global using Masa.Alert.Domain.WebHooks.Repositories;
+global using Masa.Alert.Domain.Shared.AlarmRules;
+global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;

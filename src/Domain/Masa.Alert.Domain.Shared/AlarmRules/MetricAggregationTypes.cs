@@ -3,7 +3,6 @@
 
 namespace Masa.Alert.Domain.Shared.AlarmRules;
 
-
 public class MetricAggregationTypes : Enumeration
 {
     public static MetricAggregationTypes Count = new(1, "Count");

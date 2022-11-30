@@ -9,7 +9,7 @@ public class MetricMonitorItem : ValueObject
 
     public string Expression { get; protected set; } = string.Empty;
 
-    public MetricAggregation Aggregation { get; set; }
+    public MetricAggregation Aggregation { get; protected set; } = default!;
 
     public string Alias { get; protected set; } = string.Empty;
 
@@ -21,6 +21,8 @@ public class MetricMonitorItem : ValueObject
     {
         yield return Alias;
     }
+
+    private MetricMonitorItem() { }
 
     public MetricMonitorItem(bool isExpression, string expression, MetricAggregation aggregation, string alias, bool isOffset, int offsetPeriod)
     {

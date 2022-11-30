@@ -13,8 +13,23 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
         builder.Property(x => x.AppIdentity).HasMaxLength(128);
         builder.Property(x => x.ChartYAxisUnit).HasMaxLength(128);
         builder.Property(x => x.TotalVariable).HasMaxLength(64);
-        builder.Property(x => x.LogMonitorItems).HasConversion(new JsonValueConverter<List<LogMonitorItem>>());
-        builder.Property(x => x.MetricMonitorItems).HasConversion(new JsonValueConverter<List<MetricMonitorItem>>());
+        builder.OwnsMany(x => x.LogMonitorItems, b =>
+        {
+            b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleLogMonitors", AlertConsts.DbSchema);
+            b.Property(x => x.AggregationType).HasConversion(v => v.Id, v => Enumeration.FromValue<LogAggregationTypes>(v));
+        });
+        builder.OwnsMany(x => x.MetricMonitorItems, b =>
+        {
+            b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleMetricMonitors", AlertConsts.DbSchema);
+            b.OwnsOne(x => x.Aggregation, b =>
+            {
+                b.Property(x => x.Name).HasColumnName("Name");
+                b.Property(x => x.Tag).HasColumnName("Tag");
+                b.Property(x => x.Value).HasColumnName("Value");
+                b.Property(x => x.ComparisonOperator).HasConversion(v => v.Id, v => Enumeration.FromValue<MetricComparisonOperator>(v)).HasColumnName("ComparisonOperator");
+                b.Property(x => x.AggregationType).HasConversion(v => v.Id, v => Enumeration.FromValue<MetricAggregationTypes>(v)).HasColumnName("AggregationType");
+            });
+        });
         builder.OwnsMany(x => x.Items, b =>
         {
             b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleItems", AlertConsts.DbSchema);

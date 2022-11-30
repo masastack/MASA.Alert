@@ -126,6 +126,10 @@
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">
+                                    @if (_entityId != default)
+                                    {
+                                        <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
+                                    }
                                     <MSpacer></MSpacer>
                                     <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=2" Class="ml-6">@T("NextStep")</SButton>
@@ -140,6 +144,10 @@
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">
+                                    @if (_entityId != default)
+                                    {
+                                        <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
+                                    }
                                     <MSpacer></MSpacer>
                                     <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=1" Outlined　Class="ml-6">@T("PreviousStep")</SButton>

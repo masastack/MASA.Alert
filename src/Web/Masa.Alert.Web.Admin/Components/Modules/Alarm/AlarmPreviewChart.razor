@@ -155,6 +155,11 @@
     {
         var timeList = new List<long>();
 
+        if (!CronExpression.IsValidExpression(AlarmRule.CheckFrequency.CronExpression))
+        {
+            return timeList;
+        }
+
         var cronExpression = new CronExpression(AlarmRule.CheckFrequency.CronExpression);
 
         var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == TimezoneOffset);

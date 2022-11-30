@@ -1,0 +1,23 @@
+﻿.json-pre {
+    padding: 5px;
+}
+
+    .json-pre ::deep .string {
+        color: green;
+    }
+
+    .json-pre ::deep .number {
+        color: darkorange;
+    }
+
+    .json-pre ::deep .boolean {
+        color: blue;
+    }
+
+    .json-pre ::deep .null {
+        color: magenta;
+    }
+
+    .json-pre ::deep .key {
+        color: red;
+    }

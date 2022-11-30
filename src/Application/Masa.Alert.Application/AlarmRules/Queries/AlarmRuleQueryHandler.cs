@@ -63,6 +63,7 @@ public class AlarmRuleQueryHandler
         }
         condition = condition.And(!string.IsNullOrEmpty(options.ProjectIdentity), x => x.ProjectIdentity == options.ProjectIdentity);
         condition = condition.And(!string.IsNullOrEmpty(options.AppIdentity), x => x.AppIdentity == options.AppIdentity);
+        condition = condition.And(!string.IsNullOrEmpty(options.MetricId), x => x.MetricMonitorItems.Any(x => x.Aggregation.Name == options.MetricId));
         return await Task.FromResult(condition); ;
     }
 

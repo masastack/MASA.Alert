@@ -92,10 +92,11 @@
   "OperationSuccessfulMessage": "操作成功.",
   "DeletedSuccessfullyMessage": "删除成功.",
   "GreaterThan": ">",
-  "GreaterThanOrEqualTo": ">=",
+  "GreaterOrEqual": ">=",
   "LessThan": "<",
-  "LessThanOrEqualTo": "<=",
-  "EqualTo": "==",
+  "LessOrEqual": "<=",
+  "Equal": "==",
+  "NotEqual": "!=",
   "BeEqualTo": "等于",
   "NotEqualTo": "不等于",
   "Count": "计数",
@@ -176,7 +177,8 @@
     "MetricMonitor.Tag": "Tag",
     "MetricMonitor.Alias": "变量",
     "Time": "按时间",
-    "Cycle": "按周期"
+    "Cycle": "按周期",
+    "NextRunTimeTip": "预计未来5次检查时间："
   },
   "AlarmChart": {
     "ChartPreview": "图表预览",

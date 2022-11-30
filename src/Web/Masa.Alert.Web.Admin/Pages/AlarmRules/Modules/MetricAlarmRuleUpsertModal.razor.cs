@@ -228,4 +228,23 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
             await OnOk.InvokeAsync();
         }
     }
+
+    private async Task HandleDel()
+    {
+        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+    }
+
+    private async Task DeleteAsync()
+    {
+        Loading = true;
+        await AlarmRuleService.DeleteAsync(_entityId);
+        Loading = false;
+        await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
+        _visible = false;
+        ResetForm();
+        if (OnOk.HasDelegate)
+        {
+            await OnOk.InvokeAsync();
+        }
+    }
 }

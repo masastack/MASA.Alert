@@ -74,7 +74,8 @@
                                 </MRow>
                                 @if (!string.IsNullOrEmpty(_model.CheckFrequency.CronExpression))
                                 {
-                                    <div>
+                                    <div class="mt-4 default--text caption">
+                                        <p>@T("NextRunTimeTip")</p>
                                         @((MarkupString)_nextRunTimeStr)
                                     </div>
                                 }
@@ -90,7 +91,7 @@
                                 @foreach (var item in _model.LogMonitorItems)
                                 {
                                     <MRow NoGutters Class="mt-5">
-                                        <MCol Md="2">
+                                        <MCol Md="3">
                                             <SSelect @bind-Value="item.Field" Items="_fields" ItemText="v => v.Name" ItemValue="v=> v.Name" Label="@T(nameof(item.Field))">
                                                 <AppendOuterContent>
                                                     <span class="default--text subtitle2 my-auto">@T("Count")</span>
@@ -132,12 +133,7 @@
                                 }
                                 <DefaultTitle Class="mt-5 mb-2">@T("LogFilter")</DefaultTitle>
                                 <STextarea @bind-Value="_model.WhereExpression" Label="@T(nameof(_model.WhereExpression))" Outlined HideDetails="@("auto")"></STextarea>
-                                <MAlert Class="mt-5 body2  d-flex align-center" Dense
-                                        Text
-                                        Icon="@("mdi-alert-circle-outline")"
-                                        Type="AlertTypes.Warning">
-                                    @_model.QueryStr
-                                </MAlert>
+                                <LogQueryExpression AlarmRule="_model"></LogQueryExpression>
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">

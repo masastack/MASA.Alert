@@ -96,7 +96,7 @@ public class CheckAlarmRuleCommandHandler
                 Service = alarmRule.AppIdentity,
                 Name = item.Field,
                 Alias = item.Alias,
-                Type = (AggregateTypes)item.AggregationType,
+                Type = (AggregateTypes)item.AggregationType.Id,
                 RawQuery = alarmRule.WhereExpression,
                 Start = startTime,
                 End = endTime,
