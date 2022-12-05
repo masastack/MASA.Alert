@@ -29,7 +29,7 @@ docker-dev:
   before_script:
     - docker login -u $CI_ALI_REGISTRY_USER -p $CI_ALI_REGISTRY_PASSWD $CI_ALI_REGISTRY_DOMAIN 
   only:
-    - develop  
+    - main  
   script:
     - docker build -f $AlertWebDockerFile -t $Alert_Web_Image .
     - docker push $Alert_Web_Image 
@@ -48,7 +48,7 @@ deploy-dev:
   tags:
     - ydy-runner
   only:
-    - develop  
+    - main  
   script:
     - ls
     - pwd 
