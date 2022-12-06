@@ -34,6 +34,8 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public virtual IEnumerable<AlarmRuleRecord> AlarmRuleRecords => LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords))!;
 
+    public Guid SchedulerJobId { get; protected set; } = default;
+
     private List<AlarmRuleRecord> _alarmRuleRecords = default!;
 
     private Action<object, string> LazyLoader { get; set; } = default!;
@@ -56,7 +58,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         WhereExpression = whereExpression;
 
         SetChartConfig(chartYAxisUnit);
-        CheckFrequency = checkFrequency;
+        SetCheckFrequency(checkFrequency);
         SetAdvancedConfig(continuousTriggerThreshold, silenceCycle);
         _alarmRuleRecords = new List<AlarmRuleRecord>();
     }
@@ -78,17 +80,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public string GetCronExpression()
     {
-        if (CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
-        {
-            return CheckFrequency.CronExpression;
-        }
-
-        if (CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
-        {
-            throw new NotImplementedException();
-        }
-
-        return string.Empty;
+        return CheckFrequency.GetCronExpression();
     }
 
     public DateTimeOffset? GetStartCheckTime(DateTimeOffset checkTime, AlarmRuleRecord? latest)
@@ -106,7 +98,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         if (CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
         {
             var intervalTime = CheckFrequency.FixedInterval.GetIntervalTime();
-            return intervalTime == null ? null : checkTime.Add(-intervalTime.Value);
+            return checkTime.Add(-intervalTime);
         }
 
         return null;
@@ -117,7 +109,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         if (SilenceCycle.Type == SilenceCycleTypes.Time)
         {
             var intervalTime = SilenceCycle.TimeInterval.GetIntervalTime();
-            return intervalTime == null ? null : lastNotificationTime.Add(intervalTime.Value);
+            return lastNotificationTime.Add(intervalTime);
         }
 
         if (SilenceCycle.Type == SilenceCycleTypes.Cycle)
@@ -134,11 +126,9 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         {
             var intervalTime = CheckFrequency.FixedInterval.GetIntervalTime();
 
-            if (intervalTime == null) return lastTime;
-
             for (int i = 0; i < SilenceCycle.SilenceCycleValue; i++)
             {
-                lastTime = lastTime.Add(intervalTime.Value);
+                lastTime = lastTime.Add(intervalTime);
             }
             return lastTime;
         }
@@ -250,5 +240,25 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         }
 
         return false;
+    }
+
+    public void SetCheckFrequency(CheckFrequency checkFrequency)
+    {
+        if (Id == default)
+        {
+            Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
+        }
+
+        if (IsEnabled && CheckFrequency.GetCronExpression() != checkFrequency.GetCronExpression())
+        {
+            AddDomainEvent(new UpsertAlarmRuleJobEvent(Id));
+        }
+
+        CheckFrequency = checkFrequency;
+    }
+
+    public void SetSchedulerJobId(Guid schedulerJobId)
+    {
+        SchedulerJobId = schedulerJobId;
     }
 }

@@ -24,5 +24,9 @@ public class AlarmRuleRegister : IRegister
         config.ForType<MetricAggregationDto, MetricAggregation>().MapToConstructor(true)
             .Map(dest => dest.ComparisonOperator, src => Enumeration.FromValue<MetricComparisonOperator>(src.ComparisonOperator))
             .Map(dest => dest.AggregationType, src => Enumeration.FromValue<MetricAggregationTypes>(src.AggregationType));
+        config.ForType<TimeIntervalDto, TimeInterval>().MapToConstructor(true)
+            .Map(dest => dest.IntervalTimeType, src => Enumeration.FromValue<MetricComparisonOperator>((int)src.IntervalTimeType));
+        config.ForType<TimeInterval, TimeIntervalDto>()
+            .Map(dest => dest.IntervalTimeType, src => (TimeTypes)src.IntervalTimeType.Id);
     }
 }
