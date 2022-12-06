@@ -17,7 +17,7 @@ volumeMounts:
 
 replicaCount: 1
 environment:
-  path: ""
+  path: "Develop"
 
 image:
   fullName: ""
