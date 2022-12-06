@@ -20,6 +20,11 @@ public class TimeType : Enumeration
         throw new NotImplementedException();
     }
 
+    public virtual string GetCronExpression(int intervalTime)
+    {
+        throw new NotImplementedException();
+    }
+
 
     private class MinuteTime : TimeType
     {
@@ -28,6 +33,10 @@ public class TimeType : Enumeration
         public override TimeSpan GetIntervalTime(int intervalTime)
         {
             return TimeSpan.FromMinutes(intervalTime);
+        }
+
+        public override string GetCronExpression(int intervalTime) {
+            return $"0 0/{intervalTime} * ? * * ";
         }
     }
 
@@ -39,6 +48,11 @@ public class TimeType : Enumeration
         {
             return TimeSpan.FromHours(intervalTime);
         }
+
+        public override string GetCronExpression(int intervalTime)
+        {
+            return $"0 0 0/{intervalTime} ? * * ";
+        }
     }
 
     private class DayTime : TimeType
@@ -48,6 +62,11 @@ public class TimeType : Enumeration
         public override TimeSpan GetIntervalTime(int intervalTime)
         {
             return TimeSpan.FromDays(intervalTime);
+        }
+
+        public override string GetCronExpression(int intervalTime)
+        {
+            return $"0 0 0 1/{intervalTime} * ? ";
         }
     }
 }

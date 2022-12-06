@@ -25,4 +25,9 @@ public class TimeInterval : ValueObject
     {
         return IntervalTimeType.GetIntervalTime(IntervalTime);
     }
+
+    public string GetCronExpression()
+    {
+        return IntervalTimeType.GetCronExpression(IntervalTime);
+    }
 }

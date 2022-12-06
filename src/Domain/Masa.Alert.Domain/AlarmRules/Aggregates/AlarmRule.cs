@@ -52,11 +52,11 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         Type = type;
         ProjectIdentity = projectIdentity;
         AppIdentity = appIdentity;
-        IsEnabled = isEnabled;
         IsGetTotal = isGetTotal;
         TotalVariable = totalVariable;
         WhereExpression = whereExpression;
 
+        SetEnabled(isEnabled);
         SetChartConfig(chartYAxisUnit);
         SetCheckFrequency(checkFrequency);
         SetAdvancedConfig(continuousTriggerThreshold, silenceCycle);
@@ -260,5 +260,29 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
     public void SetSchedulerJobId(Guid schedulerJobId)
     {
         SchedulerJobId = schedulerJobId;
+    }
+
+    public void SetEnabled(bool isEnabled)
+    {
+        if (Id != default)
+        {
+            if (IsEnabled != isEnabled)
+            {
+                if (isEnabled && SchedulerJobId == default)
+                {
+                    AddDomainEvent(new UpsertAlarmRuleJobEvent(Id));
+                }
+                else if (isEnabled)
+                {
+                    AddDomainEvent(new EnableAlarmRuleJobEvent(Id));
+                }
+                else
+                {
+                    AddDomainEvent(new DisableAlarmRuleJobEvent(Id));
+                }
+            }
+        }
+
+        IsEnabled = isEnabled;
     }
 }

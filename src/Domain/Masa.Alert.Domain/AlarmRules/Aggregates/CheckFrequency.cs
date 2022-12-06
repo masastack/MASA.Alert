@@ -41,7 +41,7 @@ public class CheckFrequency : ValueObject
 
         if (Type == AlarmCheckFrequencyTypes.FixedInterval)
         {
-            throw new NotImplementedException();
+            return FixedInterval.GetCronExpression();
         }
 
         return string.Empty;

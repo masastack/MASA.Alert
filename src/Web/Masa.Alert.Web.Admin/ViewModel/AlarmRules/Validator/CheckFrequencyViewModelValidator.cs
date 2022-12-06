@@ -9,6 +9,6 @@ public class CheckFrequencyViewModelValidator : AbstractValidator<CheckFrequency
     {
         RuleFor(x => x.Type).Required();
         RuleFor(x => x.CronExpression).Required().Must(x => CronExpression.IsValidExpression(x)).When(x => x.Type == AlarmCheckFrequencyTypes.Cron);
-        RuleFor(x => x.FixedInterval.IntervalTimeType).IsInEnum().When(x => x.Type == AlarmCheckFrequencyTypes.FixedInterval);
+        RuleFor(x => x.FixedInterval).SetValidator(new TimeIntervalViewModelValidator()).When(x => x.Type == AlarmCheckFrequencyTypes.FixedInterval);
     }
 }
