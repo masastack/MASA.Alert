@@ -2,5 +2,5 @@
 
 public class App
 {
-    public const string APP = "masa-alert-service-admin";
+    public const string APP = "masa-alert-service";
 }

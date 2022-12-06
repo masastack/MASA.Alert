@@ -9,7 +9,7 @@ stages:
 
 variables:
   Alert_Service_Name: masa-alert-service
-  Alert_Web_Name: masa-alert-ui-admin
+  Alert_Web_Name: masa-alert-web-admin
   NAMESPACE_DEV: alert-dev
   NAMESPACE_TEST: alert-test
   NAMESPACE_STAGING: alert-staging
