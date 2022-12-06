@@ -20,7 +20,6 @@ variables:
   Alert_Service_Image: $CI_ALI_REGISTRY_DOMAIN/masa/$Alert_Service_Name:dev-$CI_PIPELINE_ID
   Alert_Web_Image: $CI_ALI_REGISTRY_DOMAIN/masa/$Alert_Web_Name:dev-$CI_PIPELINE_ID
 
-
   # NAMESPACE_PRD: alert
 docker-dev:
   stage: docker-dev
@@ -52,6 +51,7 @@ deploy-dev:
   script:
     - ls
     - pwd 
+    - echo $EnviromentPath
     - echo $KUBE_CONFIG_DEV_YDY | base64 -d > ./config
     - cat ./config
     - helm version 
