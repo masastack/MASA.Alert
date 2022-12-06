@@ -54,6 +54,7 @@ var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<Red
 builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
 builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
 builder.Services.AddMcClient(publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"));
+builder.Services.AddSchedulerClient(publicConfiguration.GetValue<string>("$public.AppSettings:SchedulerClient:Url"));
 builder.Services.AddRulesEngine(rulesEngineOptions =>
 {
     rulesEngineOptions.UseMicrosoftRulesEngine();

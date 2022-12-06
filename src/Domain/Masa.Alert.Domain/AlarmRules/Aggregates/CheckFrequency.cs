@@ -31,4 +31,19 @@ public class CheckFrequency : ValueObject
 
         CronExpression = cronExpression;
     }
+
+    public string GetCronExpression()
+    {
+        if (Type == AlarmCheckFrequencyTypes.Cron)
+        {
+            return CronExpression;
+        }
+
+        if (Type == AlarmCheckFrequencyTypes.FixedInterval)
+        {
+            throw new NotImplementedException();
+        }
+
+        return string.Empty;
+    }
 }

@@ -7,7 +7,7 @@ public class TimeInterval : ValueObject
 {
     public int IntervalTime { get; protected set; }
 
-    public TimeTypes IntervalTimeType { get; protected set; }
+    public TimeType IntervalTimeType { get; protected set; }
 
     protected override IEnumerable<object> GetEqualityValues()
     {
@@ -15,24 +15,14 @@ public class TimeInterval : ValueObject
         yield return IntervalTimeType;
     }
 
-    public TimeInterval(int intervalTime, TimeTypes intervalTimeType)
+    public TimeInterval(int intervalTime, TimeType intervalTimeType)
     {
         IntervalTime = intervalTime;
         IntervalTimeType = intervalTimeType;
     }
 
-    public TimeSpan? GetIntervalTime()
+    public TimeSpan GetIntervalTime()
     {
-        switch (IntervalTimeType)
-        {
-            case TimeTypes.Minute:
-                return TimeSpan.FromMinutes(IntervalTime);
-            case TimeTypes.Hour:
-                return TimeSpan.FromHours(IntervalTime);
-            case TimeTypes.Day:
-                return TimeSpan.FromDays(IntervalTime);
-            default:
-                return null;
-        }
+        return IntervalTimeType.GetIntervalTime(IntervalTime);
     }
 }

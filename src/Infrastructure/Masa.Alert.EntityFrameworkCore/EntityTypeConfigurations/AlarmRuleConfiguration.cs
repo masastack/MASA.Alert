@@ -44,7 +44,7 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
             b.OwnsOne(x => x.FixedInterval, b =>
             {
                 b.Property(x => x.IntervalTime).HasColumnName("CheckFrequencyIntervalTime");
-                b.Property(x => x.IntervalTimeType).HasColumnName("CheckFrequencyIntervalTimeType");
+                b.Property(x => x.IntervalTimeType).HasConversion(x => x.Id, x => Enumeration.FromValue<TimeType>(x)).HasColumnName("CheckFrequencyIntervalTimeType");
             });
             b.Property(x => x.CronExpression).HasMaxLength(128).HasColumnName("CheckFrequencyCron");
             b.Property(x => x.Type).HasColumnName("CheckFrequencyType");
@@ -55,7 +55,7 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
             b.OwnsOne(x => x.TimeInterval, b =>
             {
                 b.Property(x => x.IntervalTime).HasColumnName("SilenceCycleIntervalTime");
-                b.Property(x => x.IntervalTimeType).HasColumnName("SilenceCycleIntervalTimeType");
+                b.Property(x => x.IntervalTimeType).HasConversion(x => x.Id, x => Enumeration.FromValue<TimeType>(x)).HasColumnName("SilenceCycleIntervalTimeType");
             });
             b.Property(x => x.SilenceCycleValue).HasColumnName("SilenceCycleValue");
             b.Property(x => x.Type).HasColumnName("SilenceCycleType");
