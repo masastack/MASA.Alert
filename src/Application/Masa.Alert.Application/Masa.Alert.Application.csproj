@@ -19,6 +19,7 @@
 	<PackageReference Include="Masa.BuildingBlocks.StackSdks.Scheduler" Version="$(MasaFrameworkPackageVersion)" />
 	<PackageReference Include="Masa.Contrib.Configuration" Version="$(MasaFrameworkPackageVersion)" />
 	<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="$(MasaFrameworkPackageVersion)" />
+	<PackageReference Include="Masa.Contrib.Data.EFCore" Version="$(MasaFrameworkPackageVersion)" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
 	<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.22" />
   </ItemGroup>

@@ -3,10 +3,8 @@
 
 namespace Masa.Alert.Application.Contracts.QueryModels;
 
-public class AlarmRuleQueryModel : ISoftDelete
+public class AlarmRuleQueryModel : Entity<Guid>, ISoftDelete
 {
-    public Guid Id { get; set; }
-
     public string DisplayName { get; set; } = string.Empty;
 
     public AlarmRuleTypes Type { get; set; }

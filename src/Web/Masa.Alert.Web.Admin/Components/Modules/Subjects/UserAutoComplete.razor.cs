@@ -42,7 +42,7 @@ public partial class UserAutoComplete : AdminCompontentBase
     {
         if (firstRender)
         {
-            var users = await AuthClient.UserService.GetUserPortraitsAsync(Value.ToArray());
+            var users = await AuthClient.UserService.GetUsersAsync(Value.ToArray());
             Items = users?.Adapt<List<UserSelectModel>>() ?? new();
         }
         await base.OnAfterRenderAsync(firstRender);
