@@ -3,10 +3,8 @@
 
 namespace Masa.Alert.Application.Contracts.QueryModels;
 
-public class AlarmHistoryQueryModel : ISoftDelete
+public class AlarmHistoryQueryModel : Entity<Guid>, ISoftDelete
 {
-    public Guid Id { get; set; }
-
     public Guid AlarmRuleId { get; set; }
 
     public AlarmRuleQueryModel AlarmRule { get; set; } = new();
@@ -29,7 +27,7 @@ public class AlarmHistoryQueryModel : ISoftDelete
 
     public Guid Handler { get; set; }
 
-    public Guid WebHookId { get;set; }
+    public Guid WebHookId { get; set; }
 
     public AlarmHistoryHandleStatuses HandleStatus { get; set; }
 

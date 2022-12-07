@@ -70,7 +70,7 @@ public class AlarmRuleQueryHandler
     private async Task FillAlarmRuleDtos(List<AlarmRuleDto> dtos)
     {
         var modifierUserIds = dtos.Where(x => x.Modifier != default).Select(x => x.Modifier).Distinct().ToArray();
-        var userInfos = await _authClient.UserService.GetUserPortraitsAsync(modifierUserIds);
+        var userInfos = await _authClient.UserService.GetUsersAsync(modifierUserIds);
         foreach (var item in dtos)
         {
             item.ModifierName = userInfos.FirstOrDefault(x => x.Id == item.Modifier)?.DisplayName ?? string.Empty;
