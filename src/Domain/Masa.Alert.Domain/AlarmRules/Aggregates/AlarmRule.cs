@@ -172,6 +172,8 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         {
             SetDisable();
         }
+
+        SetCheckFrequency(checkFrequency);
     }
 
     public void SetEnabled()
