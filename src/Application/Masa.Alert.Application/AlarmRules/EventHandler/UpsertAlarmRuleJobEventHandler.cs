@@ -23,8 +23,7 @@ public class UpsertAlarmRuleJobEventHandler
     {
         var alarmRule = await _repository.FindAsync(x => x.Id == eto.AlarmRuleId);
         if (alarmRule == null) return;
-
-        var alertUrl = _configuration.ConfigurationApi.GetPublic().GetValue<string>("AppSettings:AlertClient:Url");
+        var alertUrl = _configuration.ConfigurationApi.GetPublic().GetValue<string>("$public.AppSettings:AlertClient:Url");
         var request = new AddSchedulerJobRequest
         {
             ProjectIdentity = MasaStackConsts.ALERT_SYSTEM_ID,
