@@ -7,18 +7,20 @@ public class TimeInterval : ValueObject
 {
     public int IntervalTime { get; protected set; }
 
-    public TimeType IntervalTimeType { get; protected set; }
+    public TimeType IntervalTimeType { get;}
 
     protected override IEnumerable<object> GetEqualityValues()
     {
         yield return IntervalTime;
         yield return IntervalTimeType;
     }
+    
+    private TimeInterval() { }
 
-    public TimeInterval(int intervalTime, TimeType intervalTimeType)
+    public TimeInterval(int intervalTime, string intervalTimeType)
     {
         IntervalTime = intervalTime;
-        IntervalTimeType = intervalTimeType;
+        IntervalTimeType = TimeType.StartNew(intervalTimeType);
     }
 
     public TimeSpan GetIntervalTime()

@@ -25,6 +25,13 @@ public class TimeType : Enumeration
         throw new NotImplementedException();
     }
 
+    public static TimeType StartNew(string type) => type switch
+    {
+        nameof(Minute) => new MinuteTime(),
+        nameof(Hour) => new HourTime(),
+        nameof(Day) => new DayTime(),
+        _ => throw new NotImplementedException()
+    };
 
     private class MinuteTime : TimeType
     {
@@ -35,7 +42,8 @@ public class TimeType : Enumeration
             return TimeSpan.FromMinutes(intervalTime);
         }
 
-        public override string GetCronExpression(int intervalTime) {
+        public override string GetCronExpression(int intervalTime)
+        {
             return $"0 0/{intervalTime} * ? * * ";
         }
     }
