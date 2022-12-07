@@ -45,8 +45,8 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         LazyLoader = lazyLoader;
     }
 
-    public AlarmRule(string displayName, AlarmRuleTypes type, string projectIdentity, string appIdentity, bool isEnabled, string chartYAxisUnit
-        , CheckFrequency checkFrequency, bool isGetTotal, string totalVariable, string whereExpression, int continuousTriggerThreshold, SilenceCycle silenceCycle)
+    public AlarmRule(string displayName, AlarmRuleTypes type, string projectIdentity, string appIdentity, string chartYAxisUnit
+        , bool isGetTotal, string totalVariable, string whereExpression, int continuousTriggerThreshold, SilenceCycle silenceCycle)
     {
         DisplayName = displayName;
         Type = type;
@@ -56,9 +56,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         TotalVariable = totalVariable;
         WhereExpression = whereExpression;
 
-        SetEnabled(isEnabled);
         SetChartConfig(chartYAxisUnit);
-        SetCheckFrequency(checkFrequency);
         SetAdvancedConfig(continuousTriggerThreshold, silenceCycle);
         _alarmRuleRecords = new List<AlarmRuleRecord>();
     }
@@ -157,27 +155,48 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         return null;
     }
 
+    public void CheckJob(bool isEnabled, CheckFrequency checkFrequency)
+    {
+        if (isEnabled)
+        {
+            var oldCronExpression = CheckFrequency != null ? CheckFrequency.GetCronExpression() : string.Empty;
+
+            if (oldCronExpression != checkFrequency.GetCronExpression())
+            {
+                AddDomainEvent(new UpsertAlarmRuleJobEvent(Id));
+            }
+
+            SetEnabled();
+        }
+        else
+        {
+            SetDisable();
+        }
+    }
+
     public void SetEnabled()
     {
+        if (!IsEnabled && SchedulerJobId != default)
+        {
+            AddDomainEvent(new EnableAlarmRuleJobEvent(Id));
+        }
+
         IsEnabled = true;
     }
 
     public void SetDisable()
     {
+        if (IsEnabled && SchedulerJobId != default)
+        {
+            AddDomainEvent(new DisableAlarmRuleJobEvent(Id));
+        }
+
         IsEnabled = false;
     }
 
     public void SetChartConfig(string chartYAxisUnit)
     {
         ChartYAxisUnit = chartYAxisUnit;
-    }
-
-    public void SetLogMonitorConfig(List<LogMonitorItem> items, bool isGetTotal, string totalVariable, string whereExpression)
-    {
-        LogMonitorItems = items;
-        IsGetTotal = isGetTotal;
-        TotalVariable = totalVariable;
-        WhereExpression = whereExpression;
     }
 
     public void SetAdvancedConfig(int continuousTriggerThreshold, SilenceCycle silenceCycle)
@@ -244,45 +263,11 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public void SetCheckFrequency(CheckFrequency checkFrequency)
     {
-        if (Id == default)
-        {
-            Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
-        }
-
-        if (IsEnabled && CheckFrequency.GetCronExpression() != checkFrequency.GetCronExpression())
-        {
-            AddDomainEvent(new UpsertAlarmRuleJobEvent(Id));
-        }
-
         CheckFrequency = checkFrequency;
     }
 
     public void SetSchedulerJobId(Guid schedulerJobId)
     {
         SchedulerJobId = schedulerJobId;
-    }
-
-    public void SetEnabled(bool isEnabled)
-    {
-        if (Id != default)
-        {
-            if (IsEnabled != isEnabled)
-            {
-                if (isEnabled && SchedulerJobId == default)
-                {
-                    AddDomainEvent(new UpsertAlarmRuleJobEvent(Id));
-                }
-                else if (isEnabled)
-                {
-                    AddDomainEvent(new EnableAlarmRuleJobEvent(Id));
-                }
-                else
-                {
-                    AddDomainEvent(new DisableAlarmRuleJobEvent(Id));
-                }
-            }
-        }
-
-        IsEnabled = isEnabled;
     }
 }

@@ -29,7 +29,8 @@ public class UpsertAlarmRuleJobEventHandler
         {
             ProjectIdentity = MasaStackConsts.ALERT_SYSTEM_ID,
             Name = alarmRule.DisplayName,
-            JobType = JobTypes.JobApp,
+            JobType = JobTypes.Http,
+            JobIdentity = "masa-alert-alarmRule-check-job",
             CronExpression = alarmRule.GetCronExpression(),
             OperatorId = alarmRule.Modifier,
             HttpConfig = new SchedulerJobHttpConfig
