@@ -1,6 +1,6 @@
 ﻿namespace Masa.Alert.ApiGateways.Caller;
 
-public class AlertCaller : BaseDaprCaller
+public class AlertCaller : DaprCallerBase
 {
     TokenProvider _tokenProvider;
 
