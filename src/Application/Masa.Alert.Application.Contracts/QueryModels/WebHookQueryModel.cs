@@ -3,8 +3,10 @@
 
 namespace Masa.Alert.Application.Contracts.QueryModels;
 
-public class WebHookQueryModel : Entity<Guid>, ISoftDelete
+public class WebHookQueryModel : ISoftDelete
 {
+    public Guid Id { get; set; }
+
     public string DisplayName { get; set; } = default!;
 
     public string Url { get; set; } = default!;

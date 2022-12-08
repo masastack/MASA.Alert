@@ -3,8 +3,10 @@
 
 namespace Masa.Alert.Application.Contracts.QueryModels;
 
-public class AlarmHandleStatusCommitQueryModel : Entity<Guid>
+public class AlarmHandleStatusCommitQueryModel
 {
+    public Guid Id { get; set; }
+
     public Guid AlarmHistoryId { get; set; }
 
     public AlarmHistoryHandleStatuses Status { get; set; }
