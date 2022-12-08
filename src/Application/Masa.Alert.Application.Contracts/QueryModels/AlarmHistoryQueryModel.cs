@@ -29,7 +29,7 @@ public class AlarmHistoryQueryModel : ISoftDelete
 
     public Guid Handler { get; set; }
 
-    public Guid WebHookId { get;set; }
+    public Guid WebHookId { get; set; }
 
     public AlarmHistoryHandleStatuses HandleStatus { get; set; }
 

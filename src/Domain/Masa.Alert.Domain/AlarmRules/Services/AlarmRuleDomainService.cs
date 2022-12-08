@@ -44,4 +44,22 @@ public class AlarmRuleDomainService : DomainService
         alarmRule.Check(excuteTime, aggregateResult, ruleResult);
         await _repository.UpdateAsync(alarmRule);
     }
+
+    public async Task CreateAsync(AlarmRule alarmRule, bool isEnabled, CheckFrequency checkFrequency)
+    {
+        await ValidateRuleAsync(alarmRule);
+
+        alarmRule.CheckJob(isEnabled, checkFrequency);
+
+        await _repository.AddAsync(alarmRule);
+    }
+
+    public async Task UpdateAsync(AlarmRule alarmRule, bool isEnabled, CheckFrequency checkFrequency)
+    {
+        await ValidateRuleAsync(alarmRule);
+
+        alarmRule.CheckJob(isEnabled, checkFrequency);
+
+        await _repository.UpdateAsync(alarmRule);
+    }
 }

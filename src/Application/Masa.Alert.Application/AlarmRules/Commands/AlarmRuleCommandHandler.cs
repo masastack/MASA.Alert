@@ -20,9 +20,8 @@ public class AlarmRuleCommandHandler
     {
         var entity = createCommand.AlarmRule.Adapt<AlarmRule>();
 
-        await _domainService.ValidateRuleAsync(entity);
-
-        await _repository.AddAsync(entity);
+        var checkFrequency = createCommand.AlarmRule.CheckFrequency.Adapt<CheckFrequency>();
+        await _domainService.CreateAsync(entity, createCommand.AlarmRule.IsEnabled, checkFrequency);
     }
 
     [EventHandler]
@@ -35,9 +34,8 @@ public class AlarmRuleCommandHandler
 
         updateCommand.AlarmRule.Adapt(entity);
 
-        await _domainService.ValidateRuleAsync(entity);
-
-        await _repository.UpdateAsync(entity);
+        var checkFrequency = updateCommand.AlarmRule.CheckFrequency.Adapt<CheckFrequency>();
+        await _domainService.UpdateAsync(entity, updateCommand.AlarmRule.IsEnabled, checkFrequency);
     }
 
     [EventHandler]

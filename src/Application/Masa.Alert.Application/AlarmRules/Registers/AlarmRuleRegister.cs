@@ -8,10 +8,11 @@ public class AlarmRuleRegister : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.ForType<AlarmRule, AlarmRuleDto>().MapToConstructor(true);
-        config.ForType<AlarmRuleUpsertDto, AlarmRule>().MapToConstructor(true);
+        config.ForType<AlarmRuleUpsertDto, AlarmRule>().MapToConstructor(true)
+            .Ignore(dest => dest.IsEnabled)
+            .Ignore(dest => dest.CheckFrequency);
         config.ForType<CheckFrequencyDto, CheckFrequency>().MapToConstructor(true);
         config.ForType<SilenceCycleDto, SilenceCycle>().MapToConstructor(true);
-        config.ForType<TimeIntervalDto, TimeInterval>().MapToConstructor(true);
         config.ForType<AlarmRuleQueryModel, AlarmRuleDto>()
             .Map(dest => dest.CheckFrequency.FixedInterval.IntervalTime, src => src.CheckFrequencyIntervalTime)
             .Map(dest => dest.CheckFrequency.FixedInterval.IntervalTimeType, src => src.CheckFrequencyIntervalTimeType)
@@ -24,8 +25,7 @@ public class AlarmRuleRegister : IRegister
         config.ForType<MetricAggregationDto, MetricAggregation>().MapToConstructor(true)
             .Map(dest => dest.ComparisonOperator, src => Enumeration.FromValue<MetricComparisonOperator>(src.ComparisonOperator))
             .Map(dest => dest.AggregationType, src => Enumeration.FromValue<MetricAggregationTypes>(src.AggregationType));
-        config.ForType<TimeIntervalDto, TimeInterval>().MapToConstructor(true)
-            .Map(dest => dest.IntervalTimeType, src => Enumeration.FromValue<MetricComparisonOperator>((int)src.IntervalTimeType));
+        config.ForType<TimeIntervalDto, TimeInterval>().ConstructUsing(src => new TimeInterval(src.IntervalTime, src.IntervalTimeType.ToString()));
         config.ForType<TimeInterval, TimeIntervalDto>()
             .Map(dest => dest.IntervalTimeType, src => (TimeTypes)src.IntervalTimeType.Id);
     }
