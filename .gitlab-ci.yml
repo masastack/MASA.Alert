@@ -21,7 +21,7 @@ variables:
   Alert_Service_Image: $CI_ALI_REGISTRY_DOMAIN/masa/$Alert_Service_Name:dev-$CI_PIPELINE_ID
   Alert_Web_Image: $CI_ALI_REGISTRY_DOMAIN/masa/$Alert_Web_Name:dev-$CI_PIPELINE_ID
 
-  NAMESPACE_STGING: alert-staging
+  NAMESPACE_STAGING: alert-staging
   WebDomain_staging: alert-ui-admin-staging.masastack.com
   ServiceDomain_staging: alert-service-staging.masastack.com
   
