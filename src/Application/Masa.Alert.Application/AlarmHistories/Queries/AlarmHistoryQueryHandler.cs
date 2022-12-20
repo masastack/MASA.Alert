@@ -18,7 +18,7 @@ public class AlarmHistoryQueryHandler
         var entity = await _context.AlarmHistoryQueries
             .Include(x => x.AlarmRule).ThenInclude(x => x.LogMonitorItems)
             .Include(x => x.AlarmRule).ThenInclude(x => x.MetricMonitorItems)
-            .Include(x=>x.HandleStatusCommits).FirstOrDefaultAsync(x => x.Id == query.AlarmHistoryId);
+            .Include(x => x.HandleStatusCommits).FirstOrDefaultAsync(x => x.Id == query.AlarmHistoryId);
 
         Check.NotNull(entity, "AlarmHistory not found");
 
