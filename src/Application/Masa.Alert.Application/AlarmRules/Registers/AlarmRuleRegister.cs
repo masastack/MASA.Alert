@@ -12,11 +12,6 @@ public class AlarmRuleRegister : IRegister
             .Ignore(dest => dest.CheckFrequency);
         config.ForType<CheckFrequencyDto, CheckFrequency>().MapToConstructor(true);
         config.ForType<SilenceCycleDto, SilenceCycle>().MapToConstructor(true);
-        //config.ForType<AlarmRuleQueryModel, AlarmRuleDto>()
-        //    .Map(dest => dest.CheckFrequency.FixedInterval.IntervalTime, src => src.CheckFrequencyIntervalTime)
-        //    .Map(dest => dest.CheckFrequency.FixedInterval.IntervalTimeType, src => src.CheckFrequencyIntervalTimeType)
-        //    .Map(dest => dest.CheckFrequency.CronExpression, src => src.CheckFrequencyCron)
-        //    .Map(dest => dest.CheckFrequency.Type, src => src.CheckFrequencyType);
         config.ForType<LogMonitorItemDto, LogMonitorItem>().MapToConstructor(true)
             .Map(dest => dest.AggregationType, src => Enumeration.FromValue<LogAggregationType>((int)src.AggregationType));
         config.ForType<MetricAggregationDto, MetricAggregation>().MapToConstructor(true)
