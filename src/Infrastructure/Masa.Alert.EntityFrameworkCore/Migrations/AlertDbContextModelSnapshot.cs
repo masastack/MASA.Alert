@@ -457,17 +457,15 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
                     b.OwnsMany("Masa.Alert.Domain.AlarmRules.Aggregates.LogMonitorItem", "LogMonitorItems", b1 =>
                         {
-                            b1.Property<Guid>("AlarmRuleId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
+                            b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("AggregationType")
                                 .HasColumnType("int");
+
+                            b1.Property<Guid>("AlarmRuleId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Alias")
                                 .IsRequired()
@@ -483,7 +481,9 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                             b1.Property<int>("OffsetPeriod")
                                 .HasColumnType("int");
 
-                            b1.HasKey("AlarmRuleId", "Id");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("AlarmRuleId");
 
                             b1.ToTable("AlarmRuleLogMonitors", "alert");
 
@@ -493,14 +493,12 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
                     b.OwnsMany("Masa.Alert.Domain.AlarmRules.Aggregates.MetricMonitorItem", "MetricMonitorItems", b1 =>
                         {
-                            b1.Property<Guid>("AlarmRuleId")
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
+                            b1.Property<Guid>("AlarmRuleId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Alias")
                                 .IsRequired()
@@ -519,7 +517,9 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                             b1.Property<int>("OffsetPeriod")
                                 .HasColumnType("int");
 
-                            b1.HasKey("AlarmRuleId", "Id");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("AlarmRuleId");
 
                             b1.ToTable("AlarmRuleMetricMonitors", "alert");
 
@@ -528,11 +528,8 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
                             b1.OwnsOne("Masa.Alert.Domain.AlarmRules.Aggregates.MetricAggregation", "Aggregation", b2 =>
                                 {
-                                    b2.Property<Guid>("MetricMonitorItemAlarmRuleId")
+                                    b2.Property<Guid>("MetricMonitorItemId")
                                         .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("MetricMonitorItemId")
-                                        .HasColumnType("int");
 
                                     b2.Property<int>("AggregationType")
                                         .HasColumnType("int")
@@ -557,12 +554,12 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                                         .HasColumnType("nvarchar(max)")
                                         .HasColumnName("Value");
 
-                                    b2.HasKey("MetricMonitorItemAlarmRuleId", "MetricMonitorItemId");
+                                    b2.HasKey("MetricMonitorItemId");
 
                                     b2.ToTable("AlarmRuleMetricMonitors", "alert");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("MetricMonitorItemAlarmRuleId", "MetricMonitorItemId");
+                                        .HasForeignKey("MetricMonitorItemId");
                                 });
 
                             b1.Navigation("Aggregation")

@@ -9,4 +9,7 @@ public partial class AlarmHistoryDetail : AdminCompontentBase
 
     [Parameter]
     public AlarmHistoryViewModel AlarmHistory { get; set; } = new();
+
+    [Parameter]
+    public bool HandleStatusShow { get; set; }
 }

@@ -13,7 +13,7 @@ public class MetricAggregation : ValueObject
 
     public string Value { get; protected set; } = string.Empty;
 
-    public MetricAggregationTypes AggregationType { get; protected set; }
+    public MetricAggregationType AggregationType { get; protected set; }
 
     protected override IEnumerable<object> GetEqualityValues()
     {
@@ -24,7 +24,7 @@ public class MetricAggregation : ValueObject
         yield return AggregationType;
     }
 
-    public MetricAggregation(string name, string tag, MetricComparisonOperator comparisonOperator, string value, MetricAggregationTypes aggregationType)
+    public MetricAggregation(string name, string tag, MetricComparisonOperator comparisonOperator, string value, MetricAggregationType aggregationType)
     {
         Name = name;
         Tag = tag;

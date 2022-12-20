@@ -79,13 +79,13 @@
                                                 <SSelect @bind-Value="item.Aggregation.Tag" Items="item.Aggregation.TagItems" ItemText="v => v" ItemValue="v=> v" TValue="string" TItem="string" TItemValue="string" Label="@T("MetricMonitor.Tag")" OnChange="(v)=>HandleMetricTagChange(v,item)" />
                                             </MCol>
                                             <MCol Md="2" Class="mb-4 ml-2">
-                                                <SSelect @bind-Value="item.Aggregation.ComparisonOperator" Items="Enumeration.GetAll<MetricComparisonOperator>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e.Id" />
+                                                <SSelect @bind-Value="item.Aggregation.ComparisonOperator" Items="Enum.GetValues<MetricComparisonOperators>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
                                             </MCol>
                                             <MCol Md="2" Class="mb-4 ml-2">
                                                 <SSelect @bind-Value="item.Aggregation.Value" Items="item.Aggregation.ValueItems" ItemText="v => v" ItemValue="v=> v" Label="@T(nameof(item.Aggregation.Value))" />
                                             </MCol>
                                             <MCol Md="2" Class="mb-4 ml-2" Offset="3">
-                                                <SSelect @bind-Value="item.Aggregation.AggregationType" Items="Enumeration.GetAll<MetricAggregationTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e.Id" />
+                                                <SSelect @bind-Value="item.Aggregation.AggregationType" Items="Enum.GetValues<MetricAggregationTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
                                             </MCol>
                                         }
                                         <MCol Md="2" Class="mb-4 ml-2">

@@ -7,25 +7,39 @@ public class AlarmRuleQueryModel : ISoftDelete
 {
     public Guid Id { get; set; }
 
-    public string DisplayName { get; set; } = string.Empty;
-
     public AlarmRuleTypes Type { get; set; }
+
+    public string DisplayName { get; set; } = string.Empty;
 
     public string ProjectIdentity { get; set; } = string.Empty;
 
     public string AppIdentity { get; set; } = string.Empty;
 
-    public bool IsEnabled { get; set; }
-
     public string ChartYAxisUnit { get; set; } = string.Empty;
 
-    public int CheckFrequencyIntervalTime { get; set; }
+    public CheckFrequencyQueryModel CheckFrequency { get; set; } = new();
 
-    public TimeTypes CheckFrequencyIntervalTimeType { get; set; }
+    public bool IsGetTotal { get; set; }
 
-    public string CheckFrequencyCron { get; set; } = string.Empty;
+    public string TotalVariable { get; set; } = "total";
 
-    public AlarmCheckFrequencyTypes CheckFrequencyType { get; set; }
+    public string WhereExpression { get; set; } = string.Empty;
+
+    public int ContinuousTriggerThreshold { get; set; }
+
+    public SilenceCycleQueryModel SilenceCycle { get; set; } = new();
+
+    public bool IsEnabled { get; set; }
+
+    public List<LogMonitorItemQueryModel> LogMonitorItems { get; set; } = new();
+
+    public List<MetricMonitorItemQueryModel> MetricMonitorItems { get; set; } = new();
+
+    public List<AlarmRuleItemQueryModel> Items { get; set; } = new();
 
     public bool IsDeleted { get; set; }
+
+    public DateTime CreationTime { get; set; }
+
+    public DateTime ModificationTime { get; set; }
 }

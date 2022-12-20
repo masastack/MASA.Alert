@@ -9,11 +9,11 @@ public class MetricAggregationViewModel
 
     public string Tag { get; set; } = string.Empty;
 
-    public int ComparisonOperator { get; set; } = MetricComparisonOperator.Equal.Id;
+    public MetricComparisonOperators ComparisonOperator { get; set; } = MetricComparisonOperators.Equal;
 
     public string Value { get; set; } = string.Empty;
 
-    public int AggregationType { get; set; } = MetricAggregationTypes.Count.Id;
+    public MetricAggregationTypes AggregationType { get; set; } = MetricAggregationTypes.Count;
 
     public List<string> TagItems { get; set; } = new();
 

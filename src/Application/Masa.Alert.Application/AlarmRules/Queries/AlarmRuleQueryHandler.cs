@@ -1,24 +1,25 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using System.Linq;
+
 namespace Masa.Alert.Application.AlarmRules.Queries;
 
 public class AlarmRuleQueryHandler
 {
-    private readonly IAlarmRuleRepository _repository;
+    private readonly IAlertQueryContext _context;
     private readonly IAuthClient _authClient;
 
-    public AlarmRuleQueryHandler(IAlarmRuleRepository repository, IAuthClient authClient)
+    public AlarmRuleQueryHandler(IAlertQueryContext context, IAuthClient authClient)
     {
-        _repository = repository;
+        _context = context;
         _authClient = authClient;
     }
 
     [EventHandler]
     public async Task GetAsync(GetAlarmRuleQuery query)
     {
-        var queryable = await _repository.WithDetailsAsync();
-        var entity = await queryable.FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
+        var entity = await _context.AlarmRuleQueries.Include(x=>x.Items).Include(x => x.LogMonitorItems).Include(x => x.MetricMonitorItems).FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
 
         Check.NotNull(entity, "AlarmRule not found");
 
@@ -30,25 +31,25 @@ public class AlarmRuleQueryHandler
     {
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
-        var queryable = await _repository.GetQueryableAsync();
-        var resultList = await queryable.GetPaginatedListAsync(condition, new()
+        var resultList = await _context.AlarmRuleQueries.Include(x=>x.MetricMonitorItems).GetPaginatedListAsync(condition, new()
         {
             Page = options.Page,
             PageSize = options.PageSize,
             Sorting = new Dictionary<string, bool>
             {
-                [nameof(AlarmRule.ModificationTime)] = true
+                [nameof(AlarmRuleQueryModel.ModificationTime)] = true
             }
         });
+
         var dtos = resultList.Result.Adapt<List<AlarmRuleDto>>();
         await FillAlarmRuleDtos(dtos);
         var result = new PaginatedListDto<AlarmRuleDto>(resultList.Total, resultList.TotalPages, dtos);
         query.Result = result;
     }
 
-    private async Task<Expression<Func<AlarmRule, bool>>> CreateFilteredPredicate(GetAlarmRuleInputDto options)
+    private async Task<Expression<Func<AlarmRuleQueryModel, bool>>> CreateFilteredPredicate(GetAlarmRuleInputDto options)
     {
-        Expression<Func<AlarmRule, bool>> condition = x => true;
+        Expression<Func<AlarmRuleQueryModel, bool>> condition = x => true;
         condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.DisplayName.Contains(options.Filter));
         condition = condition.And(options.Type != default, x => x.Type == options.Type);
         if (options.TimeType == AlarmRuleSearchTimeTypes.ModificationTime)
