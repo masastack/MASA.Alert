@@ -16,18 +16,22 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
         builder.OwnsMany(x => x.LogMonitorItems, b =>
         {
             b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleLogMonitors", AlertConsts.DbSchema);
-            b.Property(x => x.AggregationType).HasConversion(v => v.Id, v => Enumeration.FromValue<LogAggregationTypes>(v));
+            b.Property<Guid>("Id").ValueGeneratedOnAdd();
+            b.HasKey("Id");
+            b.Property(x => x.AggregationType).HasConversion(v => v.Id, v => Enumeration.FromValue<Domain.AlarmRules.LogAggregationType>(v));
         });
         builder.OwnsMany(x => x.MetricMonitorItems, b =>
         {
             b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleMetricMonitors", AlertConsts.DbSchema);
+            b.Property<Guid>("Id").ValueGeneratedOnAdd();
+            b.HasKey("Id");
             b.OwnsOne(x => x.Aggregation, b =>
             {
                 b.Property(x => x.Name).HasColumnName("Name");
                 b.Property(x => x.Tag).HasColumnName("Tag");
                 b.Property(x => x.Value).HasColumnName("Value");
                 b.Property(x => x.ComparisonOperator).HasConversion(v => v.Id, v => Enumeration.FromValue<MetricComparisonOperator>(v)).HasColumnName("ComparisonOperator");
-                b.Property(x => x.AggregationType).HasConversion(v => v.Id, v => Enumeration.FromValue<MetricAggregationTypes>(v)).HasColumnName("AggregationType");
+                b.Property(x => x.AggregationType).HasConversion(v => v.Id, v => Enumeration.FromValue<MetricAggregationType>(v)).HasColumnName("AggregationType");
             });
         });
         builder.OwnsMany(x => x.Items, b =>

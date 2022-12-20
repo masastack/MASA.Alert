@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Masa.Alert.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AlertDbContext))]
-    [Migration("20221121070906_AlarmHandle")]
-    partial class AlarmHandle
+    [Migration("20221220025715_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Masa.Alert.Domain.AlarmHistorys.Aggregates.AlarmHistory", b =>
+            modelBuilder.Entity("Masa.Alert.Domain.AlarmHistories.Aggregates.AlarmHistory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,9 +50,6 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
                     b.Property<DateTimeOffset>("FirstAlarmTime")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("HandleStatus")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -90,9 +87,6 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AlarmRuleType")
-                        .HasColumnType("int");
-
                     b.Property<string>("AppIdentity")
                         .IsRequired()
                         .HasMaxLength(128)
@@ -126,10 +120,6 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                     b.Property<bool>("IsGetTotal")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LogMonitorItems")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ModificationTime")
                         .HasColumnType("datetime2");
 
@@ -141,10 +131,16 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
+                    b.Property<Guid>("SchedulerJobId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TotalVariable")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<string>("WhereExpression")
                         .IsRequired()
@@ -165,6 +161,9 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("AlarmHistoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("AlarmRuleId")
                         .HasColumnType("uniqueidentifier");
 
@@ -176,6 +175,9 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
                     b.Property<Guid>("Creator")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("ExcuteTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -198,6 +200,48 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                     b.HasIndex("AlarmRuleId");
 
                     b.ToTable("AlarmRuleRecords", "alert");
+                });
+
+            modelBuilder.Entity("Masa.Alert.Domain.WebHooks.Aggregates.WebHook", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Creator")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Modifier")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SecretKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WebHooks", "alert");
                 });
 
             modelBuilder.Entity("Masa.BuildingBlocks.Dispatcher.IntegrationEvents.Logs.IntegrationEventLog", b =>
@@ -250,38 +294,43 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                     b.ToTable("IntegrationEventLog", (string)null);
                 });
 
-            modelBuilder.Entity("Masa.Alert.Domain.AlarmHistorys.Aggregates.AlarmHistory", b =>
+            modelBuilder.Entity("Masa.Alert.Domain.AlarmHistories.Aggregates.AlarmHistory", b =>
                 {
-                    b.OwnsOne("Masa.Alert.Domain.AlarmHistorys.Aggregates.AlarmHandle", "Handle", b1 =>
+                    b.OwnsOne("Masa.Alert.Domain.AlarmHistories.Aggregates.AlarmHandle", "Handle", b1 =>
                         {
                             b1.Property<Guid>("AlarmHistoryId")
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<Guid>("Handler")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("Handler");
 
                             b1.Property<bool>("IsHandleNotice")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("IsThirdParty")
-                                .HasColumnType("bit");
+                                .HasColumnType("bit")
+                                .HasColumnName("IsHandleNotice");
 
                             b1.Property<string>("NotificationConfig")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("HandleNotificationConfig");
+
+                            b1.Property<int>("Status")
+                                .HasColumnType("int")
+                                .HasColumnName("HandleStatus");
 
                             b1.Property<Guid>("WebHookId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("WebHookId");
 
                             b1.HasKey("AlarmHistoryId");
 
-                            b1.ToTable("AlarmHandles", "alert");
+                            b1.ToTable("AlarmHistorys", "alert");
 
                             b1.WithOwner()
                                 .HasForeignKey("AlarmHistoryId");
                         });
 
-                    b.OwnsMany("Masa.Alert.Domain.AlarmHistorys.Aggregates.AlarmHandleStatusCommit", "HandleStatusCommits", b1 =>
+                    b.OwnsMany("Masa.Alert.Domain.AlarmHistories.Aggregates.AlarmHandleStatusCommit", "HandleStatusCommits", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
@@ -302,10 +351,6 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
 
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("UserName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("Id");
 
@@ -412,6 +457,117 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                                 .IsRequired();
                         });
 
+                    b.OwnsMany("Masa.Alert.Domain.AlarmRules.Aggregates.LogMonitorItem", "LogMonitorItems", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("AggregationType")
+                                .HasColumnType("int");
+
+                            b1.Property<Guid>("AlarmRuleId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Alias")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Field")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<bool>("IsOffset")
+                                .HasColumnType("bit");
+
+                            b1.Property<int>("OffsetPeriod")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("AlarmRuleId");
+
+                            b1.ToTable("AlarmRuleLogMonitors", "alert");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AlarmRuleId");
+                        });
+
+                    b.OwnsMany("Masa.Alert.Domain.AlarmRules.Aggregates.MetricMonitorItem", "MetricMonitorItems", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("AlarmRuleId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Alias")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Expression")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<bool>("IsExpression")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("IsOffset")
+                                .HasColumnType("bit");
+
+                            b1.Property<int>("OffsetPeriod")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("AlarmRuleId");
+
+                            b1.ToTable("AlarmRuleMetricMonitors", "alert");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AlarmRuleId");
+
+                            b1.OwnsOne("Masa.Alert.Domain.AlarmRules.Aggregates.MetricAggregation", "Aggregation", b2 =>
+                                {
+                                    b2.Property<Guid>("MetricMonitorItemId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<int>("AggregationType")
+                                        .HasColumnType("int")
+                                        .HasColumnName("AggregationType");
+
+                                    b2.Property<int>("ComparisonOperator")
+                                        .HasColumnType("int")
+                                        .HasColumnName("ComparisonOperator");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)")
+                                        .HasColumnName("Name");
+
+                                    b2.Property<string>("Tag")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)")
+                                        .HasColumnName("Tag");
+
+                                    b2.Property<string>("Value")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)")
+                                        .HasColumnName("Value");
+
+                                    b2.HasKey("MetricMonitorItemId");
+
+                                    b2.ToTable("AlarmRuleMetricMonitors", "alert");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("MetricMonitorItemId");
+                                });
+
+                            b1.Navigation("Aggregation")
+                                .IsRequired();
+                        });
+
                     b.OwnsOne("Masa.Alert.Domain.AlarmRules.Aggregates.SilenceCycle", "SilenceCycle", b1 =>
                         {
                             b1.Property<Guid>("AlarmRuleId")
@@ -461,6 +617,10 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                         .IsRequired();
 
                     b.Navigation("Items");
+
+                    b.Navigation("LogMonitorItems");
+
+                    b.Navigation("MetricMonitorItems");
 
                     b.Navigation("SilenceCycle")
                         .IsRequired();

@@ -7,7 +7,7 @@ public class LogMonitorItem : ValueObject
 {
     public string Field { get; protected set; } = default!;
 
-    public LogAggregationTypes AggregationType { get; protected set; }
+    public LogAggregationType AggregationType { get; protected set; }
 
     public string Alias { get; protected set; } = default!;
 
@@ -24,7 +24,7 @@ public class LogMonitorItem : ValueObject
         yield return OffsetPeriod;
     }
 
-    public LogMonitorItem(string field, LogAggregationTypes aggregationType, string alias, bool isOffset, int offsetPeriod)
+    public LogMonitorItem(string field, LogAggregationType aggregationType, string alias, bool isOffset, int offsetPeriod)
     {
         Field = field;
         AggregationType = aggregationType;

@@ -3,9 +3,12 @@
 
 namespace Masa.Alert.Domain.Shared.AlarmRules;
 
-public enum MetricAggregationTypes
+public enum MetricComparisonOperators
 {
-    Count = 1,
-    Sum,
-    Avg
+    GreaterThan = 1,
+    GreaterOrEqual,
+    LessThan,
+    LessOrEqual,
+    Equal,
+    NotEqual
 }

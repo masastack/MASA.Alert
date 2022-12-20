@@ -3,11 +3,9 @@
 
 namespace Masa.Alert.Domain.Shared.AlarmRules;
 
-public class LogAggregationTypes : Enumeration
+public enum LogAggregationTypes
 {
-    public static LogAggregationTypes Count = new(1, "count");
-    public static LogAggregationTypes Sum = new(2, "sum");
-    public static LogAggregationTypes Avg = new(3, "avg");
-
-    public LogAggregationTypes(int id, string name) : base(id, name) { }
+    Count = 1,
+    Sum,
+    Avg
 }

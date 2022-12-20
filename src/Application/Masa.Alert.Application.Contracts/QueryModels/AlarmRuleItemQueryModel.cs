@@ -5,6 +5,8 @@ namespace Masa.Alert.Application.Contracts.QueryModels;
 
 public class AlarmRuleItemQueryModel
 {
+    public Guid Id { get; set; }
+
     public Guid AlarmRuleId { get; set; }
 
     public string Expression { get; set; } = default!;
