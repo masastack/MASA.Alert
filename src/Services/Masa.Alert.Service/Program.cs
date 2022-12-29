@@ -49,6 +49,7 @@ TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
 builder.Services.AddScoped<INotificationSender, McNotificationSender>();
 builder.Services.AddSequentialGuidGenerator();
+builder.Services.AddI18n(Path.Combine("Assets", "I18n"));
 var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
 builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
 builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
@@ -112,7 +113,7 @@ var app = builder.Services
         .UseRepository<AlertDbContext>();
     })
     .AddServices(builder);
-
+app.UseI18n();
 app.UseMasaExceptionHandler(opt =>
 {
     opt.ExceptionHandler += context =>

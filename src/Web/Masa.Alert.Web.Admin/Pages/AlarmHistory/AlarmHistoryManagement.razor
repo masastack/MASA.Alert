@@ -16,7 +16,14 @@
                     <EnumSimpleSelect TValue="AlarmHistorySearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))" OnChange="RefreshAsync" />
                     <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" OnChange="RefreshAsync" />
                     <EnumSimpleSelect TValue="AlertSeverity" @bind-Value="@_queryParam.AlertSeverity" DefaultText="@T(nameof(_queryParam.AlertSeverity))" Class="ml-6" OnChange="RefreshAsync" />
-                    <EnumSimpleSelect TValue="AlarmHistoryHandleStatuses" @bind-Value="@_queryParam.HandleStatus" DefaultText="@T(nameof(_queryParam.HandleStatus))" Class="ml-6" OnChange="RefreshAsync" />
+                    @if (_queryParam.SearchType == AlarmHistorySearchTypes.Alarming)
+                    {
+                        <EnumSimpleSelect TValue="AlarmHistoryHandleStatuses" @bind-Value="@_queryParam.HandleStatus" DefaultText="@T(nameof(_queryParam.HandleStatus))" Class="ml-6" OnChange="RefreshAsync" />
+                    }
+                    @if (_queryParam.SearchType == AlarmHistorySearchTypes.Processed)
+                    {
+                        <SUserAutoComplete @bind-Value="_queryParam.Handler" Label="@(T("Receiver"))" FillBackground="false" Class="ml-6" Style="width: initial" OnSelectedItemUpdate="RefreshAsync" />
+                    }
                 </div>
             }
             <div class="d-flex search-panel-right @(!isAnimate?"full-width":"") @(isAnimate?"animate__animated":"") @(!advanced?"animate__searchOpen":"animate__searchShrink")">
@@ -43,6 +50,14 @@
                             break;
                         case nameof(AlarmHistoryListViewModel.HandleStatus):
                             <AlarmHistoryStatusTag Value="@context.Item.HandleStatus" />
+                            break;
+                        case "HandleCompletionTime":
+                            <MListItem Class="pa-0">
+                                <MListItemContent>
+                                    <MListItemTitle Class="body regular--text">@context.Item.Handle.HandlerName @context.Item.RecoveryTime?.ToString(T("$TimeFormat"))</MListItemTitle>
+                                    <MListItemSubtitle Class="body regular--text">@context.Item.RecoveryTime?.ToString(T("$DateFormat"))</MListItemSubtitle>
+                                </MListItemContent>
+                            </MListItem>
                             break;
                         case "Action":
                             @if (context.Item.HandleStatus == AlarmHistoryHandleStatuses.Pending)

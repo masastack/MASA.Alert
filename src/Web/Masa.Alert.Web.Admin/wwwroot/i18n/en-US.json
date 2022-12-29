@@ -5,7 +5,7 @@
   "$MonthDayFormat": "MM/dd",
   "$TimeFormat": "HH:mm:ss",
   "Unit.Bar": "Bar",
-  "DeletionConfirmationMessage": "Are you sure delete data?",
+  "DeletionConfirmationMessage": "Are you sure delete {0}?",
   "BasicInformation": "Basic Information",
   "DetailInformation": "Detail Information",
   "OperationConfirmation": "Operation confirmation",
@@ -19,5 +19,7 @@
   "Permission.Create": "Create",
   "Permission.Edit": "Edit",
   "Permission.Delete": "Delete",
-  "EditIn": "Edit in"
+  "EditIn": "Edit in",
+  "EnabledConfirmation": "Are you sure you want to enable?",
+  "DisableConfirmation": "Are you sure you want to disable?"
 }

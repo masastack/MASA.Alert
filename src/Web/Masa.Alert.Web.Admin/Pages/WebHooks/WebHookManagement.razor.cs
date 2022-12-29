@@ -9,7 +9,7 @@ public partial class WebHookManagement : AdminCompontentBase
     private PaginatedListDto<WebHookListViewModel> _entities = new();
     private WebHookUpsertModal? _upsertModal;
     private WebHookTestModal? _testModal;
-    protected override string? PageName { get; set; } = "WebHook";
+    protected override string? PageName { get; set; } = "WebHookBlock";
 
     WebHookService WebHookService => AlertCaller.WebHookService;
 

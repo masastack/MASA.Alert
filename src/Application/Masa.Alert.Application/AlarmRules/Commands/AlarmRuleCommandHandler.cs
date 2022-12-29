@@ -7,12 +7,15 @@ public class AlarmRuleCommandHandler
 {
     private readonly IAlarmRuleRepository _repository;
     private readonly AlarmRuleDomainService _domainService;
+    private readonly ISchedulerClient _schedulerClient;
 
     public AlarmRuleCommandHandler(IAlarmRuleRepository repository
-        , AlarmRuleDomainService domainService)
+        , AlarmRuleDomainService domainService
+        , ISchedulerClient schedulerClient)
     {
         _repository = repository;
         _domainService = domainService;
+        _schedulerClient = schedulerClient;
     }
 
     [EventHandler]
@@ -46,6 +49,11 @@ public class AlarmRuleCommandHandler
         Check.NotNull(entity, "AlarmRule not found");
 
         await _repository.RemoveAsync(entity);
+
+        if (entity.SchedulerJobId != default)
+        {
+            await _schedulerClient.SchedulerJobService.RemoveAsync(new SchedulerJobRequestBase { JobId = entity.SchedulerJobId, OperatorId = entity.Modifier });
+        }
     }
 
     [EventHandler]

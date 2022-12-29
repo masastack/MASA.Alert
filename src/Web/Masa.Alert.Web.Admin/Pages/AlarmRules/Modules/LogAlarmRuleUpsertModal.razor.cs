@@ -29,7 +29,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
 
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
-    protected override string? PageName { get; set; } = "AlarmRule";
+    protected override string? PageName { get; set; } = "AlarmRuleBlock";
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,6 +57,8 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
             _visible = true;
             StateHasChanged();
         });
+
+        _form?.ResetValidation();
     }
 
     private async Task GetFormDataAsync()
@@ -159,9 +161,10 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         _tempCron = _model.CheckFrequency.CronExpression;
     }
 
-    private void HandleLogMonitorItemsAdd()
+    private void HandleLogMonitorItemsAdd(LogMonitorItemViewModel item)
     {
-        _model.LogMonitorItems.Add(new LogMonitorItemViewModel());
+        var index = _model.LogMonitorItems.IndexOf(item) + 1;
+        _model.LogMonitorItems.Insert(index, new LogMonitorItemViewModel());
     }
 
     private void HandleLogMonitorItemsRemove(LogMonitorItemViewModel item)
@@ -204,6 +207,17 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         }
     }
 
+    private void HandleNextStep()
+    {
+        Check.NotNull(_form, "form not found");
+
+        if (!_form.Validate())
+        {
+            return;
+        }
+        _model.Step++;
+    }
+
     private async Task HandleProjectChange()
     {
         var projectId = _projectItems.FirstOrDefault(x => x.Identity == _model.ProjectIdentity)?.Id;
@@ -215,7 +229,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
 
     private async Task HandleDel()
     {
-        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+        await ConfirmAsync(T("DeletionConfirmationMessage", $"{T("AlarmRule")}\"{_model.DisplayName}\""), DeleteAsync, AlertTypes.Error);
     }
 
     private async Task DeleteAsync()

@@ -187,7 +187,7 @@
 }
 
 .fold {
-    width: calc(100% - 550px);
+    width: calc(100% - 470px);
     display: inline-block;
 }
 
@@ -276,9 +276,9 @@
     border-radius: 20px !important;
 }
 
-.m-text-field.m-text-field--solo .m-input__append-inner, .m-text-field.m-text-field--solo .m-input__prepend-inner {
+/*.m-text-field.m-text-field--solo .m-input__append-inner, .m-text-field.m-text-field--solo .m-input__prepend-inner {
     margin-top: 0 !important;
-}
+}*/
 
 .m-application .overflow-x-visible {
     overflow-x: visible !important;
@@ -379,7 +379,7 @@
 
 @-webkit-keyframes searchOpen {
     0% {
-        width: 488px;
+        width: 408px;
     }
 
     100% {
@@ -389,7 +389,7 @@
 
 @keyframes searchOpen {
     0% {
-        width: 488px;
+        width: 408px;
     }
 
     100% {
@@ -408,7 +408,7 @@
     }
 
     100% {
-        width: 488px;
+        width: 408px;
     }
 }
 
@@ -418,7 +418,7 @@
     }
 
     100% {
-        width: 488px;
+        width: 408px;
     }
 }
 

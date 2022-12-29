@@ -22,7 +22,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     private AlarmPreviewChartModal? _previewChart;
     private List<string> _names = new();
 
-    protected override string? PageName { get; set; } = "AlarmRule";
+    protected override string? PageName { get; set; } = "AlarmRuleBlock";
 
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
@@ -56,6 +56,8 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
             _visible = true;
             StateHasChanged();
         });
+
+        _form?.ResetValidation();
     }
 
     private async Task GetFormDataAsync()
@@ -166,9 +168,10 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
         _tempCron = _model.CheckFrequency.CronExpression;
     }
 
-    private void HandleMetricMonitorItemsAdd()
+    private void HandleMetricMonitorItemsAdd(MetricMonitorItemViewModel item)
     {
-        _model.MetricMonitorItems.Add(new MetricMonitorItemViewModel());
+        var index = _model.MetricMonitorItems.IndexOf(item) + 1;
+        _model.MetricMonitorItems.Insert(index, new MetricMonitorItemViewModel());
     }
 
     private void HandleMetricMonitorItemsRemove(MetricMonitorItemViewModel item)
@@ -229,9 +232,20 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
         }
     }
 
+    private void HandleNextStep()
+    {
+        Check.NotNull(_form, "form not found");
+
+        if (!_form.Validate())
+        {
+            return;
+        }
+        _model.Step++;
+    }
+
     private async Task HandleDel()
     {
-        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+        await ConfirmAsync(T("DeletionConfirmationMessage", $"{T("AlarmRule")}\"{_model.DisplayName}\""), DeleteAsync, AlertTypes.Error);
     }
 
     private async Task DeleteAsync()

@@ -26,7 +26,7 @@
                             </MListItem>
                             @if (AlarmRule.IsEnabled)
                             {
-                                <MListItem Link OnClick="HandleDisable">
+                                <MListItem Link OnClick="@(()=>ConfirmAsync(T("DisableConfirmation"), HandleDisable))">
                                     <MListItemContent>
                                         <MListItemTitle>
                                             <span class="body regular--text">@T("Disable")</span>
@@ -36,7 +36,7 @@
                             }
                             @if (!AlarmRule.IsEnabled)
                             {
-                                <MListItem Link OnClick="HandleEnabled">
+                                <MListItem Link OnClick="@(()=>ConfirmAsync(T("EnabledConfirmation"), HandleEnabled))">
                                     <MListItemContent>
                                         <MListItemTitle>
                                             <span class="body regular--text">@T("Enabled")</span>

@@ -42,4 +42,6 @@ public class AlarmHistoryQueryModel : ISoftDelete
     public List<AlarmHandleStatusCommitQueryModel> HandleStatusCommits { get; set; } = new();
 
     public bool IsDeleted { get; set; }
+
+    public Guid Modifier { get; set; }
 }

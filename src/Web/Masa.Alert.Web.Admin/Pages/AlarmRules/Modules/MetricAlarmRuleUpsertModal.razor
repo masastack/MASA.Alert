@@ -52,7 +52,7 @@
                                         @((MarkupString)_nextRunTimeStr)
                                     </div>
                                 }
-                                <MRow Class="my-8">
+                                @*<MRow Class="my-8">
                                     <MSwitch @bind-Value="_model.IsGetTotal" Inset Class="label my-auto ml-4" Label="@T("GetTotal")" />
                                     @if (_model.IsGetTotal)
                                     {
@@ -60,7 +60,7 @@
                                     <STextField @bind-Value="_model.TotalVariable" Label="@T(nameof(_model.TotalVariable))" />
                                     </MCol>
                                     }
-                                </MRow>
+                                </MRow>*@
                                 @foreach (var item in _model.MetricMonitorItems)
                                 {
                                     <MRow NoGutters Class="mt-6 flex-wrap">
@@ -115,14 +115,15 @@
                                         <MCol Md="2" Class="mb-4 mt-2 d-flex">
                                             <MSwitch @bind-Value="item.IsExpression" Inset Class="label my-auto" Label="@T("Expression")">
                                             </MSwitch>
-                                            <SIcon Class="ml-2 align-self-center" Size="24" OnClick="HandleMetricMonitorItemsAdd">mdi-plus-circle</SIcon>
-                                            @if (_model.MetricMonitorItems.IndexOf(item) > 0)
+                                            <SIcon Class="ml-2 align-self-center" Size="24" OnClick="()=>HandleMetricMonitorItemsAdd(item)">mdi-plus-circle</SIcon>
+                                            @if (_model.MetricMonitorItems.Count > 1)
                                             {
                                                 <SIcon Size="24" Class="ml-2 align-self-center" OnClick="()=>HandleMetricMonitorItemsRemove(item)">mdi-delete-outline</SIcon>
                                             }
                                         </MCol>
                                     </MRow>
                                 }
+                                <MInput @bind-Value="_model.MetricMonitorItems" />
                             </AutoHeightContent>
                             <FooterContent>
                                 <div class="d-flex">
@@ -132,7 +133,7 @@
                                     }
                                     <MSpacer></MSpacer>
                                     <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
-                                    <SButton Medium OnClick="()=>_model.Step=2" Class="ml-6">@T("NextStep")</SButton>
+                                    <SButton Medium OnClick="HandleNextStep" Class="ml-6">@T("NextStep")</SButton>
                                 </div>
                             </FooterContent>
                         </AutoHeight>

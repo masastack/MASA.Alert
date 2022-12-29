@@ -46,6 +46,8 @@ public class CheckAlarmRuleCommandHandler
         if (startTime == null)
         {
             alarmRule.SkipCheck(checkTime);
+            await _repository.UpdateAsync(alarmRule);
+
             command.IsStop = true;
             return;
         }

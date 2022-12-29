@@ -24,7 +24,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
 
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
-    protected override string? PageName { get; set; } = "AlarmRule";
+    protected override string? PageName { get; set; } = "AlarmRuleBlock";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -87,9 +87,9 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         isAnimate = true;
     }
 
-    private async Task HandleDelAsync(Guid _entityId)
+    private async Task HandleDelAsync(Guid _entityId, string displayName)
     {
-        await ConfirmAsync(T("DeletionConfirmationMessage"), async () => { await DeleteAsync(_entityId); });
+        await ConfirmAsync(T("DeletionConfirmationMessage", $"{T("AlarmRule")}\"{displayName}\""), async () => { await DeleteAsync(_entityId); }, AlertTypes.Error);
     }
 
     private async Task DeleteAsync(Guid _entityId)

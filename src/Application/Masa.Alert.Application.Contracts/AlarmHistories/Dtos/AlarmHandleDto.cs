@@ -14,4 +14,6 @@ public class AlarmHandleDto
     public bool IsHandleNotice { get; set; }
 
     public NotificationConfigDto NotificationConfig { get; set; } = new();
+
+    public string HandlerName { get; set; } = string.Empty;
 }

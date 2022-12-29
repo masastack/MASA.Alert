@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Blazor.Presets;
-
 namespace Masa.Alert.Web.Admin.Pages.AlarmHistory;
 
 public partial class AlarmHistoryManagement : AdminCompontentBase
@@ -20,21 +18,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
 
-    protected override string? PageName { get; set; } = "AlarmHistory";
-
-    protected override void OnInitialized()
-    {
-        _headers = new()
-        {
-            new() { Text = T(nameof(AlarmHistoryListViewModel.AlertSeverity)), Value = nameof(AlarmHistoryListViewModel.AlertSeverity),Sortable=false},
-            new() { Text = T(nameof(AlarmHistoryListViewModel.DisplayName)), Value = nameof(AlarmHistoryListViewModel.DisplayName),Sortable=false},
-            new() { Text = T(nameof(AlarmHistoryListViewModel.FirstAlarmTime)), Value = nameof(AlarmHistoryListViewModel.FirstAlarmTime)},
-            new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount)},
-            new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime)},
-            new() { Text = T(nameof(AlarmHistoryListViewModel.HandleStatus)), Value = nameof(AlarmHistoryListViewModel.HandleStatus), Sortable = false},
-            new() { Text = T("Action"), Value = "Action"},
-        };
-    }
+    protected override string? PageName { get; set; } = "AlarmHistoryBlock";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -50,8 +34,51 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         _queryParam.AlarmRuleId = string.IsNullOrEmpty(AlarmRuleId) ? null : Guid.Parse(AlarmRuleId);
     }
 
+    private void HandleHeaders()
+    {
+        if (_queryParam.SearchType == AlarmHistorySearchTypes.Alarming)
+        {
+            _headers = new()
+            {
+                new() { Text = T(nameof(AlarmHistoryListViewModel.AlertSeverity)), Value = nameof(AlarmHistoryListViewModel.AlertSeverity),Sortable=false},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.DisplayName)), Value = nameof(AlarmHistoryListViewModel.DisplayName),Sortable=false},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.FirstAlarmTime)), Value = nameof(AlarmHistoryListViewModel.FirstAlarmTime)},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount)},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime)},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.HandleStatus)), Value = nameof(AlarmHistoryListViewModel.HandleStatus), Sortable = false},
+                new() { Text = T("Action"), Value = "Action"},
+            };
+        }
+        else if (_queryParam.SearchType == AlarmHistorySearchTypes.Processed)
+        {
+            _headers = new()
+            {
+                new() { Text = T(nameof(AlarmHistoryListViewModel.AlertSeverity)), Value = nameof(AlarmHistoryListViewModel.AlertSeverity),Sortable=false},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.DisplayName)), Value = nameof(AlarmHistoryListViewModel.DisplayName),Sortable=false},
+                new() { Text = T("HandleCompletionTime"), Value = "HandleCompletionTime"},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.FirstAlarmTime)), Value = nameof(AlarmHistoryListViewModel.FirstAlarmTime)},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount)},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime)},
+                new() { Text = T("Action"), Value = "Action"},
+            };
+        }
+        else
+        {
+            _headers = new()
+            {
+                new() { Text = T(nameof(AlarmHistoryListViewModel.AlertSeverity)), Value = nameof(AlarmHistoryListViewModel.AlertSeverity),Sortable=false},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.DisplayName)), Value = nameof(AlarmHistoryListViewModel.DisplayName),Sortable=false},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.FirstAlarmTime)), Value = nameof(AlarmHistoryListViewModel.FirstAlarmTime)},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount)},
+                new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime)},
+                new() { Text = T("Action"), Value = "Action"},
+            };
+        }
+    }
+
     private async Task LoadData()
     {
+        HandleHeaders();
         Loading = true;
         var dtos = (await AlarmHistoryService.GetListAsync(_queryParam));
         _entities = dtos?.Adapt<PaginatedListDto<AlarmHistoryListViewModel>>() ?? new();

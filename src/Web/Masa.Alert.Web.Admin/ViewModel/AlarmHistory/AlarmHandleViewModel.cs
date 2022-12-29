@@ -14,4 +14,6 @@ public class AlarmHandleViewModel
     public bool IsHandleNotice { get; set; }
 
     public NotificationConfigViewModel NotificationConfig { get; set; } = new();
+
+    public string HandlerName { get; set; } = string.Empty;
 }

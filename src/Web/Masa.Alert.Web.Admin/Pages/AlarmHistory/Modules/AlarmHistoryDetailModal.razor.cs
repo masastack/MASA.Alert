@@ -14,7 +14,7 @@ public partial class AlarmHistoryDetailModal : AdminCompontentBase
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
 
-    protected override string? PageName { get; set; } = "AlarmHistory";
+    protected override string? PageName { get; set; } = "AlarmHistoryBlock";
 
     public async Task OpenModalAsync(AlarmHistoryListViewModel? listModel = null)
     {
@@ -51,7 +51,7 @@ public partial class AlarmHistoryDetailModal : AdminCompontentBase
 
     private async Task HandleDel()
     {
-        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+        await ConfirmAsync(T("DeletionConfirmationMessage", $"{T("AlarmHistory")}"), DeleteAsync, AlertTypes.Error);
     }
 
     private async Task DeleteAsync()

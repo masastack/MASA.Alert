@@ -7,11 +7,11 @@ public class WebHookUpsertViewModel
 {
     public Guid Id { get; set; }
 
-    public string DisplayName { get; set; } = default!;
+    public string DisplayName { get; set; } = string.Empty;
 
-    public string Url { get; set; } = default!;
+    public string Url { get; set; } = string.Empty;
 
-    public string Description { get; set; } = default!;
+    public string Description { get; set; } = string.Empty;
 
     public string SecretKey { get; set; } =  Guid.NewGuid().ToString();
 }

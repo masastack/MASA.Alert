@@ -119,7 +119,7 @@
                 Page = 1,
                 PageSize = 99,
                 AuditStatus = MessageTemplateAuditStatuses.Approved,
-                ChannelId = channelId
+                ChannelId = channelId.Value
             };
 
         _templateItems = (await McClient.MessageTemplateService.GetListAsync(input)).Result;
