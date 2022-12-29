@@ -33,7 +33,7 @@
                                         <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
                                     }
                                     <MSpacer></MSpacer>
-                                    <SButton Medium OnClick="()=>_model.Step=2">@T("NextStep")</SButton>
+                                    <SButton Medium OnClick="HandleNextStep">@T("NextStep")</SButton>
                                 </div>
                             </FooterContent>
                         </AutoHeight>
@@ -59,10 +59,10 @@
                                     @if (_model.CheckFrequency.Type == AlarmCheckFrequencyTypes.FixedInterval)
                                     {
                                         <MCol Md="2">
-                                            <STextField @bind-Value="_model.CheckFrequency.FixedInterval.IntervalTime" />
+                                            <STextField @bind-Value="_model.CheckFrequency.FixedInterval.IntervalTime" Label="@T(nameof(_model.CheckFrequency.FixedInterval.IntervalTime))" />
                                         </MCol>
                                         <MCol Md="2">
-                                            <SSelect @bind-Value="_model.CheckFrequency.FixedInterval.IntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+                                            <SSelect @bind-Value="_model.CheckFrequency.FixedInterval.IntervalTimeType" Label="@T(nameof(_model.CheckFrequency.FixedInterval.IntervalTimeType))" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
                                         </MCol>
                                     }
                                     @if (_model.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
@@ -79,7 +79,7 @@
                                         @((MarkupString)_nextRunTimeStr)
                                     </div>
                                 }
-                                <MRow Class="my-8">
+                                @*<MRow Class="my-8">
                                     <MSwitch @bind-Value="_model.IsGetTotal" Inset Class="label my-auto ml-4" Label="@T("GetTotal")" />
                                     @if (_model.IsGetTotal)
                                     {
@@ -87,7 +87,7 @@
                                             <STextField @bind-Value="_model.TotalVariable" Label="@T(nameof(_model.TotalVariable))" />
                                         </MCol>
                                     }
-                                </MRow>
+                                </MRow>*@
                                 @foreach (var item in _model.LogMonitorItems)
                                 {
                                     <MRow NoGutters Class="mt-5">
@@ -114,7 +114,7 @@
                                             </MSwitch>
                                             @if (item.IsOffset)
                                             {
-                                                <STextField @bind-Value="item.OffsetPeriod" Class="ml-2">
+                                                <STextField @bind-Value="item.OffsetPeriod" Label="@T(nameof(item.OffsetPeriod))" Class="ml-2">
                                                     <AppendOuterContent>
                                                         <span class="default--text subtitle2 my-auto">@T("Period")</span>
                                                     </AppendOuterContent>
@@ -123,14 +123,15 @@
                                         </MCol>
                                         <MSpacer></MSpacer>
                                         <MCol Class="my-auto">
-                                            <SIcon Size="24" OnClick="HandleLogMonitorItemsAdd">mdi-plus-circle</SIcon>
-                                            @if (_model.LogMonitorItems.IndexOf(item) > 0)
+                                            <SIcon Size="24" OnClick="()=>HandleLogMonitorItemsAdd(item)">mdi-plus-circle</SIcon>
+                                            @if (_model.LogMonitorItems.Count > 1)
                                             {
                                                 <SIcon Size="24" Class="ml-2" OnClick="()=>HandleLogMonitorItemsRemove(item)">mdi-delete-outline</SIcon>
                                             }
                                         </MCol>
                                     </MRow>
                                 }
+                                <MInput @bind-Value="_model.LogMonitorItems" />
                                 <DefaultTitle Class="mt-5 mb-2">@T("LogFilter")</DefaultTitle>
                                 <STextarea @bind-Value="_model.WhereExpression" Label="@T(nameof(_model.WhereExpression))" Outlined HideDetails="@("auto")"></STextarea>
                                 <LogQueryExpression AlarmRule="_model"></LogQueryExpression>
@@ -144,7 +145,7 @@
                                     <MSpacer></MSpacer>
                                     <SButton Text Color="primary" OnClick="()=>_previewChart?.OpenModalAsync()!">@T("ChartPreview")</SButton>
                                     <SButton Medium OnClick="()=>_model.Step=1" Outlined　Class="ml-6">@T("PreviousStep")</SButton>
-                                    <SButton Medium OnClick="()=>_model.Step=3" Class="ml-6">@T("NextStep")</SButton>
+                                    <SButton Medium OnClick="HandleNextStep" Class="ml-6">@T("NextStep")</SButton>
                                 </div>
                             </FooterContent>
                         </AutoHeight>

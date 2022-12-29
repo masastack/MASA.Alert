@@ -22,7 +22,7 @@ public class RecoveryAlarmEventHandler
 
         if (alarm == null) return;
 
-        alarm.Recovery();
+        alarm.Recovery(true);
         await _repository.UpdateAsync(alarm);
     }
 }

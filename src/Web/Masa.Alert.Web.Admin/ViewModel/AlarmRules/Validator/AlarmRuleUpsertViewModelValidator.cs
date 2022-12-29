@@ -7,12 +7,23 @@ public class AlarmRuleUpsertViewModelValidator : AbstractValidator<AlarmRuleUpse
 {
     public AlarmRuleUpsertViewModelValidator()
     {
-        RuleFor(x => x.DisplayName).Required().ChineseLetterNumberSymbol().Length(2, 50);
-        RuleFor(x => x.ProjectIdentity).Required().When(x => x.Type == AlarmRuleTypes.Log);
-        RuleFor(x => x.AppIdentity).Required().When(x => x.Type == AlarmRuleTypes.Log);
-        RuleFor(x => x.CheckFrequency).SetValidator(new CheckFrequencyViewModelValidator());
-        RuleFor(x => x.LogMonitorItems).Required().When(x => x.Type == AlarmRuleTypes.Log);
-        RuleFor(x => x.MetricMonitorItems).Required().When(x => x.Type == AlarmRuleTypes.Metric);
-        RuleFor(x => x.Items).Required();
+        RuleFor(x => x.ProjectIdentity).Required().When(x => x.Type == AlarmRuleTypes.Log).When(x => x.Step == 1);
+        RuleFor(x => x.AppIdentity).Required().When(x => x.Type == AlarmRuleTypes.Log).When(x => x.Step == 1);
+
+        RuleFor(x => x.CheckFrequency).SetValidator(new CheckFrequencyViewModelValidator())
+            .When(x => (x.Type == AlarmRuleTypes.Log && x.Step == 2) || (x.Type == AlarmRuleTypes.Metric && x.Step == 1));
+        RuleFor(x => x.LogMonitorItems).Required()
+            .Must(x => !x.Any(x => string.IsNullOrEmpty(x.Field)))
+            .Must(x => !x.Any(x => string.IsNullOrEmpty(x.Alias)))
+            .When(x => x.Type == AlarmRuleTypes.Log && x.Step == 2);
+        RuleFor(x => x.MetricMonitorItems).Required()
+            .Must(x => !x.Any(x => string.IsNullOrEmpty(x.Alias)))
+            .When(x => x.Type == AlarmRuleTypes.Metric && x.Step == 1);
+
+        RuleFor(x => x.DisplayName).Required().ChineseLetterNumberSymbol().Length(2, 50).When(x => (x.Type == AlarmRuleTypes.Log && x.Step == 3) || (x.Type == AlarmRuleTypes.Metric && x.Step == 2));
+        RuleFor(x => x.Items).Required()
+            .Must(x => !x.Any(x => x.AlertSeverity == default))
+            .When(x => (x.Type == AlarmRuleTypes.Log && x.Step == 3) || (x.Type == AlarmRuleTypes.Metric && x.Step == 2));
+        RuleFor(x => x.SilenceCycle).SetValidator(new SilenceCycleViewModelValidator()).When(x => (x.Type == AlarmRuleTypes.Log && x.Step == 3) || (x.Type == AlarmRuleTypes.Metric && x.Step == 2));
     }
 }

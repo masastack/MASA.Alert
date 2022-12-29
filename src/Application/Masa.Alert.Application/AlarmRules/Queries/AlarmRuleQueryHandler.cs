@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using System.Linq;
-
 namespace Masa.Alert.Application.AlarmRules.Queries;
 
 public class AlarmRuleQueryHandler
@@ -74,7 +72,7 @@ public class AlarmRuleQueryHandler
         var userInfos = await _authClient.UserService.GetUsersAsync(modifierUserIds);
         foreach (var item in dtos)
         {
-            item.ModifierName = userInfos.FirstOrDefault(x => x.Id == item.Modifier)?.DisplayName ?? string.Empty;
+            item.ModifierName = userInfos.FirstOrDefault(x => x.Id == item.Modifier)?.StaffDislpayName ?? string.Empty;
         }
     }
 }

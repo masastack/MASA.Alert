@@ -29,7 +29,7 @@
   "View": "查看",
   "Handle": "处理",
   "AddChild": "加子级",
-  "DeletionConfirmationMessage": "确定删除数据?",
+  "DeletionConfirmationMessage": "确定删除{0}吗",
   "Creator": "创建人",
   "Modifier": "最近修改人",
   "Rows per page": "列/页",
@@ -60,6 +60,8 @@
   "BasicInformation": "基础信息",
   "DetailInformation": "详细信息",
   "OperationConfirmation": "操作确认",
+  "EnabledConfirmation": "您确认要启用吗？",
+  "DisableConfirmation": "您确认要禁用吗？",
   "DateRange": "日期范围",
   "Sms": "短信",
   "Email": "邮箱",
@@ -127,7 +129,10 @@
   "ChannelType": "渠道类型",
   "Channel": "渠道",
   "Template": "模板",
-  "AlarmRule": {
+  "AlarmRule": "告警规则",
+  "AlarmHistory": "告警历史",
+  "WebHook": "WebHook",
+  "AlarmRuleBlock": {
     "Log": "日志监控",
     "Metric": "指标监控",
     "TimeType": "时间类型",
@@ -144,7 +149,7 @@
     "SelectApp": "选择应用",
     "ChartYAxisUnit": "Y轴单位",
     "ChartSetting": "图表设置",
-    "ChartSettingTip": "当前时间距离N周期之前的数据对比",
+    "ChartSettingTip": "发生告警时，告警历史详情以图表的形式显示数据趋势",
     "VariableConfiguration": "变量配置",
     "Cron": "CRON",
     "CronExpression": "CRON表达式",
@@ -155,6 +160,7 @@
     "Alias": "变量",
     "Period": "周期",
     "Offset": "偏移量",
+    "OffsetPeriod": "周期",
     "LogFilter": "日志筛选",
     "WhereExpression": "表达式",
     "BaseInfo": "基础信息",
@@ -164,7 +170,7 @@
     "MessageTemplateId": "消息模板",
     "MessageTemplate": "消息模板",
     "IsRecoveryNotification": "恢复通知",
-    "IsNotification": "是否通知",
+    "IsNotification": "告警通知",
     "AdvancedConfiguration": "高级配置",
     "ContinuousTriggerThreshold": "连续触发阈值",
     "ContinuousTriggerThresholdTip": "连续多少次执行检查评估都满足触发条件时，才会触发告警。",
@@ -178,9 +184,12 @@
     "MetricMonitor.Alias": "变量",
     "Time": "按时间",
     "Cycle": "按周期",
-    "NextRunTimeTip": "预计未来5次检查时间："
+    "NextRunTimeTip": "预计未来5次检查时间：",
+    "IntervalTime": "间隔时间",
+    "IntervalTimeType": "间隔时间类型",
+    "SilenceCycleValue": "沉默周期"
   },
-  "AlarmChart": {
+  "AlarmChartBlock": {
     "ChartPreview": "图表预览",
     "ChartPreviewTips": "本图仅用于预览效果的参考",
     "UpdateChart": "更新图表",
@@ -188,7 +197,7 @@
     "LogSamplingPreview": "日志采样预览",
     "LogSamplingPreviewTips": "默认获取上一周期符合规则的最近一条日志数据"
   },
-  "AlarmHistory": {
+  "AlarmHistoryBlock": {
     "Alarming": "正在告警",
     "Processed": "已处理",
     "NoNotice": "无需通知",
@@ -209,9 +218,12 @@
     "HandleDetails": "处理详情",
     "RecoveryNotification": "恢复通知",
     "ThirdPartyProcessing": "第三方处理",
-    "SendNotificationAfterProcessing": "处理完成后发送通知"
+    "SendNotificationAfterProcessing": "处理完成后发送通知",
+    "Receiver": "收件人",
+    "HandleCompletionTime": "处理人|处理完成时间",
+    "AutoRecovery": "自动恢复"
   },
-  "WebHook": {
+  "WebHookBlock": {
     "AddWebHook": "新增WebHook",
     "TestWebHook": "测试WebHook",
     "DisplayName": "名称",

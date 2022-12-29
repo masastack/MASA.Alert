@@ -1,15 +1,18 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+
 namespace Masa.Alert.Application.AlarmHistories.Queries;
 
 public class AlarmHistoryQueryHandler
 {
     private readonly IAlertQueryContext _context;
+    private readonly IAuthClient _authClient;
 
-    public AlarmHistoryQueryHandler(IAlertQueryContext context)
+    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient)
     {
         _context = context;
+        _authClient = authClient;
     }
 
     [EventHandler]
@@ -30,19 +33,46 @@ public class AlarmHistoryQueryHandler
     {
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
+        var sorting = CreateSorting(options);
         var resultList = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).GetPaginatedListAsync(condition, new()
         {
             Page = options.Page,
             PageSize = options.PageSize,
-            Sorting = new Dictionary<string, bool>
-            {
-                [nameof(AlarmHistoryQueryModel.ModificationTime)] = true
-            }
+            Sorting = sorting
         });
 
         var dtos = resultList.Result.Adapt<List<AlarmHistoryDto>>();
+        await FillAlarmHistoryDtos(dtos);
         var result = new PaginatedListDto<AlarmHistoryDto>(resultList.Total, resultList.TotalPages, dtos);
         query.Result = result;
+    }
+
+    private Dictionary<string, bool> CreateSorting(GetAlarmHistoryInputDto options)
+    {
+        switch (options.SearchType)
+        {
+            case AlarmHistorySearchTypes.Alarming:
+                return new Dictionary<string, bool>
+                {
+                    [nameof(AlarmHistoryQueryModel.AlertSeverity)] = false,
+                    [nameof(AlarmHistoryQueryModel.FirstAlarmTime)] = false
+                }; 
+            case AlarmHistorySearchTypes.Processed:
+                return new Dictionary<string, bool>
+                {
+                    [nameof(AlarmHistoryQueryModel.RecoveryTime)] = true
+                };
+            case AlarmHistorySearchTypes.NoNotice:
+                return new Dictionary<string, bool>
+                {
+                    [nameof(AlarmHistoryQueryModel.LastAlarmTime)] = true
+                };
+            default:
+                return new Dictionary<string, bool>
+                {
+                    [nameof(AlarmHistoryQueryModel.ModificationTime)] = true
+                };
+        }
     }
 
     private async Task<Expression<Func<AlarmHistoryQueryModel, bool>>> CreateFilteredPredicate(GetAlarmHistoryInputDto options)
@@ -76,6 +106,17 @@ public class AlarmHistoryQueryHandler
         condition = condition.And(options.AlertSeverity != default, x => x.AlertSeverity == options.AlertSeverity);
         condition = condition.And(options.HandleStatus != default, x => x.HandleStatus == options.HandleStatus);
         condition = condition.And(options.AlarmRuleId.HasValue, x => x.AlarmRuleId == options.AlarmRuleId);
+        condition = condition.And(options.Handler != default, x => x.Handler == options.Handler);
         return await Task.FromResult(condition); ;
+    }
+
+    private async Task FillAlarmHistoryDtos(List<AlarmHistoryDto> dtos)
+    {
+        var userIds = dtos.Where(x => x.Handle.Handler != default).Select(x => x.Handle.Handler).Distinct().ToArray();
+        var userInfos = await _authClient.UserService.GetUsersAsync(userIds);
+        foreach (var item in dtos)
+        {
+            item.Handle.HandlerName = userInfos.FirstOrDefault(x => x.Id == item.Handle.Handler)?.StaffDislpayName ?? string.Empty;
+        }
     }
 }

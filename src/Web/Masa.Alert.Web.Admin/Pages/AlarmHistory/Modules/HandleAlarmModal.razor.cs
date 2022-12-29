@@ -1,9 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using System.Linq.Expressions;
-using Nest;
-
 namespace Masa.Alert.Web.Admin.Pages.AlarmHistory.Modules;
 
 public partial class HandleAlarmModal : AdminCompontentBase
@@ -15,18 +12,21 @@ public partial class HandleAlarmModal : AdminCompontentBase
     private Guid _entityId;
     private AlarmHistoryViewModel _model = new();
     private string _tab = "";
-    private List<string> _items = new();
+    private List<WebHookListViewModel> _webHookItems = new();
     private bool _isThirdParty;
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
 
-    protected override string? PageName { get; set; } = "AlarmHistory";
+    WebHookService WebHookService => AlertCaller.WebHookService;
+
+    protected override string? PageName { get; set; } = "AlarmHistoryBlock";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             _tab = T("AlarmDetails");
+            await GetWebHooks();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -48,6 +48,12 @@ public partial class HandleAlarmModal : AdminCompontentBase
         });
     }
 
+    private async Task GetWebHooks()
+    {
+        var dtos = await WebHookService.GetListAsync(new GetWebHookInputDto(10));
+        _webHookItems = dtos?.Adapt<PaginatedListDto<WebHookListViewModel>>().Result ?? new();
+    }
+
     private async Task GetFormDataAsync()
     {
         var dto = await AlarmHistoryService.GetAsync(_entityId) ?? new();
@@ -57,6 +63,13 @@ public partial class HandleAlarmModal : AdminCompontentBase
     private void HandleCancel()
     {
         _visible = false;
+        ResetForm();
+    }
+
+    private void ResetForm()
+    {
+        _model = new();
+        _tab = T("AlarmDetails");
     }
 
     private void HandleVisibleChanged(bool val)
@@ -91,7 +104,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
 
     private async Task HandleDel()
     {
-        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+        await ConfirmAsync(T("DeletionConfirmationMessage", $"{T("AlarmHistory")}"), DeleteAsync, AlertTypes.Error);
     }
 
     private async Task DeleteAsync()

@@ -9,6 +9,6 @@ public class WebHookUpsertViewModelValidator : AbstractValidator<WebHookUpsertVi
     {
         RuleFor(x => x.DisplayName).Required().ChineseLetterNumberSymbol().Length(2, 50);
         RuleFor(x => x.SecretKey).Required();
-        RuleFor(x => x.Url).Url();
+        RuleFor(x => x.Url).Required().Url();
     }
 }

@@ -20,4 +20,8 @@ public class AlarmHistoryListViewModel
     public DateTimeOffset LastAlarmTime { get; set; }
 
     public AlarmHistoryHandleStatuses HandleStatus { get; set; }
+
+    public DateTimeOffset? RecoveryTime { get; set; }
+
+    public AlarmHandleViewModel Handle { get; set; } = new();
 }

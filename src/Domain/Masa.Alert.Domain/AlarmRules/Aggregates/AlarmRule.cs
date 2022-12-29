@@ -159,10 +159,14 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
     {
         if (isEnabled)
         {
-            var oldCronExpression = CheckFrequency != null ? CheckFrequency.GetCronExpression() : string.Empty;
+            var oldCronExpression = Id != default ? CheckFrequency.GetCronExpression() : string.Empty;
 
             if (oldCronExpression != checkFrequency.GetCronExpression())
             {
+                if (Id == default)
+                {
+                    Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
+                }
                 AddDomainEvent(new UpsertAlarmRuleJobEvent(Id));
             }
 

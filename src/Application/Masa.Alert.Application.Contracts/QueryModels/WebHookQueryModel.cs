@@ -18,4 +18,6 @@ public class WebHookQueryModel : ISoftDelete
     public DateTime ModificationTime { get; set; }
 
     public bool IsDeleted { get; set; }
+
+    public Guid Modifier { get; set; }
 }

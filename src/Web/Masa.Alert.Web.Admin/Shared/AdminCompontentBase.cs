@@ -86,6 +86,11 @@ public abstract class AdminCompontentBase : BDomComponentBase
         else return I18n.T(key, true);
     }
 
+    public string T(string formatkey, params string[] args)
+    {
+        return string.Format(T(formatkey), args);
+    }
+
     public HubConnection? HubConnection { get; set; }
 
     public async Task ConfirmAsync(string messgae, Func<Task> callback, AlertTypes type = AlertTypes.Warning)

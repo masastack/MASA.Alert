@@ -12,4 +12,6 @@ public class WebHookDto : AuditEntityDto<Guid, Guid>
     public string Description { get; set; } = default!;
 
     public string SecretKey { get; set; } = default!;
+
+    public string ModifierName { get; set; } = string.Empty;
 }

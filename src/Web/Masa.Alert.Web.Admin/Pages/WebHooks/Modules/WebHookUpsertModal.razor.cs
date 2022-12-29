@@ -14,7 +14,7 @@ public partial class WebHookUpsertModal : AdminCompontentBase
     private Guid _entityId;
     private WebHookTestModal? _testModal;
 
-    protected override string? PageName { get; set; } = "WebHook";
+    protected override string? PageName { get; set; } = "WebHookBlock";
 
     WebHookService WebHookService => AlertCaller.WebHookService;
 
@@ -100,7 +100,7 @@ public partial class WebHookUpsertModal : AdminCompontentBase
 
     private async Task HandleDel()
     {
-        await ConfirmAsync(T("DeletionConfirmationMessage"), DeleteAsync);
+        await ConfirmAsync(T("DeletionConfirmationMessage", $"{T("WebHook")}\"{_model.DisplayName}\""), DeleteAsync, AlertTypes.Error);
     }
 
     private async Task DeleteAsync()

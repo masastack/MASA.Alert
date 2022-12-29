@@ -6,10 +6,12 @@ namespace Masa.Alert.Application.WebHooks.Queries;
 public class WebHookQueryHandler
 {
     private readonly IAlertQueryContext _context;
+    private readonly IAuthClient _authClient;
 
-    public WebHookQueryHandler(IAlertQueryContext context)
+    public WebHookQueryHandler(IAlertQueryContext context, IAuthClient authClient)
     {
         _context = context;
+        _authClient = authClient;
     }
 
     [EventHandler]
@@ -38,6 +40,7 @@ public class WebHookQueryHandler
         });
 
         var dtos = resultList.Result.Adapt<List<WebHookDto>>();
+        await FillWebHookDtos(dtos);
         var result = new PaginatedListDto<WebHookDto>(resultList.Total, resultList.TotalPages, dtos);
         query.Result = result;
     }
@@ -47,5 +50,15 @@ public class WebHookQueryHandler
         Expression<Func<WebHookQueryModel, bool>> condition = x => true;
         condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.DisplayName.Contains(options.Filter));
         return await Task.FromResult(condition); ;
+    }
+
+    private async Task FillWebHookDtos(List<WebHookDto> dtos)
+    {
+        var modifierUserIds = dtos.Where(x => x.Modifier != default).Select(x => x.Modifier).Distinct().ToArray();
+        var userInfos = await _authClient.UserService.GetUsersAsync(modifierUserIds);
+        foreach (var item in dtos)
+        {
+            item.ModifierName = userInfos.FirstOrDefault(x => x.Id == item.Modifier)?.StaffDislpayName ?? string.Empty;
+        }
     }
 }

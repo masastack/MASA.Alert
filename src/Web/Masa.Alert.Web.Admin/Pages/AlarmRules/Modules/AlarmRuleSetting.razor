@@ -27,8 +27,8 @@
                     <span class="default--text subtitle2">@T("IsRecoveryNotification")</span>
                 </LabelContent>
             </MSwitch>
-            <SIcon Size="24" OnClick="HandleItemsAdd" Class="ml-5 my-auto">mdi-plus-circle</SIcon>
-            @if (Model.Items.IndexOf(item) > 0)
+            <SIcon Size="24" OnClick="()=>HandleItemsAdd(item)" Class="ml-5 my-auto">mdi-plus-circle</SIcon>
+            @if (Model.Items.Count > 1)
             {
                 <SIcon Size="24" Class="ml-4 my-auto" OnClick="()=>HandleItemsRemove(item)">mdi-delete-outline</SIcon>
             }
@@ -42,6 +42,7 @@
     {
         <NotificationConfig @bind-value="item.RecoveryNotificationConfig" PrependText="@T("RecoveryNotification")" Class="mt-4 d-flex"></NotificationConfig>
     }
+    <MInput @bind-Value="Model.Items" />
 }
 <DefaultTitle Class="mt-6">@T("AdvancedConfiguration")</DefaultTitle>
 <MRow NoGutters Class="mt-3">
@@ -64,16 +65,16 @@
     @if (Model.SilenceCycle.Type == SilenceCycleTypes.Time)
     {
         <MCol Md="2">
-            <STextField @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTime" />
+            <STextField @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTime" Label="@T(nameof(Model.CheckFrequency.FixedInterval.IntervalTime))" />
         </MCol>
         <MCol Md="2">
-            <SSelect @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTimeType" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+            <SSelect @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTimeType" Label="@T(nameof(Model.SilenceCycle.TimeInterval.IntervalTimeType))" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
         </MCol>
     }
     @if (Model.SilenceCycle.Type == SilenceCycleTypes.Cycle)
     {
         <MCol Md="3">
-            <STextField @bind-Value="Model.SilenceCycle.SilenceCycleValue" Class="ml-2">
+            <STextField @bind-Value="Model.SilenceCycle.SilenceCycleValue" Label="@T(nameof(Model.SilenceCycle.SilenceCycleValue))" Class="ml-2">
                 <AppendOuterContent>
                     <span class="default--text subtitle2 my-auto">@T("Period")</span>
                 </AppendOuterContent>
@@ -81,7 +82,7 @@
         </MCol>
     }
 </MRow>
-<EnableSwitch Class="mt-8 ml-1" @bind-Value="Model.IsEnabled" />
+<EnableSwitch Class="mt-8 ml-1 d-inline-flex" @bind-Value="Model.IsEnabled" />
 
 @code {
     [Parameter]
@@ -91,11 +92,12 @@
     public EventCallback<AlarmRuleUpsertViewModel> ModelChanged { get; set; }
     private List<string> _items = new();
 
-    protected override string? PageName { get; set; } = "AlarmRule";
+    protected override string? PageName { get; set; } = "AlarmRuleBlock";
 
-    private void HandleItemsAdd()
+    private void HandleItemsAdd(AlarmRuleItemViewModel item)
     {
-        Model.Items.Add(new AlarmRuleItemViewModel());
+        var index = Model.Items.IndexOf(item) + 1;
+        Model.Items.Insert(index, new AlarmRuleItemViewModel());
     }
 
     private void HandleItemsRemove(AlarmRuleItemViewModel item)
