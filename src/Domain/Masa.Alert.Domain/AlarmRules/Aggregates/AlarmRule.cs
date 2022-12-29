@@ -157,19 +157,19 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public void CheckJob(bool isEnabled, CheckFrequency checkFrequency)
     {
+        var oldCronExpression = Id != default ? CheckFrequency.GetCronExpression() : string.Empty;
+
+        if (oldCronExpression != checkFrequency.GetCronExpression())
+        {
+            if (Id == default)
+            {
+                Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
+            }
+            AddDomainEvent(new UpsertAlarmRuleJobEvent(Id));
+        }
+
         if (isEnabled)
         {
-            var oldCronExpression = Id != default ? CheckFrequency.GetCronExpression() : string.Empty;
-
-            if (oldCronExpression != checkFrequency.GetCronExpression())
-            {
-                if (Id == default)
-                {
-                    Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
-                }
-                AddDomainEvent(new UpsertAlarmRuleJobEvent(Id));
-            }
-
             SetEnabled();
         }
         else

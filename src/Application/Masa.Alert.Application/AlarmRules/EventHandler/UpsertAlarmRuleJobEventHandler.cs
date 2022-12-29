@@ -60,5 +60,14 @@ public class UpsertAlarmRuleJobEventHandler
         var jobId = await _schedulerClient.SchedulerJobService.AddAsync(request);
         alarmRule.SetSchedulerJobId(jobId);
         await _repository.UpdateAsync(alarmRule);
+
+        if (!alarmRule.IsEnabled)
+        {
+            await _schedulerClient.SchedulerJobService.DisableAsync(new SchedulerJobRequestBase
+            {
+                JobId = alarmRule.SchedulerJobId,
+                OperatorId = alarmRule.Modifier
+            });
+        }
     }
 }
