@@ -2,48 +2,50 @@
 @page "/alarmRules"
 <AutoHeight Overflow>
     <HeaderContent>
-        <SLabeledRadioGroup @bind-Value="@_queryParam.Type" Dense Class="default-tab" OnChange="RefreshAsync">
-            @foreach (var item in Enum.GetValues<AlarmRuleTypes>())
-            {
-                <SLabeledRadio Value="item" Class="px-6">@T(item.ToString())</SLabeledRadio>
-            }
-        </SLabeledRadioGroup>
-        <div class="ma-0 search-panel my-6">
-            @if (advanced)
-            {
-                <div class="fold d-inline-flex">
-
-                    <EnumSimpleSelect TValue="AlarmRuleSearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))" OnChange="RefreshAsync"></EnumSimpleSelect>
-                    <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" OnChange="RefreshAsync" />
-
-                    @if (_queryParam.Type == AlarmRuleTypes.Log)
-                    {
-                        <DefaultSimpleSelect @bind-Value="@_queryParam.ProjectIdentity" Items="_projectItems" DefaultText="@T(nameof(_queryParam.ProjectIdentity))" Class="ml-6" OnChange="HandleProjectChange"></DefaultSimpleSelect>
-                        <DefaultSimpleSelect @bind-Value="@_queryParam.AppIdentity" Items="_appsItems" DefaultText="@T(nameof(_queryParam.AppIdentity))" Class="ml-6" OnChange="RefreshAsync"></DefaultSimpleSelect>
-                    }
-                    @if (_queryParam.Type == AlarmRuleTypes.Metric)
-                    {
-                        <DefaultSimpleSelect @bind-Value="@_queryParam.MetricId" Items="_metricItems" DefaultText="@T(nameof(_queryParam.MetricId))" Class="ml-6" OnChange="RefreshAsync"></DefaultSimpleSelect>
-                    }
-                </div>
-            }
-            <div class="d-flex search-panel-right @(!isAnimate?"full-width":"") @(isAnimate?"animate__animated":"") @(!advanced?"animate__searchOpen":"animate__searchShrink")">
+        <div class="d-flex">
+            <SLabeledRadioGroup @bind-Value="@_queryParam.Type" ActiveClass="fill-background" Class="white" Dense OnChange="RefreshAsync">
+                @foreach (var item in Enum.GetValues<AlarmRuleTypes>())
+                {
+                    <SLabeledRadio Value="item" Class="px-6">
+                        <span class="@(_queryParam.Type == item ? "subtitle2 emphasis2--text" : "btn regular2--text")">@T(item.ToString())</span>
+                    </SLabeledRadio>
+                }
+            </SLabeledRadioGroup>
+            <MSpacer></MSpacer>
+            <div class="d-flex">
                 <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
-                <div @onclick="ToggleAdvanced" class="ml-6 d-flex button fill">
+                <span @onclick="ToggleAdvanced" class="ml-6 d-flex button fill">
                     <SIcon Class="ma-auto" Color="emphasis2" Size=20>
                         @(!advanced ? "mdi-filter" : "mdi-filter-off")
                     </SIcon>
-                </div>
+                </span>
                 <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="HandleAdd">@T("Permission.Create")</SButton>
             </div>
         </div>
+        @if (advanced)
+        {
+            <div class="mt-6 d-flex @(isAnimate?"animate__animated":"") @(!advanced?"animate__fadeOut":"animate__fadeIn")">
+                <EnumSimpleSelect TValue="AlarmRuleSearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))" OnChange="RefreshAsync"></EnumSimpleSelect>
+                <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" OnChange="RefreshAsync" />
+
+                @if (_queryParam.Type == AlarmRuleTypes.Log)
+                {
+                    <DefaultSimpleSelect @bind-Value="@_queryParam.ProjectIdentity" Items="_projectItems" DefaultText="@T(nameof(_queryParam.ProjectIdentity))" Class="ml-6" OnChange="HandleProjectChange"></DefaultSimpleSelect>
+                    <DefaultSimpleSelect @bind-Value="@_queryParam.AppIdentity" Items="_appsItems" DefaultText="@T(nameof(_queryParam.AppIdentity))" Class="ml-6" OnChange="RefreshAsync"></DefaultSimpleSelect>
+                }
+                @if (_queryParam.Type == AlarmRuleTypes.Metric)
+                {
+                    <DefaultSimpleSelect @bind-Value="@_queryParam.MetricId" Items="_metricItems" DefaultText="@T(nameof(_queryParam.MetricId))" Class="ml-6" OnChange="RefreshAsync"></DefaultSimpleSelect>
+                }
+            </div>
+        }
     </HeaderContent>
     <AutoHeightContent>
-        <MRow Style="height:0px">
+        <MRow Class="mt-6" Style="height:0px">
             @foreach (var _entitie in _entities.Result)
             {
                 <MCol Md="3">
-                    <AlarmRuleCard AlarmRule="_entitie" OnEdit="()=> HandleEdit(_entitie)" />
+                    <AlarmRuleCard Height="_entitie.Type==AlarmRuleTypes.Metric?200:168" AlarmRule="_entitie" OnEdit="()=> HandleEdit(_entitie)" />
                 </MCol>
             }
         </MRow>

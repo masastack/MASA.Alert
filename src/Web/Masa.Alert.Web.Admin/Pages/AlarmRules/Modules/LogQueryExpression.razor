@@ -1,9 +1,6 @@
-﻿<MAlert Class="mt-5 body2  d-flex align-center" Dense
-        Text
-        Icon="@("mdi-alert-circle-outline")"
-        Type="AlertTypes.Warning">
+﻿<MCard Outlined Flat Class="rounded-2 mt-9" Color="fill-hover">
     <JsonPre @bind-Value="@_queryStr"></JsonPre>
-</MAlert>
+</MCard>
 
 @code {
     [EditorRequired]

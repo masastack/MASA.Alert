@@ -483,3 +483,13 @@
 .flex-none{
     flex: none;
 }
+
+.default-tag {
+    padding: 8px 14px;
+}
+
+    .default-tag .m-chip__content {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
