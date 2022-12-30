@@ -1,13 +1,12 @@
 ﻿@inherits AdminCompontentBase
-<MRow Justify="JustifyTypes.SpaceBetween" Align="AlignTypes.Center">
-    <MCol>
-        <span class="emphasis--text btn">@T("YAxisUnits")：@ChartYAxisUnit</span>
-        <span class="emphasis--text caption">@T("ChartPreviewTips")</span>
-    </MCol>
-    <MCol>
-        <SDateTimeRangePicker @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none" OnChange="TimeRangeChange" />
-    </MCol>
-</MRow>
+<div class="d-flex">
+    <SDateTimeRangePicker Class="btn-fill-line" @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none" OnChange="TimeRangeChange" />
+    <MSpacer></MSpacer>
+    <div class="regular3--text caption">
+        <p class="mb-1">@T("ChartPreviewTips")</p>
+        <p class="mb-0">@T("YAxisUnits")：@ChartYAxisUnit</p>
+    </div>
+</div>
 <div class="d-flex align-center justify-center">
     <MECharts Option="_option" Width="Width" Height="Height">
     </MECharts>
@@ -53,15 +52,12 @@
             },
             Legend = new
             {
-                Left = "3%",
+                Bottom = "0%",
                 Data = legendData
             },
             Grid = new
             {
-                Left = "3%",
-                Right = "4%",
-                Bottom = "3%",
-                ContainLabel = true
+                Bottom = 50
             },
             XAxis = new
             {
@@ -124,7 +120,9 @@
             Name = x.Name,
             Type = "line",
             Stack = "Total",
-            Data = x.Data
+            Data = x.Data,
+            AreaStyle = new { },
+            Smooth = true
         });
         RenderCharts(legendData, seriesData);
     }

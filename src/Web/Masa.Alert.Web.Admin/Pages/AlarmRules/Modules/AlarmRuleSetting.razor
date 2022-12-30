@@ -1,61 +1,70 @@
 ﻿@inherits AdminCompontentBase
 
-<DefaultTitle Class="mb-3">@T("BaseInfo")</DefaultTitle>
+<DefaultTitle>@T("BaseInfo")</DefaultTitle>
 <STextField @bind-Value="Model.DisplayName" Label="@T(nameof(Model.DisplayName))" />
-<DefaultTitle Class="my-5">@T("TriggerRules")</DefaultTitle>
+<DefaultTitle>@T("TriggerRules")</DefaultTitle>
 @foreach (var item in Model.Items)
 {
-    <STextarea Class="mt-8" @bind-Value="item.Expression" Label="@T(nameof(item.Expression))" Outlined HideDetails="@("auto")">
-        <AppendOuterContent>
-            <DefaultTooltip Class="ml-2" Tooltip="@T("ExpressionTip")" />
-        </AppendOuterContent>
-    </STextarea>
-    <MRow NoGutters Class="mt-4">
-        <MCol Md="2">
-            <SSelect @bind-Value="item.AlertSeverity" Items="Enum.GetValues<AlertSeverity>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(item.AlertSeverity))">
-            </SSelect>
-        </MCol>
-
-        <MCol Class="my-auto d-flex">
-            <MSwitch @bind-Value="item.IsNotification" Inset Class="label ml-5 my-auto">
+    <MBorder Color="green" Width="4" Style="height:95%;">
+        <STextarea @bind-Value="item.Expression" Label="@T(nameof(item.Expression))" Outlined HideDetails="@("auto")" Class="ml-3">
+            <AppendOuterContent>
+                <DefaultTooltip Class="ml-2" Tooltip="@T("ExpressionTip")" />
+            </AppendOuterContent>
+        </STextarea>
+        <MRow NoGutters Class="mt-6 ml-3">
+            <MCol Md="6">
+                <SSelect @bind-Value="item.AlertSeverity" Items="Enum.GetValues<AlertSeverity>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(item.AlertSeverity))">
+                </SSelect>
+            </MCol>
+        </MRow>
+        <div class="d-flex mt-6 ml-3">
+            <MSwitch @bind-Value="item.IsNotification" Inset Class="label my-auto">
                 <LabelContent>
-                    <span class="default--text subtitle2">@T("IsNotification")</span>
+                    <span class="regular2--text body2">@T("IsNotification")</span>
                 </LabelContent>
             </MSwitch>
-            <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label ml-5 my-auto">
-                <LabelContent>
-                    <span class="default--text subtitle2">@T("IsRecoveryNotification")</span>
-                </LabelContent>
-            </MSwitch>
-            <SIcon Size="24" OnClick="()=>HandleItemsAdd(item)" Class="ml-5 my-auto">mdi-plus-circle</SIcon>
-            @if (Model.Items.Count > 1)
+            @if (item.IsNotification)
             {
-                <SIcon Size="24" Class="ml-4 my-auto" OnClick="()=>HandleItemsRemove(item)">mdi-delete-outline</SIcon>
+                <NotificationConfig @bind-value="item.NotificationConfig" Class="d-flex"></NotificationConfig>
             }
-        </MCol>
-    </MRow>
-    @if (item.IsNotification)
-    {
-        <NotificationConfig @bind-value="item.NotificationConfig" PrependText="@T("AlarmNotification")" Class="mt-4 d-flex"></NotificationConfig>
-    }
-    @if (item.IsRecoveryNotification)
-    {
-        <NotificationConfig @bind-value="item.RecoveryNotificationConfig" PrependText="@T("RecoveryNotification")" Class="mt-4 d-flex"></NotificationConfig>
-    }
-    <MInput @bind-Value="Model.Items" />
+        </div>
+        <div class="d-flex mt-6 ml-3">
+            <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label my-auto">
+                <LabelContent>
+                    <span class="regular2--text body2">@T("IsRecoveryNotification")</span>
+                </LabelContent>
+            </MSwitch>
+            @if (item.IsRecoveryNotification)
+            {
+                <NotificationConfig @bind-value="item.RecoveryNotificationConfig" Class="d-flex"></NotificationConfig>
+            }
+        </div>
+        <MDivider Right Class="mt-6 ml-3">
+            <MButtonGroup Dense Rounded Class="mt-n5">
+                <MButton>
+                    <SIcon Size="20" Color="emphasis" OnClick="()=>HandleItemsAdd(item)">mdi-plus</SIcon>
+                </MButton>
+                @if (Model.Items.Count > 1)
+                {
+                    <MButton>
+                        <SIcon Size="20" Color="error" OnClick="()=>HandleItemsRemove(item)">mdi-delete</SIcon>
+                    </MButton>
+                }
+            </MButtonGroup>
+        </MDivider>
+    </MBorder>
 }
-<DefaultTitle Class="mt-6">@T("AdvancedConfiguration")</DefaultTitle>
-<MRow NoGutters Class="mt-3">
-    <MCol Md="2">
+<MInput @bind-Value="Model.Items" />
+<DefaultTitle>@T("AdvancedConfiguration")</DefaultTitle>
+<MRow NoGutters>
+    <MCol Md="3">
         <STextField @bind-Value="Model.ContinuousTriggerThreshold" Label="@T(nameof(Model.ContinuousTriggerThreshold))">
             <AppendOuterContent>
                 <DefaultTooltip Class="ml-2" Tooltip="@T("ContinuousTriggerThresholdTip")" />
             </AppendOuterContent>
         </STextField>
     </MCol>
-</MRow>
-<MRow Class="mt-3">
-    <MCol Md="2">
+    <MCol Md="3">
         <SSelect @bind-Value="Model.SilenceCycle.Type" Items="Enum.GetValues<SilenceCycleTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(Model.SilenceCycle))">
             <AppendOuterContent>
                 <DefaultTooltip Class="ml-2" Tooltip="@T("SilenceCycleTip")" />
@@ -64,11 +73,11 @@
     </MCol>
     @if (Model.SilenceCycle.Type == SilenceCycleTypes.Time)
     {
-        <MCol Md="2">
+        <MCol Md="3">
             <STextField @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTime" Label="@T(nameof(Model.CheckFrequency.FixedInterval.IntervalTime))" />
         </MCol>
-        <MCol Md="2">
-            <SSelect @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTimeType" Label="@T(nameof(Model.SilenceCycle.TimeInterval.IntervalTimeType))" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
+        <MCol Md="3">
+            <SSelect Class="ml-6" @bind-Value="Model.SilenceCycle.TimeInterval.IntervalTimeType" Label="@T(nameof(Model.SilenceCycle.TimeInterval.IntervalTimeType))" Items="Enum.GetValues<TimeTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" />
         </MCol>
     }
     @if (Model.SilenceCycle.Type == SilenceCycleTypes.Cycle)
@@ -76,13 +85,12 @@
         <MCol Md="3">
             <STextField @bind-Value="Model.SilenceCycle.SilenceCycleValue" Label="@T(nameof(Model.SilenceCycle.SilenceCycleValue))" Class="ml-2">
                 <AppendOuterContent>
-                    <span class="default--text subtitle2 my-auto">@T("Period")</span>
+                    <span class="regular2--text body2 my-auto">@T("Period")</span>
                 </AppendOuterContent>
             </STextField>
         </MCol>
     }
 </MRow>
-<EnableSwitch Class="mt-8 ml-1 d-inline-flex" @bind-Value="Model.IsEnabled" />
 
 @code {
     [Parameter]

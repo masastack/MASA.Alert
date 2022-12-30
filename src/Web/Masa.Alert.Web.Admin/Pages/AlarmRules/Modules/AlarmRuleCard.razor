@@ -2,11 +2,13 @@
 <MCard Class="@($"d-flex flex-column px-2 rounded-xl {(AlarmRule.IsEnabled?"":"fill-disabled")}")" MinHeight=Height>
     <MCardTitle class="px-0 py-1">
         <MListItem>
-            <MSpacer />
+            <MListItemTitle Class="emphasis--text h7">
+                @AlarmRule.DisplayName
+            </MListItemTitle>
             <MListItemIcon Class="mr-n2">
                 <MMenu OffsetY>
                     <ActivatorContent>
-                        <MIcon @attributes="@context.Attrs" Size=26 Color="#323D6F">mdi-dots-horizontal</MIcon>
+                        <MIcon @attributes="@context.Attrs" Size=20 Color="emphasis2">mdi-dots-vertical</MIcon>
                     </ActivatorContent>
                     <ChildContent>
                         <MList Dense>
@@ -52,22 +54,24 @@
         </MListItem>
     </MCardTitle>
     <MCardText class="flex-grow-1 px-4 d-flex flex-column">
-        <div class="h6 text-truncate regular--text">@AlarmRule.DisplayName</div>
-        <div class="subtitle2 mt-5">
+        <div class="subtitle2 mt-1">
             @if (AlarmRule.Type == AlarmRuleTypes.Log)
             {
-                <MChip Color="emphasis2" Small Outlined>
+                <MChip IsActive Color="emphasis" Class="rounded-3 body2 default-tag mt-3" TextColor="white">
                     @AlarmRule.ProjectIdentity
                 </MChip>
-                <MChip Class="ml-2" Color="emphasis2" Small Outlined>
+                <MChip Class="rounded-3 body2 default-tag ml-3 mt-3" Color="emphasis2" Outlined>
                     @AlarmRule.AppIdentity
                 </MChip>
             }
             @if (AlarmRule.Type == AlarmRuleTypes.Metric)
             {
+                <MChip IsActive Color="emphasis" Class="rounded-3 body2 default-tag mt-3" TextColor="white">
+                    @T("MetricId")
+                </MChip>
                 foreach (var item in _metricMonitorItems)
                 {
-                    <MChip Class="ml-2" Color="emphasis2" Small Outlined>
+                    <MChip Class="rounded-3 body2 default-tag ml-3 mt-3" Color="emphasis2" Outlined Style="max-width: 98px;">
                         @item.Aggregation.Name
                     </MChip>
                 }
@@ -86,7 +90,7 @@
 
 @code {
     [Parameter]
-    public int Height { get; set; } = 210;
+    public int Height { get; set; } = 168;
 
     [EditorRequired]
     [Parameter]
@@ -95,7 +99,7 @@
     [Parameter]
     public EventCallback OnEdit { get; set; }
 
-    private List<MetricMonitorItemViewModel> _metricMonitorItems => AlarmRule.MetricMonitorItems.Where(x => !string.IsNullOrEmpty(x.Aggregation.Name)).Take(2).ToList();
+    private List<MetricMonitorItemViewModel> _metricMonitorItems => AlarmRule.MetricMonitorItems.Where(x => !string.IsNullOrEmpty(x.Aggregation.Name)).Take(5).ToList();
 
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 

@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<SModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
+<SSimpleModal Value="@_visible" Title="@T("ChartPreview")" SaveText="@T("UpdateChart")" Width="Width" HeaderClass="py-2" BodyClass="pt-0" OnCancel="()=>_visible=false">
     <AlarmPreviewChart AlarmRule="_alarmRule" ChartYAxisUnit="@AlarmRule.ChartYAxisUnit"></AlarmPreviewChart>
     @if (AlarmRule.Type == AlarmRuleTypes.Log)
     {
@@ -11,7 +11,7 @@
             <JsonPre @bind-Value="@_logStr"></JsonPre>
         </MCard>
     }
-</SModal>
+</SSimpleModal>
 
 @code {
     [Parameter]
