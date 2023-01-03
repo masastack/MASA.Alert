@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<MCard Class="@($"d-flex flex-column px-2 rounded-xl")" MinHeight=Height>
+<MCard Class="@($"d-flex flex-column px-2 rounded-3")" MinHeight=Height>
     <MCardTitle Class="px-0 py-1">
         <MListItem Class="px-2">
             <MListItemTitle Class="emphasis--text h8">
@@ -12,17 +12,17 @@
         </MListItem>
     </MCardTitle>
     <MCardText Class="flex-grow-1 pa-0">
-        <div class="regular--text caption fill-background pa-2 text-justify rounded-lg">
+        <div class="fill--text body2 emphasis2 px-4 py-2 text-justify rounded-2">
             @WebHook.Url
         </div>
     </MCardText>
     <MCardActions Class="px-3 pb-3">
         <MSpacer />
-        <span class="caption regular2--text">@WebHook.ModifierName</span>
+        <span class="caption regular3--text">@WebHook.ModifierName</span>
         <span class="d-flex px-1" style="height: 8px">
             <MDivider Vertical />
         </span>
-        <span class="caption regular3--text">@WebHook.ModificationTime.Humanize(culture:I18n.Culture) </span>
+        <span class="caption regular--text">@WebHook.ModificationTime.Humanize(culture:I18n.Culture) </span>
     </MCardActions>
 </MCard>
 
