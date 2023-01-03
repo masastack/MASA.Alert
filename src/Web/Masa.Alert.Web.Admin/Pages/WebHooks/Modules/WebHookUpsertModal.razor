@@ -23,8 +23,17 @@
             </AutoHeight>
         </MForm>
     </ChildContent>
+    <DeleteContent Context="delete">
+        @if (_entityId != default)
+        {
+            <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+        }
+    </DeleteContent>
     <SaveContent Context="save">
-        <MButton Color="fill" Class="btn-form btn-fill-line rounded-3 emphasis2--text" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</MButton>
+        @if (_entityId != default)
+        {
+            <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</MButton>
+        }
         <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T("Submit")</MButton>
     </SaveContent>
 </SSimpleModal>

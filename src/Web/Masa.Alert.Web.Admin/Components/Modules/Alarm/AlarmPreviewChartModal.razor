@@ -7,9 +7,7 @@
             @T("LogSamplingPreview")
             <DefaultTooltip Class="ml-2" Tooltip="@T("LogSamplingPreviewTips")" />
         </DefaultTitle>
-        <MCard Outlined Flat Class="rounded-2" Color="fill-hover">
-            <JsonPre @bind-Value="@_logStr"></JsonPre>
-        </MCard>
+        <JsonPre @bind-Value="@_logStr" Class="rounded-2 emphasis"></JsonPre>
     }
 </SSimpleModal>
 

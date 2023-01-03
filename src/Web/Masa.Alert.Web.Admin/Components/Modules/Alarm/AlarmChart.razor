@@ -83,7 +83,19 @@
                 Type = "line",
                 Stack = "Total",
                 Data = data,
-                AreaStyle = new { },
+                AreaStyle = new
+                {
+                    Color = new
+                    {
+                        ColorStops = new[] { new { Offset = 0, Color = "#ECE8FF" }, new { Offset = 1, Color = "rgba(236, 232, 255, 0)" } },
+                        Global = false,
+                        Type = "linear",
+                        X = 0,
+                        X2 = 0,
+                        Y = 0,
+                        Y2 = 1
+                    }
+                },
                 Smooth = true
             };
         });
@@ -102,11 +114,16 @@
             Legend = new
             {
                 Bottom = "0%",
+                Icon = "roundRect",
                 Data = legendData
             },
             Grid = new
             {
-                Bottom = 50
+                Left = "6%",
+                Right = "6%",
+                Top = 40,
+                Bottom = 30,
+                ContainLabel = true
             },
             XAxis = new
             {
@@ -115,7 +132,15 @@
             },
             YAxis = new
             {
-                Type = "value"
+                Type = "value",
+                SplitLine = new
+                {
+                    Show = true,
+                    LineStyle = new
+                    {
+                        Type = "dashed"
+                    }
+                }
             },
             Series = seriesData
         };

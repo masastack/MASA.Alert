@@ -1,8 +1,4 @@
 ﻿@inherits AdminCompontentBase
-@*<div class="emphasis--text btn">
-    <span>@AlarmHistory.AlarmRule.ProjectIdentity</span>
-    <span class="ml-4">@AlarmHistory.AlarmRule.AppIdentity</span>
-</div>*@
 <AlarmChart AlarmHistory="AlarmHistory" />
 <DefaultSubTitle>@T("CheckFrequency")</DefaultSubTitle>
 <div class="d-flex justify-space-between">
@@ -86,7 +82,7 @@
         <div class="regular--text body2">
             @if (!string.IsNullOrEmpty(item.AlarmRuleItem.Expression))
             {
-                <MBorder Color="green" Width="4"><JsonPre Class="rounded-4" @bind-Value="@item.AlarmRuleItem.Expression"></JsonPre></MBorder>
+                <MBorder Color="green" Width="4"><JsonPre Class="rounded-4 fill-background" @bind-Value="@item.AlarmRuleItem.Expression"></JsonPre></MBorder>
             }
         </div>
         <div class="emphasis2--text body2">@T("TriggerRules")</div>

@@ -184,12 +184,12 @@
         }
         @if (_model.Step == 2 )
         {
-            <MButton Color="fill" Class="btn-form btn-fill-line rounded-3 emphasis2--text" OnClick="()=>_model.Step=1">@T("PreviousStep")</MButton>
+            <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=>_model.Step=1">@T("PreviousStep")</MButton>
             <MButton Color="primary" Class="btn-form ml-6" OnClick="()=> HandleNextStep()">@T("NextStep")</MButton>
         }
         @if (_model.Step == 3)
         {
-            <MButton Color="fill" Class="btn-form btn-fill-line rounded-3 emphasis2--text" OnClick="()=>_model.Step=2">@T("PreviousStep")</MButton>
+            <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=>_model.Step=2">@T("PreviousStep")</MButton>
             <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T("Submit")</MButton>
         }
     </SaveContent>

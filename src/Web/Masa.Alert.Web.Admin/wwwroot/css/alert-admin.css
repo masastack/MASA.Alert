@@ -497,3 +497,11 @@
         overflow: hidden !important;
         text-overflow: ellipsis !important;
     }
+
+.line-fill {
+    border: 1px solid #FFFFFF !important;
+}
+
+.line-primary {
+    border: 1px solid #4318FF !important;
+}

@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<MCard Class="@($"d-flex flex-column px-2 rounded-xl {(AlarmRule.IsEnabled?"":"fill-disabled")}")" MinHeight=Height>
+<MCard Class="@($"d-flex flex-column px-2 rounded-xl line-fill {(AlarmRule.IsEnabled?"":"fill-disabled")}")" MinHeight=Height Style="@($"{(AlarmRule.IsEnabled?"":"opacity:0.6")}")">
     <MCardTitle class="px-0 py-1">
         <MListItem>
             <MListItemTitle Class="emphasis--text h7">
@@ -84,7 +84,7 @@
         <span class="d-flex px-1" style="height: 8px">
             <MDivider Vertical />
         </span>
-        <span class="caption regular2--text">@AlarmRule.ModifierName</span>
+        <span class="caption regular--text">@AlarmRule.ModifierName</span>
     </MCardActions>
 </MCard>
 

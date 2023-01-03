@@ -1,24 +1,19 @@
 ﻿@inherits AdminCompontentBase
-<DefaultSheetDialog Value="_visible" ValueChanged="HandleVisibleChanged"
-                    Title="@T("ViewAlarmHistory")" ContentClass="sheet-dialog">
+<SSimpleModal Value="_visible" ValueChanged="HandleVisibleChanged" OnDelete="HandleDel"
+              Title="@T("ViewAlarmHistory")" Class="full-height" HeaderClass="mr-4">
     <ChildContent>
         <AutoHeight Overflow>
             <AutoHeightContent>
-                <div style="padding-left: 280px;padding-right: 280px;">
-                    <DefaultTitle Class="mb-4">@T("AlarmDetails")</DefaultTitle>
-                    <AlarmHistoryDetail AlarmHistory="_model" HandleStatusShow></AlarmHistoryDetail>
-                </div>
+                <DefaultTitle Class="mb-4">@T("AlarmDetails")</DefaultTitle>
+                <AlarmHistoryDetail AlarmHistory="_model" HandleStatusShow></AlarmHistoryDetail>
             </AutoHeightContent>
-            <FooterContent>
-                <div class="d-flex">
-                    @if (_entityId != default)
-                    {
-                        <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
-                    }
-                    <MSpacer></MSpacer>
-                </div>
-            </FooterContent>
         </AutoHeight>
        
     </ChildContent>
-</DefaultSheetDialog>
+    <DeleteContent Context="delete">
+        @if (_entityId != default)
+        {
+            <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+        }
+    </DeleteContent>
+</SSimpleModal>

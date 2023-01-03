@@ -1,12 +1,9 @@
 ﻿@inherits AdminCompontentBase
-<pre class="json-pre overflow-y" @ref="Ref" style="@($"max-height:{(Height.IsT0? Height.AsT0 : Height.AsT1 + "px")}")"></pre>
+<pre class="json-pre overflow-y @Class" @ref="Ref"></pre>
 
 @code {
     [Parameter]
     public string Value { get; set; } = default!;
-
-    [Parameter]
-    public StringNumber Height { get; set; } = 250;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
