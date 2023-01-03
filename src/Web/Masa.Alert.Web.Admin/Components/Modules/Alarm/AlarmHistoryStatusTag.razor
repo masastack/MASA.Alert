@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<span class="@($"pa-2 rounded-4 subtitle2 {Class}")">@T(Value.ToString())</span>
+<span class="@($"px-2 py-1 btn {Class}")" style="border-radius: 18px">@T(Value.ToString())</span>
 @code {
     [Parameter]
     public AlarmHistoryHandleStatuses Value { get; set; }

@@ -1,13 +1,17 @@
 ﻿@inherits AdminCompontentBase
-<MRow NoGutters Justify="JustifyTypes.SpaceBetween" Align="AlignTypes.Center">
-    <MCol>
-        <span class="emphasis--text btn">@AlarmHistory.AlarmRule.DisplayName</span>
-        <span class="emphasis--text caption">(@AlarmHistory.AlarmRule.ChartYAxisUnit)</span>
-    </MCol>
-    <MCol>
-        <SDateTimeRangePicker StartTime="AlarmHistory.FirstAlarmTime.DateTime" EndTime="AlarmHistory.LastAlarmTime.DateTime" Style="border:none" />
-    </MCol>
-</MRow>
+<div class="d-flex justify-space-between">
+    <span class="h5 emphasis--text">@AlarmHistory.AlarmRule.ProjectIdentity</span>
+    <span class="body2 regular--text">
+        <SDateTimeRangePicker Class="btn-fill-line" StartTime="AlarmHistory.FirstAlarmTime.DateTime" EndTime="AlarmHistory.LastAlarmTime.DateTime" Style="border:none" />
+    </span>
+</div>
+<div class="d-flex justify-space-between mt-2">
+    <span class="body2 regular--text">@AlarmHistory.AlarmRule.AppIdentity</span>
+    <span class="body2 regular--text">
+        @AlarmHistory.AlarmRule.DisplayName (@AlarmHistory.AlarmRule.ChartYAxisUnit)
+    </span>
+</div>
+
 <div class="d-flex align-center justify-center">
     <MECharts Option="_option" Width="Width" Height="Height">
     </MECharts>
@@ -26,21 +30,28 @@
 
     protected override string? PageName { get; set; } = "AlarmChartBlock";
 
+    private DateTime? _startTime { get; set; }
+
+    private DateTime? _endTime { get; set; }
+
     private object _option = new();
 
     AlarmRuleRecordService AlarmRuleRecordService => AlertCaller.AlarmRuleRecordService;
 
     protected override async void OnParametersSet()
     {
+        _startTime = null;
+        _endTime = null;
+
         await LoadData();
     }
 
     private async Task LoadData()
     {
-        var queryParam = new GetAlarmRuleRecordInputDto(10)
-        {
-            AlarmHistoryId = AlarmHistory.Id
-        };
+        var queryParam = new GetAlarmRuleRecordInputDto(999)
+            {
+                AlarmHistoryId = AlarmHistory.Id
+            };
 
         var dtos = (await AlarmRuleRecordService.GetListAsync(queryParam));
         var paginatedList = dtos?.Adapt<PaginatedListDto<AlarmRuleRecordListViewModel>>() ?? new();
@@ -71,7 +82,9 @@
                 Name = key,
                 Type = "line",
                 Stack = "Total",
-                Data = data
+                Data = data,
+                AreaStyle = new { },
+                Smooth = true
             };
         });
 
@@ -88,15 +101,12 @@
             },
             Legend = new
             {
-                Left = "3%",
+                Bottom = "0%",
                 Data = legendData
             },
             Grid = new
             {
-                Left = "3%",
-                Right = "4%",
-                Bottom = "3%",
-                ContainLabel = true
+                Bottom = 50
             },
             XAxis = new
             {
