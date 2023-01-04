@@ -51,18 +51,26 @@ public partial class UserAutoComplete : AdminCompontentBase
     public async Task OnSearchChanged(string search)
     {
         Search = search;
-        if (Search == "")
+
+        if (Search != search)
         {
-            Items.Clear();
+            return;
         }
-        else if (Search == search)
+
+        var response = await AutoCompleteClient.GetBySpecifyDocumentAsync<UserSelectModel>(search, new AutoCompleteOptions
         {
-            var response = await AutoCompleteClient.GetBySpecifyDocumentAsync<UserSelectModel>(search, new AutoCompleteOptions
+            Page = Page,
+            PageSize = PageSize,
+        });
+
+        foreach (var item in response.Data)
+        {
+            var _item = Items.FirstOrDefault(x => x.Id == item.Id);
+            if (_item != null)
             {
-                Page = Page,
-                PageSize = PageSize,
-            });
-            Items = response.Data;
+                Items.Remove(_item);
+            }
+            Items.Insert(0, item);
         }
     }
 
