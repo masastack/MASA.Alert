@@ -13,18 +13,18 @@
 </div>
 
 @code {
-        [Parameter]
-        public StringNumber Width { get; set; } = 761;
+    [Parameter]
+    public StringNumber Width { get; set; } = 761;
 
-        [Parameter]
-        public StringNumber Height { get; set; } = 223;
+    [Parameter]
+    public StringNumber Height { get; set; } = 223;
 
-        [EditorRequired]
-        [Parameter]
-        public AlarmRuleUpsertViewModel AlarmRule { get; set; } = new();
+    [EditorRequired]
+    [Parameter]
+    public AlarmRuleUpsertViewModel AlarmRule { get; set; } = new();
 
-        [Parameter]
-        public string ChartYAxisUnit { get; set; } = string.Empty;
+    [Parameter]
+    public string ChartYAxisUnit { get; set; } = string.Empty;
 
     protected override string? PageName { get; set; } = "AlarmChartBlock";
 
