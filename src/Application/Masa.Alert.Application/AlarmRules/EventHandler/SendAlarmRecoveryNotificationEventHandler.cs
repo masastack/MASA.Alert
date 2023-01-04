@@ -23,7 +23,7 @@ public class SendAlarmRecoveryNotificationEventHandler
 
         foreach (var item in alarm.RuleResultItems)
         {
-            if (!item.AlarmRuleItem.IsRecoveryNotification) continue;
+            if (!item.IsValid || !item.AlarmRuleItem.IsRecoveryNotification) continue;
 
             var notificationConfig = item.AlarmRuleItem.RecoveryNotificationConfig;
 

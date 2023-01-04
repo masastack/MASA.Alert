@@ -62,9 +62,10 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         {
             var commit = Handle.Completed(default, "自动恢复");
             _handleStatusCommits.Add(commit);
+
+            AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
         }
         
-        AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
         AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
     }
 

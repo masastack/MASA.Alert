@@ -24,20 +24,73 @@
         </div>
         @if (advanced)
         {
-            <div class="mt-6 d-flex @(isAnimate?"animate__animated":"") @(!advanced?"animate__fadeOut":"animate__fadeIn")">
-                <EnumSimpleSelect TValue="AlarmRuleSearchTimeTypes" @bind-Value="@_queryParam.TimeType" DefaultText="@T(nameof(_queryParam.TimeType))" OnChange="RefreshAsync"></EnumSimpleSelect>
-                <SDateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" Class="ml-6" OnChange="RefreshAsync" />
-
+            <MRow Class="@($"mt-6 flex-none {(isAnimate?"animate__animated":"")} {(!advanced?"animate__fadeOut":"animate__fadeIn")}")" NoGutters Style="width:110%">
+                <MCol Md="1" Class="d-inline-flex">
+                    <SSelect Small @bind-Value="@_queryParam.TimeType"
+                         Items="Enum.GetValues<AlarmRuleSearchTimeTypes>().ToList()"
+                         Label="@T(nameof(_queryParam.TimeType))"
+                         ItemText="e => T(e==default?string.Empty:e.ToString())"
+                         ItemValue="e=> e"
+                         BackgroundColor="white"
+                         TItem="AlarmRuleSearchTimeTypes"
+                         TItemValue="AlarmRuleSearchTimeTypes"
+                         TValue="AlarmRuleSearchTimeTypes"
+                         Class="fill-card body2"
+                         OnSelectedItemUpdate="RefreshAsync">
+                    </SSelect>
+                </MCol>
+                <MCol Md="3" Class="ml-6">
+                    <DateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" OnChange="RefreshAsync" />
+                </MCol>
                 @if (_queryParam.Type == AlarmRuleTypes.Log)
                 {
-                    <DefaultSimpleSelect @bind-Value="@_queryParam.ProjectIdentity" Items="_projectItems" DefaultText="@T(nameof(_queryParam.ProjectIdentity))" Class="ml-6" OnChange="HandleProjectChange"></DefaultSimpleSelect>
-                    <DefaultSimpleSelect @bind-Value="@_queryParam.AppIdentity" Items="_appsItems" DefaultText="@T(nameof(_queryParam.AppIdentity))" Class="ml-6" OnChange="RefreshAsync"></DefaultSimpleSelect>
+                    <MCol Md="1" Class="ml-6">
+                        <SSelect Small @bind-Value="@_queryParam.ProjectIdentity"
+                         Items="_projectItems"
+                         Label="@T(nameof(_queryParam.ProjectIdentity))"
+                         ItemText="e => e.Text"
+                         ItemValue="e=> e.Value"
+                         BackgroundColor="white"
+                         TItem="SelectItem<string>"
+                         TItemValue="string"
+                         TValue="string"
+                         Class="fill-card body2"
+                         OnSelectedItemUpdate="HandleProjectChange">
+                        </SSelect>
+                    </MCol>
+                    <MCol Md="1" Class="ml-6">
+                        <SSelect Small @bind-Value="@_queryParam.AppIdentity"
+                         Items="_appsItems"
+                         Label="@T(nameof(_queryParam.AppIdentity))"
+                         ItemText="e => e.Text"
+                         ItemValue="e=> e.Value"
+                         BackgroundColor="white"
+                         TItem="SelectItem<string>"
+                         TItemValue="string"
+                         TValue="string"
+                         Class="fill-card body2"
+                         OnSelectedItemUpdate="RefreshAsync">
+                        </SSelect>
+                    </MCol>
                 }
                 @if (_queryParam.Type == AlarmRuleTypes.Metric)
                 {
-                    <DefaultSimpleSelect @bind-Value="@_queryParam.MetricId" Items="_metricItems" DefaultText="@T(nameof(_queryParam.MetricId))" Class="ml-6" OnChange="RefreshAsync"></DefaultSimpleSelect>
+                    <MCol Md="1" Class="ml-6">
+                        <SSelect Small @bind-Value="@_queryParam.MetricId"
+                         Items="_metricItems"
+                         Label="@T(nameof(_queryParam.MetricId))"
+                         ItemText="e => e.Text"
+                         ItemValue="e=> e.Value"
+                         BackgroundColor="white"
+                         TItem="SelectItem<string>"
+                         TItemValue="string"
+                         TValue="string"
+                         Class="fill-card body2"
+                         OnSelectedItemUpdate="RefreshAsync">
+                        </SSelect>
+                    </MCol>
                 }
-            </div>
+            </MRow>
         }
     </HeaderContent>
     <AutoHeightContent>

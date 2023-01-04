@@ -23,7 +23,7 @@ public class SendAlarmNotificationEventHandler
 
         foreach (var item in alarm.RuleResultItems)
         {
-            if (!item.AlarmRuleItem.IsNotification) continue;
+            if (!item.IsValid || !item.AlarmRuleItem.IsNotification) continue;
 
             var notificationConfig = item.AlarmRuleItem.NotificationConfig;
 

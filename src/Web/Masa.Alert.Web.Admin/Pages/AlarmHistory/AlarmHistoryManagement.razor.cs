@@ -15,6 +15,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private PaginatedListDto<AlarmHistoryListViewModel> _entities = new();
     private AlarmHistoryDetailModal? _detailModal;
     private HandleAlarmModal? _handleAlarmModal;
+    private List<AlarmHistorySearchTimeTypes> _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
 
@@ -119,5 +120,21 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private async Task HandleOk()
     {
         await LoadData();
+    }
+
+    private async Task HandleSearchTypeChange()
+    {
+        if (_queryParam.SearchType == AlarmHistorySearchTypes.Processed)
+        {
+            _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().ToList();
+            _queryParam.TimeType = AlarmHistorySearchTimeTypes.ProcessingCompletedTime;
+        }
+        else
+        {
+            _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
+            _queryParam.TimeType = default;
+        }
+
+        await RefreshAsync();
     }
 }
