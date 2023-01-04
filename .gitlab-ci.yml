@@ -14,7 +14,7 @@ variables:
   AlertServiceDockerFile: ./src/Services/Masa.Alert.Service/Dockerfile
   
   NAMESPACE_DEV: alert-dev
-  WebDomain_dev: alert-ui-admin-develop.masastack.com
+  WebDomain_dev: alert-develop.masastack.com
   ServiceDomain_dev: alert-service-develop.masastack.com
   
 
@@ -22,7 +22,7 @@ variables:
   Alert_Web_Image: $CI_ALI_REGISTRY_DOMAIN/masa/$Alert_Web_Name:dev-$CI_PIPELINE_ID
 
   NAMESPACE_STAGING: alert-staging
-  WebDomain_staging: alert-ui-admin-staging.masastack.com
+  WebDomain_staging: alert-staging.masastack.com
   ServiceDomain_staging: alert-service-staging.masastack.com
   
   # NAMESPACE_PRD: alert
