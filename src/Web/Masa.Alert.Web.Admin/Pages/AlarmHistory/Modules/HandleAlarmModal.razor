@@ -1,92 +1,68 @@
 ﻿@inherits AdminCompontentBase
-<DefaultSheetDialog Value="_visible" ValueChanged="HandleVisibleChanged"
-                    Title="@T("HandleAlarm")" ContentClass="sheet-dialog">
+<SSimpleModal Value="_visible" ValueChanged="HandleVisibleChanged" OnDelete="HandleDel" OnSave="HandleAlarm" SaveText="@T("HandleAlarm")"
+              Title="@T("HandleAlarm")" Class="full-height" HeaderClass="mr-4">
     <ChildContent>
-        <SElevationTab TabMinWidth="112" ItemsClass="mt-6 full-height" Tabs='new List<string> { T("AlarmDetails"), T("HandleAlarm") }' Dense @bind-Tab="_tab" Class="full-height">
+        <SElevationTab Left TabMinWidth="112" ItemsClass="mt-6 full-height" Tabs='new List<string> { T("AlarmDetails"), T("HandleAlarm") }' Dense @bind-Tab="_tab" Class="full-height">
             <SElevationTabItem>
                 <AutoHeight Overflow>
                     <AutoHeightContent>
-                        <div class="mt-4" style="padding-left: 280px;padding-right: 280px;">
+                        <div class="mt-4">
                             <AlarmHistoryDetail AlarmHistory="_model"></AlarmHistoryDetail>
                         </div>
                     </AutoHeightContent>
-                    <FooterContent>
-                        <div class="d-flex">
-                            @if (_entityId != default)
-                            {
-                                <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
-                            }
-                            <MSpacer></MSpacer>
-                        </div>
-                    </FooterContent>
                 </AutoHeight>
             </SElevationTabItem>
             <SElevationTabItem>
                 <AutoHeight>
                     <AutoHeightContent>
-                        <MContainer Fluid Class="full-height">
-                            <MRow Align="AlignTypes.Center" Justify="JustifyTypes.Center" Class="full-height">
-                                <MCol Cols="4">
-                                    <MCard Height="500" Width="408" Class="@($"d-flex flex-column justify-center align-center fill-background")" OnClick="()=>SelectAlarmHandle(false)">
-                                        @if (_isThirdParty == false)
+                        <MContainer Fluid Class="full-height pa-0">
+                            <MRadioGroup @bind-Value="_isThirdParty">
+                                <MRadio Value="false" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4">
+                                    <LabelContent>
+                                        <span class="h5 @(!_isThirdParty?"primary--text":"emphasis2--text")">@T("Processed")</span>
+                                    </LabelContent>
+                                </MRadio>
+                                @if (_isThirdParty == false)
+                                {
+                                    <div class="d-flex align-center mt-4">
+                                        <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0" Label="@T("SendNotificationAfterProcessing")" />
+                                        @if (_model.Handle.IsHandleNotice)
                                         {
-                                            <div class="rounded-lg primary mt-6" style="height:100px;width:100px"></div>
-                                            <div class="h6 mt-6 regular--text">@T("Processed")</div>
-                                            <div class="px-6 full-width">
-                                                <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label mt-8 ml-4" Label="@T("SendNotificationAfterProcessing")" />
-                                                
-                                            </div>
-                                            @if (_model.Handle.IsHandleNotice)
-                                            {
-                                                <NotificationConfig @bind-value="_model.Handle.NotificationConfig" Class="flex-row align-self-start px-6" ItemClass="mt-4" ItemBackgroundColor="fill"></NotificationConfig>
-                                            }
+                                            <NotificationConfig @bind-value="_model.Handle.NotificationConfig" Class="d-flex" ItemBackgroundColor="fill"></NotificationConfig>
                                         }
-                                        else
+                                    </div>
+                                }
+                                <MRadio Value="true" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4 mt-6">
+                                    <LabelContent>
+                                        <span class="h5 @(_isThirdParty?"primary--text":"emphasis2--text")">@T("ThirdPartyProcessing")</span>
+                                    </LabelContent>
+                                </MRadio>
+                                @if (_isThirdParty == true)
+                                {
+                                    <div class="full-width mt-6">
+                                        <SSelect Class="fill" @bind-Value="_model.Handle.WebHookId" Items="_webHookItems" ItemText="v => v.DisplayName" ItemValue="v=> v.Id" Label="@T("WebHook")" />
+                                        <SUserAutoComplete Class="fill mt-6" @bind-Value="_model.Handle.Handler" Label="@T("Handler")" Outlined FillBackground="false" Style="width: initial" />
+                                    </div>
+                                    <div class="d-flex align-center mt-6">
+                                        <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0" Label="@T("SendNotificationAfterProcessing")" />
+                                        @if (_model.Handle.IsHandleNotice)
                                         {
-                                            <div class="rounded-lg fill" style="height:100px;width:100px"></div>
-                                            <div class="h6 mt-6 regular--text">@T("Processed")</div>
+                                            <NotificationConfig @bind-value="_model.Handle.NotificationConfig" Class="d-flex" ItemBackgroundColor="fill"></NotificationConfig>
                                         }
-                                    </MCard>
-                                </MCol>
-                                <MCol Cols="4">
-                                    <MCard Height="500" Width="408" Class="@($"d-flex flex-column justify-center align-center fill-background")" OnClick="()=>SelectAlarmHandle(true)">
-                                        @if (_isThirdParty == true)
-                                        {
-                                            <div class="rounded-lg primary mt-4" style="height:100px;width:100px"></div>
-                                            <div class="h6 mt-4 regular--text">@T("ThirdPartyProcessing")</div>
-                                            <div class="px-6 full-width">
-                                                <SSelect Class="ml-2 mt-4 fill flex-none" @bind-Value="_model.Handle.WebHookId" Items="_webHookItems" ItemText="v => v.DisplayName" ItemValue="v=> v.Id" Label="@T("WebHook")" />
-                                                <SUserAutoComplete Class="ml-2 mt-4 fill flex-none" @bind-Value="_model.Handle.Handler" Label="@T("Handler")" Outlined FillBackground="false" />
-                                                <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label mt-4 ml-4" Label="@T("SendNotificationAfterProcessing")" />
-                                            </div>
-                                            @if (_model.Handle.IsHandleNotice)
-                                            {
-                                                <NotificationConfig @bind-value="_model.Handle.NotificationConfig" Class="flex-row align-self-start px-6" ItemClass="mt-4" ItemBackgroundColor="fill"></NotificationConfig>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <div class="rounded-lg fill" style="height:100px;width:100px"></div>
-                                            <div class="h6 mt-6 regular--text">@T("ThirdPartyProcessing")</div>
-                                        }
-                                    </MCard>
-                                </MCol>
-                            </MRow>
+                                    </div>
+                                }
+                            </MRadioGroup>
+                            
                         </MContainer>
                     </AutoHeightContent>
-                    <FooterContent>
-                        <div class="d-flex">
-                            @if (_entityId != default)
-                            {
-                                <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
-                            }
-                            <MSpacer></MSpacer>
-                            <SButton Medium OnClick="HandleAlarm">@T("HandleAlarm")</SButton>
-                        </div>
-                    </FooterContent>
                 </AutoHeight>
-
             </SElevationTabItem>
         </SElevationTab>
     </ChildContent>
-</DefaultSheetDialog>
+    <SaveContent Context="save">
+        @if (_tab == T("HandleAlarm"))
+        {
+            <MButton Color="primary" Class="btn-form" OnClick="save.Click">@T("HandleAlarm")</MButton>
+        }
+    </SaveContent>
+</SSimpleModal>

@@ -24,7 +24,7 @@
         }
     },
     jsonFormat: (dom, str) => {
-        if (!isJSON(str)) {
+        if (!dom || !isJSON(str)) {
             return;
         }
 
@@ -48,7 +48,6 @@
             }
             return '<span class="' + cls + '">' + match + '</span>';
         });
-
         dom.innerHTML = str;
     }
 }

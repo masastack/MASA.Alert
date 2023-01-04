@@ -4,7 +4,7 @@
     <MSpacer></MSpacer>
     <div class="regular3--text caption">
         <p class="mb-1">@T("ChartPreviewTips")</p>
-        <p class="mb-0">@T("YAxisUnits")：@ChartYAxisUnit</p>
+        <p class="mb-0 text-right">@T("YAxisUnits")：@ChartYAxisUnit</p>
     </div>
 </div>
 <div class="d-flex align-center justify-center">
@@ -17,7 +17,7 @@
     public StringNumber Width { get; set; } = 761;
 
     [Parameter]
-    public StringNumber Height { get; set; } = 219;
+    public StringNumber Height { get; set; } = 223;
 
     [EditorRequired]
     [Parameter]
@@ -53,11 +53,16 @@
             Legend = new
             {
                 Bottom = "0%",
+                Icon = "roundRect",
                 Data = legendData
             },
             Grid = new
             {
-                Bottom = 50
+                Left = "6%",
+                Right = "6%",
+                Top = 40,
+                Bottom = 30,
+                ContainLabel = true
             },
             XAxis = new
             {
@@ -66,7 +71,15 @@
             },
             YAxis = new
             {
-                Type = "value"
+                Type = "value",
+                SplitLine = new
+                {
+                    Show = true,
+                    LineStyle = new
+                    {
+                        Type = "dashed"
+                    }
+                }
             },
             Series = seriesData
         };
@@ -121,7 +134,19 @@
             Type = "line",
             Stack = "Total",
             Data = x.Data,
-            AreaStyle = new { },
+            AreaStyle = new
+            {
+                Color = new
+                {
+                    ColorStops = new[] { new { Offset = 0, Color = "#ECE8FF" }, new { Offset = 1, Color = "rgba(236, 232, 255, 0)" } },
+                    Global = false,
+                    Type = "linear",
+                    X = 0,
+                    X2 = 0,
+                    Y = 0,
+                    Y2 = 1
+                }
+            },
             Smooth = true
         });
         RenderCharts(legendData, seriesData);

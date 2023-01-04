@@ -1,41 +1,41 @@
 ﻿@inherits AdminCompontentBase
-<DefaultSheetDialog Value="_visible" ValueChanged="HandleVisibleChanged"
-                    Title="@T("AddWebHook")" ContentClass="sheet-dialog">
+<SSimpleModal Value="_visible" ValueChanged="HandleVisibleChanged" OnDelete="HandleDel" OnSave="HandleOk"
+              Title="@T("AddWebHook")" Class="full-height" HeaderClass="mr-4">
     <ChildContent>
         <MForm Model="_model" EnableValidation @ref="_form" Class="full-height">
             <AutoHeight>
                 <AutoHeightContent>
-                    <div style="padding-left: 342px;padding-right: 342px;">
-                        <div class="regular--text btn d-flex">
-                            <span>@T(nameof(_model.SecretKey))</span>
-                            <PCopyableText>
-                                <span class="mx-6">@_model.SecretKey</span>
-                            </PCopyableText>
-                            <SIcon Size=20 Color="emphasis2" Class="ml-6" OnClick="HandleRefresh">mdi-refresh</SIcon>
-                        </div>
-                        <STextField Class="mt-12" @bind-Value="_model.DisplayName" Label="@T(nameof(_model.DisplayName))"></STextField>
-                        <STextField Class="mt-12" @bind-Value="_model.Url" Label="@T(nameof(_model.Url))"></STextField>
-                        <MTextarea Class="mt-12" @bind-Value="_model.Description"
-                                   Label="@T(nameof(_model.Description))"
-                                   Outlined
-                                   HideDetails="@("auto")">
-                        </MTextarea>
-                    </div>
-                </AutoHeightContent>
-                <FooterContent>
                     <div class="d-flex">
-                        @if (_entityId != default)
-                        {
-                            <SButton Class="btn" Text Color="error" OnClick="HandleDel">@T("Delete")</SButton>
-                        }
+                        <PCopyableText Class="d-flex justify-space-between full-width">
+                            <span class="emphasis--text h8">@_model.SecretKey</span>
+                        </PCopyableText>
                         <MSpacer></MSpacer>
-                        <SButton Medium Outlined　Class="ml-6" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</SButton>
-                        <SButton Medium Class="ml-6" OnClick="HandleOk">@T("Submit")</SButton>
+                        <SIcon Size=20 Color="emphasis2" Class="ml-6" OnClick="HandleRefresh">mdi-refresh</SIcon>
                     </div>
-                </FooterContent>
+                    <STextField Class="mt-12" @bind-Value="_model.DisplayName" Label="@T(nameof(_model.DisplayName))"></STextField>
+                    <STextField Class="mt-12" @bind-Value="_model.Url" Label="@T(nameof(_model.Url))"></STextField>
+                    <MTextarea Class="mt-12" @bind-Value="_model.Description"
+                               Label="@T(nameof(_model.Description))"
+                               Outlined
+                               HideDetails="@("auto")">
+                    </MTextarea>
+                </AutoHeightContent>
             </AutoHeight>
         </MForm>
     </ChildContent>
-</DefaultSheetDialog>
+    <DeleteContent Context="delete">
+        @if (_entityId != default)
+        {
+            <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+        }
+    </DeleteContent>
+    <SaveContent Context="save">
+        @if (_entityId != default)
+        {
+            <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</MButton>
+        }
+        <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T("Submit")</MButton>
+    </SaveContent>
+</SSimpleModal>
 
 <WebHookTestModal @ref="_testModal" />
