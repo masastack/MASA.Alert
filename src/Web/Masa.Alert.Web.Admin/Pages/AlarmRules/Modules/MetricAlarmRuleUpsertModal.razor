@@ -84,7 +84,6 @@
                                                            TItemValue="string"
                                                            OnSelectedItemUpdate="(v)=>HandleMetricNameChange(v,item)">
                                                     </SAutoComplete>
-                                                    @*<SSelect @bind-Value="item.Aggregation.Name" Items="_names" ItemText="v => v" ItemValue="v=> v" TValue="string" TItem="string" TItemValue="string" Label="@T("MetricMonitor.Name")" OnChange="(v)=>HandleMetricNameChange(v,item)" />*@
                                                 </MCol>
                                                 <MCol Md="3">
                                                     <SSelect Class="ml-3" @bind-Value="item.Aggregation.Tag" Items="item.Aggregation.TagItems" ItemText="v => v" ItemValue="v=> v" TValue="string" TItem="string" TItemValue="string" Label="@T("MetricMonitor.Tag")" OnChange="(v)=>HandleMetricTagChange(v,item)" />
