@@ -38,12 +38,12 @@ public class AlarmHistoryCommandHandler
 
         if (handle.WebHookId == default)
         {
-            remark = currentUser.DisplayName;
+            remark = currentUser.StaffDislpayName;
         }
         else
         {
             var handlerDisplayName = (await _authClient.UserService.FindByIdAsync(handle.Handler))?.StaffDislpayName ?? string.Empty;
-            remark = $"{currentUser.DisplayName}分配处理人:{handlerDisplayName}";
+            remark = $"{currentUser.StaffDislpayName}分配处理人:{handlerDisplayName}";
         }
 
         entity.HandleAlarm(handle, currentUser.Id, remark);

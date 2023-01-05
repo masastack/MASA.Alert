@@ -1,6 +1,6 @@
 ﻿@inherits AdminCompontentBase
 <SSimpleModal Value="_visible" ValueChanged="HandleVisibleChanged" OnDelete="HandleDel" OnCancel="HandleCancel" OnSave="HandleOk"
-                    Title="@T("AddAlarmRule")" Class="full-height" HeaderClass="mr-4">
+              Title="@T(_entityId == default?"AddAlarmRule":"EditAlarmRule")" Class="full-height" HeaderClass="mr-4">
     <ChildContent>
         <MForm Model="_model" EnableValidation @ref="_form" Class="full-height mt-n2 pt-3">
             <MStepper Value="_model.Step" Elevation=0 Class="d-flex flex-column full-height">
@@ -71,7 +71,19 @@
                                         {
                                             <MRow NoGutters Class="ml-3 mt-6">
                                                 <MCol Md="3">
-                                                    <SSelect @bind-Value="item.Aggregation.Name" Items="_names" ItemText="v => v" ItemValue="v=> v" TValue="string" TItem="string" TItemValue="string" Label="@T("MetricMonitor.Name")" OnChange="(v)=>HandleMetricNameChange(v,item)" />
+                                                    <SAutoComplete Items="_names" @bind-Value="item.Aggregation.Name"
+                                                           Label="@T("MetricMonitor.Name")"
+                                                           ItemText="v => v"
+                                                           ItemValue="v=> v"
+                                                           Dense
+                                                           Outlined
+                                                           Clearable
+                                                           HideDetails="@("auto")"
+                                                           TValue="string" 
+                                                           TItem="string" 
+                                                           TItemValue="string"
+                                                           OnSelectedItemUpdate="(v)=>HandleMetricNameChange(v,item)">
+                                                    </SAutoComplete>
                                                 </MCol>
                                                 <MCol Md="3">
                                                     <SSelect Class="ml-3" @bind-Value="item.Aggregation.Tag" Items="item.Aggregation.TagItems" ItemText="v => v" ItemValue="v=> v" TValue="string" TItem="string" TItemValue="string" Label="@T("MetricMonitor.Tag")" OnChange="(v)=>HandleMetricTagChange(v,item)" />

@@ -56,4 +56,5 @@ public enum AlarmHistorySearchTimeTypes
 {
     FirstAlarmTime = 1,
     LastAlarmTime,
+    ProcessingCompletedTime
 }

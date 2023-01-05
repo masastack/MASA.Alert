@@ -71,7 +71,7 @@
   "Fail": "未通过",
   "Normal": "正常",
   "Invalid": "失效",
-  "Permission.Create": "新增",
+  "Permission.Create": "新建",
   "Permission.Edit": "编辑",
   "Permission.Delete": "删除",
   "Team": "团队",
@@ -91,6 +91,8 @@
   "Cancel": "取消",
   "StartTime": "开始时间",
   "EndTime": "结束时间",
+  "PleaseSelectStartTime": "请选择开始时间",
+  "PleaseSelectEndTime": "请选择结束时间",
   "OperationSuccessfulMessage": "操作成功.",
   "DeletedSuccessfullyMessage": "删除成功.",
   "GreaterThan": ">",
@@ -106,6 +108,7 @@
   "Avg": "平均值",
   "FirstAlarmTime": "初次告警时间",
   "LastAlarmTime": "最近告警时间",
+  "ProcessingCompletedTime": "处理完成时间",
   "TimeType": "时间类型",
   "Serious": "严重",
   "High": "高",
@@ -141,7 +144,8 @@
     "MetricId": "指标",
     "AlarmHistory": "告警历史",
     "Disable": "禁用",
-    "AddAlarmRule": "新增告警规则",
+    "AddAlarmRule": "新建告警规则",
+    "EditAlarmRule": "编辑告警规则",
     "RelationRes": "关联资源",
     "MonitoringSetting": "监控设置",
     "AlarmSetting": "告警设置",
@@ -228,11 +232,12 @@
     "AutoRecovery": "自动恢复"
   },
   "WebHookBlock": {
-    "AddWebHook": "新增WebHook",
+    "AddWebHook": "新建WebHook",
+    "EditWebHook": "编辑WebHook",
     "TestWebHook": "测试WebHook",
     "DisplayName": "名称",
     "Url": "Url",
-    "Description": "描述说明",
+    "Description": "描述",
     "SecretKey": "密钥"
   }
 }

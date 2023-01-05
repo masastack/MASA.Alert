@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using System.Reflection.Metadata;
-
 namespace Masa.Alert.Domain.AlarmHistories.Aggregates;
 
 public class AlarmHistory : FullAggregateRoot<Guid, Guid>
@@ -64,9 +62,10 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         {
             var commit = Handle.Completed(default, "自动恢复");
             _handleStatusCommits.Add(commit);
+
+            AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
         }
         
-        AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
         AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
     }
 

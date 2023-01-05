@@ -1,6 +1,6 @@
 ﻿@inherits AdminCompontentBase
 <SSimpleModal Value="_visible" ValueChanged="HandleVisibleChanged" OnDelete="HandleDel" OnSave="HandleOk"
-              Title="@T("AddWebHook")" Class="full-height" HeaderClass="mr-4">
+              Title="@T(_entityId == default?"AddWebHook":"EditWebHook")" Class="full-height" HeaderClass="mr-4">
     <ChildContent>
         <MForm Model="_model" EnableValidation @ref="_form" Class="full-height">
             <AutoHeight>

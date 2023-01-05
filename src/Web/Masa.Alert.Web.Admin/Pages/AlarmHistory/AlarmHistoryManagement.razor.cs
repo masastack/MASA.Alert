@@ -15,8 +15,10 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private PaginatedListDto<AlarmHistoryListViewModel> _entities = new();
     private AlarmHistoryDetailModal? _detailModal;
     private HandleAlarmModal? _handleAlarmModal;
+    private List<AlarmHistorySearchTimeTypes> _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
+    AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
     protected override string? PageName { get; set; } = "AlarmHistoryBlock";
 
@@ -29,9 +31,19 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    protected override void OnParametersSet()
+    protected override async void OnParametersSet()
     {
         _queryParam.AlarmRuleId = string.IsNullOrEmpty(AlarmRuleId) ? null : Guid.Parse(AlarmRuleId);
+
+        if (_queryParam.AlarmRuleId.HasValue)
+        {
+            var alarmRule = await AlarmRuleService.GetAsync(_queryParam.AlarmRuleId.Value);
+            _queryParam.Filter = alarmRule?.DisplayName ?? string.Empty;
+        }
+        else
+        {
+            _queryParam.Filter = string.Empty;
+        }
     }
 
     private void HandleHeaders()
@@ -119,5 +131,21 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private async Task HandleOk()
     {
         await LoadData();
+    }
+
+    private async Task HandleSearchTypeChange()
+    {
+        if (_queryParam.SearchType == AlarmHistorySearchTypes.Processed)
+        {
+            _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().ToList();
+            _queryParam.TimeType = AlarmHistorySearchTimeTypes.ProcessingCompletedTime;
+        }
+        else
+        {
+            _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
+            _queryParam.TimeType = default;
+        }
+
+        await RefreshAsync();
     }
 }

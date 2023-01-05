@@ -56,7 +56,7 @@ public class AlarmHistoryQueryHandler
                 {
                     [nameof(AlarmHistoryQueryModel.AlertSeverity)] = false,
                     [nameof(AlarmHistoryQueryModel.FirstAlarmTime)] = false
-                }; 
+                };
             case AlarmHistorySearchTypes.Processed:
                 return new Dictionary<string, bool>
                 {
@@ -82,7 +82,7 @@ public class AlarmHistoryQueryHandler
         switch (options.SearchType)
         {
             case AlarmHistorySearchTypes.Alarming:
-                condition = condition.And(x => !x.RecoveryTime.HasValue);
+                condition = condition.And(x => !x.RecoveryTime.HasValue && x.IsNotification);
                 break;
             case AlarmHistorySearchTypes.Processed:
                 condition = condition.And(x => x.HandleStatus >= AlarmHistoryHandleStatuses.ProcessingCompleted);
@@ -102,6 +102,12 @@ public class AlarmHistoryQueryHandler
         {
             condition = condition.And(options.StartTime.HasValue, x => x.LastAlarmTime >= options.StartTime)
                 .And(options.EndTime.HasValue, x => x.LastAlarmTime <= options.EndTime);
+        }
+        if (options.TimeType == AlarmHistorySearchTimeTypes.ProcessingCompletedTime)
+        {
+            condition = condition.And(x => x.HandleStatus >= AlarmHistoryHandleStatuses.ProcessingCompleted)
+                .And(options.StartTime.HasValue, x => x.RecoveryTime >= options.StartTime)
+                .And(options.EndTime.HasValue, x => x.RecoveryTime <= options.EndTime);
         }
         condition = condition.And(options.AlertSeverity != default, x => x.AlertSeverity == options.AlertSeverity);
         condition = condition.And(options.HandleStatus != default, x => x.HandleStatus == options.HandleStatus);
