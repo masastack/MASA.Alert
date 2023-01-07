@@ -15,45 +15,51 @@
     <span class="emphasis2--text body2">@T(AlarmHistory.AlarmRule.CheckFrequency.Type.ToString())</span>
 </div>
 <DefaultSubTitle>@T("VariableInfo")</DefaultSubTitle>
-@foreach (var item in AlarmHistory.AlarmRule.LogMonitorItems)
+@if (AlarmHistory.AlarmRule.Type == AlarmRuleTypes.Log)
 {
-    <div class="d-flex justify-space-between mb-6">
-        <div class="regular--text body2">
-            @item.Alias
-        </div>
-        <div class="emphasis2--text body2">
-            <span>@item.Field</span>
-            <span class="ml-2">@T("Count")</span>
-            <span class="ml-2">@(item.IsOffset ? string.Format(T("OffsetPeriod"), item.OffsetPeriod) : string.Empty)</span>
-        </div>
-    </div>
-}
-@foreach (var item in AlarmHistory.AlarmRule.MetricMonitorItems)
-{
-    <div class="d-flex justify-space-between mb-6">
-        @if (item.IsExpression)
-        {
-            <div class="fill-background regular--text body2 rounded-2 px-4 py-2">
-                @item.Expression
-            </div>
-            <div class="emphasis2--text body2">
-                <span>@item.Alias</span>
-                <span class="ml-2">@(item.IsOffset ? string.Format(T("OffsetPeriod"), item.OffsetPeriod) : string.Empty)</span>
-            </div>
-        }
-        else
-        {
+    @foreach (var item in AlarmHistory.AlarmRule.LogMonitorItems)
+    {
+        <div class="d-flex justify-space-between mb-6">
             <div class="regular--text body2">
                 @item.Alias
             </div>
             <div class="emphasis2--text body2">
-                <span>@item.Aggregation.Name</span>
-                <span class="ml-2">@item.Aggregation.Tag @T(item.Aggregation.ComparisonOperator.ToString()) @item.Aggregation.Value</span>
-                <span class="ml-2">@T(item.Aggregation.AggregationType.ToString())</span>
+                <span>@item.Field</span>
+                <span class="ml-2">@T("Count")</span>
                 <span class="ml-2">@(item.IsOffset ? string.Format(T("OffsetPeriod"), item.OffsetPeriod) : string.Empty)</span>
             </div>
-        }
-    </div>
+        </div>
+    }
+}
+@if (AlarmHistory.AlarmRule.Type == AlarmRuleTypes.Metric)
+{
+    @foreach (var item in AlarmHistory.AlarmRule.MetricMonitorItems)
+    {
+        <div class="d-flex justify-space-between mb-6">
+            @if (item.IsExpression)
+            {
+                <div class="fill-background regular--text body2 rounded-2 px-4 py-2 flex-grow-1 mr-6">
+                    @item.Expression
+                </div>
+                <div class="emphasis2--text body2">
+                    <span>@item.Alias</span>
+                    <span class="ml-2">@(item.IsOffset ? string.Format(T("OffsetPeriod"), item.OffsetPeriod) : string.Empty)</span>
+                </div>
+            }
+            else
+            {
+                <div class="regular--text body2">
+                    @item.Alias
+                </div>
+                <div class="emphasis2--text body2">
+                    <span>@item.Aggregation.Name</span>
+                    <span class="ml-2">@item.Aggregation.Tag @T(item.Aggregation.ComparisonOperator.ToString()) @item.Aggregation.Value</span>
+                    <span class="ml-2">@T(item.Aggregation.AggregationType.ToString())</span>
+                    <span class="ml-2">@(item.IsOffset ? string.Format(T("OffsetPeriod"), item.OffsetPeriod) : string.Empty)</span>
+                </div>
+            }
+        </div>
+    }
 }
 <DefaultSubTitle>@T("AlarmInfo")</DefaultSubTitle>
 <div class="d-flex justify-space-between mb-6">
@@ -61,7 +67,7 @@
         @T("AlarmTime")
     </div>
     <div class="emphasis2--text body2">
-        @AlarmHistory.LastAlarmTime.ToString(T("$DateTimeFormat"))
+        @AlarmHistory.LastAlarmTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))
     </div>
 </div>
 <DefaultSubTitle>@T("TriggerRules")</DefaultSubTitle>
@@ -73,13 +79,21 @@
         </div>
         <div class="emphasis2--text body2">
             <div class="d-flex">
-                <span class="my-auto">@(item.AlarmRuleItem.IsNotification ? item.AlarmRuleItem.NotificationConfig.TemplateName : T("NoNotice"))</span>
-                <MSwitch Value="item.AlarmRuleItem.IsRecoveryNotification" Inset Class="label my-auto ml-6" Label="@T("RecoveryNotification")" Readonly />
+                <MSwitch Value="item.AlarmRuleItem.IsNotification" Inset Class="label my-auto" Disabled>
+                    <LabelContent>
+                        <span class="body2 emphasis2--text">@T("AlarmNotification")</span>
+                    </LabelContent>
+                </MSwitch>
+                <MSwitch Value="item.AlarmRuleItem.IsRecoveryNotification" Inset Class="label my-auto ml-6" Disabled>
+                    <LabelContent>
+                        <span class="body2 emphasis2--text">@T("RecoveryNotification")</span>
+                    </LabelContent>
+                </MSwitch>
             </div>
         </div>
     </div>
     <div class="d-flex justify-space-between mb-6" style="@(item.IsValid?"":"opacity: 0.6")">
-        <div class="regular--text body2">
+        <div class="regular--text body2 flex-grow-1 pr-6">
             @if (!string.IsNullOrEmpty(item.AlarmRuleItem.Expression))
             {
                 <MBorder Color="@(item.IsValid?"green":"regular3--text")" Width="4"><JsonPre Class="rounded-4 fill-background" @bind-Value="@item.AlarmRuleItem.Expression"></JsonPre></MBorder>

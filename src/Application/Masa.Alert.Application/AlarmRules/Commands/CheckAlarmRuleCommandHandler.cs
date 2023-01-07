@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Alert.Domain.AlarmRules.Aggregates;
+
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class CheckAlarmRuleCommandHandler
@@ -46,20 +48,18 @@ public class CheckAlarmRuleCommandHandler
         if (startTime == null)
         {
             alarmRule.SkipCheck(checkTime);
-            await _repository.UpdateAsync(alarmRule);
-
             command.IsStop = true;
             return;
         }
 
         if (alarmRule.Type == AlarmRuleTypes.Log)
         {
-            command.AggregateResult = await QueryLogAggregationAsync(alarmRule, startTime.Value.DateTime, checkTime.DateTime);
+            command.AggregateResult = await QueryLogAggregationAsync(alarmRule, startTime.Value.DateTime, checkTime.DateTime, command);
         }
 
         if (alarmRule.Type == AlarmRuleTypes.Metric)
         {
-            command.AggregateResult = await QueryMetricAggregationAsync(alarmRule, startTime.Value.DateTime, checkTime.DateTime);
+            command.AggregateResult = await QueryMetricAggregationAsync(alarmRule, startTime.Value.DateTime, checkTime.DateTime, command);
         }
 
         if (!command.AggregateResult.Any())
@@ -71,12 +71,17 @@ public class CheckAlarmRuleCommandHandler
     [EventHandler(3)]
     public async Task ExecuteRulesAsync(CheckAlarmRuleCommand command)
     {
-        if (command.IsStop) return;
+        if (command.IsStop)
+        {
+            command.AlarmRule.AddAggregateResult(command.ExcuteTime ?? DateTimeOffset.Now, command.AggregateResult);
+            await _repository.UpdateAsync(command.AlarmRule);
+            return;
+        }
 
         await _domainService.CheckRuleAsync(command.ExcuteTime ?? DateTimeOffset.Now, command.AlarmRule, command.AggregateResult);
     }
 
-    private async Task<ConcurrentDictionary<string, long>> QueryLogAggregationAsync(AlarmRule alarmRule, DateTime startTime, DateTime endTime)
+    private async Task<ConcurrentDictionary<string, long>> QueryLogAggregationAsync(AlarmRule alarmRule, DateTime startTime, DateTime endTime, CheckAlarmRuleCommand command)
     {
         var aggregateResult = new ConcurrentDictionary<string, long>();
 
@@ -85,12 +90,16 @@ public class CheckAlarmRuleCommandHandler
             if (item.IsOffset && item.OffsetPeriod > 0)
             {
                 var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
-                if (!offsetResult.HasValue)
+                if (offsetResult.HasValue)
                 {
-                    _logger.LogInformation("The offset data has not been generated");
+                    aggregateResult.TryAdd(item.Alias, offsetResult.Value);
                     return aggregateResult;
                 }
-                aggregateResult.TryAdd(item.Alias, offsetResult.Value);
+                else
+                {
+                    command.IsStop = true;
+                    _logger.LogInformation("The offset data has not been generated");
+                }
             }
 
             var request = new SimpleAggregateRequestDto
@@ -111,7 +120,7 @@ public class CheckAlarmRuleCommandHandler
         return aggregateResult;
     }
 
-    private async Task<ConcurrentDictionary<string, long>> QueryMetricAggregationAsync(AlarmRule alarmRule, DateTime startTime, DateTime endTime)
+    private async Task<ConcurrentDictionary<string, long>> QueryMetricAggregationAsync(AlarmRule alarmRule, DateTime startTime, DateTime endTime, CheckAlarmRuleCommand command)
     {
         var aggregateResult = new ConcurrentDictionary<string, long>();
 
@@ -120,12 +129,16 @@ public class CheckAlarmRuleCommandHandler
             if (item.IsOffset && item.OffsetPeriod > 0)
             {
                 var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
-                if (!offsetResult.HasValue)
+                if (offsetResult.HasValue)
                 {
-                    _logger.LogInformation("The offset data has not been generated");
+                    aggregateResult.TryAdd(item.Alias, offsetResult.Value);
                     return aggregateResult;
                 }
-                aggregateResult.TryAdd(item.Alias, offsetResult.Value);
+                else
+                {
+                    command.IsStop = true;
+                    _logger.LogInformation("The offset data has not been generated");
+                }
             }
 
             var req = new ValuesRequest

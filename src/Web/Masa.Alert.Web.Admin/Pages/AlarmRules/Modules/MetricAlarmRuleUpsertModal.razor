@@ -126,12 +126,12 @@
                                         </MRow>
                                         <MDivider Right Class="mt-6 ml-3">
                                             <MButtonGroup Dense Rounded Class="mt-n5">
-                                                <MButton>
+                                                <MButton IsActive="false">
                                                     <SIcon Size="20" Color="emphasis" OnClick="()=>HandleMetricMonitorItemsAdd(item)">mdi-plus</SIcon>
                                                 </MButton>
                                                 @if (_model.MetricMonitorItems.Count > 1)
                                                 {
-                                                    <MButton>
+                                                    <MButton IsActive="false">
                                                         <SIcon Size="20" Color="error" OnClick="()=>HandleMetricMonitorItemsRemove(item)">mdi-delete</SIcon>
                                                     </MButton>
                                                 }
@@ -157,7 +157,7 @@
     <DeleteContent Context="delete">
         @if (_model.Step == 1)
         {
-            <MIcon Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</MIcon>
+            <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</SIcon>
 
             @if (_entityId != default)
             {
@@ -173,7 +173,7 @@
             <span class="d-flex px-6" style="height: 12px">
                 <MDivider Vertical />
             </span>
-            <MIcon Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</MIcon>
+            <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</SIcon>
 
             @if (_entityId != default)
             {
@@ -192,7 +192,7 @@
         @if (_model.Step == 2)
         {
             <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=>_model.Step=1">@T("PreviousStep")</MButton>
-            <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T("Submit")</MButton>
+            <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</MButton>
         }
     </SaveContent>
 </SSimpleModal>

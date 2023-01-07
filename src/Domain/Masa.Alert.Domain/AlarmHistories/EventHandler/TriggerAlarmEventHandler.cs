@@ -25,7 +25,8 @@ public class TriggerAlarmEventHandler
         if (alarmRule == null) return;
 
         var alarm = await _repository.GetLastAsync(eto.AlarmRuleId);
-        var isNotification = alarmRule.CheckIsNotification(alarm?.LastNotificationTime);
+        var isNotification = alarmRule.CheckIsNotification();
+        var isSilence = alarmRule.CheckIsSilence(alarm?.LastNotificationTime);
 
         if (alarm == null || alarm.RecoveryTime.HasValue)
         {
@@ -39,7 +40,7 @@ public class TriggerAlarmEventHandler
             await _repository.UpdateAsync(alarm);
         }
 
-        if (alarm.IsNotification)
+        if (alarm.IsNotification && !isSilence)
         {
             await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm.Id));
         }

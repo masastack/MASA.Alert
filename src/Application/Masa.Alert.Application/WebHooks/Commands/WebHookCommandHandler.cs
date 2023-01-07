@@ -50,6 +50,6 @@ public class WebHookCommandHandler
     [EventHandler]
     public async Task TestAsync(TestWebHookCommand command)
     {
-        await _domainEventBus.PublishAsync(new PostWebHookEvent(command.WebHookId, command.Handler));
+        await _domainEventBus.PublishAsync(new PostWebHookEvent(default, command.WebHookId, command.Handler));
     }
 }

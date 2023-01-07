@@ -16,6 +16,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private AlarmHistoryDetailModal? _detailModal;
     private HandleAlarmModal? _handleAlarmModal;
     private List<AlarmHistorySearchTimeTypes> _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
+    private List<AlarmHistoryHandleStatuses> _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
@@ -135,17 +136,38 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
 
     private async Task HandleSearchTypeChange()
     {
-        if (_queryParam.SearchType == AlarmHistorySearchTypes.Processed)
+        _queryParam = new() { Filter = _queryParam.Filter, SearchType = _queryParam.SearchType, AlarmRuleId = _queryParam.AlarmRuleId };
+
+        switch (_queryParam.SearchType)
         {
-            _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().ToList();
-            _queryParam.TimeType = AlarmHistorySearchTimeTypes.ProcessingCompletedTime;
-        }
-        else
-        {
-            _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
-            _queryParam.TimeType = default;
+            case AlarmHistorySearchTypes.Alarming:
+                _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
+                _handleStatusItems = new List<AlarmHistoryHandleStatuses> { AlarmHistoryHandleStatuses.Pending, AlarmHistoryHandleStatuses.InProcess };
+                _queryParam.TimeType = default;
+                break;
+            case AlarmHistorySearchTypes.Processed:
+                _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().ToList();
+                _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
+                _queryParam.TimeType = AlarmHistorySearchTimeTypes.ProcessingCompletedTime;
+                break;
+            case AlarmHistorySearchTypes.NoNotice:
+                _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
+                _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
+                _queryParam.TimeType = default;
+                break;
+            default:
+                break;
         }
 
+        await RefreshAsync();
+    }
+
+    private async Task HandleFilterKeyDown()
+    {
+        if (string.IsNullOrEmpty(_queryParam.Filter))
+        {
+            _queryParam.AlarmRuleId = null;
+        }
         await RefreshAsync();
     }
 }

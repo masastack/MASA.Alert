@@ -5,7 +5,7 @@
     <HeaderContent>
         <div class="ma-0 search-panel my-6">
             <div class="d-flex search-panel-right full-width">
-                <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
+                <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" Clearable OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
                 <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _upsertModal?.OpenModalAsync()!">@T("Permission.Create")</SButton>
             </div>
         </div>

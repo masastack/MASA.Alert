@@ -66,6 +66,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         var dto = await AlarmRuleService.GetAsync(_entityId) ?? new();
         _model = dto.Adapt<AlarmRuleUpsertViewModel>();
         await HandleProjectChange();
+        GetNextRunTime();
     }
 
     private void FillData()
@@ -93,7 +94,6 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     private void ResetForm()
     {
         _model = new();
-        _form?.ResetValidation();
     }
 
     private void HandleVisibleChanged(bool val)
@@ -153,6 +153,8 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         {
             _nextRunTimeStr = sb.ToString();
         }
+
+        StateHasChanged();
     }
 
     private void OpenCronModal()

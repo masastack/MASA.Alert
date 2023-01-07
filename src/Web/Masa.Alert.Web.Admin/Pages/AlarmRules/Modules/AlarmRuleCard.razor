@@ -1,8 +1,8 @@
 ﻿@inherits AdminCompontentBase
 <MCard Class="@($"d-flex flex-column px-2 rounded-xl line-fill {(AlarmRule.IsEnabled?"":"fill-disabled")}")" MinHeight=Height Style="@($"{(AlarmRule.IsEnabled?"":"opacity:0.6")}")">
     <MCardTitle class="px-0 py-1">
-        <MListItem>
-            <MListItemTitle Class="emphasis--text h7">
+        <MListItem Class="overflow-hidden">
+            <MListItemTitle Class="emphasis--text h7 text-truncate">
                 @AlarmRule.DisplayName
             </MListItemTitle>
             <MListItemIcon Class="mr-n2">
@@ -57,18 +57,15 @@
         <div class="subtitle2 mt-1">
             @if (AlarmRule.Type == AlarmRuleTypes.Log)
             {
-                <MChip IsActive Color="emphasis" Class="rounded-3 body2 default-tag mt-3" TextColor="white">
+                <MChip IsActive Color="emphasis" Class="rounded-3 body2 default-tag mt-3" TextColor="white" Style="max-width: 150px;">
                     @AlarmRule.ProjectIdentity
                 </MChip>
-                <MChip Class="rounded-3 body2 default-tag ml-3 mt-3" Color="emphasis2" Outlined>
+                <MChip Class="rounded-3 body2 default-tag ml-3 mt-3" Color="emphasis2" Outlined Style="max-width: 150px;">
                     @AlarmRule.AppIdentity
                 </MChip>
             }
             @if (AlarmRule.Type == AlarmRuleTypes.Metric)
             {
-                <MChip IsActive Color="emphasis" Class="rounded-3 body2 default-tag mt-3" TextColor="white">
-                    @T("MetricId")
-                </MChip>
                 foreach (var item in _metricMonitorItems)
                 {
                     <MChip Class="rounded-3 body2 default-tag ml-3 mt-3" Color="emphasis2" Outlined Style="max-width: 98px;">

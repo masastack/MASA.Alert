@@ -38,4 +38,11 @@ public class AlarmHistoryService : ServiceBase
         var command = new HandleAlarmHistoryCommand(id, inputDto);
         await eventBus.PublishAsync(command);
     }
+
+    [RoutePattern("{id}/completed", StartWithBaseUri = true, HttpMethod = "Post")]
+    public async Task HandleCompletedAsync(IEventBus eventBus, Guid id)
+    {
+        var command = new HandleCompletedAlarmHistoryCommand(id);
+        await eventBus.PublishAsync(command);
+    }
 }

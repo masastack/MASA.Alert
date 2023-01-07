@@ -245,26 +245,31 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, excuteTime, new List<RuleResultItem>()));
     }
 
-    public bool CheckIsNotification(DateTimeOffset? lastNotificationTime)
+    public void AddAggregateResult(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult)
     {
-        if (!Items.Any(x => x.IsNotification))
-        {
-            return false;
-        }
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, false, 0, excuteTime, new List<RuleResultItem>()));
+    }
 
+    public bool CheckIsNotification()
+    {
+        return Items.Any(x => x.IsNotification);
+    }
+
+    public bool CheckIsSilence(DateTimeOffset? lastNotificationTime)
+    {
         if (!lastNotificationTime.HasValue)
         {
-            return true;
+            return false;
         }
 
         var silenceEndTime = GetSilenceEndTime(lastNotificationTime.Value);
 
         if (!silenceEndTime.HasValue || DateTimeOffset.Now > silenceEndTime)
         {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public void SetCheckFrequency(CheckFrequency checkFrequency)
