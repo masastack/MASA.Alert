@@ -28,7 +28,7 @@
                                         <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0" Label="@T("SendNotificationAfterProcessing")" />
                                         @if (_model.Handle.IsHandleNotice)
                                         {
-                                            <NotificationConfig @bind-value="_model.Handle.NotificationConfig" Class="d-flex" ItemBackgroundColor="fill"></NotificationConfig>
+                                            <NotificationConfig @bind-value="_model.Handle.NotificationConfig"></NotificationConfig>
                                         }
                                     </div>
                                 }
@@ -47,7 +47,7 @@
                                         <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0" Label="@T("SendNotificationAfterProcessing")" />
                                         @if (_model.Handle.IsHandleNotice)
                                         {
-                                            <NotificationConfig @bind-value="_model.Handle.NotificationConfig" Class="d-flex" ItemBackgroundColor="fill"></NotificationConfig>
+                                            <NotificationConfig @bind-value="_model.Handle.NotificationConfig"></NotificationConfig>
                                         }
                                     </div>
                                 }

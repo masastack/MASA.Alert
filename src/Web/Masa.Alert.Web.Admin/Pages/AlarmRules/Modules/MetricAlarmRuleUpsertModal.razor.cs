@@ -100,7 +100,6 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     private void ResetForm()
     {
         _model = new();
-        _form?.ResetValidation();
     }
 
     private void HandleVisibleChanged(bool val)

@@ -14,7 +14,7 @@
             </SLabeledRadioGroup>
             <MSpacer></MSpacer>
             <div class="d-flex">
-                <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
+                <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" Clearable OnKeyDown="HandleFilterKeyDown" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
                 <div @onclick="ToggleAdvanced" class="ml-6 d-flex button fill">
                     <SIcon Class="ma-auto" Color="emphasis2" Size=20>
                         @(!advanced ? "mdi-filter" : "mdi-filter-off")
@@ -32,15 +32,17 @@
                          ItemText="e => T(e==default?string.Empty:e.ToString())"
                          ItemValue="e=> e"
                          BackgroundColor="white"
+                         Clearable
                          TItem="AlarmHistorySearchTimeTypes"
                          TItemValue="AlarmHistorySearchTimeTypes"
                          TValue="AlarmHistorySearchTimeTypes"
                          Class="fill-card body2"
-                         OnSelectedItemUpdate="RefreshAsync">
+                         OnSelectedItemUpdate="RefreshAsync"
+                         OnClearClick="RefreshAsync">
                     </SSelect>
                 </MCol>
                 <MCol Md="3" Class="ml-6">
-                    <DateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" OnChange="RefreshAsync" />
+                    <DateTimeRangePicker Class="full-width" @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" OnChange="RefreshAsync" />
                 </MCol>
                 <MCol Md="1" Class="ml-6">
                     <SSelect Small @bind-Value="@_queryParam.AlertSeverity"
@@ -49,27 +51,31 @@
                          ItemText="e => T(e==default?string.Empty:e.ToString())"
                          ItemValue="e=> e"
                          BackgroundColor="white"
+                         Clearable
                          TItem="AlertSeverity"
                          TItemValue="AlertSeverity"
                          TValue="AlertSeverity"
                          Class="fill-card body2"
-                         OnSelectedItemUpdate="RefreshAsync">
+                         OnSelectedItemUpdate="RefreshAsync"
+                         OnClearClick="RefreshAsync">
                     </SSelect>
                 </MCol>
                 @if (_queryParam.SearchType == AlarmHistorySearchTypes.Alarming)
                 {
                     <MCol Md="1" Class="ml-6">
                         <SSelect Small @bind-Value="@_queryParam.HandleStatus"
-                         Items="Enum.GetValues<AlarmHistoryHandleStatuses>().ToList()"
+                         Items="_handleStatusItems"
                          Label="@T(nameof(_queryParam.HandleStatus))"
                          ItemText="e => T(e==default?string.Empty:e.ToString())"
                          ItemValue="e=> e"
                          BackgroundColor="white"
+                         Clearable
                          TItem="AlarmHistoryHandleStatuses"
                          TItemValue="AlarmHistoryHandleStatuses"
                          TValue="AlarmHistoryHandleStatuses"
                          Class="fill-card body2"
-                         OnSelectedItemUpdate="RefreshAsync">
+                         OnSelectedItemUpdate="RefreshAsync"
+                         OnClearClick="RefreshAsync">
                         </SSelect>
                     </MCol>
                 }
@@ -98,10 +104,10 @@
                             <AlarmHistoryStatusTag Value="@context.Item.HandleStatus" />
                             break;
                         case nameof(AlarmHistoryListViewModel.FirstAlarmTime):
-                            <div class="body regular--text">@context.Item.FirstAlarmTime.ToString(T("$DateTimeFormat"))</div>
+                            <div class="body regular--text">@context.Item.FirstAlarmTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</div>
                             break;
                         case nameof(AlarmHistoryListViewModel.LastAlarmTime):
-                            <div class="body regular--text">@context.Item.LastAlarmTime.ToString(T("$DateTimeFormat"))</div>
+                            <div class="body regular--text">@context.Item.LastAlarmTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</div>
                             break;
                         case "HandleCompletionTime":
                             <MListItem Class="pa-0">
@@ -112,7 +118,7 @@
                             </MListItem>
                             break;
                         case "Action":
-                            @if (context.Item.HandleStatus == AlarmHistoryHandleStatuses.Pending)
+                            @if (context.Item.HandleStatus == AlarmHistoryHandleStatuses.Pending && _queryParam.SearchType!= AlarmHistorySearchTypes.NoNotice)
                             {
                                 <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("Handle"))" OnClick="()=>_handleAlarmModal?.OpenModalAsync(context.Item)!">mdi-account-check</SIcon>
                             }

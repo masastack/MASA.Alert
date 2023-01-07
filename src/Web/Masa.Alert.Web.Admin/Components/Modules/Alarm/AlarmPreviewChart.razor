@@ -1,6 +1,6 @@
 ﻿@inherits AdminCompontentBase
 <div class="d-flex">
-    <SDateTimeRangePicker Class="btn-fill-line" @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none" OnChange="TimeRangeChange" />
+    <DateTimeRangePicker Class="btn-fill-line" @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none;width:410px" OnChange="TimeRangeChange" />
     <MSpacer></MSpacer>
     <div class="regular3--text caption">
         <p class="mb-1">@T("ChartPreviewTips")</p>

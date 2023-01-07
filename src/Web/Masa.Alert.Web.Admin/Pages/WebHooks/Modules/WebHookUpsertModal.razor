@@ -34,7 +34,7 @@
         {
             <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</MButton>
         }
-        <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T("Submit")</MButton>
+        <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</MButton>
     </SaveContent>
 </SSimpleModal>
 

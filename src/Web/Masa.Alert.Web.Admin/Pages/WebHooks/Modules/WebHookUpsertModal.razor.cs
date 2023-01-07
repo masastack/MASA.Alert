@@ -33,6 +33,8 @@ public partial class WebHookUpsertModal : AdminCompontentBase
             _visible = true;
             StateHasChanged();
         });
+
+        _form?.ResetValidation();
     }
 
     private async Task GetFormDataAsync()
@@ -50,7 +52,6 @@ public partial class WebHookUpsertModal : AdminCompontentBase
     private void ResetForm()
     {
         _model = new();
-        _form?.ResetValidation();
     }
 
     private void HandleVisibleChanged(bool val)

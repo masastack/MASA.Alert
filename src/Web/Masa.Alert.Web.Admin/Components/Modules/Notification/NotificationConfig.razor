@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<div class="@($"{Class}")">
+@*<div class="@($"{Class}")">
     <div class="@ItemClass" @onclick="HandleTemplateClick">
         <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly BackgroundColor="@ItemBackgroundColor">
                 <PrependContent>
@@ -11,9 +11,24 @@
             </STextField>
         </div>
     <div class="@ItemClass">
-        <UserAutoComplete @bind-Value="Value.Receivers" BackgroundColor="@ItemBackgroundColor" Class="ml-2"></UserAutoComplete>
+        <UserAutoComplete @bind-Value="Value.Receivers" Class="ml-2"></UserAutoComplete>
     </div>
-</div>
+</div>*@
+<MRow NoGutters>
+    <MCol Md="5" @onclick="HandleTemplateClick">
+        <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly BackgroundColor="@ItemBackgroundColor">
+            <PrependContent>
+                @if (!string.IsNullOrEmpty(PrependText))
+                {
+                    <span class="default--text subtitle2 my-auto">@PrependText</span>
+                }
+            </PrependContent>
+        </STextField>
+    </MCol>
+    <MCol Md="7">
+        <UserAutoComplete @bind-Value="Value.Receivers" Class="ml-2"></UserAutoComplete>
+    </MCol>
+</MRow>
 
 <SModal Value="@_visible" Title="@T("MessageTemplate")" HeaderClass="py-2" BodyClass="pt-0" OnSave="()=>_visible=false" OnCancel="()=>_visible=false">
     <MRow Class="mt-0">

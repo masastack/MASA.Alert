@@ -113,13 +113,13 @@
                                         </MCol>
                                         <MSpacer></MSpacer>
                                         <div class="mt-3">
-                                            <MButtonGroup Dense Rounded>
-                                                <MButton>
+                                            <MButtonGroup Dense Rounded >
+                                                <MButton IsActive="false">
                                                     <SIcon Size="20" Color="emphasis" OnClick="()=>HandleLogMonitorItemsAdd(item)">mdi-plus</SIcon>
                                                 </MButton>
                                                 @if (_model.LogMonitorItems.Count > 1)
                                                 {
-                                                    <MButton>
+                                                    <MButton IsActive="false">
                                                         <SIcon Size="20" Color="error" OnClick="()=>HandleLogMonitorItemsRemove(item)">mdi-delete</SIcon>
                                                     </MButton>
                                                 }
@@ -155,7 +155,7 @@
         }
         @if (_model.Step == 2)
         {
-            <MIcon Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</MIcon>
+            <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</SIcon>
 
             @if (_entityId != default)
             {
@@ -171,7 +171,7 @@
             <span class="d-flex px-6" style="height: 12px">
                 <MDivider Vertical />
             </span>
-            <MIcon Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</MIcon>
+            <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</SIcon>
 
             @if (_entityId != default)
             {
@@ -195,7 +195,7 @@
         @if (_model.Step == 3)
         {
             <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=>_model.Step=2">@T("PreviousStep")</MButton>
-            <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T("Submit")</MButton>
+            <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</MButton>
         }
     </SaveContent>
 </SSimpleModal>

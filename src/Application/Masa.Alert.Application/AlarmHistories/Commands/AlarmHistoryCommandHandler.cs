@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using System.Reflection.Metadata;
+
 namespace Masa.Alert.Application.AlarmHistories.Commands;
 
 public class AlarmHistoryCommandHandler
@@ -59,5 +61,18 @@ public class AlarmHistoryCommandHandler
         Check.NotNull(entity, "AlarmHistory not found");
 
         await _repository.RemoveAsync(entity);
+    }
+
+    [EventHandler]
+    public async Task HandleCompletedAsync(HandleCompletedAlarmHistoryCommand command)
+    {
+        var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
+
+        Check.NotNull(entity, "AlarmHistory not found");
+        var user = await _authClient.UserService.FindByIdAsync(entity.Handle.Handler);
+        var handlerDisplayName = user?.StaffDislpayName ?? string.Empty;
+        entity.Completed(entity.Handle.Handler, handlerDisplayName);
+
+        await _repository.UpdateAsync(entity);
     }
 }

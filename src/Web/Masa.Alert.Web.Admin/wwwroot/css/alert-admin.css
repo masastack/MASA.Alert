@@ -505,3 +505,11 @@
 .line-primary {
     border: 1px solid #4318FF !important;
 }
+
+.m-input--is-disabled {
+    opacity: 1 !important;
+}
+
+.m-input--is-disabled .m-input--selection-controls__input {
+    opacity: 0.6;
+}

@@ -2,7 +2,7 @@
 <div class="d-flex justify-space-between">
     <span class="h5 emphasis--text">@AlarmHistory.AlarmRule.ProjectIdentity</span>
     <span class="body2 regular--text">
-        <SDateTimeRangePicker Class="btn-fill-line" StartTime="AlarmHistory.FirstAlarmTime.DateTime" EndTime="AlarmHistory.LastAlarmTime.DateTime" Style="border:none" />
+        <DateTimeRangePicker Class="btn-fill-line" @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none;" OnChange="LoadData" />
     </span>
 </div>
 <div class="d-flex justify-space-between mt-2">
@@ -38,24 +38,34 @@
 
     AlarmRuleRecordService AlarmRuleRecordService => AlertCaller.AlarmRuleRecordService;
 
-    protected override async void OnParametersSet()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _startTime = null;
-        _endTime = null;
-
-        await LoadData();
+        if (firstRender)
+        {
+            await LoadData();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task LoadData()
     {
         var queryParam = new GetAlarmRuleRecordInputDto(999)
             {
-                AlarmHistoryId = AlarmHistory.Id
+                AlarmHistoryId = AlarmHistory.Id,
+                StartTime = _startTime,
+                EndTime = _endTime
             };
 
         var dtos = (await AlarmRuleRecordService.GetListAsync(queryParam));
         var paginatedList = dtos?.Adapt<PaginatedListDto<AlarmRuleRecordListViewModel>>() ?? new();
         var records = paginatedList.Result;
+
+        if (records.Any())
+        {
+            _startTime = records.Min(x => x.CreationTime).Add(TimezoneOffset);
+            _endTime = records.Max(x => x.CreationTime).Add(TimezoneOffset);
+        }
+
         var legendData = new List<string>();
 
         foreach (var item in records)
@@ -74,7 +84,7 @@
             var data = records.Select(x =>
             {
                 var val = x.AggregateResult.FirstOrDefault(x => x.Key == key).Value;
-                return new List<long> { new DateTimeOffset(x.CreationTime).ToUnixTimeMilliseconds(), val };
+                return new List<long> { new DateTimeOffset(x.CreationTime).Add(TimezoneOffset).ToUnixTimeMilliseconds(), val };
             });
 
             return new
