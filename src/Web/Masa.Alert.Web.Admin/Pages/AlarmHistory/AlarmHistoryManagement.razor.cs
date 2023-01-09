@@ -93,7 +93,12 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     {
         HandleHeaders();
         Loading = true;
-        var dtos = (await AlarmHistoryService.GetListAsync(_queryParam));
+
+        var queryParam = _queryParam.Adapt<GetAlarmHistoryInputDto>() ?? new();
+        queryParam.StartTime = queryParam.StartTime?.Add(TimezoneOffset);
+        queryParam.EndTime = queryParam.EndTime?.Add(TimezoneOffset);
+
+        var dtos = (await AlarmHistoryService.GetListAsync(queryParam));
         _entities = dtos?.Adapt<PaginatedListDto<AlarmHistoryListViewModel>>() ?? new();
         Loading = false;
         StateHasChanged();
@@ -136,7 +141,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
 
     private async Task HandleSearchTypeChange()
     {
-        _queryParam = new() { Filter = _queryParam.Filter, SearchType = _queryParam.SearchType, AlarmRuleId = _queryParam.AlarmRuleId };
+        _queryParam = new() { Filter = _queryParam.Filter, SearchType = _queryParam.SearchType, AlarmRuleId = _queryParam.AlarmRuleId, Page = 1 };
 
         switch (_queryParam.SearchType)
         {

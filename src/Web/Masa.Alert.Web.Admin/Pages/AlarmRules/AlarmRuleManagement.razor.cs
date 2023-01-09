@@ -46,7 +46,12 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private async Task LoadData()
     {
         Loading = true;
-        var dtos = (await AlarmRuleService.GetListAsync(_queryParam));
+
+        var queryParam = _queryParam.Adapt<GetAlarmRuleInputDto>() ?? new();
+        queryParam.StartTime = queryParam.StartTime?.Add(TimezoneOffset);
+        queryParam.EndTime = queryParam.EndTime?.Add(TimezoneOffset);
+
+        var dtos = (await AlarmRuleService.GetListAsync(queryParam));
         _entities = dtos?.Adapt<PaginatedListDto<AlarmRuleListViewModel>>() ?? new();
         Loading = false;
         StateHasChanged();

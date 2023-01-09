@@ -8,14 +8,17 @@ public class TriggerAlarmEventHandler
     private readonly IAlarmHistoryRepository _repository;
     private readonly IAlarmRuleRepository _alarmRulerepository;
     private readonly IEventBus _eventBus;
+    private readonly IUnitOfWork _unitOfWork;
 
     public TriggerAlarmEventHandler(IAlarmHistoryRepository repository
         , IAlarmRuleRepository alarmRulerepository
-        , IEventBus eventBus)
+        , IEventBus eventBus
+        , IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _alarmRulerepository = alarmRulerepository;
         _eventBus = eventBus;
+        _unitOfWork = unitOfWork;
     }
 
     [EventHandler]
@@ -32,6 +35,7 @@ public class TriggerAlarmEventHandler
         {
             alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
             await _repository.AddAsync(alarm);
+            await _unitOfWork.SaveChangesAsync();
         }
         else
         {

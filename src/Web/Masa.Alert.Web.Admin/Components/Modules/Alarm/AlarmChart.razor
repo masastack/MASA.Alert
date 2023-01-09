@@ -60,7 +60,7 @@
         var paginatedList = dtos?.Adapt<PaginatedListDto<AlarmRuleRecordListViewModel>>() ?? new();
         var records = paginatedList.Result;
 
-        if (records.Any())
+        if (!_startTime.HasValue && !_endTime.HasValue && records.Any())
         {
             _startTime = records.Min(x => x.CreationTime).Add(TimezoneOffset);
             _endTime = records.Max(x => x.CreationTime).Add(TimezoneOffset);
