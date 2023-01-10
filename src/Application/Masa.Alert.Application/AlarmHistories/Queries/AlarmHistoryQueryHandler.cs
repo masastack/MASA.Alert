@@ -8,16 +8,19 @@ public class AlarmHistoryQueryHandler
 {
     private readonly IAlertQueryContext _context;
     private readonly IAuthClient _authClient;
+    private readonly IDataFilter _dataFilter;
 
-    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient)
+    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter)
     {
         _context = context;
         _authClient = authClient;
+        _dataFilter = dataFilter;
     }
 
     [EventHandler]
     public async Task GetAsync(GetAlarmHistoryQuery query)
     {
+        using var dataFilter = _dataFilter.Disable<ISoftDelete>();
         var entity = await _context.AlarmHistoryQueries
             .Include(x => x.AlarmRule).ThenInclude(x => x.LogMonitorItems)
             .Include(x => x.AlarmRule).ThenInclude(x => x.MetricMonitorItems)
@@ -31,6 +34,7 @@ public class AlarmHistoryQueryHandler
     [EventHandler]
     public async Task GetListAsync(GetAlarmHistoryListQuery query)
     {
+        using var dataFilter = _dataFilter.Disable<ISoftDelete>();
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
         var sorting = CreateSorting(options);

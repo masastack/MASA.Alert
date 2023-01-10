@@ -68,3 +68,4 @@ global using Masa.BuildingBlocks.StackSdks.Scheduler.Model;
 global using Masa.BuildingBlocks.StackSdks.Scheduler.Request;
 global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 global using Microsoft.Extensions.Configuration;
+global using Masa.BuildingBlocks.Data;

@@ -82,6 +82,8 @@
                                                            TValue="string" 
                                                            TItem="string" 
                                                            TItemValue="string"
+                                                           Filter="(item,search,value) => true"
+                                                           OnSearchInputUpdate="QueryNames"
                                                            OnSelectedItemUpdate="(v)=>HandleMetricNameChange(v,item)">
                                                     </SAutoComplete>
                                                 </MCol>
