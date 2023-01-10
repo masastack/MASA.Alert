@@ -84,6 +84,7 @@ public partial class UserAutoComplete : AdminCompontentBase
 
         var users = response.Data;
         Users = Users.UnionBy(users, user => user.Id).ToList();
+        StateHasChanged();
         _loading = false;
     }
 }
