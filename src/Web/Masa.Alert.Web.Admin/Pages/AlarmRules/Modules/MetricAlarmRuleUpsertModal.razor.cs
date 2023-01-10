@@ -21,6 +21,8 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     private List<string> _items = new();
     private AlarmPreviewChartModal? _previewChart;
     private List<string> _names = new();
+    private List<string> _allNames = new();
+    private string _search = "";
 
     protected override string? PageName { get; set; } = "AlarmRuleBlock";
 
@@ -37,7 +39,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
 
     private async Task LoadData()
     {
-        _names = (await TscClient.MetricService.GetNamesAsync(null)).ToList();
+        _allNames = (await TscClient.MetricService.GetNamesAsync(null)).ToList();
     }
 
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)
@@ -64,6 +66,8 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
     {
         var dto = await AlarmRuleService.GetAsync(_entityId) ?? new();
         _model = dto.Adapt<AlarmRuleUpsertViewModel>();
+
+        InitNames(_model.MetricMonitorItems.Select(x=>x.Aggregation.Name).ToList());
 
         foreach (var item in _model.MetricMonitorItems)
         {
@@ -259,5 +263,27 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
         {
             await OnOk.InvokeAsync();
         }
+    }
+
+    private async Task QueryNames(string search)
+    {
+        search = search.TrimStart(' ').TrimEnd(' ');
+        _search = search;
+        await Task.Delay(300);
+        if (search != _search)
+        {
+            return;
+        }
+
+        Loading = true;
+
+        _names = _allNames.Where(x => x.Contains(search)).ToList();
+        StateHasChanged();
+        Loading = false;
+    }
+
+    private void InitNames(List<string> names)
+    {
+        _names = _allNames.Where(x => names.Contains(x)).ToList();
     }
 }
