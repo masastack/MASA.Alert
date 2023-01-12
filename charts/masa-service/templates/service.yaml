@@ -10,6 +10,5 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
       protocol: TCP
-      name: http
   selector:
     {{- include "masa-service.selectorLabels" . | nindent 4 }}
