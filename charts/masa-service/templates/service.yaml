@@ -11,4 +11,5 @@ spec:
       targetPort: {{ .Values.service.port }}
       protocol: TCP
   selector:
-    {{- include "masa-service.selectorLabels" . | nindent 4 }}
+    app: {{ .Release.Name }}
+#     {{- include "masa-service.selectorLabels" . | nindent 4 }}
