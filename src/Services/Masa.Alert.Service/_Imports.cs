@@ -86,3 +86,5 @@ global using Masa.Alert.NotificationService.Provider.Mc;
 global using Masa.Alert.Application.Contracts.WebHooks.Dtos;
 global using Masa.Alert.Application.WebHooks.Commands;
 global using Masa.Alert.Application.WebHooks.Queries;
+global using Masa.BuildingBlocks.RulesEngine;
+global using Masa.BuildingBlocks.Isolation;

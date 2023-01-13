@@ -35,6 +35,8 @@ public partial class UserAutoComplete : AdminCompontentBase
 
     public string Search { get; set; } = "";
 
+    private CancellationTokenSource _cancellationTokenSource;
+
     protected override async Task OnParametersSetAsync()
     {
         await InitUsers();
@@ -55,21 +57,18 @@ public partial class UserAutoComplete : AdminCompontentBase
             var value = new List<Guid>();
             value.AddRange(Value);
             value.Remove(staff.Id);
-            await UpdateValueAsync(value);
+            await ValueChanged.InvokeAsync(value);
         }
     }
 
-    private async Task UpdateValueAsync(List<Guid> value)
-    {
-        if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value);
-        else Value = value;
-    }
+
 
     private async Task QuerySelection(string search)
     {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource = new CancellationTokenSource();
         search = search.TrimStart(' ').TrimEnd(' ');
         Search = search;
-        await Task.Delay(300);
         if (search != Search)
         {
             return;
@@ -80,7 +79,7 @@ public partial class UserAutoComplete : AdminCompontentBase
         {
             Page = Page,
             PageSize = PageSize,
-        });
+        }, _cancellationTokenSource.Token);
 
         var users = response.Data;
         Users = Users.UnionBy(users, user => user.Id).ToList();
