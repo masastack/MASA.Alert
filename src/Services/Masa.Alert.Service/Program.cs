@@ -1,12 +1,30 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
+using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
+using Masa.Contrib.Configuration.ConfigurationApi.Dcc.Options;
+using Masa.Contrib.StackSdks.Config;
+using Masa.Contrib.StackSdks.Tsc;
+using Masa.Alert.EntityFrameworkCore.Extensions;
+using Microsoft.EntityFrameworkCore;
 
-builder.Services.AddObservable(builder.Logging, builder.Configuration);
-builder.Services.AddDaprClient();
-builder.Services.AddMasaConfiguration(configurationBuilder =>
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddMasaStackConfig();
+var masaStackConfig = builder.Services.GetMasaStackConfig();
+builder.Services.AddObservable(builder.Logging, () =>
 {
-    configurationBuilder.UseDcc();
+    return new MasaObservableOptions
+    {
+        ServiceNameSpace = builder.Environment.EnvironmentName,
+        ServiceVersion = masaStackConfig.Version,
+        ServiceName = masaStackConfig.GetServiceId("alert", "server")
+    };
+}, () =>
+{
+    return masaStackConfig.OtlpUrl;
 });
-
+builder.Services.AddDaprClient();
+DccOptions dccOptions = masaStackConfig.GetDccMiniOptions<DccOptions>();
+builder.Services.AddMasaConfiguration(configurationBuilder => configurationBuilder.UseDcc(dccOptions));
+var identityServerUrl = masaStackConfig.GetSsoDomain();
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
@@ -23,6 +41,9 @@ builder.Services.AddMasaIdentity(options =>
     options.Environment = "environment";
     options.UserName = "name";
     options.UserId = "sub";
+    options.Mapping(nameof(MasaUser.CurrentTeamId), IdentityClaimConsts.CURRENT_TEAM);
+    options.Mapping(nameof(MasaUser.StaffId), IdentityClaimConsts.STAFF);
+    options.Mapping(nameof(MasaUser.Account), IdentityClaimConsts.ACCOUNT);
 });
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(options =>
@@ -33,7 +54,7 @@ builder.Services.AddAuthentication(options =>
 .AddJwtBearer("Bearer", options =>
 {
     //todo dcc
-    options.Authority = builder.Services.GetMasaConfiguration().Local.GetValue<string>("IdentityServerUrl");
+    options.Authority = identityServerUrl;
     options.RequireHttpsMetadata = false;
     //options.Audience = "";
     options.TokenValidationParameters.ValidateAudience = false;
@@ -50,11 +71,22 @@ builder.Services.AddAutoInject(assemblies);
 builder.Services.AddScoped<INotificationSender, McNotificationSender>();
 builder.Services.AddSequentialGuidGenerator();
 builder.Services.AddI18n(Path.Combine("Assets", "I18n"));
-var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
-builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
-builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
-builder.Services.AddMcClient(publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"));
-builder.Services.AddSchedulerClient(publicConfiguration.GetValue<string>("$public.AppSettings:SchedulerClient:Url"));
+var redisOptions = new RedisConfigurationOptions
+{
+    Servers = new List<RedisServerOptions> {
+        new RedisServerOptions()
+        {
+            Host= masaStackConfig.RedisModel.RedisHost,
+            Port=   masaStackConfig.RedisModel.RedisPort
+        }
+    },
+    DefaultDatabase = masaStackConfig.RedisModel.RedisDb,
+    Password = masaStackConfig.RedisModel.RedisPassword
+};
+builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
+builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
+builder.Services.AddMcClient(masaStackConfig.GetMcServiceDomain());
+builder.Services.AddSchedulerClient(masaStackConfig.GetSchedulerServiceDomain());
 builder.Services.AddRulesEngine(rulesEngineOptions =>
 {
     rulesEngineOptions.UseMicrosoftRulesEngine();
@@ -92,12 +124,12 @@ var app = builder.Services
     .AddValidatorsFromAssemblies(assemblies)
     .AddMasaDbContext<AlertDbContext>(builder =>
     {
-        builder.UseSqlServer();
+        builder.UseSqlServer(masaStackConfig.GetConnectionString("alert_dev"));
         builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddMasaDbContext<AlertQueryContext>(builder =>
     {
-        builder.UseSqlServer();
+        builder.UseSqlServer(masaStackConfig.GetConnectionString("alert_dev"));
         builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddScoped<IAlertQueryContext, AlertQueryContext>()
@@ -113,6 +145,7 @@ var app = builder.Services
         .UseRepository<AlertDbContext>();
     })
     .AddServices(builder);
+await builder.MigrateDbContextAsync<AlertDbContext>();
 app.UseI18n();
 app.UseMasaExceptionHandler(opt =>
 {

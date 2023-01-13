@@ -1,5 +1,8 @@
-﻿namespace Masa.Alert.EntityFrameworkCore;
+﻿using Masa.BuildingBlocks.Data;
 
+namespace Masa.Alert.EntityFrameworkCore;
+
+[ConnectionStringName("QueryConnection")]
 public class AlertQueryContext : MasaDbContext<AlertQueryContext>, IAlertQueryContext
 {
     public IQueryable<AlarmRuleQueryModel> AlarmRuleQueries => Set<AlarmRuleQueryModel>().AsQueryable();

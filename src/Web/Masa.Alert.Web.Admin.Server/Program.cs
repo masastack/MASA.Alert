@@ -1,8 +1,13 @@
 // Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-var builder = WebApplication.CreateBuilder(args);
+using Masa.Contrib.StackSdks.Config;
+using Masa.Contrib.StackSdks.Tsc;
+using Microsoft.IdentityModel.Logging;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddMasaStackConfig();
+var masaStackConfig = builder.Services.GetMasaStackConfig();
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
@@ -17,9 +22,30 @@ builder.Services.AddDaprClient();
 builder.WebHost.UseKestrel(option =>
 {
     option.ConfigureHttpsDefaults(options =>
-    options.ServerCertificate = new X509Certificate2(Path.Combine("Certificates", "7348307__lonsid.cn.pfx"), "cqUza0MN"));
+    {
+        if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TLS_NAME")))
+        {
+            options.ServerCertificate = new X509Certificate2(Path.Combine("Certificates", "7348307__lonsid.cn.pfx"), "cqUza0MN");
+        }
+        else
+        {
+            options.ServerCertificate = X509Certificate2.CreateFromPemFile("./ssl/tls.crt", "./ssl/tls.key");
+        }
+        options.CheckCertificateRevocation = false;
+    });
 });
-builder.Services.AddObservable(builder.Logging, builder.Configuration,true);
+builder.Services.AddObservable(builder.Logging, () =>
+{
+    return new MasaObservableOptions
+    {
+        ServiceNameSpace = builder.Environment.EnvironmentName,
+        ServiceVersion = masaStackConfig.Version,
+        ServiceName = masaStackConfig.GetServiceId("alert", "ui")
+    };
+}, () =>
+{
+    return masaStackConfig.OtlpUrl;
+}, true);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -37,14 +63,21 @@ builder.Services.AddScoped<TokenProvider>();
 builder.AddMasaStackComponentsForServer("wwwroot/i18n");
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
 builder.Services.AddCallers();
-builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
+builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
 
 builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
-var oidcOptions = builder.Services.GetMasaConfiguration().Local.GetSection("$public.OIDC:AuthClient").Get<MasaOpenIdConnectOptions>();
-builder.Services.AddMasaOpenIdConnect(oidcOptions);
+MasaOpenIdConnectOptions masaOpenIdConnectOptions = new MasaOpenIdConnectOptions
+{
+    Authority = masaStackConfig.GetSsoDomain(),
+    ClientId = masaStackConfig.GetServiceId("alert", "ui"),
+    Scopes = new List<string> { "offline_access" }
+}; ;
+
+IdentityModelEventSource.ShowPII = true;
+builder.Services.AddMasaOpenIdConnect(masaOpenIdConnectOptions);
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
