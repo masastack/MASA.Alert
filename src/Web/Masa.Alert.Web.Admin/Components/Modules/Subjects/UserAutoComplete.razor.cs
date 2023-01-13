@@ -39,7 +39,11 @@ public partial class UserAutoComplete : AdminCompontentBase
 
     protected override async Task OnParametersSetAsync()
     {
-        await InitUsers();
+        if (!Users.Any())
+        {
+            await InitUsers();
+        }
+
         base.OnParametersSet();
     }
 
@@ -86,4 +90,15 @@ public partial class UserAutoComplete : AdminCompontentBase
         StateHasChanged();
         _loading = false;
     }
+
+    //public bool CustomFilter(UserSelectModel item, string queryText, string text)
+    //{
+    //    return item.Name.Contains(queryText);
+    //    var textOne = item.Name.ToLowerInvariant();
+    //    var textTwo = item.Abbr.ToLowerInvariant();
+    //    var searchText = queryText.ToLowerInvariant();
+
+    //    return textOne.IndexOf(searchText) > -1 ||
+    //      textTwo.IndexOf(searchText) > -1;
+    //}
 }
