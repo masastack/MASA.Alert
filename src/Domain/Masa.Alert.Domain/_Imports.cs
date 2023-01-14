@@ -35,3 +35,4 @@ global using Masa.Alert.Domain.WebHooks.Events;
 global using System.Text.Json.Serialization;
 global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
 global using Masa.BuildingBlocks.Data.UoW;
+global using Masa.BuildingBlocks.Ddd.Domain.Services;

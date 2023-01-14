@@ -1,7 +1,7 @@
 ﻿@inherits AdminCompontentBase
 
 <SAutoComplete Value="Value"
-               ValueChanged="async value => await UpdateValueAsync(value)"
+               ValueChanged="ValueChanged"
                TValue="List<Guid>"
                TItem="UserSelectModel"
                TItemValue="Guid"
@@ -13,7 +13,7 @@
                Loading="_loading"
                Disabled=Readonly
                Label="@Label"
-               ItemText="t=>t.DisplayName"
+               ItemText="t=>TextView(t)"
                ItemValue="t=>t.Id"
                Multiple
                Class="@Class">

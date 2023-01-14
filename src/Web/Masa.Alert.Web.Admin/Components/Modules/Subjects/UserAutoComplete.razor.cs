@@ -35,9 +35,15 @@ public partial class UserAutoComplete : AdminCompontentBase
 
     public string Search { get; set; } = "";
 
+    private CancellationTokenSource _cancellationTokenSource;
+
     protected override async Task OnParametersSetAsync()
     {
-        await InitUsers();
+        if (!Users.Any())
+        {
+            await InitUsers();
+        }
+
         base.OnParametersSet();
     }
 
@@ -55,21 +61,18 @@ public partial class UserAutoComplete : AdminCompontentBase
             var value = new List<Guid>();
             value.AddRange(Value);
             value.Remove(staff.Id);
-            await UpdateValueAsync(value);
+            await ValueChanged.InvokeAsync(value);
         }
     }
 
-    private async Task UpdateValueAsync(List<Guid> value)
-    {
-        if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value);
-        else Value = value;
-    }
+
 
     private async Task QuerySelection(string search)
     {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource = new CancellationTokenSource();
         search = search.TrimStart(' ').TrimEnd(' ');
         Search = search;
-        await Task.Delay(300);
         if (search != Search)
         {
             return;
@@ -80,11 +83,19 @@ public partial class UserAutoComplete : AdminCompontentBase
         {
             Page = Page,
             PageSize = PageSize,
-        });
+        }, _cancellationTokenSource.Token);
 
         var users = response.Data;
         Users = Users.UnionBy(users, user => user.Id).ToList();
         StateHasChanged();
         _loading = false;
+    }
+
+    public string TextView(UserSelectModel user)
+    {
+        if (!string.IsNullOrEmpty(user.DisplayName)) return user.DisplayName;
+        if (!string.IsNullOrEmpty(user.Name)) return user.Name;
+        if (!string.IsNullOrEmpty(user.PhoneNumber)) return user.PhoneNumber;
+        return "";
     }
 }
