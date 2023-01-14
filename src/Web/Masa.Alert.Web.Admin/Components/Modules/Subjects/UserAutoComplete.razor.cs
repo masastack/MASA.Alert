@@ -37,7 +37,11 @@ public partial class UserAutoComplete : AdminCompontentBase
 
     protected override async Task OnParametersSetAsync()
     {
-        await InitUsers();
+        if (!Users.Any())
+        {
+            await InitUsers();
+        }
+
         base.OnParametersSet();
     }
 
@@ -55,14 +59,13 @@ public partial class UserAutoComplete : AdminCompontentBase
             var value = new List<Guid>();
             value.AddRange(Value);
             value.Remove(staff.Id);
-            await UpdateValueAsync(value);
+            await ValueChanged.InvokeAsync(value);
         }
     }
 
-    private async Task UpdateValueAsync(List<Guid> value)
+    private bool FilterItem(UserSelectModel item, string queryText, string itemText)
     {
-        if (ValueChanged.HasDelegate) await ValueChanged.InvokeAsync(value);
-        else Value = value;
+        return item.DisplayName.Contains(queryText);
     }
 
     private async Task QuerySelection(string search)
@@ -81,10 +84,17 @@ public partial class UserAutoComplete : AdminCompontentBase
             Page = Page,
             PageSize = PageSize,
         });
-
         var users = response.Data;
-        Users = Users.UnionBy(users, user => user.Id).ToList();
-        StateHasChanged();
+        var seletedItems = Users.Where(x => Value.Contains(x.Id)).ToList();
+        Users = seletedItems.UnionBy(users, user => user.Id).ToList();
         _loading = false;
+    }
+
+    public string TextView(UserSelectModel user)
+    {
+        if (!string.IsNullOrEmpty(user.DisplayName)) return user.DisplayName;
+        if (!string.IsNullOrEmpty(user.Name)) return user.Name;
+        if (!string.IsNullOrEmpty(user.PhoneNumber)) return user.PhoneNumber;
+        return "";
     }
 }

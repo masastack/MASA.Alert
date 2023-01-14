@@ -86,7 +86,7 @@ public class AlarmHistoryQueryHandler
         switch (options.SearchType)
         {
             case AlarmHistorySearchTypes.Alarming:
-                condition = condition.And(x => !x.RecoveryTime.HasValue && x.IsNotification);
+                condition = condition.And(x => !x.RecoveryTime.HasValue && x.IsNotification && x.HandleStatus != AlarmHistoryHandleStatuses.ProcessingCompleted);
                 break;
             case AlarmHistorySearchTypes.Processed:
                 condition = condition.And(x => x.HandleStatus >= AlarmHistoryHandleStatuses.ProcessingCompleted);
