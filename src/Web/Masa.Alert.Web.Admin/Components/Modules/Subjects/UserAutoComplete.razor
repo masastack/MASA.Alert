@@ -5,10 +5,9 @@
                TValue="List<Guid>"
                TItem="UserSelectModel"
                TItemValue="Guid"
-               Filter="(item,search,value) => true"
+               Filter="FilterItem" NoFilter
                Items="Users"
                Chips
-               HideSelected
                OnSearchInputUpdate="QuerySelection"
                Loading="_loading"
                Disabled=Readonly

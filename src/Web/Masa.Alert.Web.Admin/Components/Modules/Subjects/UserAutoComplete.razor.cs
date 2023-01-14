@@ -35,8 +35,6 @@ public partial class UserAutoComplete : AdminCompontentBase
 
     public string Search { get; set; } = "";
 
-    private CancellationTokenSource _cancellationTokenSource;
-
     protected override async Task OnParametersSetAsync()
     {
         if (!Users.Any())
@@ -65,14 +63,16 @@ public partial class UserAutoComplete : AdminCompontentBase
         }
     }
 
-
+    private bool FilterItem(UserSelectModel item, string queryText, string itemText)
+    {
+        return item.DisplayName.Contains(queryText);
+    }
 
     private async Task QuerySelection(string search)
     {
-        _cancellationTokenSource?.Cancel();
-        _cancellationTokenSource = new CancellationTokenSource();
         search = search.TrimStart(' ').TrimEnd(' ');
         Search = search;
+        await Task.Delay(300);
         if (search != Search)
         {
             return;
@@ -83,11 +83,10 @@ public partial class UserAutoComplete : AdminCompontentBase
         {
             Page = Page,
             PageSize = PageSize,
-        }, _cancellationTokenSource.Token);
-
+        });
         var users = response.Data;
-        Users = Users.UnionBy(users, user => user.Id).ToList();
-        StateHasChanged();
+        var seletedItems = Users.Where(x => Value.Contains(x.Id)).ToList();
+        Users = seletedItems.UnionBy(users, user => user.Id).ToList();
         _loading = false;
     }
 
