@@ -91,14 +91,11 @@ public partial class UserAutoComplete : AdminCompontentBase
         _loading = false;
     }
 
-    //public bool CustomFilter(UserSelectModel item, string queryText, string text)
-    //{
-    //    return item.Name.Contains(queryText);
-    //    var textOne = item.Name.ToLowerInvariant();
-    //    var textTwo = item.Abbr.ToLowerInvariant();
-    //    var searchText = queryText.ToLowerInvariant();
-
-    //    return textOne.IndexOf(searchText) > -1 ||
-    //      textTwo.IndexOf(searchText) > -1;
-    //}
+    public string TextView(UserSelectModel user)
+    {
+        if (!string.IsNullOrEmpty(user.DisplayName)) return user.DisplayName;
+        if (!string.IsNullOrEmpty(user.Name)) return user.Name;
+        if (!string.IsNullOrEmpty(user.PhoneNumber)) return user.PhoneNumber;
+        return "";
+    }
 }

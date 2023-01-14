@@ -5,7 +5,7 @@
                TValue="List<Guid>"
                TItem="UserSelectModel"
                TItemValue="Guid"
-               @*Filter="(item,search,value) => true"*@
+               Filter="(item,search,value) => true"
                Items="Users"
                Chips
                HideSelected
@@ -13,7 +13,7 @@
                Loading="_loading"
                Disabled=Readonly
                Label="@Label"
-               ItemText="t=>t.DisplayName"
+               ItemText="t=>TextView(t)"
                ItemValue="t=>t.Id"
                Multiple
                Class="@Class">
