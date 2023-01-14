@@ -69,6 +69,7 @@ Create the name of the service account to use
 kubernetes.io/ingress.class: nginx
 kubernetes.io/load-balancer-port: "443"
 kubernetes.io/load-balancer-protocol: TERMINATED_HTTPS
+nginx.ingress.kubernetes.io/backend-protocol: HTTPS
 nginx.ingress.kubernetes.io/cors-allow-headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,elastic-apm-traceparent
 nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE
 nginx.ingress.kubernetes.io/cors-allow-origin: '*'
@@ -78,7 +79,10 @@ nginx.ingress.kubernetes.io/proxy-buffer-size: 32k
 nginx.ingress.kubernetes.io/proxy-buffers: 16 64k
 nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
 nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+nginx.ingress.kubernetes.io/proxy_set_header: Connection upgrade
 nginx.ingress.kubernetes.io/ssl-redirect: "true"
+nginx.ingress.kubernetes.io/upstream-hash-by: $binary_remote-addr
+nginx.ingress.kubernetes.io/websocket-services: "true"
 {{- end }}
 {{- end }}
 
