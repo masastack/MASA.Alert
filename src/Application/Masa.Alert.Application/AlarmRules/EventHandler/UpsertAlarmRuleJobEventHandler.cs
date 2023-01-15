@@ -1,24 +1,27 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.StackSdks.Config;
+using Masa.Contrib.StackSdks.Config;
+
 namespace Masa.Alert.Application.AlarmRules.EventHandler;
 
 public class UpsertAlarmRuleJobEventHandler
 {
     private readonly ISchedulerClient _schedulerClient;
     private readonly IAlarmRuleRepository _repository;
-    private readonly IMasaConfiguration _configuration;
+    private readonly IMasaStackConfig _masaStackConfig;
     private readonly ILogger<UpsertAlarmRuleJobEventHandler> _logger;
 
     public UpsertAlarmRuleJobEventHandler(ISchedulerClient schedulerClient
         , IAlarmRuleRepository repository
-        , IMasaConfiguration configuration
+        , IMasaStackConfig masaStackConfig
         , ILogger<UpsertAlarmRuleJobEventHandler> logger)
     {
         _schedulerClient = schedulerClient;
         _repository = repository;
-        _configuration = configuration;
         _logger = logger;
+        _masaStackConfig = masaStackConfig;
     }
 
     [EventHandler]
@@ -26,7 +29,7 @@ public class UpsertAlarmRuleJobEventHandler
     {
         var alarmRule = await _repository.FindAsync(x => x.Id == eto.AlarmRuleId);
         if (alarmRule == null) return;
-        var alertUrl = _configuration.ConfigurationApi.GetPublic().GetValue<string>("$public.AppSettings:AlertClient:Url");
+        var alertUrl = _masaStackConfig.GetAlertServiceDomain();
         var request = new AddSchedulerJobRequest
         {
             ProjectIdentity = MasaStackConsts.ALERT_SYSTEM_ID,

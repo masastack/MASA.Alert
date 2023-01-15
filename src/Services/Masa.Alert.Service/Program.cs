@@ -5,6 +5,8 @@ using Masa.Contrib.StackSdks.Config;
 using Masa.Contrib.StackSdks.Tsc;
 using Masa.Alert.EntityFrameworkCore.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Masa.Alert.Service.Admin.Infrastructure.Middleware;
+using Masa.BuildingBlocks.StackSdks.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMasaStackConfig();
@@ -15,7 +17,7 @@ builder.Services.AddObservable(builder.Logging, () =>
     {
         ServiceNameSpace = builder.Environment.EnvironmentName,
         ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetServerId("alert")
+        ServiceName = masaStackConfig.GetServerId(MasaStackConstant.ALERT)
     };
 }, () =>
 {
@@ -139,6 +141,7 @@ var app = builder.Services
         .UseIntegrationEventBus<IntegrationEventLogService>(options => options.UseDapr().UseEventLog<AlertDbContext>())
         .UseEventBus(eventBusBuilder =>
         {
+            eventBusBuilder.UseMiddleware(typeof(DisabledCommandMiddleware<>));
             eventBusBuilder.UseMiddleware(typeof(ValidatorMiddleware<>));
         })
         .UseIsolationUoW<AlertDbContext>(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"), null)

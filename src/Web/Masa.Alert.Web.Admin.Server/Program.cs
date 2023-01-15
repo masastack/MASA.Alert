@@ -1,6 +1,7 @@
 // Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.StackSdks.Config;
 using Masa.Contrib.StackSdks.Config;
 using Masa.Contrib.StackSdks.Tsc;
 using Microsoft.IdentityModel.Logging;
@@ -40,7 +41,7 @@ builder.Services.AddObservable(builder.Logging, () =>
     {
         ServiceNameSpace = builder.Environment.EnvironmentName,
         ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetUiId("alert")
+        ServiceName = masaStackConfig.GetWebId(MasaStackConstant.ALERT)
     };
 }, () =>
 {
@@ -72,7 +73,7 @@ builder.Services.AddAutoInject(assemblies);
 MasaOpenIdConnectOptions masaOpenIdConnectOptions = new MasaOpenIdConnectOptions
 {
     Authority = masaStackConfig.GetSsoDomain(),
-    ClientId = masaStackConfig.GetUiId("alert"),
+    ClientId = masaStackConfig.GetWebId(MasaStackConstant.ALERT),
     Scopes = new List<string> { "offline_access" }
 }; ;
 
