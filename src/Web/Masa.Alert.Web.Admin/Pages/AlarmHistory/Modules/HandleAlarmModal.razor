@@ -25,7 +25,7 @@
                                 @if (_isThirdParty == false)
                                 {
                                     <div class="d-flex align-center mt-4">
-                                        <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0" Label="@T("SendNotificationAfterProcessing")" />
+                                        <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")"/>
                                         @if (_model.Handle.IsHandleNotice)
                                         {
                                             <NotificationConfig @bind-value="_model.Handle.NotificationConfig"></NotificationConfig>
@@ -44,7 +44,7 @@
                                         <SUserAutoComplete Class="fill mt-6" @bind-Value="_model.Handle.Handler" Label="@T("Handler")" Outlined FillBackground="false" Style="width: initial" />
                                     </div>
                                     <div class="d-flex align-center mt-6">
-                                        <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0" Label="@T("SendNotificationAfterProcessing")" />
+                                        <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
                                         @if (_model.Handle.IsHandleNotice)
                                         {
                                             <NotificationConfig @bind-value="_model.Handle.NotificationConfig"></NotificationConfig>

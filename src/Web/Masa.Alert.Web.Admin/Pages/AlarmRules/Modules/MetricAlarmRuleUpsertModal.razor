@@ -15,11 +15,11 @@
                 </MStepperHeader>
                 <MStepperItems Class="full-height">
                     <MStepperContent Class="full-height pa-0" Step="1">
-                        <AutoHeight Overflow>
+                        <AutoHeight Overflow Class="mt-9">
                             <AutoHeightContent>
-                                <DefaultTitle>
+                                <DefaultTitle Class="mb-6">
                                     @T("ChartSetting")
-                                    <DefaultTooltip Class="ml-1" Tooltip="@T("ChartSettingTip")" />
+                                    <DefaultTooltip Class="ml-1 mt-n1" Tooltip="@T("ChartSettingTip")" />
                                 </DefaultTitle>
                                 <STextField @bind-Value="_model.ChartYAxisUnit" Label="@T(nameof(_model.ChartYAxisUnit))" />
                                 <DefaultTitle>@T("VariableConfiguration")</DefaultTitle>
@@ -60,7 +60,7 @@
                                 </MRow>*@
                                 @foreach (var item in _model.MetricMonitorItems)
                                 {
-                                    <MBorder Color="green" Width="4" Style="height:95%;">
+                                    <MBorder Color="green" Width="4" Class="rounded-tl-lg rounded-bl-lg" Style="height:95%;">
                                         <MSwitch @bind-Value="item.IsExpression" Inset Class="label mt-9 ml-3" Label="@T("Expression")">
                                         </MSwitch>
                                         @if (item.IsExpression)
@@ -111,7 +111,7 @@
                                             </MCol>
                                             <MSwitch @bind-Value="item.IsOffset" Inset Class="label mt-2 ml-3">
                                                 <LabelContent>
-                                                    <DefaultTooltip Class="ml-2" Tooltip="@T("ChartSettingTip")" />
+                                                    <DefaultTooltip Class="ml-2 mt-n1" Tooltip="@T("ChartSettingTip")" />
                                                     <span class="regular2--text body2 my-auto ml-1">@T("Offset")</span>
                                                 </LabelContent>
                                             </MSwitch>
@@ -128,13 +128,13 @@
                                         </MRow>
                                         <MDivider Right Class="mt-6 ml-3">
                                             <MButtonGroup Dense Rounded Class="mt-n5">
-                                                <MButton IsActive="false">
-                                                    <SIcon Size="20" Color="emphasis" OnClick="()=>HandleMetricMonitorItemsAdd(item)">mdi-plus</SIcon>
+                                                <MButton Color="fill" IsActive="false" OnClick="()=>HandleMetricMonitorItemsAdd(item)">
+                                                    <SIcon Size="20" Color="emphasis">mdi-plus</SIcon>
                                                 </MButton>
                                                 @if (_model.MetricMonitorItems.Count > 1)
                                                 {
-                                                    <MButton IsActive="false">
-                                                        <SIcon Size="20" Color="error" OnClick="()=>HandleMetricMonitorItemsRemove(item)">mdi-delete</SIcon>
+                                                    <MButton Color="fill" IsActive="false" OnClick="()=>HandleMetricMonitorItemsRemove(item)">
+                                                        <SIcon Size="20" Color="error">mdi-delete</SIcon>
                                                     </MButton>
                                                 }
                                             </MButtonGroup>
@@ -146,7 +146,7 @@
                         </AutoHeight>
                     </MStepperContent>
                     <MStepperContent Class="full-height pa-0" Step="2">
-                        <AutoHeight Overflow>
+                        <AutoHeight Overflow Class="mt-9">
                             <AutoHeightContent>
                                 <AlarmRuleSetting @bind-Model="_model"></AlarmRuleSetting>
                             </AutoHeightContent>

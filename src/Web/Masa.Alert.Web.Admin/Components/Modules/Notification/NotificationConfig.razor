@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<MRow NoGutters>
+<MRow NoGutters Class="@Class">
     <MCol Md="5" @onclick="HandleTemplateClick">
         <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly BackgroundColor="@ItemBackgroundColor">
             <PrependContent>

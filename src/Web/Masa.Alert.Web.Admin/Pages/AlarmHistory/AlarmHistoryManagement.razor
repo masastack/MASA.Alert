@@ -104,12 +104,6 @@
                         case nameof(AlarmHistoryListViewModel.HandleStatus):
                             <AlarmHistoryStatusTag Value="@context.Item.HandleStatus" />
                             break;
-                        case nameof(AlarmHistoryListViewModel.FirstAlarmTime):
-                            <div class="body regular--text">@context.Item.FirstAlarmTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</div>
-                            break;
-                        case nameof(AlarmHistoryListViewModel.LastAlarmTime):
-                            <div class="body regular--text">@context.Item.LastAlarmTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</div>
-                            break;
                         case "HandleCompletionTime":
                             <MListItem Class="pa-0">
                                 <MListItemContent>

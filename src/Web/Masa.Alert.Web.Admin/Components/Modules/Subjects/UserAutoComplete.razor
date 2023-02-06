@@ -17,7 +17,7 @@
                Multiple
                Class="@Class">
     <SelectionContent Context="data">
-        <MChip Close Style="height:28px;" OnCloseClick="()=>Remove(data.Item)">
+        <MChip Close OnCloseClick="()=>Remove(data.Item)">
             @if (!string.IsNullOrEmpty(data.Item.Avatar))
             {
                 <MAvatar Left>
