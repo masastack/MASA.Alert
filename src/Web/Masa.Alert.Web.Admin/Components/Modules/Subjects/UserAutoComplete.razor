@@ -15,8 +15,9 @@
                ItemText="t=>TextView(t)"
                ItemValue="t=>t.Id"
                Multiple
+               Attach=""
                Class="@Class">
-    <SelectionContent Context="data">
+    <SelectionContent Context="data" >
         <MChip Close OnCloseClick="()=>Remove(data.Item)">
             @if (!string.IsNullOrEmpty(data.Item.Avatar))
             {

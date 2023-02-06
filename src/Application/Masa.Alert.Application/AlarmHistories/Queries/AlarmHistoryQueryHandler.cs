@@ -1,7 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-
 namespace Masa.Alert.Application.AlarmHistories.Queries;
 
 public class AlarmHistoryQueryHandler
@@ -37,7 +36,7 @@ public class AlarmHistoryQueryHandler
         using var dataFilter = _dataFilter.Disable<ISoftDelete>();
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
-        var sorting = CreateSorting(options);
+        var sorting = options.ApplySorting();
         var resultList = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).GetPaginatedListAsync(condition, new()
         {
             Page = options.Page,
@@ -49,34 +48,6 @@ public class AlarmHistoryQueryHandler
         await FillAlarmHistoryDtos(dtos);
         var result = new PaginatedListDto<AlarmHistoryDto>(resultList.Total, resultList.TotalPages, dtos);
         query.Result = result;
-    }
-
-    private Dictionary<string, bool> CreateSorting(GetAlarmHistoryInputDto options)
-    {
-        switch (options.SearchType)
-        {
-            case AlarmHistorySearchTypes.Alarming:
-                return new Dictionary<string, bool>
-                {
-                    [nameof(AlarmHistoryQueryModel.AlertSeverity)] = false,
-                    [nameof(AlarmHistoryQueryModel.FirstAlarmTime)] = false
-                };
-            case AlarmHistorySearchTypes.Processed:
-                return new Dictionary<string, bool>
-                {
-                    [nameof(AlarmHistoryQueryModel.RecoveryTime)] = true
-                };
-            case AlarmHistorySearchTypes.NoNotice:
-                return new Dictionary<string, bool>
-                {
-                    [nameof(AlarmHistoryQueryModel.LastAlarmTime)] = true
-                };
-            default:
-                return new Dictionary<string, bool>
-                {
-                    [nameof(AlarmHistoryQueryModel.ModificationTime)] = true
-                };
-        }
     }
 
     private async Task<Expression<Func<AlarmHistoryQueryModel, bool>>> CreateFilteredPredicate(GetAlarmHistoryInputDto options)

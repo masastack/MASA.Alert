@@ -183,7 +183,7 @@
     "SilenceCycleTip": "告警发生后未恢复正常，间隔多久重复发送一次告警通知",
     "ChartPreview": "图表预览",
     "Expression": "表达式",
-    "ExpressionTip": "请参考MASA Stack 文档站点规则引擎介绍：http://docs.masastack.com/framework/building-blocks/rules-engine/overview",
+    "ExpressionTip": "请参考MASA Stack 文档站点规则引擎介绍：<a href='http://docs.masastack.com/framework/building-blocks/rules-engine/overview' target='_blank'>http://docs.masastack.com/framework/building-blocks/rules-engine/overview</a>",
     "MetricMonitor.Name": "监控指标",
     "MetricMonitor.Tag": "Tag",
     "MetricMonitor.Alias": "变量",

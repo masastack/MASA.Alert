@@ -91,7 +91,7 @@
     </HeaderContent>
     <AutoHeightContent>
         <MCard Class="@(!advanced?"page-content mt-6":"page-content-advanced mt-6")">
-            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" ItemsPerPage="_queryParam.PageSize" HideDefaultFooter FixedRight Class="d-flex full-height flex-column">
+            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" ItemsPerPage="_queryParam.PageSize" OnOptionsUpdate="HandleOnOptionsUpdate" HideDefaultFooter FixedRight Class="d-flex full-height flex-column">
                 <HeaderColContent Context="header">
                     <span class="text-btn">@header.Text</span>
                 </HeaderColContent>

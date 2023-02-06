@@ -9,7 +9,7 @@
         <div class="ml-4">
             <STextarea @bind-Value="item.Expression" Label="@T(nameof(item.Expression))" Outlined HideDetails="@("auto")">
                 <AppendOuterContent>
-                    <DefaultTooltip Class="ml-2 mt-n1" Tooltip="@T("ExpressionTip")" />
+                    <MenuTooltip Class="ml-2 mt-n1" Tooltip="@T("ExpressionTip")" />
                 </AppendOuterContent>
             </STextarea>
             <MRow NoGutters Class="mt-6">

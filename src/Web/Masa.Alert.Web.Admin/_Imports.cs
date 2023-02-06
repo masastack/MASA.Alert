@@ -77,3 +77,4 @@ global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
 global using Masa.Alert.Web.Admin.Components;
 global using Newtonsoft.Json.Linq;
 global using System.Text.RegularExpressions;
+global using Masa.Alert.Application.Contracts.QueryModels;

@@ -28,4 +28,6 @@ public class AlarmHistoryDto : AuditEntityDto<Guid, Guid>
     public AlarmHandleDto Handle { get; set; } = new();
 
     public List<AlarmHandleStatusCommitDto> HandleStatusCommits { get; set; } = new();
+
+    public bool IsNotification { get; set; }
 }
