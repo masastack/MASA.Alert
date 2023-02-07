@@ -22,22 +22,24 @@
                 <MSwitch @bind-Value="item.IsNotification" Inset Class="label my-auto flex-shrink-0 ml-1">
                     <LabelContent>
                         <span class="regular2--text body2">@T("IsNotification")</span>
+                        <DefaultTooltip Class="ml-3 my-auto" Tooltip="@T("NotificationTip")" />
                     </LabelContent>
                 </MSwitch>
                 @if (item.IsNotification)
                 {
-                    <NotificationConfig @bind-value="item.NotificationConfig"></NotificationConfig>
+                    <NotificationConfig @bind-value="item.NotificationConfig" Class="ml-3"></NotificationConfig>
                 }
             </div>
             <div class="d-flex mt-6">
                 <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label my-auto flex-shrink-0 ml-1">
                     <LabelContent>
                         <span class="regular2--text body2">@T("IsRecoveryNotification")</span>
+                        <DefaultTooltip Class="ml-3 my-auto" Tooltip="@T("RecoveryNotificationTip")"/>
                     </LabelContent>
                 </MSwitch>
                 @if (item.IsRecoveryNotification)
                 {
-                    <NotificationConfig @bind-value="item.RecoveryNotificationConfig"></NotificationConfig>
+                    <NotificationConfig @bind-value="item.RecoveryNotificationConfig" Class="ml-3"></NotificationConfig>
                 }
             </div>
             <MDivider Right Class="mt-6 mb-8 button-divider">
@@ -56,7 +58,6 @@
         </div>
     </MBorder>
 }
-<MInput @bind-Value="Model.Items" />
 <DefaultTitle>@T("AdvancedConfiguration")</DefaultTitle>
 <MRow NoGutters>
     <MCol Md="6">

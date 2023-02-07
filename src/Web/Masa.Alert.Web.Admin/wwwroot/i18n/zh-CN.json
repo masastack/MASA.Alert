@@ -176,6 +176,8 @@
     "MessageTemplate": "消息模板",
     "IsRecoveryNotification": "恢复通知",
     "IsNotification": "告警通知",
+    "RecoveryNotificationTip": "当告警自动恢复时，发送通知",
+    "NotificationTip": "触发告警规则时，发送通知",
     "AdvancedConfiguration": "高级配置",
     "ContinuousTriggerThreshold": "连续触发阈值",
     "ContinuousTriggerThresholdTip": "连续多少次执行检查评估都满足触发条件时，才会触发告警。",
@@ -229,7 +231,8 @@
     "SendNotificationAfterProcessing": "处理完成后发送通知",
     "Receiver": "收件人",
     "HandleCompletionTime": "处理人|处理完成时间",
-    "AutoRecovery": "自动恢复"
+    "AutoRecovery": "自动恢复",
+    "PostWebHookTip": "自动恢复"
   },
   "WebHookBlock": {
     "AddWebHook": "新建WebHook",

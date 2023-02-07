@@ -1,6 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using System;
+using Masa.Blazor.Presets;
+
 namespace Masa.Alert.Web.Admin.Pages.AlarmHistory.Modules;
 
 public partial class HandleAlarmModal : AdminCompontentBase
@@ -92,7 +95,18 @@ public partial class HandleAlarmModal : AdminCompontentBase
 
         Loading = true;
         var inputDto = _model.Handle.Adapt<AlarmHandleDto>();
-        await AlarmHistoryService.HandleAsync(_entityId, inputDto);
+
+        try
+        {
+            await AlarmHistoryService.HandleAsync(_entityId, inputDto);
+        }
+        catch (Exception ex)
+        {
+            Loading = false;
+            await PopupService.AlertAsync(ex.Message, AlertTypes.Error);
+            return;
+        }
+
         Loading = false;
         _visible = false;
 

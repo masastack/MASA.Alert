@@ -2,7 +2,7 @@
 <SSimpleModal Value="_visible" ValueChanged="HandleVisibleChanged" OnDelete="HandleDel" OnCancel="HandleCancel" OnSave="HandleOk"
               Title="@T(_entityId == default?"AddAlarmRule":"EditAlarmRule")" Class="full-height" HeaderClass="mr-4">
     <ChildContent>
-        <MForm Model="_model" EnableValidation @ref="_form" Class="full-height mt-n2 pt-3">
+        <MForm Model="_model" EnableValidation @ref="_form" OnValidSubmit="HandleOk" Class="full-height mt-n2 pt-3" >
             <MStepper Value="_model.Step" Elevation=0 Class="d-flex flex-column full-height">
                 <MStepperHeader Class="ma-n6" Style="box-shadow:none !important">
                     <MStepperStep Step="1" Complete="_model.Step>1">
@@ -75,6 +75,7 @@
                                 </MRow>*@
                                 @foreach (var item in _model.LogMonitorItems)
                                 {
+
                                     <MRow NoGutters Class="mt-6">
                                         <MCol Md="6">
                                             <SAutoComplete Items="_fields" @bind-Value="item.Field"
@@ -127,7 +128,6 @@
                                         </div>
                                     </MRow>
                                 }
-                                <MInput @bind-Value="_model.LogMonitorItems" />
                                 <DefaultTitle>@T("LogFilter")</DefaultTitle>
                                 <STextarea @bind-Value="_model.WhereExpression" Label="@T(nameof(_model.WhereExpression))" Outlined HideDetails="@("auto")"></STextarea>
                                 <LogQueryExpression AlarmRule="_model"></LogQueryExpression>
