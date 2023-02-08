@@ -24,4 +24,6 @@ public class AlarmHistoryListViewModel
     public DateTimeOffset? RecoveryTime { get; set; }
 
     public AlarmHandleViewModel Handle { get; set; } = new();
+
+    public bool IsNotification { get; set; }
 }

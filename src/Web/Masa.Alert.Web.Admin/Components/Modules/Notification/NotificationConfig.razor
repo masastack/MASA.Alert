@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<MRow NoGutters>
+<MRow NoGutters Class="@Class">
     <MCol Md="5" @onclick="HandleTemplateClick">
         <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly BackgroundColor="@ItemBackgroundColor">
             <PrependContent>
@@ -12,6 +12,7 @@
     </MCol>
     <MCol Md="7">
         <UserAutoComplete @bind-Value="Value.Receivers" Class="ml-2" Label="@T("Receiver")"></UserAutoComplete>
+        <MInput @bind-Value="Value.Receivers" />
     </MCol>
 </MRow>
 
@@ -90,10 +91,15 @@
     {
         if (firstRender)
         {
-            await HandleChannelTypeChangeAsync();
-            await HandleChannelChangeAsync();
+            await LoadData();
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task LoadData()
+    {
+        await HandleChannelTypeChangeAsync();
+        await HandleChannelChangeAsync();
     }
 
     private async Task HandleChannelTypeChangeAsync()
@@ -133,6 +139,8 @@
 
     private async Task HandleTemplateClick()
     {
+        await LoadData();
+
         await InvokeAsync(() =>
         {
             _visible = true;

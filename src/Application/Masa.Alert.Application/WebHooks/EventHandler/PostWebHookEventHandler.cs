@@ -25,15 +25,14 @@ public class PostWebHookEventHandler
         var client = _httpClientFactory.CreateClient();
         var input = new StringContent(JsonSerializer.Serialize(new { eto.AlarmHistoryId, eto.Handler, webHook.SecretKey }), Encoding.UTF8, "application/json");
 
-        using var response = await client.PostAsync(webHook.Url, input);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new UserFriendlyException(response.StatusCode.ToString());
-        }
-
         try
         {
+            using var response = await client.PostAsync(webHook.Url, input);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new UserFriendlyException(response.StatusCode.ToString());
+            }
             var content = await response.Content.ReadAsStringAsync();
         }
         catch (Exception ex)

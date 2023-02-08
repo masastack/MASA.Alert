@@ -15,45 +15,46 @@
             <SElevationTabItem>
                 <AutoHeight>
                     <AutoHeightContent>
-                        <MContainer Fluid Class="full-height pa-0">
-                            <MRadioGroup @bind-Value="_isThirdParty">
-                                <MRadio Value="false" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4">
-                                    <LabelContent>
-                                        <span class="h5 @(!_isThirdParty?"primary--text":"emphasis2--text")">@T("Processed")</span>
-                                    </LabelContent>
-                                </MRadio>
-                                @if (_isThirdParty == false)
-                                {
-                                    <div class="d-flex align-center mt-4">
-                                        <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0" Label="@T("SendNotificationAfterProcessing")" />
-                                        @if (_model.Handle.IsHandleNotice)
-                                        {
-                                            <NotificationConfig @bind-value="_model.Handle.NotificationConfig"></NotificationConfig>
-                                        }
-                                    </div>
-                                }
-                                <MRadio Value="true" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4 mt-6">
-                                    <LabelContent>
-                                        <span class="h5 @(_isThirdParty?"primary--text":"emphasis2--text")">@T("ThirdPartyProcessing")</span>
-                                    </LabelContent>
-                                </MRadio>
-                                @if (_isThirdParty == true)
-                                {
-                                    <div class="full-width mt-6">
-                                        <SSelect Class="fill" @bind-Value="_model.Handle.WebHookId" Items="_webHookItems" ItemText="v => v.DisplayName" ItemValue="v=> v.Id" Label="@T("WebHook")" />
-                                        <SUserAutoComplete Class="fill mt-6" @bind-Value="_model.Handle.Handler" Label="@T("Handler")" Outlined FillBackground="false" Style="width: initial" />
-                                    </div>
-                                    <div class="d-flex align-center mt-6">
-                                        <MSwitch @bind-Value="_model.Handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0" Label="@T("SendNotificationAfterProcessing")" />
-                                        @if (_model.Handle.IsHandleNotice)
-                                        {
-                                            <NotificationConfig @bind-value="_model.Handle.NotificationConfig"></NotificationConfig>
-                                        }
-                                    </div>
-                                }
-                            </MRadioGroup>
-                            
-                        </MContainer>
+                        <MForm Model="_handle" EnableValidation @ref="_form" Class="full-height">
+                            <MContainer Fluid Class="full-height pa-0">
+                                <MRadioGroup @bind-Value="_isThirdParty">
+                                    <MRadio Value="false" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4">
+                                        <LabelContent>
+                                            <span class="h5 @(!_isThirdParty?"primary--text":"emphasis2--text")">@T("Processed")</span>
+                                        </LabelContent>
+                                    </MRadio>
+                                    @if (_isThirdParty == false)
+                                    {
+                                        <div class="d-flex align-center mt-4">
+                                            <MSwitch @bind-Value="_handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
+                                            @if (_handle.IsHandleNotice)
+                                            {
+                                                <NotificationConfig @bind-value="_handle.NotificationConfig"></NotificationConfig>
+                                            }
+                                        </div>
+                                    }
+                                    <MRadio Value="true" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4 mt-6">
+                                        <LabelContent>
+                                            <span class="h5 @(_isThirdParty?"primary--text":"emphasis2--text")">@T("ThirdPartyProcessing")</span>
+                                        </LabelContent>
+                                    </MRadio>
+                                    @if (_isThirdParty == true)
+                                    {
+                                        <div class="full-width mt-6">
+                                            <SSelect Class="fill" @bind-Value="_handle.WebHookId" Items="_webHookItems" ItemText="v => v.DisplayName" ItemValue="v=> v.Id" Label="@T("WebHook")" />
+                                            <SUserAutoComplete Class="fill mt-6" @bind-Value="_handle.Handler" Label="@T("Handler")" Outlined FillBackground="false" Style="width: initial" />
+                                        </div>
+                                        <div class="d-flex align-center mt-6">
+                                            <MSwitch @bind-Value="_handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
+                                            @if (_handle.IsHandleNotice)
+                                            {
+                                                <NotificationConfig @bind-value="_handle.NotificationConfig"></NotificationConfig>
+                                            }
+                                        </div>
+                                    }
+                                </MRadioGroup>
+                            </MContainer>
+                        </MForm>
                     </AutoHeightContent>
                 </AutoHeight>
             </SElevationTabItem>

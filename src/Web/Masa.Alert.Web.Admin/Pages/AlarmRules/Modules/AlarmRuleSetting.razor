@@ -1,66 +1,69 @@
 ﻿@inherits AdminCompontentBase
 
-<DefaultTitle>@T("BaseInfo")</DefaultTitle>
+<DefaultTitle Class="mb-6">@T("BaseInfo")</DefaultTitle>
 <STextField @bind-Value="Model.DisplayName" Label="@T(nameof(Model.DisplayName))" />
 <DefaultTitle>@T("TriggerRules")</DefaultTitle>
 @foreach (var item in Model.Items)
 {
-    <MBorder Color="green" Width="4" Style="height:95%;">
-        <STextarea @bind-Value="item.Expression" Label="@T(nameof(item.Expression))" Outlined HideDetails="@("auto")" Class="ml-3">
-            <AppendOuterContent>
-                <DefaultTooltip Class="ml-2" Tooltip="@T("ExpressionTip")" />
-            </AppendOuterContent>
-        </STextarea>
-        <MRow NoGutters Class="mt-6 ml-3">
-            <MCol Md="6">
-                <SSelect @bind-Value="item.AlertSeverity" Items="Enum.GetValues<AlertSeverity>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(item.AlertSeverity))">
-                </SSelect>
-            </MCol>
-        </MRow>
-        <div class="d-flex mt-6 ml-3">
-            <MSwitch @bind-Value="item.IsNotification" Inset Class="label my-auto">
-                <LabelContent>
-                    <span class="regular2--text body2" style="width:60px">@T("IsNotification")</span>
-                </LabelContent>
-            </MSwitch>
-            @if (item.IsNotification)
-            {
-                <NotificationConfig @bind-value="item.NotificationConfig"></NotificationConfig>
-            }
-        </div>
-        <div class="d-flex mt-6 ml-3">
-            <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label my-auto">
-                <LabelContent>
-                    <span class="regular2--text body2" style="width:60px">@T("IsRecoveryNotification")</span>
-                </LabelContent>
-            </MSwitch>
-            @if (item.IsRecoveryNotification)
-            {
-                <NotificationConfig @bind-value="item.RecoveryNotificationConfig"></NotificationConfig>
-            }
-        </div>
-        <MDivider Right Class="mt-6 ml-3">
-            <MButtonGroup Dense Rounded Class="mt-n5">
-                <MButton IsActive="false">
-                    <SIcon Size="20" Color="emphasis" OnClick="()=>HandleItemsAdd(item)">mdi-plus</SIcon>
-                </MButton>
-                @if (Model.Items.Count > 1)
+    <MBorder Color="green" Width="4" Class="rounded-tl-lg rounded-bl-lg" Style="height:95%;">
+        <div class="ml-4">
+            <STextarea @bind-Value="item.Expression" Label="@T(nameof(item.Expression))" Outlined HideDetails="@("auto")">
+                <AppendOuterContent>
+                    <MenuTooltip Class="ml-2 mt-n1" Tooltip="@T("ExpressionTip")" />
+                </AppendOuterContent>
+            </STextarea>
+            <MRow NoGutters Class="mt-6">
+                <MCol Md="6">
+                    <SSelect @bind-Value="item.AlertSeverity" Items="Enum.GetValues<AlertSeverity>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(item.AlertSeverity))">
+                    </SSelect>
+                </MCol>
+            </MRow>
+            <div class="d-flex mt-6">
+                <MSwitch @bind-Value="item.IsNotification" Inset Class="label my-auto flex-shrink-0 ml-1">
+                    <LabelContent>
+                        <span class="regular2--text body2">@T("IsNotification")</span>
+                        <DefaultTooltip Class="ml-3 my-auto" Tooltip="@T("NotificationTip")" />
+                    </LabelContent>
+                </MSwitch>
+                @if (item.IsNotification)
                 {
-                    <MButton IsActive="false">
-                        <SIcon Size="20" Color="error" OnClick="()=>HandleItemsRemove(item)">mdi-delete</SIcon>
-                    </MButton>
+                    <NotificationConfig @bind-value="item.NotificationConfig" Class="ml-3"></NotificationConfig>
                 }
-            </MButtonGroup>
-        </MDivider>
+            </div>
+            <div class="d-flex mt-6">
+                <MSwitch @bind-Value="item.IsRecoveryNotification" Inset Class="label my-auto flex-shrink-0 ml-1">
+                    <LabelContent>
+                        <span class="regular2--text body2">@T("IsRecoveryNotification")</span>
+                        <DefaultTooltip Class="ml-3 my-auto" Tooltip="@T("RecoveryNotificationTip")"/>
+                    </LabelContent>
+                </MSwitch>
+                @if (item.IsRecoveryNotification)
+                {
+                    <NotificationConfig @bind-value="item.RecoveryNotificationConfig" Class="ml-3"></NotificationConfig>
+                }
+            </div>
+            <MDivider Right Class="mt-6 mb-8 button-divider">
+                <MButtonGroup Dense Rounded Class="mt-n5">
+                    <MButton Color="fill" IsActive="false" OnClick="()=>HandleItemsAdd(item)">
+                        <SIcon Size="20" Color="emphasis">mdi-plus</SIcon>
+                    </MButton>
+                    @if (Model.Items.Count > 1)
+                    {
+                        <MButton Color="fill" IsActive="false" OnClick="()=>HandleItemsRemove(item)">
+                            <SIcon Size="20" Color="error">mdi-delete</SIcon>
+                        </MButton>
+                    }
+                </MButtonGroup>
+            </MDivider>
+        </div>
     </MBorder>
 }
-<MInput @bind-Value="Model.Items" />
 <DefaultTitle>@T("AdvancedConfiguration")</DefaultTitle>
 <MRow NoGutters>
     <MCol Md="6">
         <STextField @bind-Value="Model.ContinuousTriggerThreshold" Label="@T(nameof(Model.ContinuousTriggerThreshold))">
             <AppendOuterContent>
-                <DefaultTooltip Class="ml-2" Tooltip="@T("ContinuousTriggerThresholdTip")" />
+                <DefaultTooltip Class="ml-2 mt-n1" Tooltip="@T("ContinuousTriggerThresholdTip")" />
             </AppendOuterContent>
         </STextField>
     </MCol>
@@ -69,7 +72,7 @@
     <MCol Md="4">
         <SSelect @bind-Value="Model.SilenceCycle.Type" Items="Enum.GetValues<SilenceCycleTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(Model.SilenceCycle))">
             <AppendOuterContent>
-                <DefaultTooltip Class="ml-2" Tooltip="@T("SilenceCycleTip")" />
+                <DefaultTooltip Class="ml-2 mt-n1" Tooltip="@T("SilenceCycleTip")" />
             </AppendOuterContent>
         </SSelect>
     </MCol>

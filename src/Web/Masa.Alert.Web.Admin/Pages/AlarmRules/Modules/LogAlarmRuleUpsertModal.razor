@@ -2,7 +2,7 @@
 <SSimpleModal Value="_visible" ValueChanged="HandleVisibleChanged" OnDelete="HandleDel" OnCancel="HandleCancel" OnSave="HandleOk"
               Title="@T(_entityId == default?"AddAlarmRule":"EditAlarmRule")" Class="full-height" HeaderClass="mr-4">
     <ChildContent>
-        <MForm Model="_model" EnableValidation @ref="_form" Class="full-height mt-n2 pt-3">
+        <MForm Model="_model" EnableValidation @ref="_form" OnValidSubmit="HandleOk" Class="full-height mt-n2 pt-3" >
             <MStepper Value="_model.Step" Elevation=0 Class="d-flex flex-column full-height">
                 <MStepperHeader Class="ma-n6" Style="box-shadow:none !important">
                     <MStepperStep Step="1" Complete="_model.Step>1">
@@ -29,11 +29,11 @@
                         </AutoHeight>
                     </MStepperContent>
                     <MStepperContent Class="full-height pa-0" Step="2">
-                        <AutoHeight Overflow>
+                        <AutoHeight Overflow Class="mt-9">
                             <AutoHeightContent>
-                                <DefaultTitle>
-                                    @T("ChartSetting")
-                                    <DefaultTooltip Class="ml-1" Tooltip="@T("ChartSettingTip")" />
+                                <DefaultTitle Class="mb-6">
+                                    <span>@T("ChartSetting")</span>
+                                    <DefaultTooltip Class="ml-1 mt-n1" Tooltip="@T("ChartSettingTip")" />
                                 </DefaultTitle>
                                 <STextField @bind-Value="_model.ChartYAxisUnit" Label="@T(nameof(_model.ChartYAxisUnit))" />
                                 <DefaultTitle>@T("VariableConfiguration")</DefaultTitle>
@@ -75,6 +75,7 @@
                                 </MRow>*@
                                 @foreach (var item in _model.LogMonitorItems)
                                 {
+
                                     <MRow NoGutters Class="mt-6">
                                         <MCol Md="6">
                                             <SAutoComplete Items="_fields" @bind-Value="item.Field"
@@ -99,7 +100,7 @@
                                             <MSwitch @bind-Value="item.IsOffset" Inset Class="label my-auto ml-1">
                                                 <LabelContent>
                                                     <span class="regular2--text body2 my-auto ml-1" style="width:50px">@T("Offset")</span>
-                                                    <DefaultTooltip Class="ml-1" Tooltip="@T("OffsetTip")"/>
+                                                    <DefaultTooltip Class="ml-1 mt-n1" Tooltip="@T("OffsetTip")"/>
                                                 </LabelContent>
                                             </MSwitch>
                                             @if (item.IsOffset)
@@ -114,20 +115,19 @@
                                         <MSpacer></MSpacer>
                                         <div class="mt-3">
                                             <MButtonGroup Dense Rounded >
-                                                <MButton IsActive="false">
-                                                    <SIcon Size="20" Color="emphasis" OnClick="()=>HandleLogMonitorItemsAdd(item)">mdi-plus</SIcon>
+                                                <MButton Color="fill" IsActive="false" OnClick="()=>HandleLogMonitorItemsAdd(item)">
+                                                    <SIcon Size="20" Color="emphasis">mdi-plus</SIcon>
                                                 </MButton>
                                                 @if (_model.LogMonitorItems.Count > 1)
                                                 {
-                                                    <MButton IsActive="false">
-                                                        <SIcon Size="20" Color="error" OnClick="()=>HandleLogMonitorItemsRemove(item)">mdi-delete</SIcon>
+                                                    <MButton Color="fill" IsActive="false" OnClick="()=>HandleLogMonitorItemsRemove(item)">
+                                                        <SIcon Size="20" Color="error">mdi-delete</SIcon>
                                                     </MButton>
                                                 }
                                             </MButtonGroup>
                                         </div>
                                     </MRow>
                                 }
-                                <MInput @bind-Value="_model.LogMonitorItems" />
                                 <DefaultTitle>@T("LogFilter")</DefaultTitle>
                                 <STextarea @bind-Value="_model.WhereExpression" Label="@T(nameof(_model.WhereExpression))" Outlined HideDetails="@("auto")"></STextarea>
                                 <LogQueryExpression AlarmRule="_model"></LogQueryExpression>
@@ -135,7 +135,7 @@
                         </AutoHeight>
                     </MStepperContent>
                     <MStepperContent Class="full-height pa-0" Step="3">
-                        <AutoHeight Overflow>
+                        <AutoHeight Overflow Class="mt-9">
                             <AutoHeightContent>
                                 <AlarmRuleSetting @bind-Model="_model"></AlarmRuleSetting>
                             </AutoHeightContent>
