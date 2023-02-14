@@ -5,9 +5,9 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules.Validator;
 
 public class MetricMonitorItemViewModelValidator : AbstractValidator<MetricMonitorItemViewModel>
 {
-    public MetricMonitorItemViewModelValidator()
+    public MetricMonitorItemViewModelValidator(I18n i18n)
     {
-        RuleFor(x => x.Alias).Required();
-        RuleFor(x => x.Alias).Required();
+        var scope = "AlarmRuleBlock";
+        RuleFor(x => x.Alias).Required(string.Format(i18n.T("RequiredValidator"), i18n.T(scope, "Alias")));
     }
 }

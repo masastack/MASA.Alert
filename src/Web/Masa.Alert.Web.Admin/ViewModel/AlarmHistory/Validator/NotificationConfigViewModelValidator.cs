@@ -5,9 +5,9 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory.Validator;
 
 public class NotificationConfigViewModelValidator : AbstractValidator<NotificationConfigViewModel>
 {
-    public NotificationConfigViewModelValidator()
+    public NotificationConfigViewModelValidator(I18n i18n)
     {
-        RuleFor(x => x.TemplateName).Required();
-        RuleFor(x => x.Receivers).Required();
+        RuleFor(x => x.TemplateName).Required(string.Format(i18n.T("RequiredValidator"), i18n.T("MessageTemplate")));
+        RuleFor(x => x.Receivers).Required(string.Format(i18n.T("RequiredValidator"), i18n.T("Receiver", true)));
     }
 }

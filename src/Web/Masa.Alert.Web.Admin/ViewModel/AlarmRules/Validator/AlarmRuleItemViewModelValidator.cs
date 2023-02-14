@@ -5,9 +5,10 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules.Validator;
 
 public class AlarmRuleItemViewModelValidator : AbstractValidator<AlarmRuleItemViewModel>
 {
-    public AlarmRuleItemViewModelValidator()
+    public AlarmRuleItemViewModelValidator(I18n i18n)
     {
-        RuleFor(x => x.Expression).Required();
-        RuleFor(x => x.AlertSeverity).IsInEnum();
+        var scope = "AlarmRuleBlock";
+        RuleFor(x => x.Expression).Required(string.Format(i18n.T("RequiredValidator"), i18n.T(scope, "Expression")));
+        RuleFor(x => x.AlertSeverity).IsInEnum().WithMessage(string.Format(i18n.T("IsInEnumValidator"), i18n.T(scope, "AlertSeverity")));
     }
 }
