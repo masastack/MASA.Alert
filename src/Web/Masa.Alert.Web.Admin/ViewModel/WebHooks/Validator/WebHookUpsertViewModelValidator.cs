@@ -5,10 +5,14 @@ namespace Masa.Alert.Web.Admin.ViewModel.WebHooks.Validator;
 
 public class WebHookUpsertViewModelValidator : AbstractValidator<WebHookUpsertViewModel>
 {
-    public WebHookUpsertViewModelValidator()
+    public WebHookUpsertViewModelValidator(I18n i18n)
     {
-        RuleFor(x => x.DisplayName).Required().ChineseLetterNumberSymbol().Length(2, 50);
-        RuleFor(x => x.SecretKey).Required();
-        RuleFor(x => x.Url).Required().Url();
+        var scope = "WebHookBlock";
+        RuleFor(x => x.DisplayName).Required(string.Format(i18n.T("RequiredValidator"), i18n.T(scope,"DisplayName")))
+            .ChineseLetterNumberSymbol().WithMessage(string.Format(i18n.T("ChineseLetterNumberSymbolValidator"), i18n.T(scope, "DisplayName")))
+            .Length(2, 50).WithMessage(string.Format(i18n.T("LengthValidator"), i18n.T(scope, "DisplayName"), 2, 50));
+        RuleFor(x => x.SecretKey).Required(string.Format(i18n.T("RequiredValidator"), i18n.T(scope, "SecretKey")));
+        RuleFor(x => x.Url).Required(string.Format(i18n.T("RequiredValidator"), i18n.T(scope, "Url")))
+            .Url().WithMessage(string.Format(i18n.T("UrlValidator"), i18n.T(scope, "Url")));
     }
 }

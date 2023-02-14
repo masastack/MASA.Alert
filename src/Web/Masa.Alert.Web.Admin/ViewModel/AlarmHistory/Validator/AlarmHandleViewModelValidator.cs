@@ -5,8 +5,8 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory.Validator;
 
 public class AlarmHandleViewModelValidator : AbstractValidator<AlarmHandleViewModel>
 {
-    public AlarmHandleViewModelValidator()
+    public AlarmHandleViewModelValidator(I18n i18n)
     {
-        RuleFor(x => x.NotificationConfig).SetValidator(new NotificationConfigViewModelValidator()).When(x => x.IsHandleNotice);
+        RuleFor(x => x.NotificationConfig).SetValidator(new NotificationConfigViewModelValidator(i18n)).When(x => x.IsHandleNotice);
     }
 }

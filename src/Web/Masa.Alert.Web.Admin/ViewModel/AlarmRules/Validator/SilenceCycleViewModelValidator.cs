@@ -5,8 +5,8 @@ namespace Masa.Alert.Web.Admin.ViewModel.AlarmRules.Validator;
 
 public class SilenceCycleViewModelValidator : AbstractValidator<SilenceCycleViewModel>
 {
-    public SilenceCycleViewModelValidator()
+    public SilenceCycleViewModelValidator(I18n i18n)
     {
-        RuleFor(x => x.TimeInterval).SetValidator(new TimeIntervalViewModelValidator()).When(x => x.Type == SilenceCycleTypes.Time);
+        RuleFor(x => x.TimeInterval).SetValidator(new TimeIntervalViewModelValidator(i18n)).When(x => x.Type == SilenceCycleTypes.Time);
     }
 }

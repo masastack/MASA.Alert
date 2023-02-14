@@ -8,14 +8,17 @@ public class AlarmRuleCommandHandler
     private readonly IAlarmRuleRepository _repository;
     private readonly AlarmRuleDomainService _domainService;
     private readonly ISchedulerClient _schedulerClient;
+    private readonly II18n<DefaultResource> _i18n;
 
     public AlarmRuleCommandHandler(IAlarmRuleRepository repository
         , AlarmRuleDomainService domainService
-        , ISchedulerClient schedulerClient)
+        , ISchedulerClient schedulerClient
+        , II18n<DefaultResource> i18n)
     {
         _repository = repository;
         _domainService = domainService;
         _schedulerClient = schedulerClient;
+        _i18n = i18n;
     }
 
     [EventHandler]
@@ -33,7 +36,7 @@ public class AlarmRuleCommandHandler
         var queryable = await _repository.WithDetailsAsync();
         var entity = await queryable.FirstOrDefaultAsync(x => x.Id == updateCommand.AlarmRuleId);
 
-        Check.NotNull(entity, "AlarmRule not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
         updateCommand.AlarmRule.Adapt(entity);
 
@@ -46,7 +49,7 @@ public class AlarmRuleCommandHandler
     {
         var entity = await _repository.FindAsync(x => x.Id == createCommand.AlarmRuleId);
 
-        Check.NotNull(entity, "AlarmRule not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
         await _repository.RemoveAsync(entity);
 
@@ -61,7 +64,7 @@ public class AlarmRuleCommandHandler
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmRuleId);
 
-        Check.NotNull(entity, "AlarmRule not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
         entity.SetEnabled();
         await _repository.UpdateAsync(entity);
@@ -72,7 +75,7 @@ public class AlarmRuleCommandHandler
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmRuleId);
 
-        Check.NotNull(entity, "AlarmRule not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
         entity.SetDisable();
         await _repository.UpdateAsync(entity);

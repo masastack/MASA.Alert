@@ -8,12 +8,14 @@ public class AlarmHistoryQueryHandler
     private readonly IAlertQueryContext _context;
     private readonly IAuthClient _authClient;
     private readonly IDataFilter _dataFilter;
+    private readonly II18n<DefaultResource> _i18n;
 
-    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter)
+    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter, II18n<DefaultResource> i18n)
     {
         _context = context;
         _authClient = authClient;
         _dataFilter = dataFilter;
+        _i18n = i18n;
     }
 
     [EventHandler]
@@ -25,7 +27,7 @@ public class AlarmHistoryQueryHandler
             .Include(x => x.AlarmRule).ThenInclude(x => x.MetricMonitorItems)
             .Include(x => x.HandleStatusCommits).FirstOrDefaultAsync(x => x.Id == query.AlarmHistoryId);
 
-        Check.NotNull(entity, "AlarmHistory not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
 
         query.Result = entity.Adapt<AlarmHistoryDto>();
     }

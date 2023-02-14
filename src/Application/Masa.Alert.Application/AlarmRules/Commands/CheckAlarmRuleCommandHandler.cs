@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Alert.Domain.AlarmRules.Aggregates;
-
 namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public class CheckAlarmRuleCommandHandler
@@ -12,18 +10,21 @@ public class CheckAlarmRuleCommandHandler
     private readonly ITscClient _tscClient;
     private readonly IRulesEngineClient _rulesEngineClient;
     private readonly ILogger<CheckAlarmRuleCommandHandler> _logger;
+    private readonly II18n<DefaultResource> _i18n;
 
     public CheckAlarmRuleCommandHandler(AlarmRuleDomainService domainService
         , IAlarmRuleRepository repository
         , ITscClient tscClient
         , IRulesEngineClient rulesEngineClient
-        , ILogger<CheckAlarmRuleCommandHandler> logger)
+        , ILogger<CheckAlarmRuleCommandHandler> logger
+        , II18n<DefaultResource> i18n)
     {
         _domainService = domainService;
         _repository = repository;
         _tscClient = tscClient;
         _rulesEngineClient = rulesEngineClient;
         _logger = logger;
+        _i18n = i18n;
     }
 
     [EventHandler(1)]
@@ -32,7 +33,7 @@ public class CheckAlarmRuleCommandHandler
         var queryable = await _repository.WithDetailsAsync();
         var entity = await queryable.FirstOrDefaultAsync(x => x.Id == command.AlarmRuleId);
 
-        Check.NotNull(entity, "alarmRule not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
         command.AlarmRule = entity;
     }

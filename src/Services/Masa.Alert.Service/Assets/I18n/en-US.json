@@ -1,3 +1,5 @@
 {
-  "AlarmRule": "AlarmRule"
+  "AlarmRule": "AlarmRule",
+  "AlarmHistory": "AlarmHistory",
+  "CurrentUser": "CurrentUser"
 }
