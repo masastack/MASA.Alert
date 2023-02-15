@@ -1,4 +1,7 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Masa.Alert.Service.Admin.Internal;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddObservable(builder.Logging, builder.Configuration);
 builder.Services.AddDaprClient();
@@ -113,6 +116,7 @@ var app = builder.Services
         .UseRepository<AlertDbContext>();
     })
     .AddServices(builder);
+await builder.MigrateDbContextAsync<AlertDbContext>();
 app.UseI18n();
 app.UseMasaExceptionHandler(opt =>
 {
