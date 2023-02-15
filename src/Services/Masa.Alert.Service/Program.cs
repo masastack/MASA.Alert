@@ -1,7 +1,4 @@
-﻿using Masa.Alert.Service.Admin.Internal;
-using Microsoft.EntityFrameworkCore;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddObservable(builder.Logging, builder.Configuration);
 builder.Services.AddDaprClient();
