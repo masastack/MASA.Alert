@@ -113,6 +113,7 @@ var app = builder.Services
         .UseRepository<AlertDbContext>();
     })
     .AddServices(builder);
+await builder.MigrateDbContextAsync<AlertDbContext>();
 app.UseI18n();
 app.UseMasaExceptionHandler(opt =>
 {
