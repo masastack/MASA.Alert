@@ -139,7 +139,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
 
         var cronExpression = new CronExpression(_model.CheckFrequency.CronExpression);
 
-        var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == TimezoneOffset);
+        var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == JsInitVariables.TimezoneOffset);
 
         if (timezone != null)
             cronExpression.TimeZone = timezone;
@@ -151,7 +151,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
             if (nextExcuteTime.HasValue)
             {
                 startTime = nextExcuteTime.Value;
-                sb.AppendLine(string.Format("<p>{0}</p>", startTime.ToOffset(TimezoneOffset).ToString("yyyy-MM-dd HH:mm:ss")));
+                sb.AppendLine(string.Format("<p>{0}</p>", startTime.ToOffset(JsInitVariables.TimezoneOffset).ToString("yyyy-MM-dd HH:mm:ss")));
             }
         }
 

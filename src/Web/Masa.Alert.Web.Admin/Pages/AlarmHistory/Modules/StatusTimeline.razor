@@ -13,7 +13,7 @@
                 <ChildContent>
                     <div class="ml-n5">
                         <div class="regular--text btn">@item.Remarks</div>
-                        <div class="regular3--text overline">@item.CreationTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</div>
+                        <div class="regular3--text overline">@item.CreationTime.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$DateTimeFormat"))</div>
                     </div>
                 </ChildContent>
             </MTimelineItem>

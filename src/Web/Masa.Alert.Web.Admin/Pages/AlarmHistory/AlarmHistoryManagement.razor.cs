@@ -95,8 +95,8 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         Loading = true;
 
         var queryParam = _queryParam.Adapt<GetAlarmHistoryInputDto>() ?? new();
-        queryParam.StartTime = queryParam.StartTime?.Add(TimezoneOffset);
-        queryParam.EndTime = queryParam.EndTime?.Add(TimezoneOffset);
+        queryParam.StartTime = queryParam.StartTime?.Add(JsInitVariables.TimezoneOffset);
+        queryParam.EndTime = queryParam.EndTime?.Add(JsInitVariables.TimezoneOffset);
 
         var dtos = (await AlarmHistoryService.GetListAsync(queryParam));
         _entities = dtos?.Adapt<PaginatedListDto<AlarmHistoryListViewModel>>() ?? new();
@@ -112,7 +112,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
 
     private async Task HandleClearAsync()
     {
-        _queryParam = new(20);
+        _queryParam = new(10);
         await LoadData();
     }
 
@@ -149,16 +149,19 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
                 _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
                 _handleStatusItems = new List<AlarmHistoryHandleStatuses> { AlarmHistoryHandleStatuses.Pending, AlarmHistoryHandleStatuses.InProcess };
                 _queryParam.TimeType = default;
+                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.AlertSeverity)} asc,{nameof(AlarmHistoryQueryModel.FirstAlarmTime)} asc";
                 break;
             case AlarmHistorySearchTypes.Processed:
                 _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().ToList();
                 _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
                 _queryParam.TimeType = AlarmHistorySearchTimeTypes.ProcessingCompletedTime;
+                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.RecoveryTime)} desc";
                 break;
             case AlarmHistorySearchTypes.NoNotice:
                 _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
                 _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
                 _queryParam.TimeType = default;
+                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.LastAlarmTime)} desc";
                 break;
             default:
                 break;
@@ -173,6 +176,26 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         {
             _queryParam.AlarmRuleId = null;
         }
+        await RefreshAsync();
+    }
+
+    private async Task HandleOnOptionsUpdate(DataOptions options)
+    {
+        var sortBy = options.SortBy;
+        var sorting = new StringBuilder();
+
+        for (int i = 0; i < sortBy.Count; i++)
+        {
+            if (i > 0)
+            {
+                sorting.AppendLine(",");
+            }
+            var sortDesc = options.SortDesc[i] ? "desc" : "asc";
+            sorting.AppendLine($"{sortBy[i]} {sortDesc}");
+        }
+
+        _queryParam.Sorting = sorting.ToString();
+
         await RefreshAsync();
     }
 }

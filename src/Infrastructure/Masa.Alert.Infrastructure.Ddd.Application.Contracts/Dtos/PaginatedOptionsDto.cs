@@ -17,4 +17,16 @@ public class PaginatedOptionsDto
         Page = page;
         PageSize = pageSize;
     }
+
+    public Dictionary<string, bool>? ApplySorting()
+    {
+        if (string.IsNullOrWhiteSpace(Sorting))
+        {
+            return new Dictionary<string, bool>();
+        }
+
+        return Sorting.Split(',')
+            .Select(i => new KeyValuePair<string, bool>(i.Split(' ')[0], i.Split(' ')[1].ToLower() == "desc"))
+            .ToDictionary(k => k.Key, k => k.Value); 
+    }
 }

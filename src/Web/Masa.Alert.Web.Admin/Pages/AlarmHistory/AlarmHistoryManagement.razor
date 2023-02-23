@@ -91,7 +91,7 @@
     </HeaderContent>
     <AutoHeightContent>
         <MCard Class="@(!advanced?"page-content mt-6":"page-content-advanced mt-6")">
-            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" ItemsPerPage="_queryParam.PageSize" HideDefaultFooter FixedRight Class="d-flex full-height flex-column">
+            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" ItemsPerPage="_queryParam.PageSize" OnOptionsUpdate="HandleOnOptionsUpdate" HideDefaultFooter FixedRight Class="d-flex full-height flex-column">
                 <HeaderColContent Context="header">
                     <span class="text-btn">@header.Text</span>
                 </HeaderColContent>
@@ -104,17 +104,11 @@
                         case nameof(AlarmHistoryListViewModel.HandleStatus):
                             <AlarmHistoryStatusTag Value="@context.Item.HandleStatus" />
                             break;
-                        case nameof(AlarmHistoryListViewModel.FirstAlarmTime):
-                            <div class="body regular--text">@context.Item.FirstAlarmTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</div>
-                            break;
-                        case nameof(AlarmHistoryListViewModel.LastAlarmTime):
-                            <div class="body regular--text">@context.Item.LastAlarmTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))</div>
-                            break;
                         case "HandleCompletionTime":
                             <MListItem Class="pa-0">
                                 <MListItemContent>
-                                    <MListItemTitle Class="body regular--text">@context.Item.Handle.HandlerName @context.Item.RecoveryTime?.ToOffset(TimezoneOffset).ToString(T("$TimeFormat"))</MListItemTitle>
-                                    <MListItemSubtitle Class="body regular--text">@context.Item.RecoveryTime?.ToOffset(TimezoneOffset).ToString(T("$DateFormat"))</MListItemSubtitle>
+                                    <MListItemTitle Class="body regular--text">@context.Item.Handle.HandlerName @context.Item.RecoveryTime?.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$TimeFormat"))</MListItemTitle>
+                                    <MListItemSubtitle Class="body regular--text">@context.Item.RecoveryTime?.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$DateFormat"))</MListItemSubtitle>
                                 </MListItemContent>
                             </MListItem>
                             break;

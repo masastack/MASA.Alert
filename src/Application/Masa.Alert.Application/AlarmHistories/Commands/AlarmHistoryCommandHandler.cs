@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using System.Reflection.Metadata;
-
 namespace Masa.Alert.Application.AlarmHistories.Commands;
 
 public class AlarmHistoryCommandHandler
@@ -10,24 +8,27 @@ public class AlarmHistoryCommandHandler
     private readonly IAlarmHistoryRepository _repository;
     private readonly IUserContext _userContext;
     private readonly IAuthClient _authClient;
+    private readonly II18n<DefaultResource> _i18n;
 
     public AlarmHistoryCommandHandler(IAlarmHistoryRepository repository
         , IUserContext userContext
-        , IAuthClient authClient)
+        , IAuthClient authClient
+        , II18n<DefaultResource> i18n)
     {
         _repository = repository;
         _userContext = userContext;
         _authClient = authClient;
+        _i18n = i18n;
     }
 
     [EventHandler]
     public async Task HandleAsync(HandleAlarmHistoryCommand command)
     {
         var currentUser = await _authClient.UserService.GetCurrentUserAsync();
-        Check.NotNull(currentUser, "The current user information is not obtained");
+        MasaArgumentException.ThrowIfNull(currentUser, _i18n.T("CurrentUser"));
 
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
-        Check.NotNull(entity, "AlarmHistory not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
 
         if (command.AlarmHandle.WebHookId == default)
         {
@@ -58,7 +59,7 @@ public class AlarmHistoryCommandHandler
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
 
-        Check.NotNull(entity, "AlarmHistory not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
 
         await _repository.RemoveAsync(entity);
     }
@@ -68,7 +69,7 @@ public class AlarmHistoryCommandHandler
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
 
-        Check.NotNull(entity, "AlarmHistory not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
         var user = await _authClient.UserService.FindByIdAsync(entity.Handle.Handler);
         var handlerDisplayName = user?.StaffDislpayName ?? string.Empty;
         entity.Completed(entity.Handle.Handler, handlerDisplayName);

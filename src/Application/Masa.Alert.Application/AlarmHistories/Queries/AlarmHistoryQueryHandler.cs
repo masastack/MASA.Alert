@@ -1,7 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-
 namespace Masa.Alert.Application.AlarmHistories.Queries;
 
 public class AlarmHistoryQueryHandler
@@ -9,12 +8,14 @@ public class AlarmHistoryQueryHandler
     private readonly IAlertQueryContext _context;
     private readonly IAuthClient _authClient;
     private readonly IDataFilter _dataFilter;
+    private readonly II18n<DefaultResource> _i18n;
 
-    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter)
+    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter, II18n<DefaultResource> i18n)
     {
         _context = context;
         _authClient = authClient;
         _dataFilter = dataFilter;
+        _i18n = i18n;
     }
 
     [EventHandler]
@@ -26,7 +27,7 @@ public class AlarmHistoryQueryHandler
             .Include(x => x.AlarmRule).ThenInclude(x => x.MetricMonitorItems)
             .Include(x => x.HandleStatusCommits).FirstOrDefaultAsync(x => x.Id == query.AlarmHistoryId);
 
-        Check.NotNull(entity, "AlarmHistory not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
 
         query.Result = entity.Adapt<AlarmHistoryDto>();
     }
@@ -37,7 +38,7 @@ public class AlarmHistoryQueryHandler
         using var dataFilter = _dataFilter.Disable<ISoftDelete>();
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
-        var sorting = CreateSorting(options);
+        var sorting = options.ApplySorting();
         var resultList = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).GetPaginatedListAsync(condition, new()
         {
             Page = options.Page,
@@ -49,34 +50,6 @@ public class AlarmHistoryQueryHandler
         await FillAlarmHistoryDtos(dtos);
         var result = new PaginatedListDto<AlarmHistoryDto>(resultList.Total, resultList.TotalPages, dtos);
         query.Result = result;
-    }
-
-    private Dictionary<string, bool> CreateSorting(GetAlarmHistoryInputDto options)
-    {
-        switch (options.SearchType)
-        {
-            case AlarmHistorySearchTypes.Alarming:
-                return new Dictionary<string, bool>
-                {
-                    [nameof(AlarmHistoryQueryModel.AlertSeverity)] = false,
-                    [nameof(AlarmHistoryQueryModel.FirstAlarmTime)] = false
-                };
-            case AlarmHistorySearchTypes.Processed:
-                return new Dictionary<string, bool>
-                {
-                    [nameof(AlarmHistoryQueryModel.RecoveryTime)] = true
-                };
-            case AlarmHistorySearchTypes.NoNotice:
-                return new Dictionary<string, bool>
-                {
-                    [nameof(AlarmHistoryQueryModel.LastAlarmTime)] = true
-                };
-            default:
-                return new Dictionary<string, bool>
-                {
-                    [nameof(AlarmHistoryQueryModel.ModificationTime)] = true
-                };
-        }
     }
 
     private async Task<Expression<Func<AlarmHistoryQueryModel, bool>>> CreateFilteredPredicate(GetAlarmHistoryInputDto options)

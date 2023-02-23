@@ -23,3 +23,4 @@ global using Masa.Alert.Domain.WebHooks.Aggregates;
 global using Masa.Alert.Domain.WebHooks.Repositories;
 global using Masa.Alert.Domain.Shared.AlarmRules;
 global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
+global using System.Linq.Expressions;

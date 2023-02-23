@@ -135,6 +135,7 @@
   "AlarmRule": "告警规则",
   "AlarmHistory": "告警历史",
   "WebHook": "WebHook",
+  "InvalidCronExpression": "无效的CRON表达式",
   "AlarmRuleBlock": {
     "Log": "日志监控",
     "Metric": "指标监控",
@@ -176,6 +177,8 @@
     "MessageTemplate": "消息模板",
     "IsRecoveryNotification": "恢复通知",
     "IsNotification": "告警通知",
+    "RecoveryNotificationTip": "当告警自动恢复时，发送通知",
+    "NotificationTip": "触发告警规则时，发送通知",
     "AdvancedConfiguration": "高级配置",
     "ContinuousTriggerThreshold": "连续触发阈值",
     "ContinuousTriggerThresholdTip": "连续多少次执行检查评估都满足触发条件时，才会触发告警。",
@@ -183,7 +186,7 @@
     "SilenceCycleTip": "告警发生后未恢复正常，间隔多久重复发送一次告警通知",
     "ChartPreview": "图表预览",
     "Expression": "表达式",
-    "ExpressionTip": "请参考MASA Stack 文档站点规则引擎介绍：http://docs.masastack.com/framework/building-blocks/rules-engine/overview",
+    "ExpressionTip": "请参考MASA Stack 文档站点规则引擎介绍：<a href='http://docs.masastack.com/framework/building-blocks/rules-engine/overview' target='_blank'>http://docs.masastack.com/framework/building-blocks/rules-engine/overview</a>",
     "MetricMonitor.Name": "监控指标",
     "MetricMonitor.Tag": "Tag",
     "MetricMonitor.Alias": "变量",
@@ -229,7 +232,8 @@
     "SendNotificationAfterProcessing": "处理完成后发送通知",
     "Receiver": "收件人",
     "HandleCompletionTime": "处理人|处理完成时间",
-    "AutoRecovery": "自动恢复"
+    "AutoRecovery": "自动恢复",
+    "PostWebHookTip": "自动恢复"
   },
   "WebHookBlock": {
     "AddWebHook": "新建WebHook",
@@ -239,5 +243,25 @@
     "Url": "Url",
     "Description": "描述",
     "SecretKey": "密钥"
-  }
+  },
+  "ChineseLetterNumberUnderlineValidator": "{0}必须是中文、数字、字母或下划线",
+  "ChineseLetterNumberValidator": "{0}必须是中文、数字、字母",
+  "ChineseLetterUnderlineValidator": "{0}必须是中文、字母或下划线",
+  "ChineseLetterNumberSymbolValidator": "{0}必须是中文、字母、数字或部分特殊字符",
+  "ChineseLetterValidator": "{0}必须是中文、字母",
+  "ChineseValidator": "{0}必须是中文",
+  "IdCardValidator": "{0}不是一个有效的身份证",
+  "LetterNumberValidator": "{0}必须是字母或下划线",
+  "LetterValidator": "{0}必须是字母",
+  "LowerLetterValidator": "{0}必须是小写字母.",
+  "NumberValidator": "{0}必须是数字",
+  "PhoneValidator": "{0}必须是一个合法的手机号码",
+  "RequiredValidator": "{0}是必需的",
+  "UpperLetterValidator": "{0}必须是大写字母",
+  "UrlValidator": "{0}必须是一个合法的Url地址",
+  "EmailRegularValidator": "{0}必须是一个合法的Email",
+  "IdentityValidator": "{0}必须是数字、字母或中划线和点",
+  "InclusiveBetweenValidator": "{0}需要在[{1 }- {2}]之间",
+  "LengthValidator": "{0}的长度必须在 {1} 到 {2} 字符",
+  "IsInEnumValidator": "请选择正确的{0}"
 }

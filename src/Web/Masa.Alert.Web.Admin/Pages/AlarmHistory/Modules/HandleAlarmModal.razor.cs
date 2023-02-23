@@ -11,9 +11,11 @@ public partial class HandleAlarmModal : AdminCompontentBase
     private bool _visible;
     private Guid _entityId;
     private AlarmHistoryViewModel _model = new();
+    private AlarmHandleViewModel _handle = new();
     private string _tab = "";
     private List<WebHookListViewModel> _webHookItems = new();
     private bool _isThirdParty;
+    private MForm? _form;
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
 
@@ -58,6 +60,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
     {
         var dto = await AlarmHistoryService.GetAsync(_entityId) ?? new();
         _model = dto.Adapt<AlarmHistoryViewModel>();
+        _handle = _model.Handle;
     }
 
     private void HandleCancel()
@@ -69,6 +72,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
     private void ResetForm()
     {
         _model = new();
+        _handle = new();
         _tab = T("AlarmDetails");
     }
 
@@ -79,11 +83,32 @@ public partial class HandleAlarmModal : AdminCompontentBase
 
     private async void HandleAlarm()
     {
+        Check.NotNull(_form, "form not found");
+
+        if (!_form.Validate())
+        {
+            return;
+        }
+
         Loading = true;
         var inputDto = _model.Handle.Adapt<AlarmHandleDto>();
-        await AlarmHistoryService.HandleAsync(_entityId, inputDto);
+
+        try
+        {
+            await AlarmHistoryService.HandleAsync(_entityId, inputDto);
+        }
+        catch (Exception ex)
+        {
+            Loading = false;
+            await PopupService.AlertAsync(ex.Message, AlertTypes.Error);
+            return;
+        }
+
         Loading = false;
         _visible = false;
+
+        ResetForm();
+
         await SuccessMessageAsync(T("OperationSuccessfulMessage"));
 
         if (OnOk.HasDelegate)
@@ -98,7 +123,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
 
         if (!isThirdParty)
         {
-            _model.Handle.WebHookId = default;
+            _handle.WebHookId = default;
         }
     }
 

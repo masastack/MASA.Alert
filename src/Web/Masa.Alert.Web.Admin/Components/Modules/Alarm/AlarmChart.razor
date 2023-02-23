@@ -2,7 +2,7 @@
 <div class="d-flex justify-space-between">
     <span class="h5 emphasis--text">@AlarmHistory.AlarmRule.ProjectIdentity</span>
     <span class="body2 regular--text">
-        <DateTimeRangePicker Class="btn-fill-line" @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none;" OnChange="LoadData" />
+        <DateTimeRangePicker Class="btn-fill-line fit-width" @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none;width:410px" OnChange="LoadData" />
     </span>
 </div>
 <div class="d-flex justify-space-between mt-2">
@@ -11,9 +11,8 @@
         @AlarmHistory.AlarmRule.DisplayName (@AlarmHistory.AlarmRule.ChartYAxisUnit)
     </span>
 </div>
-
 <div class="d-flex align-center justify-center">
-    <MECharts Option="_option" Width="Width" Height="Height">
+    <MECharts @ref="_chart" Option="_option" Width="Width" Height="Height">
     </MECharts>
 </div>
 
@@ -30,21 +29,27 @@
 
     protected override string? PageName { get; set; } = "AlarmChartBlock";
 
+    private AlarmHistoryViewModel _alarmHistory = new();
+
     private DateTime? _startTime { get; set; }
 
     private DateTime? _endTime { get; set; }
 
     private object _option = new();
 
+    private MECharts? _chart { get; set; }
+
     AlarmRuleRecordService AlarmRuleRecordService => AlertCaller.AlarmRuleRecordService;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnParametersSetAsync()
     {
-        if (firstRender)
+        if (_alarmHistory != AlarmHistory)
         {
+            _alarmHistory = AlarmHistory;
+            _startTime = null;
+            _endTime = null;
             await LoadData();
         }
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task LoadData()
@@ -62,8 +67,8 @@
 
         if (!_startTime.HasValue && !_endTime.HasValue && records.Any())
         {
-            _startTime = records.Min(x => x.CreationTime).Add(TimezoneOffset);
-            _endTime = records.Max(x => x.CreationTime).Add(TimezoneOffset);
+            _startTime = records.Min(x => x.CreationTime);
+            _endTime = records.Max(x => x.CreationTime);
         }
 
         var legendData = new List<string>();
@@ -84,7 +89,7 @@
             var data = records.Select(x =>
             {
                 var val = x.AggregateResult.FirstOrDefault(x => x.Key == key).Value;
-                return new List<long> { new DateTimeOffset(x.CreationTime).Add(TimezoneOffset).ToUnixTimeMilliseconds(), val };
+                return new List<long> { new DateTimeOffset(x.CreationTime).Add(JsInitVariables.TimezoneOffset).ToUnixTimeMilliseconds(), val };
             });
 
             return new

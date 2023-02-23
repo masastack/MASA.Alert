@@ -1,3 +1,5 @@
 {
-  "AlarmRule": "告警规则"
+  "AlarmRule": "告警规则",
+  "AlarmHistory": "告警历史",
+  "CurrentUser": "当前用户"
 }

@@ -88,3 +88,5 @@ global using Masa.Alert.Application.WebHooks.Commands;
 global using Masa.Alert.Application.WebHooks.Queries;
 global using Masa.BuildingBlocks.RulesEngine;
 global using Masa.BuildingBlocks.Isolation;
+global using Masa.Alert.Service.Admin.Internal;
+global using Masa.Contrib.StackSdks.Tsc;

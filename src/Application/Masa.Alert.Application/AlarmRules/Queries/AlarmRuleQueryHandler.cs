@@ -7,11 +7,13 @@ public class AlarmRuleQueryHandler
 {
     private readonly IAlertQueryContext _context;
     private readonly IAuthClient _authClient;
+    private readonly II18n<DefaultResource> _i18n;
 
-    public AlarmRuleQueryHandler(IAlertQueryContext context, IAuthClient authClient)
+    public AlarmRuleQueryHandler(IAlertQueryContext context, IAuthClient authClient, II18n<DefaultResource> i18n)
     {
         _context = context;
         _authClient = authClient;
+        _i18n = i18n;
     }
 
     [EventHandler]
@@ -19,7 +21,7 @@ public class AlarmRuleQueryHandler
     {
         var entity = await _context.AlarmRuleQueries.Include(x=>x.Items).Include(x => x.LogMonitorItems).Include(x => x.MetricMonitorItems).FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
 
-        Check.NotNull(entity, "AlarmRule not found");
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
         query.Result = entity.Adapt<AlarmRuleDto>();
     }

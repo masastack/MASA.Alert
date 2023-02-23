@@ -316,30 +316,6 @@
     opacity: 0;
 }
 
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    background-color: #F6F8FD;
-}
-
-/*定义滚动条轨道
-
-内阴影+圆角*/
-
-::-webkit-scrollbar-track {
-    border-radius: 4px;
-    background-color: #F6F8FD;
-}
-
-/*定义滑块
-
-内阴影+圆角*/
-
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #A3AED0;
-}
-
 .m-text-field__details {
     font-weight: 400;
     font-size: 10px;
@@ -512,4 +488,17 @@
 
 .m-input--is-disabled .m-input--selection-controls__input {
     opacity: 0.6;
+}
+
+.fit-width {
+    width: fit-content;
+}
+
+.button-divider {
+    padding-right: 0 !important;
+}
+
+.button-divider .m-divider__content {
+    margin-right: 0;
+    padding-right:0;
 }
