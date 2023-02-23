@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
         {
             typeof(ServiceCollectionExtensions).Assembly
         };
-        services.AddCaller(assemblies.ToArray());
+        services.AddAutoRegistrationCaller(assemblies.ToArray());
         return services;
     }
 }

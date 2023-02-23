@@ -95,8 +95,8 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         Loading = true;
 
         var queryParam = _queryParam.Adapt<GetAlarmHistoryInputDto>() ?? new();
-        queryParam.StartTime = queryParam.StartTime?.Add(TimezoneOffset);
-        queryParam.EndTime = queryParam.EndTime?.Add(TimezoneOffset);
+        queryParam.StartTime = queryParam.StartTime?.Add(JsInitVariables.TimezoneOffset);
+        queryParam.EndTime = queryParam.EndTime?.Add(JsInitVariables.TimezoneOffset);
 
         var dtos = (await AlarmHistoryService.GetListAsync(queryParam));
         _entities = dtos?.Adapt<PaginatedListDto<AlarmHistoryListViewModel>>() ?? new();

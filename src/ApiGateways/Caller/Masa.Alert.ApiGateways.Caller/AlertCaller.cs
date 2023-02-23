@@ -6,8 +6,6 @@ public class AlertCaller : DaprCallerBase
 
     protected override string AppId { get; set; } = App.APP;
 
-    public override string? Name { get; set; } = nameof(AlertCaller);
-
     private AlarmRuleService? _alarmRuleService;
     private AlarmHistoryService? _alarmHistoryService;
     private AlarmRuleRecordService? _alarmRuleRecordService;

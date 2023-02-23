@@ -107,8 +107,8 @@
                         case "HandleCompletionTime":
                             <MListItem Class="pa-0">
                                 <MListItemContent>
-                                    <MListItemTitle Class="body regular--text">@context.Item.Handle.HandlerName @context.Item.RecoveryTime?.ToOffset(TimezoneOffset).ToString(T("$TimeFormat"))</MListItemTitle>
-                                    <MListItemSubtitle Class="body regular--text">@context.Item.RecoveryTime?.ToOffset(TimezoneOffset).ToString(T("$DateFormat"))</MListItemSubtitle>
+                                    <MListItemTitle Class="body regular--text">@context.Item.Handle.HandlerName @context.Item.RecoveryTime?.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$TimeFormat"))</MListItemTitle>
+                                    <MListItemSubtitle Class="body regular--text">@context.Item.RecoveryTime?.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$DateFormat"))</MListItemSubtitle>
                                 </MListItemContent>
                             </MListItem>
                             break;

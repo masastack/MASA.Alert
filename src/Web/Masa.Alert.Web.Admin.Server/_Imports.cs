@@ -20,3 +20,4 @@ global using Masa.Alert.ApiGateways.Caller.Extensions;
 global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 global using Masa.Stack.Components.Extensions.OpenIdConnect;
 global using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+global using Masa.Contrib.StackSdks.Tsc;
