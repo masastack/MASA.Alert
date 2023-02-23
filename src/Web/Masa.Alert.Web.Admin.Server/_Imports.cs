@@ -21,3 +21,7 @@ global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 global using Masa.Stack.Components.Extensions.OpenIdConnect;
 global using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 global using Masa.Contrib.StackSdks.Tsc;
+global using Masa.BuildingBlocks.StackSdks.Config;
+global using Masa.Contrib.Configuration.ConfigurationApi.Dcc.Options;
+global using Masa.Contrib.StackSdks.Config;
+global using Microsoft.IdentityModel.Logging;

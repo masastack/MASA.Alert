@@ -1,15 +1,6 @@
-﻿using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
-using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
-using Masa.Contrib.Configuration.ConfigurationApi.Dcc.Options;
-using Masa.Contrib.StackSdks.Config;
-using Masa.Contrib.StackSdks.Tsc;
-using Masa.Alert.EntityFrameworkCore.Extensions;
-using Microsoft.EntityFrameworkCore;
-using Masa.Alert.Service.Admin.Infrastructure.Middleware;
-using Masa.BuildingBlocks.StackSdks.Config;
-
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMasaStackConfig();
+﻿var builder = WebApplication.CreateBuilder(args);
+var dccOptions = builder.Configuration.GetSection("DccOptions").Get<DccOptions>();
+await builder.Services.AddMasaStackConfigAsync(dccOptions);
 var masaStackConfig = builder.Services.GetMasaStackConfig();
 builder.Services.AddObservable(builder.Logging, () =>
 {
@@ -24,8 +15,6 @@ builder.Services.AddObservable(builder.Logging, () =>
     return masaStackConfig.OtlpUrl;
 });
 builder.Services.AddDaprClient();
-DccOptions dccOptions = masaStackConfig.GetDccMiniOptions<DccOptions>();
-builder.Services.AddMasaConfiguration(configurationBuilder => configurationBuilder.UseDcc(dccOptions));
 var identityServerUrl = masaStackConfig.GetSsoDomain();
 if (builder.Environment.IsDevelopment())
 {

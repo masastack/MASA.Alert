@@ -1,13 +1,9 @@
 // Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.StackSdks.Config;
-using Masa.Contrib.StackSdks.Config;
-using Masa.Contrib.StackSdks.Tsc;
-using Microsoft.IdentityModel.Logging;
-
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMasaStackConfig();
+var dccOptions = builder.Configuration.GetSection("DccOptions").Get<DccOptions>();
+await builder.Services.AddMasaStackConfigAsync(dccOptions);
 var masaStackConfig = builder.Services.GetMasaStackConfig();
 if (builder.Environment.IsDevelopment())
 {
