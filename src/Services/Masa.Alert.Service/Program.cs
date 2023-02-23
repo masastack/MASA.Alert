@@ -1,6 +1,5 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddObservable(builder.Logging, builder.Configuration);
 builder.Services.AddDaprClient();
 builder.Services.AddMasaConfiguration(configurationBuilder =>
 {
@@ -18,6 +17,18 @@ if (builder.Environment.IsDevelopment())
 }
 
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
+builder.Services.AddObservable(builder.Logging, () =>
+{
+    return new MasaObservableOptions
+    {
+        ServiceNameSpace = builder.Environment.EnvironmentName,
+        ServiceVersion = "1.0.0",//todo global version
+        ServiceName = "masa-alert-service-admin"
+    };
+}, () =>
+{
+    return publicConfiguration.GetValue<string>("$public.AppSettings:OtlpUrl");
+});
 builder.Services.AddMasaIdentity(options =>
 {
     options.Environment = "environment";
@@ -33,7 +44,7 @@ builder.Services.AddAuthentication(options =>
 .AddJwtBearer("Bearer", options =>
 {
     //todo dcc
-    options.Authority = builder.Services.GetMasaConfiguration().Local.GetValue<string>("IdentityServerUrl");
+    options.Authority = publicConfiguration.GetValue<string>("$public.AppSettings:IdentityServerUrl");
     options.RequireHttpsMetadata = false;
     //options.Audience = "";
     options.TokenValidationParameters.ValidateAudience = false;

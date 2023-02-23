@@ -19,7 +19,6 @@ builder.WebHost.UseKestrel(option =>
     option.ConfigureHttpsDefaults(options =>
     options.ServerCertificate = new X509Certificate2(Path.Combine("Certificates", "7348307__lonsid.cn.pfx"), "cqUza0MN"));
 });
-builder.Services.AddObservable(builder.Logging, builder.Configuration,true);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -36,6 +35,18 @@ builder.Services.AddGlobalForServer();
 builder.Services.AddScoped<TokenProvider>();
 builder.AddMasaStackComponentsForServer();
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
+builder.Services.AddObservable(builder.Logging, () =>
+{
+    return new MasaObservableOptions
+    {
+        ServiceNameSpace = builder.Environment.EnvironmentName,
+        ServiceVersion = "1.0.0",//todo global version
+        ServiceName = "masa-alert-web-admin"
+    };
+}, () =>
+{
+    return publicConfiguration.GetValue<string>("$public.AppSettings:OtlpUrl");
+}, true);
 builder.Services.AddCallers();
 builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
 
@@ -43,8 +54,7 @@ builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
-var oidcOptions = builder.Services.GetMasaConfiguration().Local.GetSection("$public.OIDC:AuthClient").Get<MasaOpenIdConnectOptions>();
-builder.Services.AddMasaOpenIdConnect(oidcOptions);
+builder.Services.AddMasaOpenIdConnect(publicConfiguration.GetSection("$public.OIDC").Get<MasaOpenIdConnectOptions>());
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 

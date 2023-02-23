@@ -89,7 +89,7 @@
             var data = records.Select(x =>
             {
                 var val = x.AggregateResult.FirstOrDefault(x => x.Key == key).Value;
-                return new List<long> { new DateTimeOffset(x.CreationTime).Add(TimezoneOffset).ToUnixTimeMilliseconds(), val };
+                return new List<long> { new DateTimeOffset(x.CreationTime).Add(JsInitVariables.TimezoneOffset).ToUnixTimeMilliseconds(), val };
             });
 
             return new

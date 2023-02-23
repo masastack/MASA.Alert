@@ -185,7 +185,7 @@
 
         var cronExpression = new CronExpression(AlarmRule.CheckFrequency.CronExpression);
 
-        var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == TimezoneOffset);
+        var timezone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(p => p.BaseUtcOffset == JsInitVariables.TimezoneOffset);
 
         if (timezone != null)
             cronExpression.TimeZone = timezone;

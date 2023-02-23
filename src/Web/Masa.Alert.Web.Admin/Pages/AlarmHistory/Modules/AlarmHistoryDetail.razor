@@ -67,7 +67,7 @@
         @T("AlarmTime")
     </div>
     <div class="emphasis2--text body2">
-        @AlarmHistory.LastAlarmTime.ToOffset(TimezoneOffset).ToString(T("$DateTimeFormat"))
+        @AlarmHistory.LastAlarmTime.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$DateTimeFormat"))
     </div>
 </div>
 <DefaultSubTitle>@T("TriggerRules")</DefaultSubTitle>
