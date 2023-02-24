@@ -59,8 +59,10 @@
                                 </MRow>
                                 @if (!string.IsNullOrEmpty(_model.CheckFrequency.CronExpression))
                                 {
-                                    <div class="mt-4 default--text caption">
-                                        <p>@T("NextRunTimeTip")</p>
+                                    <div class="mt-4 caption regular3--text rounded-lg bgray">
+                                        <p class="emphasis px-5 rounded-t-lg white--text py-2 text-body-2">
+                                            <span class="mdi mdi-clock-outline mr-1 clock-size"></span>
+                                            @T("NextRunTimeTip")</p>
                                         @((MarkupString)_nextRunTimeStr)
                                     </div>
                                 }
@@ -75,7 +77,6 @@
                                 </MRow>*@
                                 @foreach (var item in _model.LogMonitorItems)
                                 {
-
                                     <MRow NoGutters Class="mt-6">
                                         <MCol Md="6">
                                             <SAutoComplete Items="_fields" @bind-Value="item.Field"
