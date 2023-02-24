@@ -141,7 +141,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
             if (nextExcuteTime.HasValue)
             {
                 startTime = nextExcuteTime.Value;
-                sb.AppendLine(string.Format("<p>{0}</p>", startTime.ToOffset(JsInitVariables.TimezoneOffset).ToString("yyyy-MM-dd HH:mm:ss")));
+                sb.AppendLine(string.Format("<p class='px-3 text-right'>{0}</p>", startTime.ToOffset(JsInitVariables.TimezoneOffset).ToString("yyyy-MM-dd HH:mm:ss")));
             }
         }
 
