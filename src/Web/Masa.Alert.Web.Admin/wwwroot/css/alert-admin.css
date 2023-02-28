@@ -502,3 +502,10 @@
     margin-right: 0;
     padding-right:0;
 }
+
+.m-application .bgray {
+    border: 1px solid #E9EDF7;
+}
+.m-application .bgray .clock-size{
+    font-size: 1rem;
+}
