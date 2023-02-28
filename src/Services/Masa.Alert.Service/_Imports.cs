@@ -48,3 +48,4 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Microsoft.OpenApi.Models;
+global using Masa.Utils.Configuration.Json;
