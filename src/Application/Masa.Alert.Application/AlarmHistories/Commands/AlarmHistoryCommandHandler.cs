@@ -45,7 +45,7 @@ public class AlarmHistoryCommandHandler
         }
         else
         {
-            var handlerDisplayName = (await _authClient.UserService.FindByIdAsync(handle.Handler))?.StaffDislpayName ?? string.Empty;
+            var handlerDisplayName = (await _authClient.UserService.GetByIdAsync(handle.Handler))?.StaffDislpayName ?? string.Empty;
             remark = $"{currentUser.StaffDislpayName}分配处理人:{handlerDisplayName}";
         }
 
@@ -70,7 +70,7 @@ public class AlarmHistoryCommandHandler
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
 
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
-        var user = await _authClient.UserService.FindByIdAsync(entity.Handle.Handler);
+        var user = await _authClient.UserService.GetByIdAsync(entity.Handle.Handler);
         var handlerDisplayName = user?.StaffDislpayName ?? string.Empty;
         entity.Completed(entity.Handle.Handler, handlerDisplayName);
 

@@ -1,26 +1,23 @@
-﻿global using System.Reflection;
-global using Microsoft.EntityFrameworkCore;
-global using Microsoft.EntityFrameworkCore.ChangeTracking;
-global using Microsoft.EntityFrameworkCore.Metadata.Builders;
-global using Microsoft.Extensions.Logging;
-global using Masa.Contrib.Isolation.UoW.EFCore;
-global using Masa.BuildingBlocks.Data.UoW;
-global using Masa.Contrib.Ddd.Domain.Repository.EFCore;
-global using System.Text.Json;
-global using Masa.Alert.Domain.AlarmRules;
-global using Masa.Alert.Domain.Shared.Consts;
-global using Masa.Alert.Infrastructure.EntityFrameworkCore.EntityFrameworkCore.ValueConverters;
-global using System.Threading.Channels;
+﻿// Copyright (c) MASA Stack All rights reserved.
+// Licensed under the Apache License. See LICENSE.txt in the project root for license information.
+
 global using System.Collections.Concurrent;
-global using Masa.Alert.Domain.AlarmRules.Aggregates;
-global using Masa.Alert.Domain.AlarmRules.Repositories;
-global using Masa.Alert.Domain.AlarmHistories.Aggregates;
-global using Masa.Alert.Domain.AlarmHistories.Repositories;
 global using Masa.Alert.Application.Contracts.QueryContext;
 global using Masa.Alert.Application.Contracts.QueryModels;
-global using Masa.Alert.Domain.WebHooks;
+global using Masa.Alert.Domain.AlarmHistories.Aggregates;
+global using Masa.Alert.Domain.AlarmHistories.Repositories;
+global using Masa.Alert.Domain.AlarmRules;
+global using Masa.Alert.Domain.AlarmRules.Aggregates;
+global using Masa.Alert.Domain.AlarmRules.Repositories;
+global using Masa.Alert.Domain.Shared.Consts;
 global using Masa.Alert.Domain.WebHooks.Aggregates;
 global using Masa.Alert.Domain.WebHooks.Repositories;
-global using Masa.Alert.Domain.Shared.AlarmRules;
+global using Masa.Alert.Infrastructure.EntityFrameworkCore.EntityFrameworkCore.ValueConverters;
+global using Masa.BuildingBlocks.Data;
+global using Masa.BuildingBlocks.Data.UoW;
 global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
-global using System.Linq.Expressions;
+global using Masa.Contrib.Ddd.Domain.Repository.EFCore;
+global using Masa.Contrib.Isolation.UoW.EFCore;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.Extensions.Logging;

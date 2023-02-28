@@ -1,11 +1,25 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿// Copyright (c) MASA Stack All rights reserved.
+// Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-builder.Services.AddDaprClient();
-builder.Services.AddMasaConfiguration(configurationBuilder =>
+var builder = WebApplication.CreateBuilder(args);
+
+await builder.Services.AddMasaStackConfigAsync();
+var masaStackConfig = builder.Services.GetMasaStackConfig();
+
+builder.Services.AddObservable(builder.Logging, () =>
 {
-    configurationBuilder.UseDcc();
+    return new MasaObservableOptions
+    {
+        ServiceNameSpace = builder.Environment.EnvironmentName,
+        ServiceVersion = masaStackConfig.Version,
+        ServiceName = masaStackConfig.GetServerId(MasaStackConstant.ALERT)
+    };
+}, () =>
+{
+    return masaStackConfig.OtlpUrl;
 });
-
+builder.Services.AddDaprClient();
+var identityServerUrl = masaStackConfig.GetSsoDomain();
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
@@ -17,23 +31,14 @@ if (builder.Environment.IsDevelopment())
 }
 
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
-builder.Services.AddObservable(builder.Logging, () =>
-{
-    return new MasaObservableOptions
-    {
-        ServiceNameSpace = builder.Environment.EnvironmentName,
-        ServiceVersion = "1.0.0",//todo global version
-        ServiceName = "masa-alert-service-admin"
-    };
-}, () =>
-{
-    return publicConfiguration.GetValue<string>("$public.AppSettings:OtlpUrl");
-});
 builder.Services.AddMasaIdentity(options =>
 {
     options.Environment = "environment";
     options.UserName = "name";
     options.UserId = "sub";
+    options.Mapping(nameof(MasaUser.CurrentTeamId), IdentityClaimConsts.CURRENT_TEAM);
+    options.Mapping(nameof(MasaUser.StaffId), IdentityClaimConsts.STAFF);
+    options.Mapping(nameof(MasaUser.Account), IdentityClaimConsts.ACCOUNT);
 });
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(options =>
@@ -44,7 +49,7 @@ builder.Services.AddAuthentication(options =>
 .AddJwtBearer("Bearer", options =>
 {
     //todo dcc
-    options.Authority = publicConfiguration.GetValue<string>("$public.AppSettings:IdentityServerUrl");
+    options.Authority = identityServerUrl;
     options.RequireHttpsMetadata = false;
     //options.Audience = "";
     options.TokenValidationParameters.ValidateAudience = false;
@@ -61,11 +66,22 @@ builder.Services.AddAutoInject(assemblies);
 builder.Services.AddScoped<INotificationSender, McNotificationSender>();
 builder.Services.AddSequentialGuidGenerator();
 builder.Services.AddI18n(Path.Combine("Assets", "I18n"));
-var redisOptions = publicConfiguration.GetSection("$public.RedisConfig").Get<RedisConfigurationOptions>();
-builder.Services.AddAuthClient(publicConfiguration.GetValue<string>("$public.AppSettings:AuthClient:Url"), redisOptions);
-builder.Services.AddTscClient(publicConfiguration.GetValue<string>("$public.AppSettings:TscClient:Url"));
-builder.Services.AddMcClient(publicConfiguration.GetValue<string>("$public.AppSettings:McClient:Url"));
-builder.Services.AddSchedulerClient(publicConfiguration.GetValue<string>("$public.AppSettings:SchedulerClient:Url"));
+var redisOptions = new RedisConfigurationOptions
+{
+    Servers = new List<RedisServerOptions> {
+        new RedisServerOptions()
+        {
+            Host= masaStackConfig.RedisModel.RedisHost,
+            Port=   masaStackConfig.RedisModel.RedisPort
+        }
+    },
+    DefaultDatabase = masaStackConfig.RedisModel.RedisDb,
+    Password = masaStackConfig.RedisModel.RedisPassword
+};
+builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
+builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
+builder.Services.AddMcClient(masaStackConfig.GetMcServiceDomain());
+builder.Services.AddSchedulerClient(masaStackConfig.GetSchedulerServiceDomain());
 builder.Services.AddRulesEngine(rulesEngineOptions =>
 {
     rulesEngineOptions.UseMicrosoftRulesEngine();
@@ -103,12 +119,12 @@ var app = builder.Services
     .AddValidatorsFromAssemblies(assemblies)
     .AddMasaDbContext<AlertDbContext>(builder =>
     {
-        builder.UseSqlServer();
+        builder.UseSqlServer(masaStackConfig.GetConnectionString("alert"));
         builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddMasaDbContext<AlertQueryContext>(builder =>
     {
-        builder.UseSqlServer();
+        builder.UseSqlServer(masaStackConfig.GetConnectionString("alert"));
         builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddScoped<IAlertQueryContext, AlertQueryContext>()
@@ -118,6 +134,7 @@ var app = builder.Services
         .UseIntegrationEventBus<IntegrationEventLogService>(options => options.UseDapr().UseEventLog<AlertDbContext>())
         .UseEventBus(eventBusBuilder =>
         {
+            eventBusBuilder.UseMiddleware(typeof(DisabledCommandMiddleware<>));
             eventBusBuilder.UseMiddleware(typeof(ValidatorMiddleware<>));
         })
         .UseIsolationUoW<AlertDbContext>(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"), null)

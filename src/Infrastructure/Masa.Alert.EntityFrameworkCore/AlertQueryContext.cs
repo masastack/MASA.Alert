@@ -1,5 +1,9 @@
-﻿namespace Masa.Alert.EntityFrameworkCore;
+﻿// Copyright (c) MASA Stack All rights reserved.
+// Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+namespace Masa.Alert.EntityFrameworkCore;
+
+[ConnectionStringName("QueryConnection")]
 public class AlertQueryContext : MasaDbContext<AlertQueryContext>, IAlertQueryContext
 {
     public IQueryable<AlarmRuleQueryModel> AlarmRuleQueries => Set<AlarmRuleQueryModel>().AsQueryable();
