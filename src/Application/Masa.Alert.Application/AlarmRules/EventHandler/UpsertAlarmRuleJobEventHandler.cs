@@ -1,9 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.StackSdks.Config;
-using Masa.Contrib.StackSdks.Config;
-
 namespace Masa.Alert.Application.AlarmRules.EventHandler;
 
 public class UpsertAlarmRuleJobEventHandler
