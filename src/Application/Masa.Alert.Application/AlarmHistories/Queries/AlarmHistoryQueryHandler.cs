@@ -96,7 +96,7 @@ public class AlarmHistoryQueryHandler
     private async Task FillAlarmHistoryDtos(List<AlarmHistoryDto> dtos)
     {
         var userIds = dtos.Where(x => x.Handle.Handler != default).Select(x => x.Handle.Handler).Distinct().ToArray();
-        var userInfos = await _authClient.UserService.GetUsersAsync(userIds);
+        var userInfos = await _authClient.UserService.GetListByIdsAsync(userIds);
         foreach (var item in dtos)
         {
             item.Handle.HandlerName = userInfos.FirstOrDefault(x => x.Id == item.Handle.Handler)?.StaffDislpayName ?? string.Empty;

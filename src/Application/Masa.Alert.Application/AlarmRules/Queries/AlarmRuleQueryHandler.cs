@@ -19,7 +19,7 @@ public class AlarmRuleQueryHandler
     [EventHandler]
     public async Task GetAsync(GetAlarmRuleQuery query)
     {
-        var entity = await _context.AlarmRuleQueries.Include(x=>x.Items).Include(x => x.LogMonitorItems).Include(x => x.MetricMonitorItems).FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
+        var entity = await _context.AlarmRuleQueries.Include(x => x.Items).Include(x => x.LogMonitorItems).Include(x => x.MetricMonitorItems).FirstOrDefaultAsync(x => x.Id == query.AlarmRuleId);
 
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
@@ -31,7 +31,7 @@ public class AlarmRuleQueryHandler
     {
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
-        var resultList = await _context.AlarmRuleQueries.Include(x=>x.MetricMonitorItems).GetPaginatedListAsync(condition, new()
+        var resultList = await _context.AlarmRuleQueries.Include(x => x.MetricMonitorItems).GetPaginatedListAsync(condition, new()
         {
             Page = options.Page,
             PageSize = options.PageSize,
@@ -71,7 +71,7 @@ public class AlarmRuleQueryHandler
     private async Task FillAlarmRuleDtos(List<AlarmRuleDto> dtos)
     {
         var modifierUserIds = dtos.Where(x => x.Modifier != default).Select(x => x.Modifier).Distinct().ToArray();
-        var userInfos = await _authClient.UserService.GetUsersAsync(modifierUserIds);
+        var userInfos = await _authClient.UserService.GetListByIdsAsync(modifierUserIds);
         foreach (var item in dtos)
         {
             item.ModifierName = userInfos.FirstOrDefault(x => x.Id == item.Modifier)?.StaffDislpayName ?? string.Empty;
