@@ -47,8 +47,8 @@ public partial class UserAutoComplete : AdminCompontentBase
 
     private async Task InitUsers()
     {
-        var list = await AuthClient.UserService.GetUsersAsync(Value.ToArray());
-        Users = list.Select(x => new UserSelectModel(x.Id, x.Name, x.DisplayName, x.Account, x.PhoneNumber, x.Email, x.Avatar)).ToList();
+        var list = await AuthClient.UserService.GetListByIdsAsync(Value.ToArray());
+        Users = list.Select(x => new UserSelectModel(x.Id, x.Name ?? string.Empty, x.DisplayName, x.Account, x.PhoneNumber ?? string.Empty, x.Email ?? string.Empty, x.Avatar)).ToList();
         StateHasChanged();
     }
 
