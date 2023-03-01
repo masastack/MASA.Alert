@@ -67,7 +67,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
         var dto = await AlarmRuleService.GetAsync(_entityId) ?? new();
         _model = dto.Adapt<AlarmRuleUpsertViewModel>();
 
-        InitNames(_model.MetricMonitorItems.Select(x=>x.Aggregation.Name).ToList());
+        InitNames(_model.MetricMonitorItems.Select(x => x.Aggregation.Name).ToList());
 
         foreach (var item in _model.MetricMonitorItems)
         {
@@ -121,7 +121,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
         }
         else
         {
-            await PopupService.ToastErrorAsync(T("CronExpressionInvalid"));
+            await PopupService.EnqueueSnackbarAsync(T("CronExpressionInvalid"), AlertTypes.Error);
         }
     }
 

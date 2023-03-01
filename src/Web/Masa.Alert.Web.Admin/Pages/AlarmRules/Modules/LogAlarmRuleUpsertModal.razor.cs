@@ -111,7 +111,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         }
         else
         {
-            await PopupService.ToastErrorAsync(T("CronExpressionInvalid"));
+            await PopupService.EnqueueSnackbarAsync(T("CronExpressionInvalid"), AlertTypes.Error);
         }
     }
 

@@ -100,7 +100,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
         catch (Exception ex)
         {
             Loading = false;
-            await PopupService.AlertAsync(ex.Message, AlertTypes.Error);
+            await PopupService.EnqueueSnackbarAsync(ex.Message, AlertTypes.Error);
             return;
         }
 
