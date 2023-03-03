@@ -151,6 +151,10 @@ app.UseMasaExceptionHandler(opt =>
         {
             context.ToResult(validationException.Errors.Select(err => err.ToString()).FirstOrDefault()!);
         }
+        else if (context.Exception is UserStatusException userStatusException)
+        {
+            context.ToResult(userStatusException.GetLocalizedMessage(), 293);
+        }
     };
 });
 
@@ -164,6 +168,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<CurrentUserCheckMiddleware>();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapSubscribeHandler();

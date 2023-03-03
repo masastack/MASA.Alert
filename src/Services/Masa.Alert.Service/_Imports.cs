@@ -49,3 +49,8 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Microsoft.OpenApi.Models;
 global using Masa.Utils.Configuration.Json;
+global using Masa.BuildingBlocks.Caching;
+global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Model;
+global using Masa.Alert.Infrastructure.Constants;
+global using Masa.Alert.Service.Admin.Infrastructure.Extensions;
+global using Masa.Contrib.StackSdks.Auth.Model;

@@ -1,5 +1,7 @@
 {
   "AlarmRule": "告警规则",
   "AlarmHistory": "告警历史",
-  "CurrentUser": "当前用户"
+  "CurrentUser": "当前用户",
+  "UserNotExist": "当前user不存在",
+  "UserFrozen": "当前用户已被冻结"
 }
