@@ -12,7 +12,7 @@
     </span>
 </div>
 <div class="d-flex align-center justify-center">
-    <MECharts @ref="_chart" Option="_option" Width="Width" Height="Height">
+    <MECharts @ref="_chart" Option="_option" Width="Width" Height="Height" OnClick="HandleOnClick">
     </MECharts>
 </div>
 
@@ -27,6 +27,9 @@
     [Parameter]
     public AlarmHistoryViewModel AlarmHistory { get; set; } = new();
 
+    [Parameter]
+    public EventCallback<AlarmRuleRecordListViewModel> OnClick { get; set; }
+
     protected override string? PageName { get; set; } = "AlarmChartBlock";
 
     private AlarmHistoryViewModel _alarmHistory = new();
@@ -38,6 +41,8 @@
     private object _option = new();
 
     private MECharts? _chart { get; set; }
+
+    private List<AlarmRuleRecordListViewModel> _alarmRuleRecords { get; set; } = new();
 
     AlarmRuleRecordService AlarmRuleRecordService => AlertCaller.AlarmRuleRecordService;
 
@@ -58,10 +63,12 @@
             {
                 AlarmHistoryId = AlarmHistory.Id,
                 StartTime = _startTime,
-                EndTime = _endTime
+                EndTime = _endTime,
+                IsTrigger = true
             };
 
         var dtos = (await AlarmRuleRecordService.GetListAsync(queryParam));
+
         var paginatedList = dtos?.Adapt<PaginatedListDto<AlarmRuleRecordListViewModel>>() ?? new();
         var records = paginatedList.Result;
 
@@ -89,7 +96,7 @@
             var data = records.Select(x =>
             {
                 var val = x.AggregateResult.FirstOrDefault(x => x.Key == key).Value;
-                return new List<long> { new DateTimeOffset(x.CreationTime).Add(JsInitVariables.TimezoneOffset).ToUnixTimeMilliseconds(), val };
+                return new List<object> { new DateTimeOffset(x.CreationTime).Add(JsInitVariables.TimezoneOffset).ToUnixTimeMilliseconds(), val, x.Id };
             });
 
             return new
@@ -116,6 +123,8 @@
         });
 
         RenderCharts(legendData, seriesData);
+
+        _alarmRuleRecords = records ?? new();
     }
 
     private void RenderCharts(List<string> legendData, object seriesData)
@@ -159,5 +168,16 @@
             },
             Series = seriesData
         };
+    }
+
+    private async Task HandleOnClick(EChartsEventArgs args)
+    {
+        var recordId = Guid.Parse(args.Value[2].ToString());
+        var record = _alarmRuleRecords.FirstOrDefault(x => x.Id == recordId);
+
+        if (record != null && OnClick.HasDelegate)
+        {
+            await OnClick.InvokeAsync(record);
+        }
     }
 }

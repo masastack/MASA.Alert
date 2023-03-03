@@ -37,6 +37,7 @@ public class AlarmRuleRecordQueryHandler
         Expression<Func<AlarmRuleRecordQueryModel, bool>> condition = x => x.AlarmHistoryId == options.AlarmHistoryId;
         condition = condition.And(options.StartTime.HasValue, x => x.CreationTime >= options.StartTime);
         condition = condition.And(options.EndTime.HasValue, x => x.CreationTime <= options.EndTime);
+        condition = condition.And(options.IsTrigger.HasValue, x => x.IsTrigger == options.IsTrigger);
         return await Task.FromResult(condition); ;
     }
 }
