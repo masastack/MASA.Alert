@@ -11,9 +11,8 @@ public class AlarmRuleService : ServiceBase
     }
 
     [RoutePattern("", StartWithBaseUri = true, HttpMethod = "Get")]
-    public async Task<PaginatedListDto<AlarmRuleDto>> GetListAsync(IEventBus eventbus, [FromQuery] DateTime? startTime, [FromQuery] DateTime? endTime, [FromQuery] AlarmRuleTypes type = default, [FromQuery] AlarmRuleSearchTimeTypes timeType = default, [FromQuery] string projectIdentity = "", [FromQuery] string appIdentity = "", [FromQuery] string metricId = "", [FromQuery] string filter = "", [FromQuery] string sorting = "", [FromQuery] int page = 1, [FromQuery] int pagesize = 10)
+    public async Task<PaginatedListDto<AlarmRuleDto>> GetListAsync(IEventBus eventbus, GetAlarmRuleInputDto inputDto)
     {
-        var inputDto = new GetAlarmRuleInputDto(filter, type, timeType, startTime, endTime, projectIdentity, appIdentity, metricId, sorting, page, pagesize);
         var query = new GetAlarmRuleListQuery(inputDto);
         await eventbus.PublishAsync(query);
         return query.Result;

@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Infrastructure.Ddd.Application.Contracts.Dtos;
 
-public class PaginatedOptionsDto
+public class PaginatedOptionsDto<T> : FromUri<T>
 {
     public int Page { get; set; } = 1;
 

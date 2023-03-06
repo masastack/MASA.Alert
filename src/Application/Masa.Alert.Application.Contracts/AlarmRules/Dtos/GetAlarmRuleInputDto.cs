@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 
-public class GetAlarmRuleInputDto : PaginatedOptionsDto
+public class GetAlarmRuleInputDto : PaginatedOptionsDto<GetAlarmRuleInputDto>
 {
     public string Filter { get; set; } = default!;
 
