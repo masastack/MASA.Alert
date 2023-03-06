@@ -11,9 +11,8 @@ public class WebHookService : ServiceBase
     }
 
     [RoutePattern("", StartWithBaseUri = true, HttpMethod = "Get")]
-    public async Task<PaginatedListDto<WebHookDto>> GetListAsync(IEventBus eventbus, [FromQuery] string filter = "", [FromQuery] string sorting = "", [FromQuery] int page = 1, [FromQuery] int pagesize = 10)
+    public async Task<PaginatedListDto<WebHookDto>> GetListAsync(IEventBus eventbus, GetWebHookInputDto inputDto)
     {
-        var inputDto = new GetWebHookInputDto(filter, sorting, page, pagesize);
         var query = new GetWebHookListQuery(inputDto);
         await eventbus.PublishAsync(query);
         return query.Result;
