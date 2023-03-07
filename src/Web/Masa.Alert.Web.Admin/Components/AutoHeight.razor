@@ -1,6 +1,8 @@
-﻿<div class="full-height flex-column @Class">
+﻿@using BlazorComponent.JSInterop
+@inject IJSRuntime jsRuntime
+<div class="full-height flex-column @Class">
     @HeaderContent
-    <div class="flex-height-auto @AutoClass @(Overflow?"overflow-y pr-4":"")">
+    <div @ref="divRef" class="flex-height-auto @AutoClass @(Overflow?"overflow-y pr-4":"")">
         @AutoHeightContent
     </div>
     @FooterContent
@@ -25,4 +27,21 @@
 
     [Parameter]
     public bool Overflow { get; set; }
+
+    private ElementReference divRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        await ScrollToTop();
+    }
+
+    private async Task ScrollToTop()
+    {
+        if (Overflow)
+        {
+            await jsRuntime.ScrollTo(divRef, 0);
+        }
+    }
 }

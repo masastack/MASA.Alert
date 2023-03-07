@@ -12,4 +12,10 @@ public partial class AlarmHistoryDetail : AdminCompontentBase
 
     [Parameter]
     public bool HandleStatusShow { get; set; }
+
+    private void HandleOnClick(AlarmRuleRecordListViewModel record)
+    {
+        AlarmHistory.RuleResultItems = record.RuleResultItems;
+        AlarmHistory.LastAlarmTime = record.CreationTime.ToLocalTime();
+    }
 }

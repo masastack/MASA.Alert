@@ -3,13 +3,15 @@
 
 namespace Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 
-public class GetAlarmRuleRecordInputDto : PaginatedOptionsDto
+public class GetAlarmRuleRecordInputDto : PaginatedOptionsDto<GetAlarmRuleRecordInputDto>
 {
     public Guid AlarmHistoryId { get; set; }
 
     public DateTime? StartTime { get; set; }
 
     public DateTime? EndTime { get; set; }
+
+    public bool? IsTrigger { get; set; }
 
     public GetAlarmRuleRecordInputDto()
     {
@@ -19,10 +21,11 @@ public class GetAlarmRuleRecordInputDto : PaginatedOptionsDto
     {
     }
 
-    public GetAlarmRuleRecordInputDto(Guid alarmHistoryId, DateTime? startTime, DateTime? endTime, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
+    public GetAlarmRuleRecordInputDto(Guid alarmHistoryId, DateTime? startTime, DateTime? endTime, bool? isTrigger, string sorting, int page, int pageSize) : base(sorting, page, pageSize)
     {
         AlarmHistoryId = alarmHistoryId;
         StartTime = startTime;
         EndTime = endTime;
+        IsTrigger = isTrigger;
     }
 }
