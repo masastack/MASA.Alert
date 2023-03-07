@@ -54,3 +54,4 @@ global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Model;
 global using Masa.Alert.Infrastructure.Constants;
 global using Masa.Alert.Service.Admin.Infrastructure.Extensions;
 global using Masa.Contrib.StackSdks.Auth.Model;
+global using Masa.Contrib.StackSdks.Middleware;

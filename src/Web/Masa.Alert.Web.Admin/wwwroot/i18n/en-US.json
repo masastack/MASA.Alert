@@ -21,5 +21,6 @@
   "Permission.Delete": "Delete",
   "EditIn": "Edit in",
   "EnabledConfirmation": "Are you sure you want to enable?",
-  "DisableConfirmation": "Are you sure you want to disable?"
+  "DisableConfirmation": "Are you sure you want to disable?",
+  "CronExpressionNotHasNextRunTime": "Cannot calculate the next run time from this expression"
 }

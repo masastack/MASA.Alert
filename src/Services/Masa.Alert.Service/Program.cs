@@ -87,7 +87,7 @@ builder.Services.AddRulesEngine(rulesEngineOptions =>
     rulesEngineOptions.UseMicrosoftRulesEngine();
 });
 
-var app = builder.Services
+builder.Services
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
@@ -134,14 +134,18 @@ var app = builder.Services
         .UseIntegrationEventBus<IntegrationEventLogService>(options => options.UseDapr().UseEventLog<AlertDbContext>())
         .UseEventBus(eventBusBuilder =>
         {
-            eventBusBuilder.UseMiddleware(typeof(DisabledCommandMiddleware<>));
             eventBusBuilder.UseMiddleware(typeof(ValidatorMiddleware<>));
         })
         .UseIsolationUoW<AlertDbContext>(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"), null)
         .UseRepository<AlertDbContext>();
-    })
-    .AddServices(builder);
+    });
+builder.Services.AddStackMiddleware();
 await builder.MigrateDbContextAsync<AlertDbContext>();
+
+var app = builder.AddServices(options =>
+{
+    options.MapHttpMethodsForUnmatched = new string[] { "Post" };
+});
 app.UseI18n();
 app.UseMasaExceptionHandler(opt =>
 {
@@ -169,6 +173,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<CurrentUserCheckMiddleware>();
+app.UseAddStackMiddleware();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapSubscribeHandler();
