@@ -9,16 +9,19 @@ public class UpsertAlarmRuleJobEventHandler
     private readonly IAlarmRuleRepository _repository;
     private readonly IMasaStackConfig _masaStackConfig;
     private readonly ILogger<UpsertAlarmRuleJobEventHandler> _logger;
+    private readonly IUserContext _userContext;
 
     public UpsertAlarmRuleJobEventHandler(ISchedulerClient schedulerClient
         , IAlarmRuleRepository repository
         , IMasaStackConfig masaStackConfig
-        , ILogger<UpsertAlarmRuleJobEventHandler> logger)
+        , ILogger<UpsertAlarmRuleJobEventHandler> logger
+        , IUserContext userContext)
     {
         _schedulerClient = schedulerClient;
         _repository = repository;
         _logger = logger;
         _masaStackConfig = masaStackConfig;
+        _userContext = userContext;
     }
 
     [EventHandler]
@@ -33,7 +36,7 @@ public class UpsertAlarmRuleJobEventHandler
             Name = alarmRule.DisplayName,
             JobType = JobTypes.Http,
             CronExpression = alarmRule.GetCronExpression(),
-            OperatorId = alarmRule.Modifier,
+            OperatorId = _userContext.GetUserId<Guid>(),
             HttpConfig = new SchedulerJobHttpConfig
             {
                 HttpMethod = HttpMethods.POST,
