@@ -43,6 +43,7 @@
 		<PackageReference Include="Masa.Contrib.StackSdks.Mc" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Scheduler" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Config" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Middleware" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
 		  <PrivateAssets>all</PrivateAssets>
@@ -57,6 +58,7 @@
 	  <ProjectReference Include="..\..\Contracts\Masa.Alert.Contracts.Admin\Masa.Alert.Contracts.Admin.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.EntityFrameworkCore\Masa.Alert.EntityFrameworkCore.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Common\Masa.Alert.Infrastructure.Common.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Constants\Masa.Alert.Infrastructure.Constants.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Ddd.Application.Contracts\Masa.Alert.Infrastructure.Ddd.Application.Contracts.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.EntityFrameworkCore\Masa.Alert.Infrastructure.EntityFrameworkCore.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Middleware\Masa.Alert.Infrastructure.Middleware.csproj" />

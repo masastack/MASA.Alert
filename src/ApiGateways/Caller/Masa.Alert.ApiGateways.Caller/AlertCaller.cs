@@ -10,6 +10,7 @@ public class AlertCaller : DaprCallerBase
     private AlarmHistoryService? _alarmHistoryService;
     private AlarmRuleRecordService? _alarmRuleRecordService;
     private WebHookService? _webHookService;
+    private JwtTokenValidator _jwtTokenValidator;
 
     public AlarmRuleService AlarmRuleService => _alarmRuleService ??= new(Caller);
     public AlarmHistoryService AlarmHistoryService => _alarmHistoryService ??= new(Caller);
@@ -17,15 +18,22 @@ public class AlertCaller : DaprCallerBase
     public WebHookService WebHookService => _webHookService ??= new(Caller);
 
     public AlertCaller(IServiceProvider serviceProvider
-        , TokenProvider tokenProvider)
+        , TokenProvider tokenProvider
+        , JwtTokenValidator jwtTokenValidator)
         : base(serviceProvider)
     {
         _tokenProvider = tokenProvider;
+        _jwtTokenValidator = jwtTokenValidator;
     }
 
     protected override async Task ConfigHttpRequestMessageAsync(HttpRequestMessage requestMessage)
     {
-        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenProvider.AccessToken);
+        if (!string.IsNullOrWhiteSpace(_tokenProvider.AccessToken))
+        {
+            await _jwtTokenValidator.ValidateAccessTokenAsync(_tokenProvider);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenProvider.AccessToken);
+        }
+
         await base.ConfigHttpRequestMessageAsync(requestMessage);
     }
 }

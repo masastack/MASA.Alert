@@ -11,5 +11,7 @@
     <PackageReference Include="Masa.BuildingBlocks.Dispatcher.Events" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+	<PackageReference Include="Masa.Utils.Extensions.DependencyInjection" Version="$(MasaFrameworkPackageVersion)" />
+	<PackageReference Include="Masa.Contrib.StackSdks.Auth" Version="$(MasaFrameworkPackageVersion)" />
   </ItemGroup>
 </Project>

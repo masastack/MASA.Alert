@@ -1,5 +1,6 @@
 {
   "AlarmRule": "AlarmRule",
   "AlarmHistory": "AlarmHistory",
-  "CurrentUser": "CurrentUser"
+  "CurrentUser": "CurrentUser",
+  "UserNotExist": "The current user does not exist"
 }
