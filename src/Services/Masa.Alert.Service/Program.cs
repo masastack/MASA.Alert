@@ -180,13 +180,4 @@ app.UseEndpoints(endpoints =>
 });
 app.UseHttpsRedirection();
 
-app.MapHealthChecks("/hc", new HealthCheckOptions()
-{
-    Predicate = _ => true,
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
-app.MapHealthChecks("/liveness", new HealthCheckOptions
-{
-    Predicate = r => r.Name.Contains("self")
-});
 app.Run();
