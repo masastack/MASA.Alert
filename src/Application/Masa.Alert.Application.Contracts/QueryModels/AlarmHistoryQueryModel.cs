@@ -7,7 +7,7 @@ public class AlarmHistoryQueryModel : ISoftDelete
 {
     public Guid Id { get; set; }
 
-    public Guid AlarmRuleId { get; set; }
+    public Guid? AlarmRuleId { get; set; }
 
     public AlarmRuleQueryModel AlarmRule { get; set; } = new();
 

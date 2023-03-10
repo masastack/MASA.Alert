@@ -73,6 +73,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
     {
         _model = new();
         _handle = new();
+        _isThirdParty = false;
         _tab = T("AlarmDetails");
     }
 
