@@ -38,7 +38,7 @@ public class PostWebHookEventHandler
         catch (Exception ex)
         {
             _logger.LogError(ex, "Post webHook fail");
-            throw new UserFriendlyException(ex.Message);
+            throw new UserFriendlyException(errorCode: UserFriendlyExceptionCodes.POST_WEB_HOOK_FAIL);
         }
     }
 }

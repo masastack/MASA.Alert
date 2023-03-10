@@ -52,3 +52,4 @@ global using Masa.Contrib.Dispatcher.Events;
 global using Masa.Contrib.StackSdks.Config;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Logging;
+global using Masa.Alert.Infrastructure.Constants;
