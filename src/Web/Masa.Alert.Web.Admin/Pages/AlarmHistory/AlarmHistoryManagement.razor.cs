@@ -59,7 +59,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
                 new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount)},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime)},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.HandleStatus)), Value = nameof(AlarmHistoryListViewModel.HandleStatus), Sortable = false},
-                new() { Text = T("Action"), Value = "Action"},
+                new() { Text = T("Action"), Value = "Action",Sortable=false},
             };
         }
         else if (_queryParam.SearchType == AlarmHistorySearchTypes.Processed)
@@ -72,7 +72,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
                 new() { Text = T(nameof(AlarmHistoryListViewModel.FirstAlarmTime)), Value = nameof(AlarmHistoryListViewModel.FirstAlarmTime)},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount)},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime)},
-                new() { Text = T("Action"), Value = "Action"},
+                new() { Text = T("Action"), Value = "Action",Sortable=false},
             };
         }
         else
@@ -84,7 +84,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
                 new() { Text = T(nameof(AlarmHistoryListViewModel.FirstAlarmTime)), Value = nameof(AlarmHistoryListViewModel.FirstAlarmTime)},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount)},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime)},
-                new() { Text = T("Action"), Value = "Action"},
+                new() { Text = T("Action"), Value = "Action",Sortable=false},
             };
         }
     }
