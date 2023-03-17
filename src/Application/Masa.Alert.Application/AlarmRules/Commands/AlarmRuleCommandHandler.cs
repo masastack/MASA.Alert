@@ -28,6 +28,8 @@ public class AlarmRuleCommandHandler
 
         var checkFrequency = createCommand.AlarmRule.CheckFrequency.Adapt<CheckFrequency>();
         await _domainService.CreateAsync(entity, createCommand.AlarmRule.IsEnabled, checkFrequency);
+
+        createCommand.Result = entity.Id;
     }
 
     [EventHandler]

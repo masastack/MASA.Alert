@@ -25,10 +25,11 @@ public class AlarmRuleService : ServiceBase
         return query.Result;
     }
 
-    public async Task CreateAsync(IEventBus eventBus, [FromBody] AlarmRuleUpsertDto inputDto)
+    public async Task<Guid> CreateAsync(IEventBus eventBus, [FromBody] AlarmRuleUpsertDto inputDto)
     {
         var command = new CreateAlarmRuleCommand(inputDto);
         await eventBus.PublishAsync(command);
+        return command.Result;
     }
 
     public async Task UpdateAsync(IEventBus eventBus, Guid id, [FromBody] AlarmRuleUpsertDto inputDto)
