@@ -57,7 +57,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();
 
 builder.Services.AddScoped<TokenProvider>();
-builder.AddMasaStackComponentsForServer();
+builder.AddMasaStackComponentsForServer("wwwroot/i18n");
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
 builder.Services.AddCallers();
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
