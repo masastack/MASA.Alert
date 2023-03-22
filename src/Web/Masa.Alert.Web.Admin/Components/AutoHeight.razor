@@ -34,7 +34,10 @@
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        await ScrollToTop();
+        if (firstRender)
+        {
+            await ScrollToTop();
+        }
     }
 
     private async Task ScrollToTop()
