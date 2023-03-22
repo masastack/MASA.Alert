@@ -2,9 +2,9 @@
 @page "/alarmHistory"
 @page "/alarmHistory/{AlarmRuleId}"
 <PageTitle>@T("AlarmHistory")</PageTitle>
-<AutoHeight Overflow>
+<AutoHeight>
     <HeaderContent>
-        <div class="d-flex">
+        <div class="d-flex d-alarm-history">
             <SLabeledRadioGroup @bind-Value="@_queryParam.SearchType" ActiveClass="fill-background" Class="white" Dense OnChange="HandleSearchTypeChange">
                 @foreach (var item in Enum.GetValues<AlarmHistorySearchTypes>())
                 {
@@ -91,7 +91,12 @@
     </HeaderContent>
     <AutoHeightContent>
         <MCard Class="@(!advanced?"page-content mt-6":"page-content-advanced mt-6")">
-            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" ItemsPerPage="_queryParam.PageSize" OnOptionsUpdate="HandleOnOptionsUpdate" HideDefaultFooter FixedRight Class="d-flex full-height flex-column">
+            <SDataTable Headers="_headers" Items="_entities.Result" TItem="AlarmHistoryListViewModel" 
+                    ItemsPerPage="_queryParam.PageSize" 
+                    OnOptionsUpdate="HandleOnOptionsUpdate" 
+                    HideDefaultFooter 
+                    FixedRight 
+                    Class="d-flex full-height flex-column" item>
                 <HeaderColContent Context="header">
                     <span class="text-btn">@header.Text</span>
                 </HeaderColContent>
@@ -113,11 +118,12 @@
                             </MListItem>
                             break;
                         case "Action":
-                            @if (context.Item.HandleStatus == AlarmHistoryHandleStatuses.Pending && _queryParam.SearchType!= AlarmHistorySearchTypes.NoNotice)
+                            @if (context.Item.HandleStatus == AlarmHistoryHandleStatuses.Pending && _queryParam.SearchType != AlarmHistorySearchTypes.NoNotice)
                             {
                                 <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("Handle"))" OnClick="()=>_handleAlarmModal?.OpenModalAsync(context.Item)!">mdi-account-check</SIcon>
                             }
-                            else{
+                            else
+                            {
                                 <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("View"))" OnClick="()=>_detailModal?.OpenModalAsync(context.Item)!">mdi-eye</SIcon>
                             }
                             break;

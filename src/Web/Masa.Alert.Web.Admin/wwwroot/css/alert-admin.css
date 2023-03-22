@@ -438,8 +438,8 @@
     margin-bottom: auto !important;
 }
 
-.m-input__control{
-    flex:1;
+.m-input__control {
+    flex: 1;
 }
 
 .remind--text {
@@ -450,17 +450,19 @@
     height: 36px;
 }
 
-.default-tab button.m-btn--active {
-    color: #323D6F;
-    font-weight: 700;
-    font-size: 14px;
-}
-.default-tab button {
-    color: #7681AB;
-    font-size: 14px;
-    font-weight: 500;
-}
-.flex-none{
+    .default-tab button.m-btn--active {
+        color: #323D6F;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .default-tab button {
+        color: #7681AB;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+.flex-none {
     flex: none;
 }
 
@@ -486,9 +488,9 @@
     opacity: 1 !important;
 }
 
-.m-input--is-disabled .m-input--selection-controls__input {
-    opacity: 0.6;
-}
+    .m-input--is-disabled .m-input--selection-controls__input {
+        opacity: 0.6;
+    }
 
 .fit-width {
     width: fit-content;
@@ -498,14 +500,64 @@
     padding-right: 0 !important;
 }
 
-.button-divider .m-divider__content {
-    margin-right: 0;
-    padding-right:0;
-}
+    .button-divider .m-divider__content {
+        margin-right: 0;
+        padding-right: 0;
+    }
 
 .m-application .bgray {
     border: 1px solid #E9EDF7;
 }
-.m-application .bgray .clock-size{
-    font-size: 1rem;
+
+    .m-application .bgray .clock-size {
+        font-size: 1rem;
+    }
+
+.masa-main .m-card {
+    border-radius: 12px !important;
+}
+
+.m-application--is-ltr .m-border__left.green {
+    width: 2px !important;
+    background: #05CD99 !important;
+    flex: none !important;
+    order: 0 !important;
+    align-self: stretch !important;
+    flex-grow: 0 !important;
+}
+
+.m-divider__wrapper.m-divider__wrapper--has-content.m-divider__wrapper--right {
+    padding: 8px 0px 0px 0px !important;
+}
+
+.theme--light.m-data-table > .m-data-table__wrapper > table > tbody > tr:hover:not(.m-data-table__expanded__content):not(.m-data-table__empty-wrapper) {
+    background-color: #F6F8FD !important;
+    border-radius: 2px !important;
+}
+
+.theme--light.m-data-table {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+    .theme--light.m-data-table ::-webkit-scrollbar {
+        height: 0px!important;
+    }
+
+.m-data-table > .m-data-table__wrapper.fixed-right > table > thead > tr > th:last-child::after {
+    width: 0px !important;
+    content: "" !important;
+}
+
+.m-data-table > .m-data-table__wrapper.fixed-right > table > tbody > tr > td:last-child::after {
+    width: 0px !important;
+    content: "" !important;
+}
+
+.m-application .mdi-radiobox-marked {
+    font-size: 36px !important;
+}
+
+.m-application .mdi-radiobox-blank {
+    font-size: 36px !important;
 }
