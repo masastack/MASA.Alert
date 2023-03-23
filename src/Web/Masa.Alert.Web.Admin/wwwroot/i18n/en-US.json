@@ -16,7 +16,7 @@
   "Item": "Item",
   "All": "All",
   "RowsPerPage": "Rows per page",
-  "Permission.Create": "Create",
+  "Permission.New": "New",
   "Permission.Edit": "Edit",
   "Permission.Delete": "Delete",
   "EditIn": "Edit in",
