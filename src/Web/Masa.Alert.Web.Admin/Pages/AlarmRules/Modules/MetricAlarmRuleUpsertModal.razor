@@ -64,7 +64,7 @@
                                 </MRow>*@
                                 @foreach (var item in _model.MetricMonitorItems)
                                 {
-                                    <MBorder Color="green" Width="4" Class="rounded-tl-lg rounded-bl-lg" Style="height:95%;">
+                                    <MBorder Color="green" Width="4" Class="rounded-tl-lg rounded-bl-lg" Style="height: calc(100% - 16px);">
                                         <MSwitch @bind-Value="item.IsExpression" Inset Class="label mt-9 ml-3" Label="@T("Expression")">
                                         </MSwitch>
                                         @if (item.IsExpression)
