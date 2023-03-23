@@ -4,7 +4,7 @@
 <PageTitle>@T("AlarmHistory")</PageTitle>
 <AutoHeight>
     <HeaderContent>
-        <div class="d-flex d-alarm-history">
+        <div class="d-flex">
             <SLabeledRadioGroup @bind-Value="@_queryParam.SearchType" ActiveClass="fill-background" Class="white" Dense OnChange="HandleSearchTypeChange">
                 @foreach (var item in Enum.GetValues<AlarmHistorySearchTypes>())
                 {
