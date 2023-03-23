@@ -58,8 +58,8 @@
             },
             Grid = new
             {
-                Left = "6%",
-                Right = "6%",
+                Left = 0,
+                Right = 10,
                 Top = 40,
                 Bottom = 30,
                 ContainLabel = true
@@ -67,7 +67,22 @@
             XAxis = new
             {
                 Type = "time",
-                BoundaryGap = false
+                BoundaryGap = false,
+                AxisLine = new
+                {
+                    LineStyle = new
+                    {
+                        Color = "#E4E8F3"
+                    }
+                },
+                AxisLabel = new
+                {
+                    Color = "#A3AED0"
+                },
+                AxisTick = new
+                {
+                    Show = false
+                }
             },
             YAxis = new
             {

@@ -38,7 +38,7 @@
         <div class="d-flex justify-space-between mb-6">
             @if (item.IsExpression)
             {
-                <div class="fill-background regular--text body2 rounded-2 px-4 py-2 flex-grow-1 mr-6">
+                <div class="fill-background regular--text body2 rounded-r-lg px-4 py-2 flex-grow-1 mr-6">
                     @item.Expression
                 </div>
                 <div class="emphasis2--text body2">
@@ -96,7 +96,7 @@
         <div class="regular--text body2 flex-grow-1 pr-6">
             @if (!string.IsNullOrEmpty(item.AlarmRuleItem.Expression))
             {
-                <MBorder Color="@(item.IsValid?"green":"regular3--text")" Width="4"><JsonPre Class="rounded-4 fill-background" @bind-Value="@item.AlarmRuleItem.Expression"></JsonPre></MBorder>
+                <MBorder Color="@(item.IsValid?"green":"regular3--text")" Width="4" Class="rounded-tl-sm rounded-bl-sm"><JsonPre Class="rounded-r-lg fill-background" @bind-Value="@item.AlarmRuleItem.Expression"></JsonPre></MBorder>
             }
         </div>
         <div class="body2 emphasis2--text">@T("TriggerRules")</div>

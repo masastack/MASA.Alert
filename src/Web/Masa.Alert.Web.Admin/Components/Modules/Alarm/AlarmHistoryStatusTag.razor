@@ -1,5 +1,5 @@
 ﻿@inherits AdminCompontentBase
-<span class="@($"px-2 py-1 btn {Class}")" style="border-radius: 18px">@T(Value.ToString())</span>
+<span class="@($"px-3 py-2 btn {Class}")" style="border-radius: 18px">@T(Value.ToString())</span>
 @code {
     [Parameter]
     public AlarmHistoryHandleStatuses Value { get; set; }
@@ -14,7 +14,10 @@
                 Class = "warning--text warning-lighten";
                 break;
             case AlarmHistoryHandleStatuses.InProcess:
-                Class = "yellow-lighten";
+                Class = "yellow-clicked--text yellow-lighten";
+                break;
+            case AlarmHistoryHandleStatuses.ProcessingCompleted:
+                Class = "green--text green-lighten";
                 break;
             default:
                 break;

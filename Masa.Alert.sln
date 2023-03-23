@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.Application.Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.NotificationService.Provider.Mc", "src\Infrastructure\Masa.Alert.NotificationService.Provider.Mc\Masa.Alert.NotificationService.Provider.Mc.csproj", "{603BEBB8-1563-4286-9CF1-73BC07749AD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Alert.Infrastructure.Constants", "src\Infrastructure\Masa.Alert.Infrastructure.Constants\Masa.Alert.Infrastructure.Constants.csproj", "{AFF871EB-653E-460D-9A64-C1944E8F76B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Alert.Infrastructure.Constants", "src\Infrastructure\Masa.Alert.Infrastructure.Constants\Masa.Alert.Infrastructure.Constants.csproj", "{AFF871EB-653E-460D-9A64-C1944E8F76B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

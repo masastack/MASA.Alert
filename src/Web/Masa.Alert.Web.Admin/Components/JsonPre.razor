@@ -1,9 +1,12 @@
 ﻿@inherits AdminCompontentBase
-<pre class="json-pre overflow-y @Class" @ref="Ref"></pre>
+<pre class="json-pre @(Overflow?"overflow-y":"") @Class" @ref="Ref"></pre>
 
 @code {
     [Parameter]
     public string Value { get; set; } = default!;
+
+    [Parameter]
+    public bool Overflow { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
