@@ -3,7 +3,7 @@
     <MTimeline Dense=false>
         @foreach (var item in _statusCommits)
         {
-            <MTimelineItem Color="fill" Small FillDot Right>
+            <MTimelineItem Color="fill" Small FillDot Right Class="align-center">
                 <OppositeContent>
                     <div class="@($"btn mr-n7 {GetStatusColor(item.Status)}")">@T(item.Status.ToString())</div>
                 </OppositeContent>

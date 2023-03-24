@@ -3,7 +3,7 @@
 <PageTitle>@T("AlarmRule")</PageTitle>
 <AutoHeight Overflow>
     <HeaderContent>
-        <div class="d-flex">
+        <div class="d-flex mb-6">
             <SLabeledRadioGroup @bind-Value="@_queryParam.Type" ActiveClass="fill-background" Class="white" Dense OnChange="RefreshAsync">
                 @foreach (var item in Enum.GetValues<AlarmRuleTypes>())
                 {
@@ -25,15 +25,15 @@
         </div>
         @if (advanced)
         {
-            <MRow Class="@($"mt-6 flex-none {(isAnimate?"animate__animated":"")} {(!advanced?"animate__fadeOut":"animate__fadeIn")}")" NoGutters Style="width:110%">
-                <MCol Md="1" Class="d-inline-flex">
-                    <SSelect Small @bind-Value="@_queryParam.TimeType"
+            <MRow Class="@($"mb-6 flex-none {(isAnimate?"animate__animated":"")} {(!advanced?"animate__fadeOut":"animate__fadeIn")}")" NoGutters Style="width:110%">
+            <MCol Md="1" Class="d-inline-flex">
+                <SSelect Small @bind-Value="@_queryParam.TimeType"
                          Items="Enum.GetValues<AlarmRuleSearchTimeTypes>().ToList()"
                          Label="@T(nameof(_queryParam.TimeType))"
                          ItemText="e => T(e==default?string.Empty:e.ToString())"
                          ItemValue="e=> e"
                          BackgroundColor="white"
-                         Clearable
+                              Clearable
                          TItem="AlarmRuleSearchTimeTypes"
                          TItemValue="AlarmRuleSearchTimeTypes"
                          TValue="AlarmRuleSearchTimeTypes"
@@ -41,11 +41,11 @@
                          OnSelectedItemUpdate="RefreshAsync"
                          OnClearClick="RefreshAsync">
                     </SSelect>
-                </MCol>
-                <MCol Md="3" Class="ml-6">
+                    </MCol>
+                    <MCol Md="3" Class="ml-6">
                     <DateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" OnChange="RefreshAsync" />
-                </MCol>
-                @if (_queryParam.Type == AlarmRuleTypes.Log)
+                    </MCol>
+                    @if (_queryParam.Type == AlarmRuleTypes.Log)
                 {
                     <MCol Md="1" Class="ml-6">
                         <SSelect Small @bind-Value="@_queryParam.ProjectIdentity"
@@ -54,7 +54,7 @@
                          ItemText="e => e.Text"
                          ItemValue="e=> e.Value"
                          BackgroundColor="white"
-                         Clearable
+                                  Clearable
                          TItem="SelectItem<string>"
                          TItemValue="string"
                          TValue="string"
@@ -62,7 +62,7 @@
                          OnSelectedItemUpdate="HandleProjectChange"
                          OnClearClick="RefreshAsync">
                         </SSelect>
-                    </MCol>
+                        </MCol>
                     <MCol Md="1" Class="ml-6">
                         <SSelect Small @bind-Value="@_queryParam.AppIdentity"
                          Items="_appsItems"
@@ -70,7 +70,7 @@
                          ItemText="e => e.Text"
                          ItemValue="e=> e.Value"
                          BackgroundColor="white"
-                         Clearable
+                                  Clearable
                          TItem="SelectItem<string>"
                          TItemValue="string"
                          TValue="string"
@@ -78,7 +78,7 @@
                          OnSelectedItemUpdate="RefreshAsync"
                          OnClearClick="RefreshAsync">
                         </SSelect>
-                    </MCol>
+                        </MCol>
                 }
                 @if (_queryParam.Type == AlarmRuleTypes.Metric)
                 {
@@ -89,7 +89,7 @@
                          ItemText="e => e.Text"
                          ItemValue="e=> e.Value"
                          BackgroundColor="white"
-                         Clearable
+                                  Clearable
                          TItem="SelectItem<string>"
                          TItemValue="string"
                          TValue="string"
@@ -97,13 +97,13 @@
                          OnSelectedItemUpdate="RefreshAsync"
                          OnClearClick="RefreshAsync">
                         </SSelect>
-                    </MCol>
+                        </MCol>
                 }
             </MRow>
         }
     </HeaderContent>
     <AutoHeightContent>
-        <MRow Class="mt-6" Style="height:0px">
+        <MRow Style="height:0px">
             @foreach (var _entitie in _entities.Result)
             {
                 <MCol Md="3" Class="pa-2">
@@ -113,7 +113,7 @@
         </MRow>
     </AutoHeightContent>
     <FooterContent>
-        <div class="mt-sm-3">
+        <div class="mt-3">
             <SPagination Page="_queryParam.Page" PageSize="_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
         </div>
     </FooterContent>

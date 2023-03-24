@@ -109,7 +109,7 @@
                 {
                     Color = new
                     {
-                        ColorStops = new[] { new { Offset = 0, Color = "#ECE8FF" }, new { Offset = 1, Color = "rgba(236, 232, 255, 0)" } },
+                        ColorStops = new[] { new { Offset = 0, Color = "#FDCDC5" }, new { Offset = 1, Color = "rgba(255, 236, 232, 0)" } },
                         Global = false,
                         Type = "linear",
                         X = 0,
@@ -143,8 +143,8 @@
             },
             Grid = new
             {
-                Left = "6%",
-                Right = "6%",
+                Left = 0,
+                Right = 10,
                 Top = 40,
                 Bottom = 30,
                 ContainLabel = true
@@ -152,7 +152,22 @@
             XAxis = new
             {
                 Type = "time",
-                BoundaryGap = false
+                BoundaryGap = false,
+                AxisLine = new
+                {
+                    LineStyle = new
+                    {
+                        Color = "#FF5252"
+                    }
+                },
+                AxisLabel = new
+                {
+                    Color = "#A3AED0"
+                },
+                AxisTick = new
+                {
+                    Show = false
+                }
             },
             YAxis = new
             {

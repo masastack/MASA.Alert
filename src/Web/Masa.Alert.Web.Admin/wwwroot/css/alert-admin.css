@@ -561,3 +561,11 @@
 .m-application .mdi-radiobox-blank {
     font-size: 36px !important;
 }
+
+.masa-main .search {
+    width: 300px;
+}
+
+.m-tooltip--attached {
+    display: none !important;
+}

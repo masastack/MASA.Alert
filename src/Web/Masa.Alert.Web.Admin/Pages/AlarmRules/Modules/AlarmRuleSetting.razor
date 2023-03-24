@@ -5,7 +5,7 @@
 <DefaultTitle>@T("TriggerRules")</DefaultTitle>
 @foreach (var item in Model.Items)
 {
-    <MBorder Color="green" Width="4" Class="rounded-tl-lg rounded-bl-lg" Style="height:95%;">
+    <MBorder Color="green" Width="4" Class="rounded-tl-sm rounded-bl-sm" Style="height:95%;">
         <div class="ml-4">
             <STextarea @bind-Value="item.Expression" Label="@T(nameof(item.Expression))" Outlined HideDetails="@("auto")">
                 <AppendOuterContent>

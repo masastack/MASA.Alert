@@ -6,15 +6,15 @@
             <AutoHeight>
                 <AutoHeightContent>
                     <div class="d-flex">
-                        <PCopyableText Class="d-flex justify-space-between full-width">
+                        <PCopyableText Class="d-flex justify-space-between full-width" TooltipClass="display-none">
                             <span class="emphasis--text h8">@_model.SecretKey</span>
                         </PCopyableText>
                         <MSpacer></MSpacer>
                         <SIcon Size=20 Color="emphasis2" Class="ml-6" OnClick="HandleRefresh">mdi-refresh</SIcon>
                     </div>
-                    <STextField Class="mt-12" @bind-Value="_model.DisplayName" Label="@T(nameof(_model.DisplayName))"></STextField>
-                    <STextField Class="mt-12" @bind-Value="_model.Url" Label="@T(nameof(_model.Url))"></STextField>
-                    <MTextarea Class="mt-12" @bind-Value="_model.Description"
+                    <STextField Class="mt-9" @bind-Value="_model.DisplayName" Label="@T(nameof(_model.DisplayName))"></STextField>
+                    <STextField Class="mt-9" @bind-Value="_model.Url" Label="@T(nameof(_model.Url))"></STextField>
+                    <MTextarea Class="mt-9" @bind-Value="_model.Description"
                                Label="@T(nameof(_model.Description))"
                                Outlined
                                HideDetails="@("auto")">
