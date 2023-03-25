@@ -8,7 +8,7 @@
                 <DefaultPageTitle>@T("WebHook")</DefaultPageTitle>
                 <MSpacer></MSpacer>
                 <OutlinedSearchTextField Class="flex-none" @bind-Value="_queryParam.Filter" BackgroundColor="white" Clearable OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
-                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _upsertModal?.OpenModalAsync()!">@T("Permission.New")</SButton>
+                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _upsertModal?.OpenModalAsync()!">@T("Permission.Add")</SButton>
             </div>
         </div>
     </HeaderContent>
