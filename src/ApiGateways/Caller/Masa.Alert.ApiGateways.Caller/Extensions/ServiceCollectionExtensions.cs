@@ -1,27 +1,24 @@
-﻿namespace Masa.Alert.ApiGateways.Caller.Extensions;
+﻿using Masa.BuildingBlocks.Service.Caller;
+using Microsoft.AspNetCore.Builder.Extensions;
+
+namespace Masa.Alert.ApiGateways.Caller.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddCallers(this IServiceCollection services)
+    public static IServiceCollection AddAlertApiGateways(this IServiceCollection services, Action<AlertApiOptions> configure)
     {
-        var assemblies = new List<Assembly>
-        {
-            typeof(ServiceCollectionExtensions).Assembly
-        };
-        services.AddAutoRegistrationCaller(assemblies.ToArray());
-        return services;
-    }
-
-    public static IServiceCollection AddJwtTokenValidator(this IServiceCollection services,
-        Action<JwtTokenValidatorOptions> jwtTokenValidatorOptions, Action<ClientRefreshTokenOptions> clientRefreshTokenOptions)
-    {
-        var options = new JwtTokenValidatorOptions();
-        jwtTokenValidatorOptions.Invoke(options);
+        services.AddSingleton<IResponseMessage, AlertResponseMessage>();
+        var options = new AlertApiOptions();
+        configure.Invoke(options);
         services.AddSingleton(options);
-        var refreshTokenOptions = new ClientRefreshTokenOptions();
-        clientRefreshTokenOptions.Invoke(refreshTokenOptions);
-        services.AddSingleton(refreshTokenOptions);
-        services.AddScoped<JwtTokenValidator>();
+        services.AddStackCaller(Assembly.Load("Masa.Alert.ApiGateways.Caller"), jwtTokenValidatorOptions =>
+        {
+            jwtTokenValidatorOptions.AuthorityEndpoint = options.AuthorityEndpoint;
+        }, clientRefreshTokenOptions =>
+        {
+            clientRefreshTokenOptions.ClientId = options.ClientId;
+            clientRefreshTokenOptions.ClientSecret = options.ClientSecret;
+        });
         return services;
     }
 }

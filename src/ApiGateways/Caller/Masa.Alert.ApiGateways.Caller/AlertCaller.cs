@@ -1,39 +1,27 @@
-﻿namespace Masa.Alert.ApiGateways.Caller;
+﻿using Microsoft.AspNetCore.Builder.Extensions;
 
-public class AlertCaller : DaprCallerBase
+namespace Masa.Alert.ApiGateways.Caller;
+
+public class AlertCaller : StackHttpClientCaller
 {
-    TokenProvider _tokenProvider;
-
-    protected override string AppId { get; set; } = App.APP;
+    private const string DEFAULT_SCHEME = "Bearer";
 
     private AlarmRuleService? _alarmRuleService;
     private AlarmHistoryService? _alarmHistoryService;
     private AlarmRuleRecordService? _alarmRuleRecordService;
     private WebHookService? _webHookService;
     private JwtTokenValidator _jwtTokenValidator;
+    AlertApiOptions _options;
 
     public AlarmRuleService AlarmRuleService => _alarmRuleService ??= new(Caller);
     public AlarmHistoryService AlarmHistoryService => _alarmHistoryService ??= new(Caller);
     public AlarmRuleRecordService AlarmRuleRecordService => _alarmRuleRecordService ??= new(Caller);
     public WebHookService WebHookService => _webHookService ??= new(Caller);
+    protected override string BaseAddress { get; set; }
 
-    public AlertCaller(IServiceProvider serviceProvider
-        , TokenProvider tokenProvider
-        , JwtTokenValidator jwtTokenValidator)
-        : base(serviceProvider)
+    public AlertCaller(AlertApiOptions options)
     {
-        _tokenProvider = tokenProvider;
-        _jwtTokenValidator = jwtTokenValidator;
-    }
-
-    protected override async Task ConfigHttpRequestMessageAsync(HttpRequestMessage requestMessage)
-    {
-        if (!string.IsNullOrWhiteSpace(_tokenProvider.AccessToken))
-        {
-            await _jwtTokenValidator.ValidateAccessTokenAsync(_tokenProvider);
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenProvider.AccessToken);
-        }
-
-        await base.ConfigHttpRequestMessageAsync(requestMessage);
+        BaseAddress = options.AlertServiceBaseAddress;
+        _options = options;
     }
 }

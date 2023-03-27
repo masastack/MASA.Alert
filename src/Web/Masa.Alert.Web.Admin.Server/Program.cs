@@ -1,10 +1,16 @@
 // Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
+
+ValidatorOptions.Global.LanguageManager = new MasaLanguageManager();
+GlobalValidationOptions.SetDefaultCulture("zh-CN");
 
 await builder.Services.AddMasaStackConfigAsync();
 var masaStackConfig = builder.Services.GetMasaStackConfig();
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
@@ -16,6 +22,7 @@ if (builder.Environment.IsDevelopment())
 }
 
 builder.Services.AddDaprClient();
+
 builder.WebHost.UseKestrel(option =>
 {
     option.ConfigureHttpsDefaults(options =>
@@ -53,37 +60,43 @@ builder.Services.AddResponseCompression(opts =>
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
 });
+var authBaseAddress = masaStackConfig.GetAuthServiceDomain();
+var alertBaseAddress = builder.Services.GetMasaConfiguration().ConfigurationApi.GetDefault().GetValue<string>("AppSettings:AlertClient:Url");
+
+if (string.IsNullOrEmpty(alertBaseAddress))
+{
+    alertBaseAddress = masaStackConfig.GetAlertServiceDomain();
+}
+
+builder.AddMasaStackComponentsForServer("wwwroot/i18n", authBaseAddress);
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();
-
-builder.Services.AddScoped<TokenProvider>();
-builder.AddMasaStackComponentsForServer("wwwroot/i18n");
-var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
-builder.Services.AddCallers();
-builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
-
-builder.Services.AddMapster();
-var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
-TypeAdapterConfig.GlobalSettings.Scan(assemblies);
-builder.Services.AddAutoInject(assemblies);
+//builder.Services.AddScoped<TokenProvider>();
+var assemblies = Assembly.GetExecutingAssembly();
+TypeAdapterConfig.GlobalSettings.Scan(assemblies, Assembly.Load("Masa.Alert.Contracts.Admin"));
 MasaOpenIdConnectOptions masaOpenIdConnectOptions = new MasaOpenIdConnectOptions
 {
     Authority = masaStackConfig.GetSsoDomain(),
     ClientId = masaStackConfig.GetWebId(MasaStackConstant.ALERT),
     Scopes = new List<string> { "offline_access" }
-}; ;
+};
 
 IdentityModelEventSource.ShowPII = true;
 builder.Services.AddMasaOpenIdConnect(masaOpenIdConnectOptions);
 
-builder.Services.AddJwtTokenValidator(options =>
+builder.Services.AddAlertApiGateways(option =>
 {
-    options.AuthorityEndpoint = masaOpenIdConnectOptions.Authority;
-}, refreshTokenOptions =>
-{
-    refreshTokenOptions.ClientId = masaOpenIdConnectOptions.ClientId;
-    refreshTokenOptions.ClientSecret = masaOpenIdConnectOptions.ClientSecret;
+    option.AlertServiceBaseAddress = alertBaseAddress;
+    option.AuthorityEndpoint = masaOpenIdConnectOptions.Authority;
+    option.ClientId = masaOpenIdConnectOptions.ClientId;
+    option.ClientSecret = masaOpenIdConnectOptions.ClientSecret;
 });
+
+builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
+builder.Services.AddMapster();
+
+builder.Services.AddAutoInject(assemblies);
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 

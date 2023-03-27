@@ -1,6 +1,10 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using System.Security.Cryptography.X509Certificates;
+using Masa.Alert.Service.Admin.Infrastructure.Caller;
+using Masa.Alert.Service.Admin.Infrastructure.Notifications.SignalR.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
 
 await builder.Services.AddMasaStackConfigAsync();
@@ -55,13 +59,11 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters.ValidateAudience = false;
     options.MapInboundClaims = false;
 });
-builder.Services.AddHealthChecks()
-    .AddCheck("self", () => HealthCheckResult.Healthy("A healthy result."))
-    .AddDbContextCheck<AlertDbContext>();
 
 builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
+builder.Services.AddScoped<ITokenGenerater, TokenGenerater>();
 builder.Services.AddAutoInject(assemblies);
 builder.Services.AddScoped<INotificationSender, McNotificationSender>();
 builder.Services.AddSequentialGuidGenerator();
@@ -146,10 +148,14 @@ var app = builder.AddServices(options =>
 {
     options.MapHttpMethodsForUnmatched = new string[] { "Post" };
 });
+
+app.UseMiddleware<AdminSafeListMiddleware>(publicConfiguration.GetSection("$public.WhiteListOptions").Get<WhiteListOptions>());
+
 app.UseI18n();
+
 app.UseMasaExceptionHandler(opt =>
 {
-    opt.ExceptionHandler += context =>
+    /*opt.ExceptionHandler += context =>
     {
         if (context.Exception is ValidationException validationException)
         {
@@ -159,21 +165,25 @@ app.UseMasaExceptionHandler(opt =>
         {
             context.ToResult(userStatusException.GetLocalizedMessage(), 293);
         }
+    };*/
+    opt.ExceptionHandler = context =>
+    {
+        if (context.Exception is ValidationException validationException)
+        {
+            context.ToResult(validationException.Errors.Select(err => err.ToString()).FirstOrDefault()!);
+        }
     };
 });
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsProduction())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<CurrentUserCheckMiddleware>();
-app.UseAddStackMiddleware();
+app.UseStackMiddleware();
+app.UseCloudEvents();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapSubscribeHandler();
