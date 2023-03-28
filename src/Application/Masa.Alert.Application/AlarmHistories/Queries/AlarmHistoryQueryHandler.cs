@@ -35,7 +35,6 @@ public class AlarmHistoryQueryHandler
     [EventHandler]
     public async Task GetListAsync(GetAlarmHistoryListQuery query)
     {
-        using var dataFilter = _dataFilter.Disable<ISoftDelete>();
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
         var sorting = options.ApplySorting();

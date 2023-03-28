@@ -82,22 +82,19 @@
                 }
                 @if (_queryParam.Type == AlarmRuleTypes.Metric)
                 {
-                    <MCol Md="1" Class="ml-6">
-                        <SSelect Small @bind-Value="@_queryParam.MetricId"
-                         Items="_metricItems"
-                         Label="@T(nameof(_queryParam.MetricId))"
-                         ItemText="e => e.Text"
-                         ItemValue="e=> e.Value"
-                         BackgroundColor="white"
-                                  Clearable
-                         TItem="SelectItem<string>"
-                         TItemValue="string"
-                         TValue="string"
-                         Class="fill-card body2"
-                         OnSelectedItemUpdate="RefreshAsync"
-                         OnClearClick="RefreshAsync">
-                        </SSelect>
-                        </MCol>
+                    <MCol Md="2" Class="ml-6">
+                        <SAutoComplete Items="_metricItems" @bind-Value="_queryParam.MetricId"
+                               Label="@T("Metric")"
+                               ItemText="v => v.Text"
+                               ItemValue="v=> v.Value"
+                               BackgroundColor="white"
+                               Dense
+                               Small
+                               Outlined
+                               OnChange="async(string v)=> await RefreshAsync()"
+                               Class="fill-card body2">
+                        </SAutoComplete>
+                    </MCol>
                 }
             </MRow>
         }
