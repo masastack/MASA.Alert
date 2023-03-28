@@ -70,7 +70,7 @@
 </MRow>
 <MRow NoGutters Class="mt-9">
     <MCol Md="4">
-        <SSelect @bind-Value="Model.SilenceCycle.Type" Items="Enum.GetValues<SilenceCycleTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(Model.SilenceCycle))">
+        <SSelect @bind-Value="Model.SilenceCycle.Type" Items="Enum.GetValues<SilenceCycleTypes>().ToList()" ItemText="e => T(e==default?string.Empty:e.ToString())" ItemValue="e=> e" Label="@T(nameof(Model.SilenceCycle))" Clearable>        
             <AppendOuterContent>
                 <DefaultTooltip Class="ml-2 mt-n1" Tooltip="@T("SilenceCycleTip")" />
             </AppendOuterContent>

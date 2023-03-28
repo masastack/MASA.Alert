@@ -264,5 +264,6 @@
   "IdentityValidator": "{0}必须是数字、字母或中划线和点",
   "InclusiveBetweenValidator": "{0}需要在[{1 }- {2}]之间",
   "LengthValidator": "{0}的长度必须在 {1} 到 {2} 字符",
-  "IsInEnumValidator": "请选择正确的{0}"
+  "IsInEnumValidator": "请选择正确的{0}",
+  "Metric": "指标"
 }
