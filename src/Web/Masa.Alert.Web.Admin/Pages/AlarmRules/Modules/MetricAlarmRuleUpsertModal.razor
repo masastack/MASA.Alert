@@ -89,6 +89,9 @@
                                                            Filter="(item,search,value) => true"
                                                            OnSearchInputUpdate="QueryNames"
                                                            OnSelectedItemUpdate="(v)=>HandleMetricNameChange(v,item)">
+                                                           <AppendOuterContent>
+                                                                <DefaultTooltip Class="ml-3 my-auto" Tooltip="@item.Aggregation.Name" />
+                                                           </AppendOuterContent>                                                       
                                                     </SAutoComplete>
                                                 </MCol>
                                                 <MCol Md="3">
