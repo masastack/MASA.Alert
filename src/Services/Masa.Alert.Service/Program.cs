@@ -4,6 +4,7 @@
 using System.Security.Cryptography.X509Certificates;
 using Masa.Alert.Service.Admin.Infrastructure.Caller;
 using Masa.Alert.Service.Admin.Infrastructure.Notifications.SignalR.Hubs;
+using Masa.BuildingBlocks.Data.UoW;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -138,7 +139,7 @@ builder.Services
         {
             eventBusBuilder.UseMiddleware(typeof(ValidatorMiddleware<>));
         })
-        .UseIsolationUoW<AlertDbContext>(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"), null)
+        .UseUoW<AlertDbContext>()
         .UseRepository<AlertDbContext>();
     });
 builder.Services.AddStackMiddleware();

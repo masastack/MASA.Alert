@@ -1,6 +1,8 @@
-﻿namespace Masa.Alert.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class AlertDbContext : IsolationDbContext
+namespace Masa.Alert.EntityFrameworkCore;
+
+public class AlertDbContext : MasaDbContext<AlertDbContext>
 {
     public AlertDbContext(MasaDbContextOptions<AlertDbContext> options) : base(options)
     {
