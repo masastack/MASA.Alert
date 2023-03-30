@@ -69,9 +69,7 @@ builder.AddMasaStackComponentsForServer("wwwroot/i18n", authBaseAddress);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();
-//builder.Services.AddScoped<TokenProvider>();
-var assemblies = Assembly.GetExecutingAssembly();
-TypeAdapterConfig.GlobalSettings.Scan(assemblies, Assembly.Load("Masa.Alert.Contracts.Admin"));
+
 MasaOpenIdConnectOptions masaOpenIdConnectOptions = new MasaOpenIdConnectOptions
 {
     Authority = masaStackConfig.GetSsoDomain(),
@@ -91,7 +89,8 @@ builder.Services.AddAlertApiGateways(option =>
 
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
 builder.Services.AddMapster();
-
+var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
+TypeAdapterConfig.GlobalSettings.Scan(assemblies);
 builder.Services.AddAutoInject(assemblies);
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
