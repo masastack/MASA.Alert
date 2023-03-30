@@ -1,11 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using System.Security.Cryptography.X509Certificates;
-using Masa.Alert.Service.Admin.Infrastructure.Caller;
-using Masa.Alert.Service.Admin.Infrastructure.Notifications.SignalR.Hubs;
-using Masa.BuildingBlocks.Data.UoW;
-
 var builder = WebApplication.CreateBuilder(args);
 
 await builder.Services.AddMasaStackConfigAsync();

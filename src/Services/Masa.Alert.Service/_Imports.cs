@@ -57,4 +57,6 @@ global using Masa.Contrib.StackSdks.Auth.Model;
 global using Masa.Contrib.StackSdks.Middleware;
 global using Google.Api;
 global using Microsoft.AspNetCore.SignalR;
-global using Masa.Contrib.StackSdks.Caller; 
+global using Masa.Contrib.StackSdks.Caller;
+global using Masa.Alert.Service.Admin.Infrastructure.Caller;
+global using Masa.BuildingBlocks.Data.UoW;
