@@ -100,18 +100,28 @@
         }
     </HeaderContent>
     <AutoHeightContent>
-        <MRow Style="height:0px">
-            @foreach (var _entitie in _entities.Result)
+        <MRow NoGutters Style="height:0;">
+            @if (!_showEmptyPlaceholder)
             {
-                <MCol Md="3" Class="pa-2">
-                    <AlarmRuleCard Height="_entitie.Type==AlarmRuleTypes.Metric?200:168" AlarmRule="_entitie" OnEdit="()=> HandleEdit(_entitie)" />
-                </MCol>
+                foreach (var _entitie in _entities.Result)
+                {
+                    <MCol Md="3" Class="pa-2">
+                        <AlarmRuleCard Height="_entitie.Type==AlarmRuleTypes.Metric?200:168" AlarmRule="_entitie" OnEdit="()=> HandleEdit(_entitie)" />
+                    </MCol>
+                }                
+            }
+            else
+            {
+                <SEmptyPlaceholder Height="calc(100vh - 200px);" />
             }
         </MRow>
     </AutoHeightContent>
     <FooterContent>
         <div class="mt-3">
-            <SPagination Page="_queryParam.Page" PageSize="_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+            @if (!_showEmptyPlaceholder)
+            {
+                <SPagination Page="_queryParam.Page" PageSize="_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+            }
         </div>
     </FooterContent>
 </AutoHeight>

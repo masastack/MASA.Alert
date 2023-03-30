@@ -26,6 +26,8 @@ public partial class AlarmRuleManagement : AdminCompontentBase
 
     protected override string? PageName { get; set; } = "AlarmRuleBlock";
 
+    private bool _showEmptyPlaceholder = false;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -46,6 +48,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private async Task LoadData()
     {
         Loading = true;
+        _showEmptyPlaceholder = false;
 
         var queryParam = _queryParam.Adapt<GetAlarmRuleInputDto>() ?? new();
         queryParam.StartTime = queryParam.StartTime?.Add(JsInitVariables.TimezoneOffset);
@@ -54,6 +57,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         var dtos = (await AlarmRuleService.GetListAsync(queryParam));
         _entities = dtos?.Adapt<PaginatedListDto<AlarmRuleListViewModel>>() ?? new();
         Loading = false;
+        _showEmptyPlaceholder = !_entities.Result.Any();
         StateHasChanged();
     }
 
