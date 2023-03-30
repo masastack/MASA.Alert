@@ -11,7 +11,9 @@ else
     if(Width != null)
     {
         <div class="body regular--text" style="@($"max-width:{(Width.IsT0? Width.AsT0 : Width.AsT1 + "px")}")">
-            @Value
+            <EllipsisText>
+                @Value
+            </EllipsisText>
         </div>
     }
     else
