@@ -28,3 +28,6 @@ global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using System.Security.Cryptography;
 global using Masa.Contrib.StackSdks.Caller;
+global using System.Net;
+global using Microsoft.AspNetCore.Builder.Extensions;
+global using AuthenticationService = Masa.Contrib.StackSdks.Caller.AuthenticationService;

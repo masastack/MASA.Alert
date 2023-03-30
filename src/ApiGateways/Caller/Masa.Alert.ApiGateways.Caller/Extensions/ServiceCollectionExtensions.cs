@@ -1,7 +1,4 @@
-﻿using Masa.BuildingBlocks.Service.Caller;
-using Microsoft.AspNetCore.Builder.Extensions;
-
-namespace Masa.Alert.ApiGateways.Caller.Extensions;
+﻿namespace Masa.Alert.ApiGateways.Caller.Extensions;
 
 public static class ServiceCollectionExtensions
 {

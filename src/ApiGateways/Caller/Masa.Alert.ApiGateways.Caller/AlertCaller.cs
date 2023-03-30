@@ -1,27 +1,21 @@
-﻿using Microsoft.AspNetCore.Builder.Extensions;
+﻿namespace Masa.Alert.ApiGateways.Caller;
 
-namespace Masa.Alert.ApiGateways.Caller;
-
-public class AlertCaller : StackHttpClientCaller
+public class AlertCaller : DaprCallerBase
 {
-    private const string DEFAULT_SCHEME = "Bearer";
-
     private AlarmRuleService? _alarmRuleService;
     private AlarmHistoryService? _alarmHistoryService;
     private AlarmRuleRecordService? _alarmRuleRecordService;
     private WebHookService? _webHookService;
-    private JwtTokenValidator _jwtTokenValidator;
-    AlertApiOptions _options;
 
     public AlarmRuleService AlarmRuleService => _alarmRuleService ??= new(Caller);
     public AlarmHistoryService AlarmHistoryService => _alarmHistoryService ??= new(Caller);
     public AlarmRuleRecordService AlarmRuleRecordService => _alarmRuleRecordService ??= new(Caller);
     public WebHookService WebHookService => _webHookService ??= new(Caller);
-    protected override string BaseAddress { get; set; }
+    protected override string AppId { get; set; } = App.APP;
 
-    public AlertCaller(AlertApiOptions options)
+    protected override void UseDaprPost(MasaDaprClientBuilder masaDaprClientBuilder)
     {
-        BaseAddress = options.AlertServiceBaseAddress;
-        _options = options;
+        masaDaprClientBuilder.UseAuthentication((IServiceProvider serviceProvider) => new AuthenticationService(serviceProvider.GetRequiredService<TokenProvider>(), serviceProvider.GetRequiredService<JwtTokenValidator>()));
+        base.UseDaprPost(masaDaprClientBuilder);
     }
 }

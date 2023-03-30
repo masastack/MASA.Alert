@@ -35,7 +35,9 @@ builder.Services.AddObservable(builder.Logging, () =>
     {
         ServiceNameSpace = builder.Environment.EnvironmentName,
         ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetWebId(MasaStackConstant.ALERT)
+        ServiceName = masaStackConfig.GetWebId(MasaStackConstant.ALERT),
+        Layer = masaStackConfig.Namespace,
+        ServiceInstanceId = builder.Configuration.GetValue<string>("HOSTNAME")
     };
 }, () =>
 {
@@ -78,7 +80,6 @@ builder.Services.AddMasaOpenIdConnect(masaOpenIdConnectOptions);
 
 builder.Services.AddAlertApiGateways(option =>
 {
-    option.AlertServiceBaseAddress = alertBaseAddress;
     option.AuthorityEndpoint = masaOpenIdConnectOptions.Authority;
     option.ClientId = masaOpenIdConnectOptions.ClientId;
     option.ClientSecret = masaOpenIdConnectOptions.ClientSecret;

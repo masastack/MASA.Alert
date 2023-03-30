@@ -12,7 +12,9 @@ builder.Services.AddObservable(builder.Logging, () =>
     {
         ServiceNameSpace = builder.Environment.EnvironmentName,
         ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetServerId(MasaStackConstant.ALERT)
+        ServiceName = masaStackConfig.GetServerId(MasaStackConstant.ALERT),
+        Layer = masaStackConfig.Namespace,
+        ServiceInstanceId = builder.Configuration.GetValue<string>("HOSTNAME")
     };
 }, () =>
 {
@@ -59,7 +61,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
-builder.Services.AddScoped<ITokenGenerater, TokenGenerater>();
 builder.Services.AddAutoInject(assemblies);
 builder.Services.AddScoped<INotificationSender, McNotificationSender>();
 builder.Services.AddSequentialGuidGenerator();
