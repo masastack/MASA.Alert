@@ -12,7 +12,9 @@ builder.Services.AddObservable(builder.Logging, () =>
     {
         ServiceNameSpace = builder.Environment.EnvironmentName,
         ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetServerId(MasaStackConstant.ALERT)
+        ServiceName = masaStackConfig.GetServerId(MasaStackConstant.ALERT),
+        Layer = masaStackConfig.Namespace,
+        ServiceInstanceId = builder.Configuration.GetValue<string>("HOSTNAME")
     };
 }, () =>
 {
@@ -55,9 +57,6 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters.ValidateAudience = false;
     options.MapInboundClaims = false;
 });
-builder.Services.AddHealthChecks()
-    .AddCheck("self", () => HealthCheckResult.Healthy("A healthy result."))
-    .AddDbContextCheck<AlertDbContext>();
 
 builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
@@ -136,9 +135,10 @@ builder.Services
         {
             eventBusBuilder.UseMiddleware(typeof(ValidatorMiddleware<>));
         })
-        .UseIsolationUoW<AlertDbContext>(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"), null)
+        .UseUoW<AlertDbContext>()
         .UseRepository<AlertDbContext>();
-    });
+    })
+    .AddIsolation(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"));
 builder.Services.AddStackMiddleware();
 await builder.MigrateDbContextAsync<AlertDbContext>();
 
@@ -146,34 +146,29 @@ var app = builder.AddServices(options =>
 {
     options.MapHttpMethodsForUnmatched = new string[] { "Post" };
 });
+
 app.UseI18n();
+
 app.UseMasaExceptionHandler(opt =>
 {
-    opt.ExceptionHandler += context =>
+    opt.ExceptionHandler = context =>
     {
         if (context.Exception is ValidationException validationException)
         {
             context.ToResult(validationException.Errors.Select(err => err.ToString()).FirstOrDefault()!);
         }
-        else if (context.Exception is UserStatusException userStatusException)
-        {
-            context.ToResult(userStatusException.GetLocalizedMessage(), 293);
-        }
     };
 });
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsProduction())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<CurrentUserCheckMiddleware>();
-app.UseAddStackMiddleware();
+app.UseStackMiddleware();
+app.UseCloudEvents();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapSubscribeHandler();

@@ -17,7 +17,6 @@ global using Masa.BuildingBlocks.Data;
 global using Masa.BuildingBlocks.Data.UoW;
 global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
 global using Masa.Contrib.Ddd.Domain.Repository.EFCore;
-global using Masa.Contrib.Isolation.UoW.EFCore;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.Logging;

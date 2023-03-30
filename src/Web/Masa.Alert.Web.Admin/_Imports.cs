@@ -78,3 +78,5 @@ global using Masa.Alert.Web.Admin.Components;
 global using Newtonsoft.Json.Linq;
 global using System.Text.RegularExpressions;
 global using Masa.Alert.Application.Contracts.QueryModels;
+global using Masa.Contrib.StackSdks.Caller;
+global using Microsoft.IdentityModel.Protocols.OpenIdConnect;

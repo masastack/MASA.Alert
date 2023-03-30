@@ -9,13 +9,6 @@
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..\..</DockerfileContext>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Application\**" />
-	  <Content Remove="Application\**" />
-	  <EmbeddedResource Remove="Application\**" />
-	  <None Remove="Application\**" />
-	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />

@@ -70,11 +70,6 @@ public static class FluentValidationExtensions
         return ruleBuilder.Matches(RegularHelper.IDCARD);
     }
 
-    public static IRuleBuilderOptions<T, string> Url<T>(this IRuleBuilder<T, string> ruleBuilder)
-    {
-        return ruleBuilder.Matches(RegularHelper.URL);
-    }
-
     public static IRuleBuilderOptions<T, string> MinLength<T>(this IRuleBuilder<T, string> ruleBuilder, int minimumLength)
     {
         return ruleBuilder.MinimumLength(minimumLength);
