@@ -65,4 +65,8 @@
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Tsc\Masa.Alert.Infrastructure.Tsc.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.NotificationService.Provider.Mc\Masa.Alert.NotificationService.Provider.Mc.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Infrastructure\Notifications\SignalR\Hubs\" />
+	</ItemGroup>
 </Project>

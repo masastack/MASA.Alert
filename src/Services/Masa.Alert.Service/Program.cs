@@ -1,11 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using System.Security.Cryptography.X509Certificates;
-using Masa.Alert.Service.Admin.Infrastructure.Caller;
-using Masa.Alert.Service.Admin.Infrastructure.Notifications.SignalR.Hubs;
-using Masa.BuildingBlocks.Data.UoW;
-
 var builder = WebApplication.CreateBuilder(args);
 
 await builder.Services.AddMasaStackConfigAsync();
@@ -141,7 +136,8 @@ builder.Services
         })
         .UseUoW<AlertDbContext>()
         .UseRepository<AlertDbContext>();
-    });
+    })
+    .AddIsolation(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"));
 builder.Services.AddStackMiddleware();
 await builder.MigrateDbContextAsync<AlertDbContext>();
 
@@ -150,23 +146,10 @@ var app = builder.AddServices(options =>
     options.MapHttpMethodsForUnmatched = new string[] { "Post" };
 });
 
-app.UseMiddleware<AdminSafeListMiddleware>(publicConfiguration.GetSection("$public.WhiteListOptions").Get<WhiteListOptions>());
-
 app.UseI18n();
 
 app.UseMasaExceptionHandler(opt =>
 {
-    /*opt.ExceptionHandler += context =>
-    {
-        if (context.Exception is ValidationException validationException)
-        {
-            context.ToResult(validationException.Errors.Select(err => err.ToString()).FirstOrDefault()!);
-        }
-        else if (context.Exception is UserStatusException userStatusException)
-        {
-            context.ToResult(userStatusException.GetLocalizedMessage(), 293);
-        }
-    };*/
     opt.ExceptionHandler = context =>
     {
         if (context.Exception is ValidationException validationException)
