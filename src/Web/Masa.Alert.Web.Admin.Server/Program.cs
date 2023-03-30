@@ -21,14 +21,18 @@ if (builder.Environment.IsDevelopment())
 
 builder.Services.AddDaprClient();
 
-builder.WebHost.UseKestrel(option =>
+if (!builder.Environment.IsDevelopment())
 {
-    option.ConfigureHttpsDefaults(options =>
+    builder.WebHost.UseKestrel(option =>
     {
-        options.ServerCertificate = new X509Certificate2(Path.Combine("Certificates", "7348307__lonsid.cn.pfx"), "cqUza0MN");
-        options.CheckCertificateRevocation = false;
+        option.ConfigureHttpsDefaults(options =>
+        {
+            options.ServerCertificate = X509Certificate2.CreateFromPemFile("./ssl/tls.crt", "./ssl/tls.key");
+            options.CheckCertificateRevocation = false;
+        });
     });
-});
+}
+
 builder.Services.AddObservable(builder.Logging, () =>
 {
     return new MasaObservableOptions
