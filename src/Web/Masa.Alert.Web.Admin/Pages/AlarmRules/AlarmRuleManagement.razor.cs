@@ -148,4 +148,14 @@ public partial class AlarmRuleManagement : AdminCompontentBase
 
         _appsItems = (await PmClient.AppService.GetListByProjectIdsAsync(new List<int> { projectId.Value })).Select(x => new SelectItem<string>(x.Identity, x.Name)).ToList();
     }
+
+    private async Task HandleTypeChange()
+    {
+        _queryParam = new(20)
+        {
+            Type = _queryParam.Type
+        };
+
+        await RefreshAsync();
+    }
 }

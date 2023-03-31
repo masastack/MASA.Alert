@@ -4,7 +4,7 @@
 <AutoHeight Overflow>
     <HeaderContent>
         <div class="d-flex mb-6">
-            <SLabeledRadioGroup @bind-Value="@_queryParam.Type" ActiveClass="fill-background" Class="white" Dense OnChange="RefreshAsync">
+            <SLabeledRadioGroup @bind-Value="@_queryParam.Type" ActiveClass="fill-background" Class="white" Dense OnChange="HandleTypeChange">
                 @foreach (var item in Enum.GetValues<AlarmRuleTypes>())
                 {
                     <SLabeledRadio Value="item" Class="px-6">
