@@ -8,7 +8,7 @@
 <div class="d-flex justify-space-between mt-2">
     <span class="body2 regular--text">@AlarmHistory.AlarmRule.AppIdentity</span>
     <span class="body2 regular--text">
-        @AlarmHistory.AlarmRule.DisplayName (@AlarmHistory.AlarmRule.ChartYAxisUnit)
+        @AlarmHistory.AlarmRule.DisplayName  @(!string.IsNullOrEmpty(AlarmHistory.AlarmRule.ChartYAxisUnit) ? $"({AlarmHistory.AlarmRule.ChartYAxisUnit})" : "")
     </span>
 </div>
 <div class="d-flex align-center justify-center">
