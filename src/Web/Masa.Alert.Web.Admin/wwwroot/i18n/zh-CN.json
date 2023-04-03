@@ -135,6 +135,7 @@
   "AlarmRule": "告警规则",
   "AlarmHistory": "告警历史",
   "WebHook": "WebHook",
+  "Receiver": "收件人",
   "InvalidCronExpression": "无效的CRON表达式",
   "CronExpressionNotHasNextRunTime": "您的表达式计算不出下一次运行时间",
   "RunningIntervalTips": "运行时间间隔不能小于30秒",
