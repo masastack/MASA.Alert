@@ -5,7 +5,6 @@ namespace Masa.Alert.Web.Admin;
 
 public abstract class AdminCompontentBase : BDomComponentBase
 {
-    private I18n? _i18n;
     private GlobalConfig? _globalConfig;
     private NavigationManager? _navigationManager;
     private AlertCaller? _alertCaller;
@@ -27,17 +26,7 @@ public abstract class AdminCompontentBase : BDomComponentBase
     public IPopupService PopupService { get; set; } = default!;
 
     [Inject]
-    public I18n I18n
-    {
-        get
-        {
-            return _i18n ?? throw new Exception("please Inject I18n!");
-        }
-        set
-        {
-            _i18n = value;
-        }
-    }
+    public I18n I18n { get; set; } = default!;
 
     [Inject]
     public GlobalConfig GlobalConfig
@@ -68,6 +57,9 @@ public abstract class AdminCompontentBase : BDomComponentBase
     [Inject]
     public JsInitVariables JsInitVariables { get; set; } = default!;
 
+    [CascadingParameter(Name = "Culture")]
+    private string Culture { get; set; } = null!;
+
     public bool Loading
     {
         get => GlobalConfig.Loading;
@@ -85,7 +77,7 @@ public abstract class AdminCompontentBase : BDomComponentBase
     public string T(string key)
     {
         if (string.IsNullOrEmpty(key)) return key;
-        if (PageName is not null) return I18n.T(PageName, key, false) ?? I18n.T(key, false);
+        if (PageName is not null) return I18n.T(PageName, key, false) ?? I18n.T(key, false) ?? key;
         else return I18n.T(key, true);
     }
 
