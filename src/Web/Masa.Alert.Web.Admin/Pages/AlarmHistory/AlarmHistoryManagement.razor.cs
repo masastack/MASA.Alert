@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Force.DeepCloner;
+
 namespace Masa.Alert.Web.Admin.Pages.AlarmHistory;
 
 public partial class AlarmHistoryManagement : AdminCompontentBase
@@ -22,6 +24,8 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     AlarmRuleService AlarmRuleService => AlertCaller.AlarmRuleService;
 
     protected override string? PageName { get; set; } = "AlarmHistoryBlock";
+
+    private SDataTable<AlarmHistoryListViewModel> _dataTableRef;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -142,26 +146,28 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private async Task HandleSearchTypeChange()
     {
         _queryParam = new() { Filter = _queryParam.Filter, SearchType = _queryParam.SearchType, AlarmRuleId = _queryParam.AlarmRuleId, Page = 1 };
-
         switch (_queryParam.SearchType)
         {
             case AlarmHistorySearchTypes.Alarming:
                 _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
                 _handleStatusItems = new List<AlarmHistoryHandleStatuses> { AlarmHistoryHandleStatuses.Pending, AlarmHistoryHandleStatuses.InProcess };
                 _queryParam.TimeType = default;
-                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.AlertSeverity)} asc,{nameof(AlarmHistoryQueryModel.FirstAlarmTime)} asc";
+
+                HandleSort(nameof(AlarmHistoryQueryModel.AlertSeverity));
                 break;
             case AlarmHistorySearchTypes.Processed:
                 _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().ToList();
                 _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
                 _queryParam.TimeType = AlarmHistorySearchTimeTypes.ProcessingCompletedTime;
-                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.RecoveryTime)} desc";
+
+                HandleSort(nameof(AlarmHistoryQueryModel.RecoveryTime), true);
                 break;
             case AlarmHistorySearchTypes.NoNotice:
                 _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
                 _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
                 _queryParam.TimeType = default;
-                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.LastAlarmTime)} desc";
+
+                HandleSort(nameof(AlarmHistoryQueryModel.LastAlarmTime), true);
                 break;
             default:
                 break;
@@ -169,6 +175,18 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
 
         await RefreshAsync();
     }
+
+    private void HandleSort(string sortField, bool isDesc = false)
+    {
+        _queryParam.Sorting = $"{sortField} {(isDesc ? "desc" : "")}";
+        _dataTableRef.UpdateOptions(options =>
+        {
+            var sortBys = new List<string> { sortField };
+            _dataTableRef.SortArray(sortBys);
+        });
+    }
+
+
 
     private async Task HandleFilterKeyDown()
     {
