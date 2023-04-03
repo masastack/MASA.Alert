@@ -23,7 +23,7 @@ public class CheckFrequencyViewModelValidator : AbstractValidator<CheckFrequency
                 if (nextExcuteTime2.HasValue && (nextExcuteTime2.Value - nextExcuteTime.Value).TotalSeconds < 30)
                     return false;
                 return true;
-            }).WithMessage(i18n.T("CronExpressionMustGreaterThan30Seconds"))
+            }).WithMessage(i18n.T("RunningIntervalTips"))
             .When(x => x.Type == AlarmCheckFrequencyTypes.Cron);
         RuleFor(x => x.FixedInterval).SetValidator(new TimeIntervalViewModelValidator(i18n))
             .When(x => x.Type == AlarmCheckFrequencyTypes.FixedInterval);
