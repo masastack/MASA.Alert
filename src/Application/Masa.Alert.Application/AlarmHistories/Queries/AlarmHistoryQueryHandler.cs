@@ -35,10 +35,11 @@ public class AlarmHistoryQueryHandler
     [EventHandler]
     public async Task GetListAsync(GetAlarmHistoryListQuery query)
     {
+        using var dataFilter = _dataFilter.Disable<ISoftDelete>();
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
         var sorting = options.ApplySorting();
-        var resultList = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).GetPaginatedListAsync(condition, new()
+        var resultList = await _context.AlarmHistoryQueries.Include(x => x.AlarmRule).Where(x => !x.IsDeleted).GetPaginatedListAsync(condition, new()
         {
             Page = options.Page,
             PageSize = options.PageSize,
