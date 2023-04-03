@@ -137,6 +137,7 @@
   "WebHook": "WebHook",
   "InvalidCronExpression": "无效的CRON表达式",
   "CronExpressionNotHasNextRunTime": "您的表达式计算不出下一次运行时间",
+  "CronExpressionMustGreaterThan30Seconds": "CRON表达式必须大于 30 秒/次",
   "AlarmRuleBlock": {
     "Log": "日志监控",
     "Metric": "指标监控",

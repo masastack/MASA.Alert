@@ -22,5 +22,6 @@
   "EditIn": "Edit in",
   "EnabledConfirmation": "Are you sure you want to enable?",
   "DisableConfirmation": "Are you sure you want to disable?",
-  "CronExpressionNotHasNextRunTime": "Cannot calculate the next run time from this expression"
+  "CronExpressionNotHasNextRunTime": "Cannot calculate the next run time from this expression",
+  "CronExpressionMustGreaterThan30Seconds": "Cron expression greater than must be greater than 30 seconds"
 }
