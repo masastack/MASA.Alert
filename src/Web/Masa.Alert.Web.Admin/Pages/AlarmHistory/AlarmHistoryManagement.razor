@@ -2,7 +2,7 @@
 @page "/alarmHistory"
 @page "/alarmHistory/{AlarmRuleId}"
 <PageTitle>@T("AlarmHistory")</PageTitle>
-<AutoHeight Overflow>
+<AutoHeight>
     <HeaderContent>
         <div class="d-flex">
             <SLabeledRadioGroup @bind-Value="@_queryParam.SearchType" ActiveClass="fill-background" Class="white" Dense OnChange="HandleSearchTypeChange">

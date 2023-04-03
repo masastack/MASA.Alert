@@ -77,6 +77,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
             if (string.IsNullOrEmpty(item.Aggregation.Tag)) continue;
             HandleMetricTagChange(item.Aggregation.Tag, item);
         }
+        GetNextRunTime();
     }
 
     private void FillData()

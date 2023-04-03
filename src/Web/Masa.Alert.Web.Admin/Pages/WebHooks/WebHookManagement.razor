@@ -13,17 +13,27 @@
         </div>
     </HeaderContent>
     <AutoHeightContent>
-        <MRow Style="height:0px">
-            @foreach (var _entitie in _entities.Result)
+        <MRow NoGutters Style="height:0;">
+            @if (!_showEmptyPlaceholder)
             {
-                <MCol Md="3" Class="pa-2">
-                    <WebHookCard WebHook="_entitie" OnEdit="()=> _upsertModal?.OpenModalAsync(_entitie)!" OnTest="()=> _testModal?.OpenModalAsync(_entitie.Id)!" />
-                </MCol>
+                @foreach (var _entitie in _entities.Result)
+                {
+                    <MCol Md="3" Class="pa-2">
+                        <WebHookCard WebHook="_entitie" OnEdit="()=> _upsertModal?.OpenModalAsync(_entitie)!" OnTest="()=> _testModal?.OpenModalAsync(_entitie.Id)!" />
+                    </MCol>
+                }
+            }
+            else
+            {
+                <SEmptyPlaceholder Height="calc(100vh - 210px);" />
             }
         </MRow>
     </AutoHeightContent>
     <FooterContent>
-        <SPagination Class="mt-6 rounded-2 pa-0" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+        @if (!_showEmptyPlaceholder)
+        {
+            <SPagination Class="mt-6 rounded-2 pa-0" Page="@_queryParam.Page" PageSize="@_queryParam.PageSize" Total="_entities.Total" PageChanged="HandlePageChanged" PageSizeChanged="HandlePageSizeChanged" />
+        }
     </FooterContent>
 </AutoHeight>
 

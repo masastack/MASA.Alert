@@ -13,6 +13,8 @@ public partial class WebHookManagement : AdminCompontentBase
 
     WebHookService WebHookService => AlertCaller.WebHookService;
 
+    private bool _showEmptyPlaceholder = false;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -25,8 +27,10 @@ public partial class WebHookManagement : AdminCompontentBase
     private async Task LoadData()
     {
         Loading = true;
+        _showEmptyPlaceholder = false;
         var dtos = (await WebHookService.GetListAsync(_queryParam));
         _entities = dtos?.Adapt<PaginatedListDto<WebHookListViewModel>>() ?? new();
+        _showEmptyPlaceholder = !_entities.Result.Any();
         Loading = false;
         StateHasChanged();
     }

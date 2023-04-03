@@ -71,7 +71,7 @@
   "Fail": "未通过",
   "Normal": "正常",
   "Invalid": "失效",
-  "Permission.New": "新建",
+  "Permission.Add": "新建",
   "Permission.Edit": "编辑",
   "Permission.Delete": "删除",
   "Team": "团队",
@@ -137,6 +137,7 @@
   "WebHook": "WebHook",
   "InvalidCronExpression": "无效的CRON表达式",
   "CronExpressionNotHasNextRunTime": "您的表达式计算不出下一次运行时间",
+  "RunningIntervalTips": "运行时间间隔不能小于30秒",
   "AlarmRuleBlock": {
     "Log": "日志监控",
     "Metric": "指标监控",

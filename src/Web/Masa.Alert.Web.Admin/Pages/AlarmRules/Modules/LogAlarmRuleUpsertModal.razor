@@ -57,7 +57,7 @@
                                         </MCol>
                                     }
                                 </MRow>
-                                @if (!string.IsNullOrEmpty(_model.CheckFrequency.CronExpression))
+                                @if (_model.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron && !string.IsNullOrEmpty(_model.CheckFrequency.CronExpression))
                                 {
                                     <div class="mt-4 caption regular3--text rounded-lg bgray">
                                         <p class="emphasis px-5 rounded-t-lg white--text py-2 text-body-2">
