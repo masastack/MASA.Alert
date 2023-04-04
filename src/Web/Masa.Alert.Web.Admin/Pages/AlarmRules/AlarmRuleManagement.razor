@@ -93,6 +93,9 @@
                                Outlined
                                OnChange="async(string v)=> await RefreshAsync()"
                                Class="fill-card body2">
+                            <SelectionContent Context="data">
+                                <AutoCompleteSelection Value="data.Item.Text" />
+                            </SelectionContent>
                         </SAutoComplete>
                     </MCol>
                 }
