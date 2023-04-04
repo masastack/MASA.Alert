@@ -63,7 +63,6 @@
     </MRow>
 </SModal>
 
-
 @code {
     [Parameter]
     public NotificationConfigViewModel Value { get; set; } = new();
@@ -141,10 +140,6 @@
     {
         await LoadData();
 
-        await InvokeAsync(() =>
-        {
-            _visible = true;
-            StateHasChanged();
-        });
+        _visible = true;
     }
 }
