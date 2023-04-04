@@ -55,12 +55,12 @@ public class CheckAlarmRuleCommandHandler
 
         if (alarmRule.Type == AlarmRuleTypes.Log)
         {
-            command.AggregateResult = await QueryLogAggregationAsync(alarmRule, startTime.Value.DateTime, checkTime.DateTime, command);
+            command.AggregateResult = await QueryLogAggregationAsync(alarmRule, startTime.Value.UtcDateTime, checkTime.UtcDateTime, command);
         }
 
         if (alarmRule.Type == AlarmRuleTypes.Metric)
         {
-            command.AggregateResult = await QueryMetricAggregationAsync(alarmRule, startTime.Value.DateTime, checkTime.DateTime, command);
+            command.AggregateResult = await QueryMetricAggregationAsync(alarmRule, startTime.Value.UtcDateTime, checkTime.UtcDateTime, command);
         }
 
         if (!command.AggregateResult.Any())
