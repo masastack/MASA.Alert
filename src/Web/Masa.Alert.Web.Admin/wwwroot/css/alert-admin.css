@@ -151,16 +151,6 @@
     overflow-x: hidden;
 }
 
-.sheet-dialog {
-    padding-left: 80px;
-    padding-right: 80px;
-    padding-bottom: 24px;
-    padding-top: 24px;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-}
-
 .m-stepper__content.full-height .m-stepper__wrapper {
     height: 100% !important;
 }
@@ -189,11 +179,6 @@
 .fold {
     width: calc(100% - 470px);
     display: inline-block;
-}
-
-.fill-card {
-    /*border: 1px solid #FFFFFF;*/
-    border-radius: 8px;
 }
 
 .m-text-field.m-text-field--solo:not(.m-text-field--solo-flat) > .m-input__control > .m-input__slot {
@@ -240,19 +225,6 @@
     border-radius: 8px !important;
 }
 
-/* 小按钮/主要/默认 */
-.small-btn {
-    min-width: 100px !important;
-    height: 40px !important;
-    padding: 4px !important;
-}
-
-.medium-btn {
-    min-width: 100px !important;
-    height: 48px !important;
-    padding: 4px !important;
-}
-
 .linear--text {
     color: #A18BFF !important;
 }
@@ -275,10 +247,6 @@
 .rounded-5 {
     border-radius: 20px !important;
 }
-
-/*.m-text-field.m-text-field--solo .m-input__append-inner, .m-text-field.m-text-field--solo .m-input__prepend-inner {
-    margin-top: 0 !important;
-}*/
 
 .m-application .overflow-x-visible {
     overflow-x: visible !important;
@@ -405,32 +373,6 @@
 .animate__searchShrink {
     -webkit-animation-name: searchShrink;
     animation-name: searchShrink;
-}
-
-/*.m-stepper__header {
-    height: 48px !important;
-    margin: -8px 0 18px 0;
-}
-
-.m-stepper__step {
-    padding: 0 !important;
-}*/
-
-.outlined-box-medium {
-    border: 1px solid #E2E7F4;
-    border-radius: 8px;
-    height: 48px;
-    padding-left: 6px;
-}
-
-.sheetDialogPadding {
-    padding-left: 228px;
-    padding-right: 228px;
-    padding-bottom: 48px;
-    padding-top: 48px;
-    height: 100%;
-    width: 100%;
-    position: absolute;
 }
 
 .m-input__append-outer, .m-input__prepend-outer {
@@ -568,9 +510,4 @@
 
 .m-tooltip--attached {
     display: none !important;
-}
-
-.masa pre {
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
 }

@@ -1,4 +1,9 @@
-﻿.json-pre {
+﻿pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+}
+
+.json-pre {
     padding: 5px;
     color: #A3AED0 !important;
 }
