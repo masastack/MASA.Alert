@@ -16,7 +16,7 @@
     </MCol>
 </MRow>
 
-<SModal Value="@_visible" Title="@T("MessageTemplate")" HeaderClass="py-2" BodyClass="pt-0" OnSave="()=>_visible=false" OnCancel="()=>_visible=false">
+<SModal @bind-Value="@_visible" Title="@T("MessageTemplate")" Persistent="false" HeaderClass="py-2" BodyClass="pt-0" OnSave="()=>_visible=false" OnCancel="()=>_visible=false">
     <MRow Class="mt-0">
         <MCol>
             <SSelect @bind-Value="@Value.ChannelType"
