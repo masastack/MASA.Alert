@@ -12,6 +12,8 @@ public class CheckFrequencyViewModelValidator : AbstractValidator<CheckFrequency
             .Must(x => CronExpression.IsValidExpression(x)).WithMessage(i18n.T("InvalidCronExpression"))
             .Must(x =>
             {
+                if (string.IsNullOrEmpty(x))
+                    return true;
                 var startTime = DateTimeOffset.UtcNow;
                 var cronExpression = new CronExpression(x);
                 var nextExcuteTime = cronExpression.GetNextValidTimeAfter(startTime);
