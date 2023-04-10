@@ -1,14 +1,16 @@
 ﻿@inherits AdminCompontentBase
 <MRow NoGutters Class="@Class">
-    <MCol Md="5" @onclick="HandleTemplateClick">
-        <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly BackgroundColor="@ItemBackgroundColor">
-            <PrependContent>
-                @if (!string.IsNullOrEmpty(PrependText))
-                {
-                    <span class="default--text subtitle2 my-auto">@PrependText</span>
-                }
-            </PrependContent>
-        </STextField>
+    <MCol Md="5">
+        <div @onclick="HandleTemplateClick">
+            <STextField @bind-Value="Value.TemplateName" Label="@T("MessageTemplate")" Readonly BackgroundColor="@ItemBackgroundColor">
+                <PrependContent>
+                    @if (!string.IsNullOrEmpty(PrependText))
+                    {
+                        <span class="default--text subtitle2 my-auto">@PrependText</span>
+                    }
+                </PrependContent>
+            </STextField>
+        </div>
     </MCol>
     <MCol Md="7">
         <UserAutoComplete @bind-Value="Value.Receivers" Class="ml-2" Label="@T("Receiver")"></UserAutoComplete>

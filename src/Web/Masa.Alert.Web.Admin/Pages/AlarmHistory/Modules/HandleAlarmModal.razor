@@ -23,8 +23,7 @@
                                             <span class="h5 @(!_isThirdParty?"primary--text":"emphasis2--text")">@T("Processed")</span>
                                         </LabelContent>
                                     </MRadio>
-                                    @if (_isThirdParty == false)
-                                    {
+                                    <div class="@(_isThirdParty == false?"":"d-none")">
                                         <div class="d-flex align-center mt-4">
                                             <MSwitch @bind-Value="_handle.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
                                             @if (_handle.IsHandleNotice)
@@ -32,14 +31,13 @@
                                                 <NotificationConfig @bind-value="_handle.NotificationConfig"></NotificationConfig>
                                             }
                                         </div>
-                                    }
+                                    </div>
                                     <MRadio Value="true" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4 mt-6">
                                         <LabelContent>
                                             <span class="h5 @(_isThirdParty?"primary--text":"emphasis2--text")">@T("ThirdPartyProcessing")</span>
                                         </LabelContent>
                                     </MRadio>
-                                    @if (_isThirdParty == true)
-                                    {
+                                    <div class="@(_isThirdParty == true?"":"d-none")">
                                         <div class="full-width mt-6">
                                             <SSelect Class="fill" @bind-Value="_handle.WebHookId" Items="_webHookItems" ItemText="v => v.DisplayName" ItemValue="v=> v.Id" Label="@T("WebHook")" />
                                             <SUserAutoComplete Class="fill mt-6" @bind-Value="_handle.Handler" Label="@T("Handler")" Outlined FillBackground="false" Style="width: initial" />
@@ -51,7 +49,7 @@
                                                 <NotificationConfig @bind-value="_handle.NotificationConfig"></NotificationConfig>
                                             }
                                         </div>
-                                    }
+                                    </div>
                                 </MRadioGroup>
                             </MContainer>
                         </MForm>
