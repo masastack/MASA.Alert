@@ -3,6 +3,7 @@
     <span class="h5 emphasis--text">@AlarmHistory.AlarmRule.ProjectIdentity</span>
     <span class="body2 regular--text">
         <DateTimeRangePicker Class="btn-fill-line fit-width" @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none;width:410px" OnChange="LoadData" />
+        <DefaultTooltip Class="ml-1 mt-n1" Tooltip="@T("DataBoundaryPrompt")" />
     </span>
 </div>
 <div class="d-flex justify-space-between mt-2">

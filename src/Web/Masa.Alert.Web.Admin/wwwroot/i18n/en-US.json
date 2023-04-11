@@ -23,5 +23,6 @@
   "EnabledConfirmation": "Are you sure you want to enable?",
   "DisableConfirmation": "Are you sure you want to disable?",
   "CronExpressionNotHasNextRunTime": "Cannot calculate the next run time from this expression",
-  "RunningIntervalTips": "The running time interval cannot be less than 30 seconds"
+  "RunningIntervalTips": "The running time interval cannot be less than 30 seconds",
+  "DataBoundaryPrompt": "Default display of the first 1000 items"
 }
