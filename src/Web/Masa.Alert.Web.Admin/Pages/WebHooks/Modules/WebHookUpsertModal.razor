@@ -36,9 +36,9 @@
     <SaveContent Context="save">
         @if (_entityId != default)
         {
-            <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</MButton>
+            <SButton BorderRadiusClass="rounded-3" Color="fill" Class="btn-form line-primary btn primary--text" OnClick="()=> _testModal?.OpenModalAsync(_model.Id)!">@T("Test")</SButton>
         }
-        <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</MButton>
+        <SButton BorderRadiusClass="rounded-3" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</SButton>
     </SaveContent>
 </SSimpleModal>
 

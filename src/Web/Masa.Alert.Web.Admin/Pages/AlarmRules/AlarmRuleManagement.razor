@@ -14,13 +14,13 @@
             </SLabeledRadioGroup>
             <MSpacer></MSpacer>
             <div class="d-flex">
-                <OutlinedSearchTextField @bind-Value="_queryParam.Filter" BackgroundColor="white" Clearable OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
+                <SSearch @bind-Value="_queryParam.Filter" BackgroundColor="white" OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" />
                 <span @onclick="ToggleAdvanced" class="ml-6 d-flex button fill">
                     <SIcon Class="ma-auto" Color="emphasis2" Size=20>
                         @(!advanced ? "mdi-filter" : "mdi-filter-off")
                     </SIcon>
                 </span>
-                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="HandleAdd">@T("Permission.Add")</SButton>
+                <SButton Small BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="HandleAdd">@T("Permission.Add")</SButton>
             </div>
         </div>
         @if (advanced)
