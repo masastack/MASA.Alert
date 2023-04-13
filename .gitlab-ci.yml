@@ -49,8 +49,6 @@ deploy-dev:
   image: registry.cn-hangzhou.aliyuncs.com/masa/library:helm3_latest
   variables:
     EnviromentPath: Develop
-  tags:
-    - ydy-runner
   only:
     - main  
   script:
@@ -70,8 +68,6 @@ deploy-staging:
   image: registry.cn-hangzhou.aliyuncs.com/masa/library:helm3_latest
   variables:
     EnviromentPath: Staging
-  tags:
-    - ydy-runner
   only:
     - main  
   script:
