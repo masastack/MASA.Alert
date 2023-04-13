@@ -13,7 +13,9 @@
     <DeleteContent Context="delete">
         @if (_entityId != default)
         {
-            <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+            <MButton Class="mr-4" Icon OnClick="delete.Click">
+                <SIcon Size="24" Color="error" Class="align-self-center" >mdi-delete</SIcon>
+            </MButton>
         }
     </DeleteContent>
 </SSimpleModal>

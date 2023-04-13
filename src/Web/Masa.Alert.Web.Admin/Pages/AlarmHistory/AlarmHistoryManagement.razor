@@ -115,10 +115,15 @@
                         case "Action":
                             @if (context.Item.HandleStatus == AlarmHistoryHandleStatuses.Pending && _queryParam.SearchType!= AlarmHistorySearchTypes.NoNotice)
                             {
-                                <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("Handle"))" OnClick="()=>_handleAlarmModal?.OpenModalAsync(context.Item)!">mdi-account-check</SIcon>
+                                <MButton Class="mr-4" Icon OnClick="()=>_handleAlarmModal?.OpenModalAsync(context.Item)!">
+                                    <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("Handle"))">mdi-account-check</SIcon>
+                                </MButton>
                             }
-                            else{
-                                <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("View"))" OnClick="()=>_detailModal?.OpenModalAsync(context.Item)!">mdi-eye</SIcon>
+                            else
+                            {
+                                <MButton Class="mr-4" Icon OnClick="()=>_detailModal?.OpenModalAsync(context.Item)!">
+                                    <SIcon Size="20" Small Color="emphasis2" Tooltip="@(T("View"))">mdi-eye</SIcon>
+                                </MButton>
                             }
                             break;
                         default:
