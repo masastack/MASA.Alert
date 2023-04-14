@@ -83,7 +83,7 @@
                 @if (_queryParam.SearchType == AlarmHistorySearchTypes.Processed)
                 {
                     <MCol Md="1" Class="ml-6">
-                        <SUserAutoComplete Small @bind-Value="_queryParam.Handler" Label="@(T("Handler"))" FillBackground="false" Style="width: initial" OnSelectedItemUpdate="RefreshAsync" />
+                        <SUserAutoComplete Small @bind-Value="_queryParam.Handler" Label="@(T("Handler"))" FillBackground="false" Style="width: initial" OnSelectedItemUpdate="RefreshAsync" Clearable />
                     </MCol>
                 }
             </MRow>
