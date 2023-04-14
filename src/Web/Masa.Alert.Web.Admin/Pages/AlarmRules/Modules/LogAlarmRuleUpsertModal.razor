@@ -116,12 +116,12 @@
                                         <MSpacer></MSpacer>
                                         <div class="mt-3">
                                             <div class="m-item-group theme--light m-btn-toggle m-btn-toggle--dense m-btn-toggle--rounded">
-                                                <MButton Color="fill" IsActive="false" OnClick="()=>HandleLogMonitorItemsAdd(item)">
+                                                <MButton Color="fill" Class="mr-4" Icon IsActive="false" OnClick="()=>HandleLogMonitorItemsAdd(item)">
                                                     <SIcon Size="20" Color="emphasis">mdi-plus</SIcon>
                                                 </MButton>
                                                 @if (_model.LogMonitorItems.Count > 1)
                                                 {
-                                                    <MButton Color="fill" IsActive="false" OnClick="()=>HandleLogMonitorItemsRemove(item)">
+                                                    <MButton Color="fill" Class="mr-4" Icon IsActive="false" OnClick="()=>HandleLogMonitorItemsRemove(item)">
                                                         <SIcon Size="20" Color="emphasis">mdi-delete</SIcon>
                                                     </MButton>
                                                 }
@@ -151,19 +151,25 @@
         {
             @if (_entityId != default)
             {
-                <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+                <MButton Class="mr-4" Icon OnClick="delete.Click">
+                    <SIcon Size="24" Color="error" Class="align-self-center">mdi-delete</SIcon>
+                </MButton>
             }
         }
         @if (_model.Step == 2)
         {
-            <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">fas fa-chart-line</SIcon>
+            <MButton Class="mr-4" Icon OnClick="()=>_previewChart?.OpenModalAsync()!">
+                <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center">fas fa-chart-line</SIcon>
+            </MButton>
 
             @if (_entityId != default)
             {
                 <span class="d-flex px-6" style="height: 12px">
                     <MDivider Vertical />
                 </span>
-                <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+                <MButton Class="mr-4" Icon OnClick="delete.Click">
+                    <SIcon Size="24" Color="error" Class="align-self-center">mdi-delete</SIcon>
+                </MButton>
             }
         }
         @if (_model.Step == 3)
@@ -172,31 +178,35 @@
             <span class="d-flex px-6" style="height: 12px">
                 <MDivider Vertical />
             </span>
-            <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">fas fa-chart-line</SIcon>
+            <MButton Class="mr-4" Icon OnClick="()=>_previewChart?.OpenModalAsync()!">
+                <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center">fas fa-chart-line</SIcon>
+            </MButton>
 
             @if (_entityId != default)
             {
                 <span class="d-flex px-6" style="height: 12px">
                     <MDivider Vertical />
                 </span>
-                <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+                <MButton Class="mr-4" Icon OnClick="delete.Click">
+                    <SIcon Size="24" Color="error" Class="align-self-center">mdi-delete</SIcon>
+                </MButton>
             }
         }
     </DeleteContent>
     <SaveContent Context="save">
         @if (_model.Step == 1)
         {
-            <MButton Color="primary" Class="btn-form ml-6" OnClick="()=> HandleNextStep()">@T("NextStep")</MButton>
+            <SButton BorderRadiusClass="rounded-3" Class="btn-form ml-6" OnClick="()=> HandleNextStep()">@T("NextStep")</SButton>
         }
         @if (_model.Step == 2 )
         {
-            <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=>_model.Step=1">@T("PreviousStep")</MButton>
-            <MButton Color="primary" Class="btn-form ml-6" OnClick="()=> HandleNextStep()">@T("NextStep")</MButton>
+            <SButton BorderRadiusClass="rounded-3" Color="fill" Class="btn-form line-primary btn primary--text" OnClick="()=>_model.Step=1">@T("PreviousStep")</SButton>
+            <SButton BorderRadiusClass="rounded-3" Class="btn-form ml-6" OnClick="()=> HandleNextStep()">@T("NextStep")</SButton>
         }
         @if (_model.Step == 3)
         {
-            <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=>_model.Step=2">@T("PreviousStep")</MButton>
-            <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</MButton>
+            <SButton BorderRadiusClass="rounded-3" Color="fill" Class="btn-form line-primary btn primary--text" OnClick="()=>_model.Step=2">@T("PreviousStep")</SButton>
+            <SButton BorderRadiusClass="rounded-3" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</SButton>
         }
     </SaveContent>
 </SSimpleModal>

@@ -165,14 +165,18 @@
     <DeleteContent Context="delete">
         @if (_model.Step == 1)
         {
-            <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</SIcon>
+            <MButton Class="mr-4" Icon OnClick="()=>_previewChart?.OpenModalAsync()!">
+                <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center">mdi-chart-line</SIcon>
+            </MButton>
 
             @if (_entityId != default)
             {
                 <span class="d-flex px-6" style="height: 12px">
                     <MDivider Vertical />
                 </span>
-                <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+                <MButton Class="mr-4" Icon OnClick="delete.Click">
+                    <SIcon Size="24" Color="error" Class="align-self-center">mdi-delete</SIcon>
+                </MButton>
             }
         }
         @if (_model.Step == 2)
@@ -181,26 +185,30 @@
             <span class="d-flex px-6" style="height: 12px">
                 <MDivider Vertical />
             </span>
-            <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center" OnClick="()=>_previewChart?.OpenModalAsync()!">mdi-chart-line</SIcon>
+            <MButton Class="mr-4" Icon OnClick="()=>_previewChart?.OpenModalAsync()!">
+                <SIcon Tooltip="@T("ChartPreview")" Size="24" Color="primary" Class="align-self-center">mdi-chart-line</SIcon>
+            </MButton>
 
             @if (_entityId != default)
             {
                 <span class="d-flex px-6" style="height: 12px">
                     <MDivider Vertical />
                 </span>
-                <MIcon Size="24" Color="error" Class="align-self-center" OnClick="delete.Click">mdi-delete</MIcon>
+                <MButton Class="mr-4" Icon OnClick="delete.Click">
+                    <SIcon Size="24" Color="error" Class="align-self-center">mdi-delete</SIcon>
+                </MButton>
             }
         }
     </DeleteContent>
     <SaveContent Context="save">
         @if (_model.Step == 1)
         {
-            <MButton Color="primary" Class="btn-form ml-6" OnClick="()=> HandleNextStep()">@T("NextStep")</MButton>
+            <SButton BorderRadiusClass="rounded-3" Class="btn-form ml-6" OnClick="()=> HandleNextStep()">@T("NextStep")</SButton>
         }
         @if (_model.Step == 2)
         {
-            <MButton Color="fill" Class="btn-form line-primary rounded-3 btn primary--text" OnClick="()=>_model.Step=1">@T("PreviousStep")</MButton>
-            <MButton Color="primary" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</MButton>
+            <SButton BorderRadiusClass="rounded-3" Color="fill" Class="btn-form line-primary btn primary--text" OnClick="()=>_model.Step=1">@T("PreviousStep")</SButton>
+            <SButton BorderRadiusClass="rounded-3" Class="btn-form ml-6" OnClick="HandleOk">@T(_entityId == default?"Submit":"Save")</SButton>
         }
     </SaveContent>
 </SSimpleModal>

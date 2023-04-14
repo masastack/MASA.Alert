@@ -7,8 +7,8 @@
             <div class="d-flex justify-center search-panel-right full-width">
                 <DefaultPageTitle>@T("WebHook")</DefaultPageTitle>
                 <MSpacer></MSpacer>
-                <OutlinedSearchTextField Class="flex-none" @bind-Value="_queryParam.Filter" BackgroundColor="white" Clearable OnKeyDown="RefreshAsync" OnClearClick="HandleClearAsync" PrependInnerIcon="@IconConstants.Search" />
-                <SButton Small Color="primary" BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _upsertModal?.OpenModalAsync()!">@T("Permission.Add")</SButton>
+                <SSearch @bind-Value="_queryParam.Filter" BackgroundColor="white" OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" />
+                <SButton Small BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _upsertModal?.OpenModalAsync()!">@T("Permission.Add")</SButton>
             </div>
         </div>
     </HeaderContent>

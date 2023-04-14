@@ -1,24 +1,24 @@
 ﻿@switch (Value)
 {
     case AlarmHistoryHandleStatuses.Pending:
-        <MIcon Size=@Size Dark Color="remind">
+        <SIcon Size=@Size Dark Color="remind">
             mdi-timer-outline
-        </MIcon>
+        </SIcon>
         break;
     case AlarmHistoryHandleStatuses.InProcess:
-        <MIcon Size=@Size Dark Color="primary">
+        <SIcon Size=@Size Dark Color="primary">
             mdi-chart-donut
-        </MIcon>
+        </SIcon>
         break;
     case AlarmHistoryHandleStatuses.ProcessingCompleted:
-        <MIcon Size=@Size Dark Color="success">
+        <SIcon Size=@Size Dark Color="success">
             mdi-check
-        </MIcon>
+        </SIcon>
         break;
     case AlarmHistoryHandleStatuses.Notified:
-        <MIcon Size=@Size Dark Color="info">
+        <SIcon Size=@Size Dark Color="info">
             mdi-message-text
-        </MIcon>
+        </SIcon>
         break;
 }
 

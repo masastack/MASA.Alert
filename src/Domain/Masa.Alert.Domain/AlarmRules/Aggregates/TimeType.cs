@@ -5,11 +5,15 @@ namespace Masa.Alert.Domain.AlarmRules.Aggregates;
 
 public class TimeType : Enumeration
 {
+    public static TimeType Default = new TimeType();
+
     public static TimeType Minute = new MinuteTime();
 
     public static TimeType Hour = new HourTime();
 
     public static TimeType Day = new DayTime();
+
+    public TimeType() : base(0, "") { }
 
     public TimeType(int id, string name) : base(id, name)
     {
@@ -27,11 +31,13 @@ public class TimeType : Enumeration
 
     public static TimeType StartNew(string type) => type switch
     {
+
         nameof(Minute) => new MinuteTime(),
         nameof(Hour) => new HourTime(),
         nameof(Day) => new DayTime(),
-        _ => throw new NotImplementedException()
+        _ => new TimeType()
     };
+
 
     private class MinuteTime : TimeType
     {
