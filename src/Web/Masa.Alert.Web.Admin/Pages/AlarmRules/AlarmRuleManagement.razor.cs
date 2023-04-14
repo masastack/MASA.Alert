@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch;
-
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules;
 
 public partial class AlarmRuleManagement : AdminCompontentBase
