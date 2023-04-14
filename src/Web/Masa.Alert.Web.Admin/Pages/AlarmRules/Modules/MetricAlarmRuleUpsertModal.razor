@@ -82,15 +82,18 @@
                                                            Dense
                                                            Outlined
                                                            Clearable
+                                                           Flat
+                                                           Solo
                                                            HideDetails="@("auto")"
                                                            TValue="string" 
                                                            TItem="string" 
                                                            TItemValue="string"
+                                                           Class="mr-6 rounded-2 m-input--h-40"
                                                            Filter="(item,search,value) => true"
                                                            OnSearchInputUpdate="QueryNames"
                                                            OnSelectedItemUpdate="(v)=>HandleMetricNameChange(v,item)">
                                                            <SelectionContent Context="data">
-                                                              <SAutoCompleteSelection Value="@item.Aggregation.Name" />
+                                                              <SAutoCompleteSelection Value="@item.Aggregation.Name"  Style="height:40px;" />
                                                            </SelectionContent>                             
                                                     </SAutoComplete>
                                                 </MCol>

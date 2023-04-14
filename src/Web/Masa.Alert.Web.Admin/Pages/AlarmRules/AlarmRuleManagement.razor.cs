@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch;
+
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules;
 
 public partial class AlarmRuleManagement : AdminCompontentBase
@@ -28,6 +30,17 @@ public partial class AlarmRuleManagement : AdminCompontentBase
 
     private bool _showEmptyPlaceholder = false;
 
+    private readonly AsyncTaskQueue _asyncTaskQueue;
+
+    public AlarmRuleManagement()
+    {
+        _asyncTaskQueue = new AsyncTaskQueue
+        {
+            AutoCancelPreviousTask = true,
+            UseSingleThread = true
+        };
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -49,16 +62,21 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     {
         Loading = true;
         _showEmptyPlaceholder = false;
-
-        var queryParam = _queryParam.Adapt<GetAlarmRuleInputDto>() ?? new();
-        queryParam.StartTime = queryParam.StartTime?.Add(JsInitVariables.TimezoneOffset);
-        queryParam.EndTime = queryParam.EndTime?.Add(JsInitVariables.TimezoneOffset);
-
-        var dtos = (await AlarmRuleService.GetListAsync(queryParam));
-        _entities = dtos?.Adapt<PaginatedListDto<AlarmRuleListViewModel>>() ?? new();
-        Loading = false;
-        _showEmptyPlaceholder = !_entities.Result.Any();
-        StateHasChanged();
+        var result = await _asyncTaskQueue.ExecuteAsync(async () =>
+        {
+            var queryParam = _queryParam.Adapt<GetAlarmRuleInputDto>() ?? new();
+            queryParam.StartTime = queryParam.StartTime?.Add(JsInitVariables.TimezoneOffset);
+            queryParam.EndTime = queryParam.EndTime?.Add(JsInitVariables.TimezoneOffset);
+            var dtos = (await AlarmRuleService.GetListAsync(queryParam));
+            return dtos;
+        });
+        if (result.IsValid)
+        {
+            _entities = result.result?.Adapt<PaginatedListDto<AlarmRuleListViewModel>>() ?? new();
+            Loading = false;
+            _showEmptyPlaceholder = !_entities.Result.Any();
+            StateHasChanged();
+        }
     }
 
     private async Task HandleOk()
