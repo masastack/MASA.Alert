@@ -13,6 +13,8 @@ public partial class WebHookTestModal : AdminCompontentBase
 
     WebHookService WebHookService => AlertCaller.WebHookService;
 
+    protected override string? PageName { get; set; } = "WebHookBlock";
+
     public async Task OpenModalAsync(Guid webHookId)
     {
         _model.WebHookId = webHookId;

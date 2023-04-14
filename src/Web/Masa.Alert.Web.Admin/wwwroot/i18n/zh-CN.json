@@ -245,7 +245,8 @@
     "DisplayName": "名称",
     "Url": "Url",
     "Description": "描述",
-    "SecretKey": "密钥"
+    "SecretKey": "密钥",
+    "SecretKeyTips": "密钥使用请参考MASA Stack 文档站点告警中心开发指南：<a href='https://docs.masastack.com/stack/alert/develop-guide' target='_blank'>https://docs.masastack.com/stack/alert/develop-guide</a>"
   },
   "ChineseLetterNumberUnderlineValidator": "{0}必须是中文、数字、字母或下划线",
   "ChineseLetterNumberValidator": "{0}必须是中文、数字、字母",
