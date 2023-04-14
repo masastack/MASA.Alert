@@ -87,15 +87,14 @@
                                Label="@T("Metric")"
                                ItemText="v => v.Text"
                                ItemValue="v=> v.Value"
-                               Small
                                BackgroundColor="white"
                                Clearable
                                Flat
                                Solo
+                               Small
                                PrependInnerIcon="mdi-magnify"
                                ClearIcon="mdi-close"
                                Outlined="false"
-                               Style="max-width: 280px"
                                Class="mr-6 rounded-2 m-input--h-40"
                                OnChange="async(string v)=> await RefreshAsync()"
                                Height="40">
