@@ -75,8 +75,8 @@
 
         if (!_startTime.HasValue && !_endTime.HasValue && records.Any())
         {
-            _startTime = records.Min(x => x.CreationTime);
-            _endTime = records.Max(x => x.CreationTime);
+            _startTime = records.Min(x => x.ExcuteTime).DateTime;
+            _endTime = records.Max(x => x.ExcuteTime).DateTime;
         }
 
         var legendData = new List<string>();
@@ -97,7 +97,7 @@
             var data = records.Select(x =>
             {
                 var val = x.AggregateResult.FirstOrDefault(x => x.Key == key).Value;
-                return new List<object> { new DateTimeOffset(x.CreationTime).Add(JsInitVariables.TimezoneOffset).ToUnixTimeMilliseconds(), val, x.Id };
+                return new List<object> { x.ExcuteTime.ToUnixTimeMilliseconds(), val, x.Id };
             });
 
             return new
