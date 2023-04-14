@@ -87,12 +87,21 @@
                                Label="@T("Metric")"
                                ItemText="v => v.Text"
                                ItemValue="v=> v.Value"
-                               BackgroundColor="white"
-                               Dense
                                Small
-                               Outlined
+                               BackgroundColor="white"
+                               Clearable
+                               Flat
+                               Solo
+                               PrependInnerIcon="mdi-magnify"
+                               ClearIcon="mdi-close"
+                               Outlined="false"
+                               Style="max-width: 280px"
+                               Class="mr-6 rounded-2 m-input--h-40"
                                OnChange="async(string v)=> await RefreshAsync()"
-                               Class="fill-card body2">
+                               Height="40">
+                            <SelectionContent Context="data">
+                                <SAutoCompleteSelection Value="data.Item.Text" Style="height:40px;" />
+                            </SelectionContent>
                         </SAutoComplete>
                     </MCol>
                 }
