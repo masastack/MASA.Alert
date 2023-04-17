@@ -13,7 +13,6 @@ public partial class HandleAlarmModal : AdminCompontentBase
     private AlarmHistoryViewModel _model = new();
     private AlarmHandleViewModel _handle = new();
     private string _tab = "";
-    private List<WebHookListViewModel> _webHookItems = new();
     private bool _isThirdParty;
     private MForm? _form;
 
@@ -28,7 +27,6 @@ public partial class HandleAlarmModal : AdminCompontentBase
         if (firstRender)
         {
             _tab = T("AlarmDetails");
-            await GetWebHooks();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -48,12 +46,6 @@ public partial class HandleAlarmModal : AdminCompontentBase
             _visible = true;
             StateHasChanged();
         });
-    }
-
-    private async Task GetWebHooks()
-    {
-        var dtos = await WebHookService.GetListAsync(new GetWebHookInputDto(500));
-        _webHookItems = dtos?.Adapt<PaginatedListDto<WebHookListViewModel>>().Result ?? new();
     }
 
     private async Task GetFormDataAsync()
