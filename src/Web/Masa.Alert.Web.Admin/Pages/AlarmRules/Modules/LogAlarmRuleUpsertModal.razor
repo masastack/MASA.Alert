@@ -116,12 +116,12 @@
                                         <MSpacer></MSpacer>
                                         <div class="mt-3">
                                             <div class="m-item-group theme--light m-btn-toggle m-btn-toggle--dense m-btn-toggle--rounded">
-                                                <MButton Color="fill" Class="mr-4" Icon IsActive="false" OnClick="()=>HandleLogMonitorItemsAdd(item)">
+                                                <MButton Color="fill" Icon IsActive="false" OnClick="()=>HandleLogMonitorItemsAdd(item)">
                                                     <SIcon Size="20" Color="emphasis">mdi-plus</SIcon>
                                                 </MButton>
                                                 @if (_model.LogMonitorItems.Count > 1)
                                                 {
-                                                    <MButton Color="fill" Class="mr-4" Icon IsActive="false" OnClick="()=>HandleLogMonitorItemsRemove(item)">
+                                                    <MButton Color="fill" Icon IsActive="false" OnClick="()=>HandleLogMonitorItemsRemove(item)">
                                                         <SIcon Size="20" Color="emphasis">mdi-delete</SIcon>
                                                     </MButton>
                                                 }
