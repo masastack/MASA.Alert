@@ -52,7 +52,7 @@ public partial class HandleAlarmModal : AdminCompontentBase
 
     private async Task GetWebHooks()
     {
-        var dtos = await WebHookService.GetListAsync(new GetWebHookInputDto(10));
+        var dtos = await WebHookService.GetListAsync(new GetWebHookInputDto(500));
         _webHookItems = dtos?.Adapt<PaginatedListDto<WebHookListViewModel>>().Result ?? new();
     }
 
