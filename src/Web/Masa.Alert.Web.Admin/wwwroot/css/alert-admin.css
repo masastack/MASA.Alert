@@ -582,7 +582,3 @@
     .s-autocomplete-selection .m-list-item__action .m-list-item__action-text {
         width: 100%;
     }
-
-.m-input--dense-48 .m-input__prepend-inner {
-    margin-top: 14px !important;
-}
