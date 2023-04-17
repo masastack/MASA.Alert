@@ -1,0 +1,66 @@
+﻿@inherits AdminCompontentBase
+
+<SAutoComplete Value="Value"
+               ValueChanged="ValueChanged"
+               TValue="Guid"
+               TItem="WebHookDto"
+               TItemValue="Guid"
+               NoFilter
+               Items="WebHooks"
+               OnSearchInputUpdate="QuerySelection"
+               Loading="_loading"
+               Disabled=Readonly
+               Label="@Label"
+               ItemText="t=>t.DisplayName"
+               ItemValue="t=>t.Id"
+               Attach="true"
+               PrependInnerIcon="mdi-magnify"
+               Class="@Class">
+</SAutoComplete>
+
+
+@code {
+    [Parameter]
+    public Guid Value { get; set; }
+
+    [Parameter]
+    public EventCallback<Guid> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = "";
+
+    [Parameter]
+    public bool Readonly { get; set; }
+
+    [Parameter]
+    public int PageSize { get; set; } = 10;
+
+    bool _loading;
+
+    protected List<WebHookDto> WebHooks { get; set; } = new();
+
+    public string Search { get; set; } = "";
+
+    WebHookService WebHookService => AlertCaller.WebHookService;
+
+    private async Task QuerySelection(string search)
+    {
+        search = search.TrimStart(' ').TrimEnd(' ');
+        Search = search;
+        await Task.Delay(300);
+        if (search != Search)
+        {
+            return;
+        }
+
+        _loading = true;
+
+        var dtos = await WebHookService.GetListAsync(new GetWebHookInputDto(PageSize)
+        {
+            Filter = search
+        });
+        WebHooks = dtos.Result;
+
+        _loading = false;
+    }
+}
