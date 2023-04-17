@@ -39,7 +39,7 @@
                                     </MRadio>
                                     <div class="@(_isThirdParty == true?"":"d-none")">
                                         <div class="full-width mt-6">
-                                            <SSelect Class="fill" @bind-Value="_handle.WebHookId" Items="_webHookItems" ItemText="v => v.DisplayName" ItemValue="v=> v.Id" Label="@T("WebHook")" />
+                                            <WebHookAutoComplete @bind-Value="_handle.WebHookId" Label="@T("WebHook")"></WebHookAutoComplete>
                                             <SUserAutoComplete Class="fill mt-6" @bind-Value="_handle.Handler" Label="@T("Handler")" Outlined FillBackground="false" Style="width: initial" />
                                         </div>
                                         <div class="d-flex align-center mt-6">

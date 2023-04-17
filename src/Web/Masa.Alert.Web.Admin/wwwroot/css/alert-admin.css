@@ -276,9 +276,9 @@
     border-radius: 20px !important;
 }
 
-/*.m-text-field.m-text-field--solo .m-input__append-inner, .m-text-field.m-text-field--solo .m-input__prepend-inner {
+.m-text-field.m-text-field--solo .m-input__append-inner, .m-text-field.m-text-field--solo .m-input__prepend-inner {
     margin-top: 0 !important;
-}*/
+}
 
 .m-application .overflow-x-visible {
     overflow-x: visible !important;
@@ -582,3 +582,7 @@
     .s-autocomplete-selection .m-list-item__action .m-list-item__action-text {
         width: 100%;
     }
+
+.m-input--dense-48 .m-input__prepend-inner {
+    margin-top: 14px !important;
+}
