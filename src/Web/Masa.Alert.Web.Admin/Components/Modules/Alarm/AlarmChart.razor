@@ -60,7 +60,7 @@
 
     private async Task LoadData()
     {
-        var queryParam = new GetAlarmRuleRecordInputDto(999)
+        var queryParam = new GetAlarmRuleRecordInputDto(500)
             {
                 AlarmHistoryId = AlarmHistory.Id,
                 StartTime = _startTime,
@@ -72,12 +72,6 @@
 
         var paginatedList = dtos?.Adapt<PaginatedListDto<AlarmRuleRecordListViewModel>>() ?? new();
         var records = paginatedList.Result;
-
-        if (!_startTime.HasValue && !_endTime.HasValue && records.Any())
-        {
-            _startTime = records.Min(x => x.ExcuteTime).DateTime;
-            _endTime = records.Max(x => x.ExcuteTime).DateTime;
-        }
 
         var legendData = new List<string>();
 
