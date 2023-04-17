@@ -14,6 +14,7 @@
                ItemText="t=>t.DisplayName"
                ItemValue="t=>t.Id"
                Attach="true"
+               Solo="@Solo"
                PrependInnerIcon="mdi-magnify"
                Class="@Class">
 </SAutoComplete>
@@ -34,6 +35,9 @@
 
     [Parameter]
     public int PageSize { get; set; } = 10;
+
+    [Parameter]
+    public bool Solo { get; set; } = true;
 
     bool _loading;
 
