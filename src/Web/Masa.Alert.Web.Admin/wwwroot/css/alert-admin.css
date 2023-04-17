@@ -574,3 +574,11 @@
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
 }
+
+.s-autocomplete-selection .m-list-item__action {
+    margin-right: 0px !important;
+}
+
+    .s-autocomplete-selection .m-list-item__action .m-list-item__action-text {
+        width: 100%;
+    }

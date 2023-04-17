@@ -21,5 +21,7 @@ public class AlarmRuleRecordQueryModel
 
     public DateTime CreationTime { get; set; }
 
+    public DateTimeOffset ExcuteTime { get; set; }
+
     public List<RuleResultItemQueryModel> RuleResultItems { get; set; } = new();
 }

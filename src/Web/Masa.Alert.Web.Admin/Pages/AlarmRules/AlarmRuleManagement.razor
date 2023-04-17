@@ -88,11 +88,19 @@
                                ItemText="v => v.Text"
                                ItemValue="v=> v.Value"
                                BackgroundColor="white"
-                               Dense
+                               Clearable
+                               Flat
+                               Solo
                                Small
-                               Outlined
+                               PrependInnerIcon="mdi-magnify"
+                               ClearIcon="mdi-close"
+                               Outlined="false"
+                               Class="mr-6 rounded-2 m-input--h-40"
                                OnChange="async(string v)=> await RefreshAsync()"
-                               Class="fill-card body2">
+                               Height="40">
+                            <SelectionContent Context="data">
+                                <SAutoCompleteSelection Value="data.Item.Text" Style="height:40px;" />
+                            </SelectionContent>
                         </SAutoComplete>
                     </MCol>
                 }

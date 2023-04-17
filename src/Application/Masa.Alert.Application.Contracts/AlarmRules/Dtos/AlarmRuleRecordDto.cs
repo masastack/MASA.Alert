@@ -14,4 +14,6 @@ public class AlarmRuleRecordDto : AuditEntityDto<Guid, Guid>
     public int ConsecutiveCount { get; set; }
 
     public List<RuleResultItemDto> RuleResultItems { get; set; } = new();
+
+    public DateTimeOffset ExcuteTime { get; set; }
 }

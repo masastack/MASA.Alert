@@ -71,7 +71,6 @@ public partial class HandleAlarmModal : AdminCompontentBase
 
     private void ResetForm()
     {
-        _model = new();
         _handle = new();
         _isThirdParty = false;
         _tab = T("AlarmDetails");

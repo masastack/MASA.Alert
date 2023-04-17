@@ -18,4 +18,6 @@ public class AlarmRuleRecordListViewModel
     public List<RuleResultItemViewModel> RuleResultItems { get; set; } = new();
 
     public DateTime CreationTime { get; set; }
+
+    public DateTimeOffset ExcuteTime { get; set; }
 }
