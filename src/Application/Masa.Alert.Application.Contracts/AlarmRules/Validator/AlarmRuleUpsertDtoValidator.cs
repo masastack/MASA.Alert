@@ -7,7 +7,7 @@ public class AlarmRuleUpsertDtoValidator : AbstractValidator<AlarmRuleUpsertDto>
 {
     public AlarmRuleUpsertDtoValidator()
     {
-        RuleFor(x => x.DisplayName).Required().ChineseLetterNumberSymbol().Length(2, 50);
+        RuleFor(x => x.DisplayName).Required().Length(2, 50);
         RuleFor(x => x.ProjectIdentity).Required().When(x => x.Type == AlarmRuleTypes.Log);
         RuleFor(x => x.AppIdentity).Required().When(x => x.Type == AlarmRuleTypes.Log);
         RuleFor(x => x.CheckFrequency).SetValidator(new CheckFrequencyDtoValidator());
