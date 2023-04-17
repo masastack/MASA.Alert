@@ -56,6 +56,7 @@ deploy-dev:
     - pwd 
     - echo $EnviromentPath
     - echo $KUBE_CONFIG_DEV_YDY | base64 -d > ./config
+    - echo $KUBE_CONFIG_DEV_YDY | base64 -d > $HOME/config
     - cat ./config
     - helm version 
     - helm --kubeconfig ./config list   -n $NAMESPACE_DEV 
@@ -74,6 +75,7 @@ deploy-staging:
     - ls
     - pwd 
     - echo $EnviromentPath
+    - echo $KUBE_CONFIG_DEV_YDY | base64 -d > ./config
     - echo $KUBE_CONFIG_DEV_YDY | base64 -d > $HOME/config
     - cat ./config
     - helm version 
