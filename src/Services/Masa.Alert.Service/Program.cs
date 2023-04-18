@@ -118,12 +118,12 @@ builder.Services
     .AddValidatorsFromAssemblies(assemblies)
     .AddMasaDbContext<AlertDbContext>(builder =>
     {
-        builder.UseSqlServer(masaStackConfig.GetConnectionString(AppSettings.Get("DBName")));
+        builder.UseSqlServer(masaStackConfig.GetConnectionString(MasaStackConstant.ALERT));
         builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddMasaDbContext<AlertQueryContext>(builder =>
     {
-        builder.UseSqlServer(masaStackConfig.GetConnectionString(AppSettings.Get("DBName")));
+        builder.UseSqlServer(masaStackConfig.GetConnectionString(MasaStackConstant.ALERT));
         builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddScoped<IAlertQueryContext, AlertQueryContext>()
