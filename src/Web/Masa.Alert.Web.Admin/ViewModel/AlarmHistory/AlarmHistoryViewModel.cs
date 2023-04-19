@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Web.Admin.ViewModel.AlarmHistory;
 
-public class AlarmHistoryViewModel
+public record class AlarmHistoryViewModel
 {
     public Guid Id { get; set; }
 
