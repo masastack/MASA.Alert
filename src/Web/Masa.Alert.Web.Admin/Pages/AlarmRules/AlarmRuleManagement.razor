@@ -25,81 +25,79 @@
         </div>
         @if (advanced)
         {
-            <MRow Class="@($"mb-6 flex-none {(isAnimate?"animate__animated":"")} {(!advanced?"animate__fadeOut":"animate__fadeIn")}")" NoGutters Style="width:110%">
-            <MCol Md="1" Class="d-inline-flex">
-                <SSelect Small @bind-Value="@_queryParam.TimeType"
-                         Items="Enum.GetValues<AlarmRuleSearchTimeTypes>().ToList()"
-                         Label="@T(nameof(_queryParam.TimeType))"
-                         ItemText="e => T(e==default?string.Empty:e.ToString())"
-                         ItemValue="e=> e"
-                         BackgroundColor="white"
-                              Clearable
-                         TItem="AlarmRuleSearchTimeTypes"
-                         TItemValue="AlarmRuleSearchTimeTypes"
-                         TValue="AlarmRuleSearchTimeTypes"
-                         Class="fill-card body2"
-                         OnSelectedItemUpdate="RefreshAsync"
-                         OnClearClick="RefreshAsync">
+            <MRow Class="@($"mb-6 flex-none {(isAnimate ? "animate__animated" : "")} {(!advanced ? "animate__fadeOut" : "animate__fadeIn")}")" NoGutters Style="width:110%">
+                <MCol Md="1" Class="d-inline-flex">
+                    <SSelect Small @bind-Value="@_queryParam.TimeType"
+                             Items="Enum.GetValues<AlarmRuleSearchTimeTypes>().ToList()"
+                             Label="@T(nameof(_queryParam.TimeType))"
+                             ItemText="e => T(e == default ? string.Empty : e.ToString())"
+                             ItemValue="e => e"
+                             BackgroundColor="white"
+                             Clearable
+                             TItem="AlarmRuleSearchTimeTypes"
+                             TItemValue="AlarmRuleSearchTimeTypes"
+                             TValue="AlarmRuleSearchTimeTypes"
+                             Class="fill-card body2"
+                             OnSelectedItemUpdate="RefreshAsync"
+                             OnClearClick="RefreshAsync">
                     </SSelect>
-                    </MCol>
-                    <MCol Md="3" Class="ml-6">
-                    <DateTimeRangePicker @bind-StartTime="_queryParam.StartTime" @bind-EndTime="_queryParam.EndTime" OnChange="RefreshAsync" />
-                    </MCol>
-                    @if (_queryParam.Type == AlarmRuleTypes.Log)
+                </MCol>
+                <SDateTimeRangeToolbar  Class="ml-6" StartDateTime="_queryParam.StartTime" EndDateTime="_queryParam.EndTime" OnUpdate="DateRangChangedAsync" ShowQuickChange="false" />
+                @if (_queryParam.Type == AlarmRuleTypes.Log)
                 {
                     <MCol Md="1" Class="ml-6">
                         <SSelect Small @bind-Value="@_queryParam.ProjectIdentity"
-                         Items="_projectItems"
-                         Label="@T(nameof(_queryParam.ProjectIdentity))"
-                         ItemText="e => e.Text"
-                         ItemValue="e=> e.Value"
-                         BackgroundColor="white"
-                                  Clearable
-                         TItem="SelectItem<string>"
-                         TItemValue="string"
-                         TValue="string"
-                         Class="fill-card body2"
-                         OnSelectedItemUpdate="HandleProjectChange"
-                         OnClearClick="RefreshAsync">
+                                 Items="_projectItems"
+                                 Label="@T(nameof(_queryParam.ProjectIdentity))"
+                                 ItemText="e => e.Text"
+                                 ItemValue="e => e.Value"
+                                 BackgroundColor="white"
+                                 Clearable
+                                 TItem="SelectItem<string>"
+                                 TItemValue="string"
+                                 TValue="string"
+                                 Class="fill-card body2"
+                                 OnSelectedItemUpdate="HandleProjectChange"
+                                 OnClearClick="RefreshAsync">
                         </SSelect>
-                        </MCol>
+                    </MCol>
                     <MCol Md="1" Class="ml-6">
                         <SSelect Small @bind-Value="@_queryParam.AppIdentity"
-                         Items="_appsItems"
-                         Label="@T(nameof(_queryParam.AppIdentity))"
-                         ItemText="e => e.Text"
-                         ItemValue="e=> e.Value"
-                         BackgroundColor="white"
-                                  Clearable
-                         TItem="SelectItem<string>"
-                         TItemValue="string"
-                         TValue="string"
-                         Class="fill-card body2"
-                         OnSelectedItemUpdate="RefreshAsync"
-                         OnClearClick="RefreshAsync">
+                                 Items="_appsItems"
+                                 Label="@T(nameof(_queryParam.AppIdentity))"
+                                 ItemText="e => e.Text"
+                                 ItemValue="e => e.Value"
+                                 BackgroundColor="white"
+                                 Clearable
+                                 TItem="SelectItem<string>"
+                                 TItemValue="string"
+                                 TValue="string"
+                                 Class="fill-card body2"
+                                 OnSelectedItemUpdate="RefreshAsync"
+                                 OnClearClick="RefreshAsync">
                         </SSelect>
-                        </MCol>
+                    </MCol>
                 }
                 @if (_queryParam.Type == AlarmRuleTypes.Metric)
                 {
                     <MCol Md="2" Class="ml-6">
                         <SAutoComplete Items="_metricItems" @bind-Value="_queryParam.MetricId"
-                               Label="@T("Metric")"
-                               ItemText="v => v.Text"
-                               ItemValue="v=> v.Value"
-                               BackgroundColor="white"
-                               Clearable
-                               Flat
-                               Solo
-                               Small
-                               PrependInnerIcon="mdi-magnify"
-                               ClearIcon="mdi-close"
-                               Outlined="false"
-                               Class="mr-6 rounded-2 m-input--h-40"
-                               OnChange="async(string v)=> await RefreshAsync()"
-                               Height="40">
+                                       Label="@T("Metric")"
+                                       ItemText="v => v.Text"
+                                       ItemValue="v => v.Value"
+                                       BackgroundColor="white"
+                                       Clearable
+                                       Flat
+                                       Solo
+                                       Small
+                                       PrependInnerIcon="mdi-magnify"
+                                       ClearIcon="mdi-close"
+                                       Outlined="false"
+                                       Class="mr-6 rounded-2 m-input--h-40"
+                                       OnChange="async (string v) => await RefreshAsync()"
+                                       Height="40">
                             <SelectionContent Context="data">
-                                <SAutoCompleteSelection Value="data.Item.Text" Style="height:40px;" />
+                                <SAutoCompleteSelection Value="data.Item.Text" Style="height:40px;"/>
                             </SelectionContent>
                         </SAutoComplete>
                     </MCol>

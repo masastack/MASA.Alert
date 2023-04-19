@@ -1,6 +1,6 @@
 ﻿@inherits AdminCompontentBase
 <div class="d-flex">
-    <DateTimeRangePicker Class="btn-fill-line" @bind-StartTime="_startTime" @bind-EndTime="_endTime" Style="border:none;width:410px" OnChange="TimeRangeChange" />
+    <SDateTimeRangeToolbar StartDateTime="_startTime" EndDateTime="_endTime" OnUpdate="TimeRangeChange" ShowQuickChange="false" />
     <MSpacer></MSpacer>
     <div class="regular3--text caption">
         <p class="mb-1">@T("ChartPreviewTips")</p>
@@ -28,9 +28,9 @@
 
     protected override string? PageName { get; set; } = "AlarmChartBlock";
 
-    private DateTime? _startTime { get; set; }
+    private DateTimeOffset? _startTime;
 
-    private DateTime? _endTime { get; set; }
+    private DateTimeOffset? _endTime;
 
     private object _option = new();
 
@@ -170,7 +170,7 @@
     private List<long> GetTimeListByFixedInterval(int count = 10)
     {
         var timeList = new List<long>();
-        var time = new DateTimeOffset(_startTime ?? DateTime.Now);
+        var time = _startTime ?? DateTimeOffset.Now;
 
         var i = 0;
         while (CheckIsAddTime(time, i))
@@ -204,9 +204,7 @@
 
         if (timezone != null)
             cronExpression.TimeZone = timezone;
-
-        var time = new DateTimeOffset(_startTime ?? DateTime.Now);
-
+        var time = _startTime ?? DateTimeOffset.Now;
         var i = 0;
         while (CheckIsAddTime(time, i))
         {
@@ -224,8 +222,9 @@
         return timeList;
     }
 
-    private void TimeRangeChange()
+    private void TimeRangeChange((DateTimeOffset?, DateTimeOffset?) args)
     {
+        (_startTime, _endTime) = args;
         FillData();
     }
 
