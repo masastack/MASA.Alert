@@ -106,6 +106,12 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         StateHasChanged();
     }
 
+    private Task DateRangChangedAsync((DateTimeOffset?, DateTimeOffset?) args)
+    {
+        (_queryParam.StartTime, _queryParam.EndTime) = (args.Item1?.UtcDateTime, args.Item2?.UtcDateTime);
+        return RefreshAsync();
+    }
+
     private async Task RefreshAsync()
     {
         _queryParam.Page = 1;

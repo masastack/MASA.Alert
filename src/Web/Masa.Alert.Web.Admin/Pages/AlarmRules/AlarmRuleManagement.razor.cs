@@ -39,7 +39,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         };
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
@@ -80,6 +80,12 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private async Task HandleOk()
     {
         await LoadData();
+    }
+
+    private Task DateRangChangedAsync((DateTimeOffset?, DateTimeOffset?) args)
+    {
+        (_queryParam.StartTime, _queryParam.EndTime) = (args.Item1?.UtcDateTime, args.Item2?.UtcDateTime);
+        return RefreshAsync();
     }
 
     private async Task RefreshAsync()
