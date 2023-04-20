@@ -23,7 +23,6 @@ public class AlarmRuleUpsertViewModelValidator : AbstractValidator<AlarmRuleUpse
             .When(x => x.Type == AlarmRuleTypes.Metric && x.Step == 1);
 
         RuleFor(x => x.DisplayName).Required(string.Format(i18n.T("RequiredValidator"), i18n.T(scope, "DisplayName")))
-            .ChineseLetterNumberSymbol().WithMessage(string.Format(i18n.T("ChineseLetterNumberSymbolValidator"), i18n.T(scope, "DisplayName")))
             .Length(2, 50).WithMessage(string.Format(i18n.T("LengthValidator"), i18n.T(scope, "DisplayName"), 2, 50))
             .When(x => (x.Type == AlarmRuleTypes.Log && x.Step == 3) || (x.Type == AlarmRuleTypes.Metric && x.Step == 2));
         RuleFor(x => x.Items).Required(string.Format(i18n.T("RequiredValidator"), i18n.T(scope, "TriggerRules")))
