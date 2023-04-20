@@ -70,7 +70,9 @@ deploy-staging:
   variables:
     EnviromentPath: Staging
   only:
-    - main  
+    - main 
+  tags:
+    - ydy-runner
   script:
     - ls
     - pwd 
