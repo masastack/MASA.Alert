@@ -69,6 +69,8 @@ deploy-staging:
   image: registry.cn-hangzhou.aliyuncs.com/masa/library:helm3_latest
   variables:
     EnviromentPath: Staging
+  tags:
+    - ydy-runner
   only:
     - main  
   script:
