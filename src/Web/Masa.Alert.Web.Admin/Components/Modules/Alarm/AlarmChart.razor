@@ -163,12 +163,22 @@
                 },
                 AxisLabel = new
                 {
-                    Color = "#A3AED0"
+                    Color = "#A3AED0",
+                    Formatter = new 
+                    {
+                       Year = "{yyyy}",
+                       Month = "{MMM}",
+                       Day = "{d}",
+                       Hour = "{HH}:{mm}",
+                       Minute = "{HH}:{mm}",
+                       Second = "{HH}:{mm}:{ss}"
+                    }
                 },
                 AxisTick = new
                 {
                     Show = false
                 },
+                SplitNumber = 4
                 MinInterval = 20 * 1000,//Minimum accuracy of x-axis in one minute
             },
             YAxis = new
