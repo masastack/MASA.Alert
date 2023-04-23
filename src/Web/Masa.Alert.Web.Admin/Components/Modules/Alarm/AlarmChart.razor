@@ -164,7 +164,15 @@
                 AxisLabel = new
                 {
                     Color = "#A3AED0",
-                    Formatter = "{HH}:{mm}:{s}"
+                    Formatter = new 
+                    {
+                       Year = "{yyyy}",
+                       Month = "{MMM}",
+                       Day = "{d}",
+                       Hour = "{HH}:{mm}",
+                       Minute = "{HH}:{mm}",
+                       Second = "{HH}:{mm}:{ss}"
+                    }
                 },
                 AxisTick = new
                 {
