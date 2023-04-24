@@ -102,7 +102,7 @@
                         case nameof(AlarmHistoryListViewModel.HandleStatus):
                             <AlarmHistoryStatusTag Value="@context.Item.HandleStatus" />
                             break;
-                        case "HandleCompletionTime":
+                        case nameof(AlarmHistoryQueryModel.RecoveryTime):
                             <MListItem Class="pa-0">
                                 <MListItemContent>
                                     <MListItemTitle Class="body regular--text">@context.Item.Handle.HandlerName @context.Item.RecoveryTime?.ToOffset(JsInitVariables.TimezoneOffset).ToString(T("$TimeFormat"))</MListItemTitle>
