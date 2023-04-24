@@ -13,7 +13,7 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
     {
-        opt.AppId = builder.Configuration.GetValue<string>("AppId");
+        opt.AppId = masaStackConfig.GetWebId(MasaStackConstant.ALERT);
         opt.DaprHttpPort = 20604;
         opt.DaprGrpcPort = 20603;
     });
