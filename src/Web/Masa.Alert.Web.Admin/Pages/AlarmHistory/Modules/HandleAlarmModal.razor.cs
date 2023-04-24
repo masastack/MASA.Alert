@@ -85,6 +85,11 @@ public partial class HandleAlarmModal : AdminCompontentBase
         Loading = true;
         var inputDto = _model.Handle.Adapt<AlarmHandleDto>();
 
+        if (!_isThirdParty)
+        {
+            inputDto.WebHookId = default;
+        }
+
         try
         {
             await AlarmHistoryService.HandleAsync(_entityId, inputDto);
