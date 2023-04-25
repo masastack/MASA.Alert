@@ -13,6 +13,11 @@ public class AlertCaller : DaprCallerBase
     public WebHookService WebHookService => _webHookService ??= new(Caller);
     protected override string AppId { get; set; } = App.APP;
 
+    public AlertCaller(AlertApiOptions options)
+    {
+        AppId = options.AppId;
+    }
+
     protected override void UseDaprPost(MasaDaprClientBuilder masaDaprClientBuilder)
     {
         masaDaprClientBuilder.UseAuthentication((IServiceProvider serviceProvider) => new AuthenticationService(serviceProvider.GetRequiredService<TokenProvider>(), serviceProvider.GetRequiredService<JwtTokenValidator>()));

@@ -13,7 +13,7 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
     {
-        opt.AppId = builder.Configuration.GetValue<string>("AppId");
+        opt.AppId = masaStackConfig.GetWebId(MasaStackConstant.ALERT);
         opt.DaprHttpPort = 20604;
         opt.DaprGrpcPort = 20603;
     });
@@ -82,6 +82,7 @@ builder.Services.AddMasaOpenIdConnect(masaOpenIdConnectOptions);
 
 builder.Services.AddAlertApiGateways(option =>
 {
+    option.AppId = masaStackConfig.GetServiceId(MasaStackConstant.ALERT);
     option.AuthorityEndpoint = masaOpenIdConnectOptions.Authority;
     option.ClientId = masaOpenIdConnectOptions.ClientId;
     option.ClientSecret = masaOpenIdConnectOptions.ClientSecret;
