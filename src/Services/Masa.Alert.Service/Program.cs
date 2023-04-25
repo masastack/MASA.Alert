@@ -56,6 +56,16 @@ builder.Services.AddAuthentication(options =>
     //options.Audience = "";
     options.TokenValidationParameters.ValidateAudience = false;
     options.MapInboundClaims = false;
+
+    options.BackchannelHttpHandler = new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback = (
+            sender,
+            certificate,
+            chain,
+            sslPolicyErrors) =>
+        { return true; }
+    };
 });
 
 builder.Services.AddMapster();
