@@ -11,7 +11,6 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     private GetAlarmHistoryInputDto _queryParam = new(10);
     private bool advanced = false;
     private bool isAnimate;
-    private List<DataTableHeader<AlarmHistoryListViewModel>> _headers = new();
     private PaginatedListDto<AlarmHistoryListViewModel> _entities = new();
     private AlarmHistoryDetailModal? _detailModal;
     private HandleAlarmModal? _handleAlarmModal;
@@ -49,8 +48,10 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
         }
     }
 
-    private void HandleHeaders()
+    public List<DataTableHeader<AlarmHistoryListViewModel>> GetHeaders()
     {
+        List<DataTableHeader< AlarmHistoryListViewModel >> _headers = new();
+
         if (_queryParam.SearchType == AlarmHistorySearchTypes.Alarming)
         {
             _headers = new()
@@ -89,11 +90,11 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
                 new() { Text = T("Action"), Value = "Action",Sortable=false,Width=105},
             };
         }
+        return _headers;
     }
 
     private async Task LoadData()
     {
-        HandleHeaders();
         Loading = true;
 
         var queryParam = _queryParam.Adapt<GetAlarmHistoryInputDto>() ?? new();
