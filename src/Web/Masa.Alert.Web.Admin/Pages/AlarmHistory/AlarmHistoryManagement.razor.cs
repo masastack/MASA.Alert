@@ -71,7 +71,7 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
             {
                 new() { Text = T(nameof(AlarmHistoryListViewModel.AlertSeverity)), Value = nameof(AlarmHistoryListViewModel.AlertSeverity),Sortable=false, Width = "6.5625rem"},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.DisplayName)), Value = nameof(AlarmHistoryListViewModel.DisplayName),Sortable=false, Width = "19.6875rem"},
-                new() { Text = T("HandleCompletionTime"), Value = nameof(AlarmHistoryQueryModel.RecoveryTime), Width = "6.5625rem"},
+                new() { Text = T("HandleCompletionTime"), Value = nameof(AlarmHistoryQueryModel.RecoveryTime), Width = "7.5rem"},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.FirstAlarmTime)), Value = nameof(AlarmHistoryListViewModel.FirstAlarmTime), Width = "6.5625rem"},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.AlarmCount)), Value = nameof(AlarmHistoryListViewModel.AlarmCount), Width = "6.5625rem"},
                 new() { Text = T(nameof(AlarmHistoryListViewModel.LastAlarmTime)), Value = nameof(AlarmHistoryListViewModel.LastAlarmTime), Width = "6.5625rem"},
