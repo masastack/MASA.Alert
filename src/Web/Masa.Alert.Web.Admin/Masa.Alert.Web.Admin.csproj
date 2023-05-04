@@ -17,8 +17,9 @@
     <PackageReference Include="Mapster" Version="7.3.0" />
     <PackageReference Include="Masa.BuildingBlocks.Authentication.Identity" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.Contrib.SearchEngine.AutoComplete.ElasticSearch" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.Stack.Components" Version="0.0.367" />
+    <PackageReference Include="Masa.Stack.Components" Version="0.0.369" />
     <PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="$(MasaFrameworkPackageVersion)" />
+	<PackageReference Include="Masa.Contrib.StackSdks.Tsc" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0-preview.4.22251.1" />
   </ItemGroup>
@@ -26,7 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ApiGateways\Caller\Masa.Alert.ApiGateways.Caller\Masa.Alert.ApiGateways.Caller.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Common\Masa.Alert.Infrastructure.Common.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Tsc\Masa.Alert.Infrastructure.Tsc.csproj" />
   </ItemGroup>
 
   <ItemGroup>

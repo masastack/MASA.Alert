@@ -21,6 +21,7 @@
 	<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="$(MasaFrameworkPackageVersion)" />
 	<PackageReference Include="Masa.Contrib.Data.EFCore" Version="$(MasaFrameworkPackageVersion)" />
 	<PackageReference Include="Masa.Contrib.StackSdks.Config" Version="$(MasaFrameworkPackageVersion)" />
+	<PackageReference Include="Masa.Contrib.StackSdks.Tsc" Version="$(MasaFrameworkPackageVersion)" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
 	<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.22" />
   </ItemGroup>
@@ -29,7 +30,6 @@
   <ProjectReference Include="..\..\Domain\Masa.Alert.Domain\Masa.Alert.Domain.csproj" />
   <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Constants\Masa.Alert.Infrastructure.Constants.csproj" />
   <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.EntityFrameworkCore\Masa.Alert.Infrastructure.EntityFrameworkCore.csproj" />
-  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Tsc\Masa.Alert.Infrastructure.Tsc.csproj" />
   <ProjectReference Include="..\Masa.Alert.Application.Contracts\Masa.Alert.Application.Contracts.csproj" />
 </ItemGroup>
 </Project>
