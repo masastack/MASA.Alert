@@ -191,11 +191,6 @@
     display: inline-block;
 }
 
-.fill-card {
-    /*border: 1px solid #FFFFFF;*/
-    border-radius: 8px;
-}
-
 .m-text-field.m-text-field--solo:not(.m-text-field--solo-flat) > .m-input__control > .m-input__slot {
     box-shadow: initial;
 }

@@ -1,7 +1,7 @@
 ﻿@inherits AdminCompontentBase
 @page "/webHook"
 <PageTitle>@T("WebHook")</PageTitle>
-<AutoHeight Overflow>
+<AutoHeight Overflow="!_showEmptyPlaceholder">
     <HeaderContent>
         <div class="ma-0 search-panel my-6">
             <div class="d-flex justify-center search-panel-right full-width">
@@ -13,21 +13,21 @@
         </div>
     </HeaderContent>
     <AutoHeightContent>
-        <MRow NoGutters Style="height:0;">
-            @if (!_showEmptyPlaceholder)
-            {
+        @if (!_showEmptyPlaceholder)
+        {
+            <MRow NoGutters Style="height:0;">
                 @foreach (var _entitie in _entities.Result)
                 {
-                    <MCol Md="3" Class="pa-2">
+                    <MCol Md="3" Class="pr-4 pb-4">
                         <WebHookCard WebHook="_entitie" OnEdit="()=> _upsertModal?.OpenModalAsync(_entitie)!" OnTest="()=> _testModal?.OpenModalAsync(_entitie.Id)!" />
                     </MCol>
                 }
-            }
-            else
-            {
-                <SEmptyPlaceholder Height="calc(100vh - 210px);" />
-            }
-        </MRow>
+            </MRow>
+        }
+        else
+        {
+            <SEmptyPlaceholder />
+        }
     </AutoHeightContent>
     <FooterContent>
         @if (!_showEmptyPlaceholder)
