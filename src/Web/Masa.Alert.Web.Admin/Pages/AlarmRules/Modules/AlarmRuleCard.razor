@@ -56,13 +56,13 @@
         </MListItem>
     </MCardTitle>
     <MCardText class="flex-grow-1 px-4 d-flex flex-column">
-        <div class="subtitle2 mt-1">
+        <div class="subtitle2 mt-1 d-flex">
             @if (AlarmRule.Type == AlarmRuleTypes.Log)
             {
-                <MChip IsActive Color="emphasis" Class="rounded-3 body2 default-tag mt-3" TextColor="white" Style="max-width: 150px;">
+                <MChip IsActive Color="emphasis" Class="rounded-3 body2 default-tag mt-3" TextColor="white">
                     @AlarmRule.ProjectIdentity
                 </MChip>
-                <MChip Class="rounded-3 body2 default-tag ml-3 mt-3" Color="emphasis2" Outlined Style="max-width: 150px;">
+                <MChip Class="rounded-3 body2 default-tag ml-3 mt-3" Color="emphasis2" Outlined>
                     @AlarmRule.AppIdentity
                 </MChip>
             }

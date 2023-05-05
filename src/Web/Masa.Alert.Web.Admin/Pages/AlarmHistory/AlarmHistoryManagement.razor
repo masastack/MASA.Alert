@@ -26,7 +26,7 @@
         @if (advanced)
         {
             <MRow Class="@($"mt-6 flex-none {(isAnimate?"animate__animated":"")} {(!advanced?"animate__fadeOut":"animate__fadeIn")}")" NoGutters Style="width:110%">
-                <MCol Md="1">
+                <MCol Md="2">
                     <SSelect Small @bind-Value="@_queryParam.TimeType"
                          Items="_timeTypeItems"
                          Label="@T(nameof(_queryParam.TimeType))"
@@ -37,13 +37,13 @@
                          TItem="AlarmHistorySearchTimeTypes"
                          TItemValue="AlarmHistorySearchTimeTypes"
                          TValue="AlarmHistorySearchTimeTypes"
-                         Class="fill-card body2"
+                         Class="rounded-lg body2"
                          OnSelectedItemUpdate="RefreshAsync"
                          OnClearClick="RefreshAsync">
                     </SSelect>
                 </MCol>
                 <SDateTimeRangeToolbar Class="ml-6" StartDateTime="_queryParam.StartTime" EndDateTime="_queryParam.EndTime" OnUpdate="DateRangChangedAsync" ShowQuickChange="false" />
-                <MCol Md="1" Class="ml-6">
+                <MCol Md="2" Class="ml-6">
                     <SSelect Small @bind-Value="@_queryParam.AlertSeverity"
                          Items="Enum.GetValues<AlertSeverity>().ToList()"
                          Label="@T(nameof(_queryParam.AlertSeverity))"
@@ -54,14 +54,14 @@
                          TItem="AlertSeverity"
                          TItemValue="AlertSeverity"
                          TValue="AlertSeverity"
-                         Class="fill-card body2"
+                         Class="rounded-lg body2"
                          OnSelectedItemUpdate="RefreshAsync"
                          OnClearClick="RefreshAsync">
                     </SSelect>
                 </MCol>
                 @if (_queryParam.SearchType == AlarmHistorySearchTypes.Alarming)
                 {
-                    <MCol Md="1" Class="ml-6">
+                    <MCol Md="2" Class="ml-6">
                         <SSelect Small @bind-Value="@_queryParam.HandleStatus"
                          Items="_handleStatusItems"
                          Label="@T(nameof(_queryParam.HandleStatus))"
@@ -72,7 +72,7 @@
                          TItem="AlarmHistoryHandleStatuses"
                          TItemValue="AlarmHistoryHandleStatuses"
                          TValue="AlarmHistoryHandleStatuses"
-                         Class="fill-card body2"
+                         Class="rounded-lg body2"
                          OnSelectedItemUpdate="RefreshAsync"
                          OnClearClick="RefreshAsync">
                         </SSelect>
