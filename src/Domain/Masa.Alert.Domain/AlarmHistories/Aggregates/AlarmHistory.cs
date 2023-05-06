@@ -121,4 +121,19 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
         Recovery(false);
     }
+
+    public void HandleCallback(Guid operatorId, string remark, AlarmHistoryHandleStatuses status)
+    {
+        var commit = new AlarmHandleStatusCommit(status, operatorId, remark);
+        _handleStatusCommits.Add(commit);
+
+        if (Handle.IsHandleNotice)
+        {
+            AddDomainEvent(new NoticeAlarmHandleEvent(Handle));
+
+            _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Notified, operatorId, Handle.NotificationConfig.TemplateName));
+        }
+
+        Recovery(false);
+    }
 }

@@ -14,11 +14,9 @@ public partial class HandleAlarmModal : AdminCompontentBase
     private AlarmHandleViewModel _handle = new();
     private string _tab = "";
     private bool _isThirdParty;
-    private MForm? _form;
+    private AlarmHistoryHandleDetail? _handleDetail;
 
     AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
-
-    WebHookService WebHookService => AlertCaller.WebHookService;
 
     protected override string? PageName { get; set; } = "AlarmHistoryBlock";
 
@@ -75,9 +73,9 @@ public partial class HandleAlarmModal : AdminCompontentBase
 
     private async void HandleAlarm()
     {
-        Check.NotNull(_form, "form not found");
+        Check.NotNull(_handleDetail.Form, "form not found");
 
-        if (!_form.Validate())
+        if (!_handleDetail.Form.Validate())
         {
             return;
         }

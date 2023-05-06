@@ -1,6 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Contrib.StackSdks.Caller;
+using Microsoft.AspNetCore.Http;
+
 namespace Masa.Alert.Application.AlarmHistories.Commands;
 
 public class AlarmHistoryCommandHandler
@@ -10,15 +13,19 @@ public class AlarmHistoryCommandHandler
     private readonly IAuthClient _authClient;
     private readonly II18n<DefaultResource> _i18n;
 
+    public readonly TokenProvider _tokenProvider;
+
     public AlarmHistoryCommandHandler(IAlarmHistoryRepository repository
         , IUserContext userContext
         , IAuthClient authClient
-        , II18n<DefaultResource> i18n)
+        , II18n<DefaultResource> i18n
+        , TokenProvider tokenProvider)
     {
         _repository = repository;
         _userContext = userContext;
         _authClient = authClient;
         _i18n = i18n;
+        _tokenProvider = tokenProvider;
     }
 
     [EventHandler]
@@ -65,14 +72,15 @@ public class AlarmHistoryCommandHandler
     }
 
     [EventHandler]
-    public async Task HandleCompletedAsync(HandleCompletedAlarmHistoryCommand command)
+    public async Task HandleCallbackAsync(HandleCallbackAlarmHistoryCommand command)
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
 
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
-        var user = await _authClient.UserService.GetByIdAsync(entity.Handle.Handler);
+        Guid handler = command.handler ?? entity.Handle.Handler;
+        var user = await _authClient.UserService.GetByIdAsync(handler);
         var handlerDisplayName = user?.StaffDislpayName ?? string.Empty;
-        entity.Completed(entity.Handle.Handler, handlerDisplayName);
+        entity.HandleCallback(handler, handlerDisplayName, command.Status);
 
         await _repository.UpdateAsync(entity);
     }
