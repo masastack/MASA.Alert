@@ -49,4 +49,10 @@ public class AlarmHandle : ValueObject
         Status = AlarmHistoryHandleStatuses.ProcessingCompleted;
         return new AlarmHandleStatusCommit(Status, operatorId, remark);
     }
+
+    public AlarmHandleStatusCommit HandlerChange(Guid handler, string remark)
+    {
+        Handler = handler;
+        return HandleAlarm(handler, remark);
+    }
 }

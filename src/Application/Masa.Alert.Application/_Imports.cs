@@ -50,6 +50,7 @@ global using Masa.BuildingBlocks.StackSdks.Tsc.Contracts.Model.Aggregate;
 global using Masa.BuildingBlocks.StackSdks.Tsc.Model;
 global using Masa.Contrib.Dispatcher.Events;
 global using Masa.Contrib.StackSdks.Config;
+global using Masa.Contrib.StackSdks.Caller;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Logging;
 global using Masa.Alert.Infrastructure.Constants;

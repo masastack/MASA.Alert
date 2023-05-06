@@ -1,9 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Contrib.StackSdks.Caller;
-using Microsoft.AspNetCore.Http;
-
 namespace Masa.Alert.Application.AlarmHistories.Commands;
 
 public class AlarmHistoryCommandHandler
@@ -53,7 +50,7 @@ public class AlarmHistoryCommandHandler
         else
         {
             var handlerDisplayName = (await _authClient.UserService.GetByIdAsync(handle.Handler))?.StaffDislpayName ?? string.Empty;
-            remark = $"{currentUser.StaffDislpayName}分配处理人:{handlerDisplayName}";
+            remark = $"{currentUser.StaffDislpayName}{_i18n.T("AllocationProcessor")}:{handlerDisplayName}";
         }
 
         entity.HandleAlarm(handle, currentUser.Id, remark);
@@ -72,15 +69,29 @@ public class AlarmHistoryCommandHandler
     }
 
     [EventHandler]
-    public async Task HandleCallbackAsync(HandleCallbackAlarmHistoryCommand command)
+    public async Task HandlerChangeAsync(HandlerChangeAlarmHistoryCommand command)
+    {
+        var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
+
+        var handlerUser = await _authClient.UserService.GetByIdAsync(command.Handler);
+        MasaArgumentException.ThrowIfNull(handlerUser, _i18n.T("HandlerNotExist"));
+
+        var currentUser = await _authClient.UserService.GetCurrentUserAsync();
+        string remark = $"{currentUser?.StaffDislpayName}{_i18n.T("AllocationProcessor")}:{handlerUser?.DisplayName}";
+        entity.HandlerChange(command.Handler, remark);
+        await _repository.UpdateAsync(entity);
+    }
+
+    [EventHandler]
+    public async Task CompletedAsync(HandleCompletedAlarmHistoryCommand command)
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
 
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
-        Guid handler = command.handler ?? entity.Handle.Handler;
-        var user = await _authClient.UserService.GetByIdAsync(handler);
+        var user = await _authClient.UserService.GetByIdAsync(entity.Handle.Handler);
         var handlerDisplayName = user?.StaffDislpayName ?? string.Empty;
-        entity.HandleCallback(handler, handlerDisplayName, command.Status);
+        entity.Completed(entity.Handle.Handler, handlerDisplayName);
 
         await _repository.UpdateAsync(entity);
     }

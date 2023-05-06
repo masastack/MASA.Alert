@@ -38,10 +38,17 @@ public class AlarmHistoryService : ServiceBase
         await eventBus.PublishAsync(command);
     }
 
-    [RoutePattern("{id}/handleCallback", StartWithBaseUri = true, HttpMethod = "Post")]
-    public async Task HandleCallbackAsync(IEventBus eventBus, Guid id, Guid? handler, AlarmHistoryHandleStatuses status)
+    [RoutePattern("{id}/handlerChange", StartWithBaseUri = true, HttpMethod = "Post")]
+    public async Task HandlerChangeAsync(IEventBus eventBus, Guid id, Guid handler)
     {
-        var command = new HandleCallbackAlarmHistoryCommand(id, handler, status);
+        var command = new HandlerChangeAlarmHistoryCommand(id, handler);
+        await eventBus.PublishAsync(command);
+    }
+
+    [RoutePattern("{id}/complete", StartWithBaseUri = true, HttpMethod = "Post")]
+    public async Task CompletedAsync(IEventBus eventBus, Guid id)
+    {
+        var command = new HandleCompletedAlarmHistoryCommand(id);
         await eventBus.PublishAsync(command);
     }
 }

@@ -6,7 +6,14 @@ namespace Masa.Alert.Domain.Shared.AlarmHistory;
 public enum AlarmHistoryHandleStatuses
 {
     Pending = 1,
-    InProcess,
-    ProcessingCompleted,
-    Notified
+    InProcess = 2,
+    ProcessingCompleted = 3,
+    Notified = 4
+}
+
+
+public enum AlarmHistoryHandleCallbackStatus
+{
+    InProcess = 2,
+    ProcessingCompleted = 3,
 }

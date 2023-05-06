@@ -3,5 +3,7 @@
   "AlarmHistory": "AlarmHistory",
   "CurrentUser": "CurrentUser",
   "UserNotExist": "The current user does not exist",
-  "PostWebHookFail": "Processing failed. The request for WebHook timed out."
+  "PostWebHookFail": "Processing failed. The request for WebHook timed out.",
+  "AllocationProcessor": "Allocation Processor",
+  "HandlerNotExist": "The handler user does not exist"
 }

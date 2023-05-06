@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using System.Reflection.Metadata;
+
 namespace Masa.Alert.Domain.AlarmHistories.Aggregates;
 
 public class AlarmHistory : FullAggregateRoot<Guid, Guid>
@@ -122,18 +124,9 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         Recovery(false);
     }
 
-    public void HandleCallback(Guid operatorId, string remark, AlarmHistoryHandleStatuses status)
+    public void HandlerChange(Guid handler, string remark)
     {
-        var commit = new AlarmHandleStatusCommit(status, operatorId, remark);
+        var commit = Handle.HandlerChange(handler, remark);
         _handleStatusCommits.Add(commit);
-
-        if (Handle.IsHandleNotice)
-        {
-            AddDomainEvent(new NoticeAlarmHandleEvent(Handle));
-
-            _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Notified, operatorId, Handle.NotificationConfig.TemplateName));
-        }
-
-        Recovery(false);
     }
 }
