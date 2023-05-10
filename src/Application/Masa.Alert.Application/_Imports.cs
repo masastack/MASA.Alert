@@ -53,3 +53,7 @@ global using Masa.Contrib.StackSdks.Config;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Logging;
 global using Masa.Alert.Infrastructure.Constants;
+global using Dapr.Actors.Runtime;
+global using Masa.Alert.Application.AlarmRules.Commands;
+global using Masa.Alert.Application.Contracts.AlarmRules.Actors;
+global using Masa.BuildingBlocks.Dispatcher.Events;

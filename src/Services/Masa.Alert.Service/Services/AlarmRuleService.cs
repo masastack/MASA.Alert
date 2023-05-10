@@ -1,6 +1,13 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Dapr.Actors;
+using Dapr.Actors.Client;
+using Masa.Alert.Application.Contracts.AlarmRules.Actors;
+using Masa.Alert.Domain.AlarmRules.Aggregates;
+using Masa.BuildingBlocks.Dispatcher.Events;
+using StackExchange.Redis;
+
 namespace Masa.Alert.Service.Admin.Services;
 
 public class AlarmRuleService : ServiceBase
@@ -62,7 +69,17 @@ public class AlarmRuleService : ServiceBase
     [RoutePattern("{id}/check", StartWithBaseUri = true, HttpMethod = "Post")]
     public async Task CheckAsync(IEventBus eventBus, Guid id, DateTimeOffset? excuteTime)
     {
-        var command = new CheckAlarmRuleCommand(id, excuteTime);
-        await eventBus.PublishAsync(command);
+        //var command = new CheckAlarmRuleCommand(id, excuteTime);
+        //await eventBus.PublishAsync(command);
+        //Console.WriteLine("Check:" + DateTime.Now);
+        var alarmRuleActor = GetAlarmRuleActor(id);
+
+        await alarmRuleActor.Check(excuteTime);
+    }
+
+    private static IAlarmRuleActor GetAlarmRuleActor(Guid alarmRuleId)
+    {
+        var actorId = new ActorId(alarmRuleId.ToString());
+        return ActorProxy.Create<IAlarmRuleActor>(actorId, nameof(AlarmRuleActor));
     }
 }

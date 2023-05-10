@@ -20,6 +20,10 @@ builder.Services.AddObservable(builder.Logging, () =>
 {
     return masaStackConfig.OtlpUrl;
 });
+builder.Services.AddActors(options =>
+{
+    options.Actors.RegisterActor<AlarmRuleActor>();
+});
 builder.Services.AddDaprClient();
 var identityServerUrl = masaStackConfig.GetSsoDomain();
 if (builder.Environment.IsDevelopment())
@@ -67,7 +71,6 @@ builder.Services.AddAuthentication(options =>
         { return true; }
     };
 });
-
 builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
@@ -182,6 +185,7 @@ app.UseCloudEvents();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapSubscribeHandler();
+    endpoints.MapActorsHandlers();
 });
 app.UseHttpsRedirection();
 

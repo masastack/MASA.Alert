@@ -33,20 +33,17 @@ public class TriggerAlarmEventHandler
 
         if (alarm == null || alarm.RecoveryTime.HasValue)
         {
-            alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
+            alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, eto.TriggerRuleItems);
+            alarm.SetIsNotification(isNotification, isSilence);
+
             await _repository.AddAsync(alarm);
-            await _unitOfWork.SaveChangesAsync();
         }
         else
         {
             alarm.Update(eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
-            alarm.SetIsNotification(isNotification);
-            await _repository.UpdateAsync(alarm);
-        }
+            alarm.SetIsNotification(isNotification, isSilence);
 
-        if (alarm.IsNotification && !isSilence)
-        {
-            await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm.Id));
+            await _repository.UpdateAsync(alarm);
         }
     }
 }

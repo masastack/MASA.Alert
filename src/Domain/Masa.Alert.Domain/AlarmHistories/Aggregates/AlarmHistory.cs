@@ -33,11 +33,10 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     private AlarmHistory() { }
 
-    public AlarmHistory(Guid alarmRuleId, AlertSeverity alertSeverity, bool isNotification, List<RuleResultItem> ruleResultItems)
+    public AlarmHistory(Guid alarmRuleId, AlertSeverity alertSeverity, List<RuleResultItem> ruleResultItems)
     {
         AlarmRuleId = alarmRuleId;
         AlertSeverity = alertSeverity;
-        IsNotification = isNotification;
         RuleResultItems = ruleResultItems;
         AlarmCount = 1;
         FirstAlarmTime = DateTimeOffset.Now;
@@ -45,12 +44,6 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
         Handle = new();
         _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Pending, default, string.Empty));
-
-        if (Id == default)
-        {
-            Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
-            AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
-        }
     }
 
     public void Recovery(bool isAuto)
@@ -65,8 +58,6 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
             AddDomainEvent(new SendAlarmRecoveryNotificationEvent(Id));
         }
-
-        AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
     }
 
     public void Update(AlertSeverity alertSeverity, bool isNotification, List<RuleResultItem> ruleResultItems)
@@ -76,8 +67,6 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         RuleResultItems = ruleResultItems;
         AlarmCount++;
         LastAlarmTime = DateTimeOffset.Now;
-
-        AddDomainEvent(new UpdateAlarmRuleRecordAlarmIdEvent(AlarmRuleId, Id));
     }
 
     public void Notification()
@@ -85,9 +74,14 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         LastNotificationTime = DateTimeOffset.Now;
     }
 
-    public void SetIsNotification(bool isNotification)
+    public void SetIsNotification(bool isNotification, bool isSilence)
     {
         IsNotification = isNotification;
+
+        if (IsNotification && !isSilence)
+        {
+            AddDomainEvent(new SendAlarmNotificationEvent(Id));
+        }
     }
 
     public void HandleAlarm(AlarmHandle handle, Guid operatorId, string remark)

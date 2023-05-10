@@ -1,4 +1,6 @@
-﻿namespace Masa.Alert.Domain.AlarmRules.Aggregates;
+﻿using Microsoft.AspNetCore.Rewrite;
+
+namespace Masa.Alert.Domain.AlarmRules.Aggregates;
 
 public class AlarmRule : FullAggregateRoot<Guid, Guid>
 {
@@ -211,43 +213,45 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         SilenceCycle = silenceCycle;
     }
 
-    public void Check(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
-    {
-        var latestRecord = GetLatest();
-        var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
-        var isTrigger = ruleResult.Any(x => x.IsValid);
+    //public void Check(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
+    //{
+    //    var latestRecord = GetLatest();
+    //    var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
+    //    var isValid = ruleResult.Any(x => x.IsValid);
 
-        if (isTrigger)
-        {
-            consecutiveCount++;
-        }
-        else
-        {
-            consecutiveCount = 0;
-        }
+    //    var isTrigger = isValid && consecutiveCount + 1 >= ContinuousTriggerThreshold;
 
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResult));
+    //    if (isTrigger)
+    //    {
+    //        consecutiveCount++;
+    //    }
+    //    else
+    //    {
+    //        consecutiveCount = 0;
+    //    }
 
-        if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
-        {
-            var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
+    //    _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResult, default));
 
-            AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
-        }
-        else if (latestRecord != null && latestRecord.IsTrigger)
-        {
-            AddDomainEvent(new RecoveryAlarmEvent(Id));
-        }
-    }
+    //    if (isTrigger)
+    //    {
+    //        var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
+
+    //        AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
+    //    }
+    //    else if (latestRecord != null && latestRecord.IsTrigger)
+    //    {
+    //        AddDomainEvent(new RecoveryAlarmEvent(Id));
+    //    }
+    //}
 
     public void SkipCheck(DateTimeOffset excuteTime)
     {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, excuteTime, new List<RuleResultItem>()));
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, excuteTime, new List<RuleResultItem>(), default));
     }
 
-    public void AddAggregateResult(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult)
+    public void AddAggregateResult(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems, Guid alarmHistoryId = default)
     {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, false, 0, excuteTime, new List<RuleResultItem>()));
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResultItems, alarmHistoryId));
     }
 
     public bool CheckIsNotification()
@@ -270,6 +274,18 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         }
 
         return true;
+    }
+
+    public bool CheckIsTrigger(List<RuleResultItem> ruleResult, int consecutiveCount)
+    {
+        var isValid = ruleResult.Any(x => x.IsValid);
+
+        return isValid && consecutiveCount + 1 >= ContinuousTriggerThreshold;
+    }
+
+    public AlertSeverity GetAlertSeverity(List<RuleResultItem> ruleResult)
+    {
+        return ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
     }
 
     public void SetCheckFrequency(CheckFrequency checkFrequency)

@@ -19,14 +19,14 @@ public class AlarmRuleRecord : FullEntity<Guid, Guid>
 
     public List<RuleResultItem> RuleResultItems { get; protected set; } = new();
 
-    public AlarmRuleRecord(Guid alarmRuleId, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, DateTimeOffset excuteTime, List<RuleResultItem> ruleResultItems)
+    public AlarmRuleRecord(Guid alarmRuleId, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, DateTimeOffset excuteTime, List<RuleResultItem> ruleResultItems, Guid alarmHistoryId)
     {
         AlarmRuleId = alarmRuleId;
         AggregateResult = aggregateResult;
         IsTrigger = isTrigger;
         ConsecutiveCount = consecutiveCount;
         RuleResultItems = ruleResultItems;
-        AlarmHistoryId = default;
+        AlarmHistoryId = alarmHistoryId;
         ExcuteTime = excuteTime;
     }
 
