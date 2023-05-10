@@ -3,6 +3,7 @@
 
 namespace Masa.Alert.Domain.AlarmHistories.Events;
 
-public record TriggerAlarmEvent(Guid AlarmRuleId, AlertSeverity AlertSeverity, List<RuleResultItem> TriggerRuleItems) : DomainEvent
+public record TriggerAlarmEvent(Guid AlarmRuleId, AlertSeverity AlertSeverity, List<RuleResultItem> TriggerRuleItems
+    , DateTimeOffset ExcuteTime, ConcurrentDictionary<string, long> AggregateResult, bool IsTrigger, int ConsecutiveCount) : DomainEvent
 {
 }

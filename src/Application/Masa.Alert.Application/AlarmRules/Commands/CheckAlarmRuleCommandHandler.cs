@@ -74,7 +74,7 @@ public class CheckAlarmRuleCommandHandler
     {
         if (command.IsStop)
         {
-            command.AlarmRule.AddAggregateResult(command.ExcuteTime ?? DateTimeOffset.Now, command.AggregateResult);
+            command.AlarmRule.AddAggregateResult(command.ExcuteTime ?? DateTimeOffset.Now, command.AggregateResult, false, 0, new List<RuleResultItem>());
             await _repository.UpdateAsync(command.AlarmRule);
             return;
         }

@@ -226,17 +226,19 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
             consecutiveCount = 0;
         }
 
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResult));
-
         if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
         {
             var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
 
-            AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
+            AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult, excuteTime, aggregateResult, isTrigger, consecutiveCount));
         }
         else if (latestRecord != null && latestRecord.IsTrigger)
         {
-            AddDomainEvent(new RecoveryAlarmEvent(Id));
+            AddDomainEvent(new RecoveryAlarmEvent(Id, excuteTime, aggregateResult, isTrigger, consecutiveCount));
+        }
+        else
+        {
+            _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResult));
         }
     }
 
@@ -245,9 +247,9 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, excuteTime, new List<RuleResultItem>()));
     }
 
-    public void AddAggregateResult(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult)
+    public void AddAggregateResult(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems)
     {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, false, 0, excuteTime, new List<RuleResultItem>()));
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResultItems));
     }
 
     public bool CheckIsNotification()

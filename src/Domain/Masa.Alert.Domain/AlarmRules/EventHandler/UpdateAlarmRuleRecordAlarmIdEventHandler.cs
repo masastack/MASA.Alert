@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.ReadWriteSplitting.Cqrs.Commands;
+
 namespace Masa.Alert.Domain.AlarmRules.EventHandler;
 
 public class UpdateAlarmRuleRecordAlarmIdEventHandler
@@ -16,15 +18,13 @@ public class UpdateAlarmRuleRecordAlarmIdEventHandler
     }
 
     [EventHandler]
-    public async Task HandleEventAsync(UpdateAlarmRuleRecordAlarmIdEvent eto)
+    public async Task HandleEventAsync(AddAlarmRuleRecordEvent eto)
     {
-        var alarm = await _repository.FindAsync(x=>x.Id==eto.AlarmRuleId);
+        var alarm = await _repository.FindAsync(x => x.Id == eto.AlarmRuleId);
         if (alarm == null) return;
 
-        var latest = alarm.GetLatest();
-        if (latest == null) return;
+        alarm.AddAggregateResult(eto.ExcuteTime, eto.AggregateResult, eto.IsTrigger, eto.ConsecutiveCount, eto.RuleResultItems);
 
-        latest.SetAlarmHistoryId(eto.AlarmHistoryId);
         await _repository.UpdateAsync(alarm);
     }
 }
