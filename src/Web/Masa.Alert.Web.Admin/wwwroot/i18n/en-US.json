@@ -127,7 +127,7 @@
     "RecoveryNotification": "Recovery notification",
     "ThirdPartyProcessing": "Third party processing",
     "SendNotificationAfterProcessing": "Send a notification when processing is complete",
-    "HandleCompletionTime": "Processor|Processing completion time",
+    "HandleCompletionTime": "Processor|Processor time",
     "AutoRecovery": "Auto recovery",
     "PostWebHookTip": "Auto recovery"
   },
