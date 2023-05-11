@@ -269,5 +269,5 @@
   "LengthValidator": "{0}的长度必须在 {1} 到 {2} 字符",
   "IsInEnumValidator": "请选择正确的{0}",
   "Metric": "指标",
-  "DataBoundaryPrompt": "默认显示前500条"
+  "DataBoundaryPrompt": "默认显示最近500条"
 }
