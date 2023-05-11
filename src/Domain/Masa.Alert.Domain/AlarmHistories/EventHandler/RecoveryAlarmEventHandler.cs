@@ -23,7 +23,7 @@ public class RecoveryAlarmEventHandler
         if (alarm == null) return;
 
         alarm.Recovery(true);
-        alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, eto.IsTrigger, eto.ConsecutiveCount, eto.TriggerRuleItems);
+        alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, false, 0, eto.RuleResultItems);
         await _repository.UpdateAsync(alarm);
     }
 }

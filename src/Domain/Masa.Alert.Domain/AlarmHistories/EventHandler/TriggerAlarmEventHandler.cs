@@ -34,20 +34,16 @@ public class TriggerAlarmEventHandler
         if (alarm == null || alarm.RecoveryTime.HasValue)
         {
             alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
-            alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, eto.IsTrigger, eto.ConsecutiveCount, eto.TriggerRuleItems);
+            alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, true, 1, eto.TriggerRuleItems);
+            alarm.SetIsNotification(isNotification, isSilence);
             await _repository.AddAsync(alarm);
         }
         else
         {
             alarm.Update(eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
-            alarm.SetIsNotification(isNotification);
-            alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, eto.IsTrigger, eto.ConsecutiveCount, eto.TriggerRuleItems);
+            alarm.SetIsNotification(isNotification, isSilence);
+            alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, true, eto.ConsecutiveCount, eto.TriggerRuleItems);
             await _repository.UpdateAsync(alarm);
-        }
-
-        if (alarm.IsNotification && !isSilence)
-        {
-            await _eventBus.PublishAsync(new SendAlarmNotificationEvent(alarm.Id));
         }
     }
 }

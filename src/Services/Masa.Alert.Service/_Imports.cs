@@ -59,3 +59,4 @@ global using Google.Api;
 global using Microsoft.AspNetCore.SignalR;
 global using Masa.Contrib.StackSdks.Caller;
 global using Masa.BuildingBlocks.Data.UoW;
+global using Masa.Alert.Application.AlarmRules.Actors;

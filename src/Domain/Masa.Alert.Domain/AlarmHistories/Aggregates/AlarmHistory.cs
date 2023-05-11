@@ -1,6 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.Dispatcher.Events;
+using System.Security.Claims;
+
 namespace Masa.Alert.Domain.AlarmHistories.Aggregates;
 
 public class AlarmHistory : FullAggregateRoot<Guid, Guid>
@@ -75,8 +78,9 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         if (Id == default)
         {
             Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
-            AddDomainEvent(new AddAlarmRuleRecordEvent(AlarmRuleId, Id, excuteTime, aggregateResult, isTrigger, consecutiveCount, ruleResultItems));
         }
+
+        AddDomainEvent(new AddAlarmRuleRecordEvent(AlarmRuleId, Id, excuteTime, aggregateResult, isTrigger, consecutiveCount, ruleResultItems));
     }
 
     public void Notification()
@@ -84,9 +88,14 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         LastNotificationTime = DateTimeOffset.Now;
     }
 
-    public void SetIsNotification(bool isNotification)
+    public void SetIsNotification(bool isNotification, bool isSilence)
     {
         IsNotification = isNotification;
+
+        if (IsNotification && !isSilence)
+        {
+            AddDomainEvent(new SendAlarmNotificationEvent(Id));
+        }
     }
 
     public void HandleAlarm(AlarmHandle handle, Guid operatorId, string remark)

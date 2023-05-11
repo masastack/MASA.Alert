@@ -3,6 +3,6 @@
 
 namespace Masa.Alert.Domain.AlarmHistories.Events;
 
-public record RecoveryAlarmEvent(Guid AlarmRuleId, DateTimeOffset ExcuteTime, ConcurrentDictionary<string, long> AggregateResult, bool IsTrigger, int ConsecutiveCount) : DomainEvent
+public record RecoveryAlarmEvent(Guid AlarmRuleId, DateTimeOffset ExcuteTime, ConcurrentDictionary<string, long> AggregateResult, List<RuleResultItem> RuleResultItems) : DomainEvent
 {
 }
