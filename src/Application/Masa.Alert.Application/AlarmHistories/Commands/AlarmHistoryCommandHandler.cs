@@ -10,19 +10,15 @@ public class AlarmHistoryCommandHandler
     private readonly IAuthClient _authClient;
     private readonly II18n<DefaultResource> _i18n;
 
-    public readonly TokenProvider _tokenProvider;
-
     public AlarmHistoryCommandHandler(IAlarmHistoryRepository repository
         , IUserContext userContext
         , IAuthClient authClient
-        , II18n<DefaultResource> i18n
-        , TokenProvider tokenProvider)
+        , II18n<DefaultResource> i18n)
     {
         _repository = repository;
         _userContext = userContext;
         _authClient = authClient;
         _i18n = i18n;
-        _tokenProvider = tokenProvider;
     }
 
     [EventHandler]
