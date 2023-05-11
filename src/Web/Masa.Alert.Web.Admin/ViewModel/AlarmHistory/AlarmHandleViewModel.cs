@@ -16,4 +16,6 @@ public class AlarmHandleViewModel
     public NotificationConfigViewModel NotificationConfig { get; set; } = new();
 
     public string HandlerName { get; set; } = string.Empty;
+
+    public bool IsThirdParty { get; set; }
 }

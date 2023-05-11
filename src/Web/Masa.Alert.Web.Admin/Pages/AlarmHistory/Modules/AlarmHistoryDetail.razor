@@ -104,18 +104,22 @@
 }
 @if (HandleStatusShow)
 {
-    <DefaultTitle>@T("HandleDetails")</DefaultTitle>
-    @if (!AlarmHistory.HandleStatusCommits.Any(x=> x.Status == AlarmHistoryHandleStatuses.ProcessingCompleted))
-    {
-        <SButton Small OnClick="HandleDetailEditAsync" BorderRadiusClass="rounded-lg" Class="mb-3">
-            <SIcon Size=18 IsDefaultToolTip="false">@IconConstants.Update</SIcon>
-            <span class="ml-2 btn">@T("EditHandleDetails")</span>
-        </SButton>
-    }
+    <div class="d-flex align-center">
+        <DefaultTitle Class="">@T("HandleDetails")</DefaultTitle>
+        <MSpacer></MSpacer>
+        @if (!AlarmHistory.HandleStatusCommits.Any(x => x.Status == AlarmHistoryHandleStatuses.ProcessingCompleted))
+        {
+            <SButton Small OnClick="HandleChange" BorderRadiusClass="rounded-lg">
+                <SIcon Size=18 IsDefaultToolTip="false">@IconConstants.Update</SIcon>
+                <span class="ml-2 btn">@T("ChangeAlarmHandle")</span>
+            </SButton>
+        }
+    </div>
+
     <StatusTimeline StatusCommits="@AlarmHistory.HandleStatusCommits" />
     <SSimpleModal  Value="_handleAlarmModalVisible" OnSave="HandleDetailSaveAsync" SaveText="@T("Submit")" Title="@T("HandleDetails")" Class="full-height" HeaderClass="mr-4">
         <ChildContent>
-            <AlarmHistoryHandleDetail @bind-value="AlarmHistory.Handle" @ref="_handleDetail" IsThirdParty="_isThirdParty"></AlarmHistoryHandleDetail>
+            <HandleAlarm @bind-value="AlarmHistory.Handle" AlarmRuleId="AlarmHistory.Id" @ref="_handleDetail"></HandleAlarm>
         </ChildContent>
     </SSimpleModal>
 }

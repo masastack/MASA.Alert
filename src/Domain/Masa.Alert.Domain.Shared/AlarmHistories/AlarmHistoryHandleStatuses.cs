@@ -10,10 +10,3 @@ public enum AlarmHistoryHandleStatuses
     ProcessingCompleted = 3,
     Notified = 4
 }
-
-
-public enum AlarmHistoryHandleCallbackStatus
-{
-    InProcess = 2,
-    ProcessingCompleted = 3,
-}

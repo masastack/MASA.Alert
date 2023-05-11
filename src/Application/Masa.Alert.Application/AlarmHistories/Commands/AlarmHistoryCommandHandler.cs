@@ -45,11 +45,12 @@ public class AlarmHistoryCommandHandler
 
         if (handle.WebHookId == default)
         {
-            remark = currentUser.StaffDislpayName;
+            remark = currentUser.StaffDislpayName ?? currentUser?.DisplayName;
         }
         else
         {
-            var handlerDisplayName = (await _authClient.UserService.GetByIdAsync(handle.Handler))?.StaffDislpayName ?? string.Empty;
+            var handlerUser = await _authClient.UserService.GetByIdAsync(handle.Handler);
+            var handlerDisplayName = handlerUser?.StaffDislpayName ?? handlerUser?.DisplayName;
             remark = $"{currentUser.StaffDislpayName}{_i18n.T("AllocationProcessor")}:{handlerDisplayName}";
         }
 
@@ -74,11 +75,15 @@ public class AlarmHistoryCommandHandler
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
 
+        if (entity.Handle.Status != AlarmHistoryHandleStatuses.InProcess)
+        {
+            throw new UserFriendlyException(errorCode: UserFriendlyExceptionCodes.POST_WEB_HOOK_FAIL);
+        }
+
         var handlerUser = await _authClient.UserService.GetByIdAsync(command.Handler);
         MasaArgumentException.ThrowIfNull(handlerUser, _i18n.T("HandlerNotExist"));
 
-        var currentUser = await _authClient.UserService.GetCurrentUserAsync();
-        string remark = $"{currentUser?.StaffDislpayName}{_i18n.T("AllocationProcessor")}:{handlerUser?.DisplayName}";
+        string remark = $"{_i18n.T("AllocationProcessor")}:{handlerUser?.StaffDislpayName ?? handlerUser?.DisplayName}";
         entity.HandlerChange(command.Handler, remark);
         await _repository.UpdateAsync(entity);
     }

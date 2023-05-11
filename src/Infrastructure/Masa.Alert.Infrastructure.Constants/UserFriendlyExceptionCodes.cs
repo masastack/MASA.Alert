@@ -8,4 +8,5 @@ public static class UserFriendlyExceptionCodes
     public const string USER_NOT_EXIST = "UserNotExist";
     public const string USER_FROZEN = "UserFrozen";
     public const string POST_WEB_HOOK_FAIL = "PostWebHookFail";
+    public const string HANDLER_CHANGE_STATE_VERIFY = "HandlerChangeStateVerify";
 }
