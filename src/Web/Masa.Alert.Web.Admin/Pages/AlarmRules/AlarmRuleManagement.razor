@@ -21,7 +21,10 @@
                         @(!advanced ? "mdi-filter" : "mdi-filter-off")
                     </SIcon>
                 </span>
-                <SButton Small BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="HandleAdd">@T("Permission.Add")</SButton>
+                <SButton Small BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="HandleAdd">
+                    <SIcon Size=18 IsDefaultToolTip=false>@IconConstants.Add</SIcon>
+                    <span class="ml-2 btn">@T("Permission.Add")</span>
+                </SButton>
             </div>
         </div>
         @if (advanced)
