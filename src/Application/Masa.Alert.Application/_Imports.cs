@@ -57,3 +57,5 @@ global using Dapr.Actors.Runtime;
 global using Masa.Alert.Application.AlarmRules.Commands;
 global using Masa.Alert.Application.Contracts.AlarmRules.Actors;
 global using Masa.BuildingBlocks.Dispatcher.Events;
+global using Masa.BuildingBlocks.Caching;
+global using Masa.Alert.Domain.Shared.Consts;

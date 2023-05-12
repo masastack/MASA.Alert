@@ -211,31 +211,22 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         SilenceCycle = silenceCycle;
     }
 
-    public void Check(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
+    public void TriggerAlarm(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult,int consecutiveCount)
     {
-        var latestRecord = GetLatest();
-        var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
-        var isTrigger = ruleResult.Any(x => x.IsValid);
+        var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
 
-        if (isTrigger)
-        {
-            consecutiveCount++;
-        }
+        AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult, excuteTime, aggregateResult, consecutiveCount));
+    }
 
-        if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
-        {
-            var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
+    public void RecoveryAlarm(DateTimeOffset excuteTime, ConcurrentDictionary<string,   long> aggregateResult, List<RuleResultItem> ruleResult)
+    {
+        AddDomainEvent(new RecoveryAlarmEvent(Id, excuteTime, aggregateResult, ruleResult));
+    }
 
-            AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult, excuteTime, aggregateResult, consecutiveCount));
-        }
-        else if (latestRecord != null && latestRecord.IsTrigger)
-        {
-            AddDomainEvent(new RecoveryAlarmEvent(Id, excuteTime, aggregateResult, ruleResult));
-        }
-        else
-        {
-            _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResult));
-        }
+    public bool IsTrigger(List<RuleResultItem> ruleResult, int consecutiveCount)
+    {
+        var isValid = ruleResult.Any(x => x.IsValid);
+        return isValid && consecutiveCount > ContinuousTriggerThreshold;
     }
 
     public void SkipCheck(DateTimeOffset excuteTime)

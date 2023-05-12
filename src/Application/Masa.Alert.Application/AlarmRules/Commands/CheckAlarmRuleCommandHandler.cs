@@ -35,6 +35,9 @@ public class CheckAlarmRuleCommandHandler
 
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
+        if (!entity.IsEnabled)
+            throw new UserFriendlyException(errorCode: UserFriendlyExceptionCodes.ALARM_RULE_DISABLE);
+
         command.AlarmRule = entity;
     }
 

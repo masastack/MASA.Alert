@@ -1,9 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-namespace Masa.Alert.Application.Contracts.AlarmRules.Actors;
+namespace Masa.Alert.Domain.Shared.Consts;
 
-public interface IAlarmRuleActor : IActor
+public class AlarmCacheKeys
 {
-    Task<bool> Check(DateTimeOffset? excuteTime);
+    public const string ALARM_CONSECUTIVE_COUNT = nameof(ALARM_CONSECUTIVE_COUNT);
 }

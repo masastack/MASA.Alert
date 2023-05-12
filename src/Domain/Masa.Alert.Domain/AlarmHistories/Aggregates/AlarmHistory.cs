@@ -1,9 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.Dispatcher.Events;
-using System.Security.Claims;
-
 namespace Masa.Alert.Domain.AlarmHistories.Aggregates;
 
 public class AlarmHistory : FullAggregateRoot<Guid, Guid>
@@ -92,10 +89,10 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
     {
         IsNotification = isNotification;
 
-        if (IsNotification && !isSilence)
-        {
-            AddDomainEvent(new SendAlarmNotificationEvent(Id));
-        }
+        //if (IsNotification && !isSilence)
+        //{
+        //    AddDomainEvent(new SendAlarmNotificationEvent(Id));
+        //}
     }
 
     public void HandleAlarm(AlarmHandle handle, Guid operatorId, string remark)
