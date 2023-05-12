@@ -44,12 +44,13 @@ public class AlarmHistoryCommandHandler
 
         if (handle.WebHookId == default)
         {
-            remark = currentUser.StaffDislpayName;
+            remark = currentUser.StaffDislpayName ?? currentUser?.DisplayName;
         }
         else
         {
-            var handlerDisplayName = (await _authClient.UserService.GetByIdAsync(handle.Handler))?.StaffDislpayName ?? string.Empty;
-            remark = $"{currentUser.StaffDislpayName}分配处理人:{handlerDisplayName}";
+            var handlerUser = await _authClient.UserService.GetByIdAsync(handle.Handler);
+            var handlerDisplayName = handlerUser?.StaffDislpayName ?? handlerUser?.DisplayName;
+            remark = $"{currentUser.StaffDislpayName}{_i18n.T("AllocationProcessor")}:{handlerDisplayName}";
         }
 
         entity.HandleAlarm(handle, currentUser.Id, remark);
@@ -74,7 +75,26 @@ public class AlarmHistoryCommandHandler
     }
 
     [EventHandler]
-    public async Task HandleCompletedAsync(HandleCompletedAlarmHistoryCommand command)
+    public async Task ChangeHandlerAsync(ChangeHandlerAlarmHistoryCommand command)
+    {
+        var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
+
+        if (entity.Handle.Status != AlarmHistoryHandleStatuses.InProcess)
+        {
+            throw new UserFriendlyException(errorCode: UserFriendlyExceptionCodes.POST_WEB_HOOK_FAIL);
+        }
+
+        var handlerUser = await _authClient.UserService.GetByIdAsync(command.Handler);
+        MasaArgumentException.ThrowIfNull(handlerUser, _i18n.T("HandlerNotExist"));
+
+        string remark = $"{_i18n.T("AllocationProcessor")}:{handlerUser?.StaffDislpayName ?? handlerUser?.DisplayName}";
+        entity.ChangeHandler(command.Handler, remark);
+        await _repository.UpdateAsync(entity);
+    }
+
+    [EventHandler]
+    public async Task CompletedAsync(HandleCompletedAlarmHistoryCommand command)
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
 

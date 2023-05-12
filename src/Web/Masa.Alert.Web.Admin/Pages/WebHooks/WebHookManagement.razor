@@ -8,7 +8,10 @@
                 <DefaultPageTitle>@T("WebHook")</DefaultPageTitle>
                 <MSpacer></MSpacer>
                 <SSearch @bind-Value="_queryParam.Filter" BackgroundColor="white" OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" />
-                <SButton Small BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _upsertModal?.OpenModalAsync()!">@T("Permission.Add")</SButton>
+                <SButton Small BorderRadiusClass="rounded-lg" Class="ml-6" OnClick="()=> _upsertModal?.OpenModalAsync()!">
+                    <SIcon Size=18 IsDefaultToolTip=false>@IconConstants.Add</SIcon>
+                    <span class="ml-2 btn">@T("Permission.Add")</span>
+                </SButton>
             </div>
         </div>
     </HeaderContent>

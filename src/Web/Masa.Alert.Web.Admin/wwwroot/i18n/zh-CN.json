@@ -230,6 +230,7 @@
     "AlarmInfo": "告警信息",
     "AlarmTime": "告警时间",
     "HandleDetails": "处理详情",
+    "ChangeAlarmHandle": "变更告警处理",
     "RecoveryNotification": "恢复通知",
     "ThirdPartyProcessing": "第三方处理",
     "SendNotificationAfterProcessing": "处理完成后发送通知",

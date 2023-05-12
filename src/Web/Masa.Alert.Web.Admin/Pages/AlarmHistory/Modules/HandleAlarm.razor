@@ -1,0 +1,97 @@
+﻿@inherits AdminCompontentBase
+
+<MForm Model="Value" EnableValidation @ref="_form" Class="full-height">
+    <MContainer Fluid Class="full-height pa-0">
+        <MRadioGroup @bind-Value="Value.IsThirdParty">
+            <MRadio Value="false" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4">
+                <LabelContent>
+                    <span class="h5 @(!Value.IsThirdParty?"primary--text":"emphasis2--text")">@T("Processed")</span>
+                </LabelContent>
+            </MRadio>
+            <div class="@(Value.IsThirdParty == false?"":"d-none")">
+                <div class="d-flex align-center mt-4">
+                    <MSwitch @bind-Value="Value.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
+                    @if (Value.IsHandleNotice)
+                    {
+                        <NotificationConfig @bind-value="Value.NotificationConfig"></NotificationConfig>
+                    }
+                </div>
+            </div>
+            <MRadio Value="true" Class="flex-row-reverse fill-hover px-12 py-13 rounded-4 mt-6">
+                <LabelContent>
+                    <span class="h5 @(Value.IsThirdParty?"primary--text":"emphasis2--text")">@T("ThirdPartyProcessing")</span>
+                </LabelContent>
+            </MRadio>
+            <div class="@(Value.IsThirdParty == true?"":"d-none")">
+                <div class="full-width mt-6">
+                    <WebHookAutoComplete @bind-Value="Value.WebHookId" Label="@T("WebHook")"></WebHookAutoComplete>
+                    <SUserAutoComplete Class="fill mt-6" @bind-Value="Value.Handler" Label="@T("Handler")" Outlined FillBackground="false" Style="width: initial" />
+                </div>
+                <div class="d-flex align-center mt-6">
+                    <MSwitch @bind-Value="Value.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
+                    @if (Value.IsHandleNotice)
+                    {
+                        <NotificationConfig @bind-value="Value.NotificationConfig"></NotificationConfig>
+                    }
+                </div>
+            </div>
+        </MRadioGroup>
+    </MContainer>
+</MForm>
+
+@code {
+    [Parameter]
+    public AlarmHandleViewModel Value { get; set; } = default!;
+
+    [Parameter]
+    public Guid AlarmRuleId { get; set; }
+
+    private MForm? _form { get; set; }
+
+    private AlarmHistoryService AlarmHistoryService => AlertCaller.AlarmHistoryService;
+
+    protected override string? PageName { get; set; } = "AlarmHistoryBlock";
+
+    public async Task<bool> Submit()
+    {
+        Check.NotNull(_form, "form not found");
+
+        if (!_form.Validate())
+        {
+            return false;
+        }
+
+        Loading = true;
+
+        if (!Value.IsThirdParty)
+        {
+            Value.WebHookId = default;
+        }
+
+        var inputDto = Value.Adapt<AlarmHandleDto>();
+
+        try
+        {
+            await AlarmHistoryService.HandleAsync(AlarmRuleId, inputDto);
+        }
+        catch (Exception ex)
+        {
+            Loading = false;
+            await PopupService.EnqueueSnackbarAsync(ex.Message, AlertTypes.Error);
+            return false;
+        }
+
+        Loading = false;
+
+        ResetForm();
+
+        await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+
+        return true;
+    }
+
+    private void ResetForm()
+    {
+        Value = new();
+    }
+}

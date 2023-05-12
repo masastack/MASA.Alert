@@ -5,5 +5,9 @@
   "UserNotExist": "当前user不存在",
   "UserFrozen": "当前用户已被冻结",
   "PostWebHookFail": "处理失败，请求WebHook超时。",
+  "AllocationProcessor": "分配处理人",
+  "HandlerNotExist": "处理人不存在",
+  "HandlerChangeStateVerify": "只有处理中才能变更处理人",
   "AlarmRuleDisable": "告警规则已禁用"
+}
 }

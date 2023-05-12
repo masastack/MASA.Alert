@@ -9,4 +9,5 @@ public static class UserFriendlyExceptionCodes
     public const string USER_FROZEN = "UserFrozen";
     public const string POST_WEB_HOOK_FAIL = "PostWebHookFail";
     public const string ALARM_RULE_DISABLE = "AlarmRuleDisable";
+    public const string HANDLER_CHANGE_STATE_VERIFY = "HandlerChangeStateVerify";
 }

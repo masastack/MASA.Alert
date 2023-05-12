@@ -129,7 +129,8 @@
     "SendNotificationAfterProcessing": "Send a notification when processing is complete",
     "HandleCompletionTime": "Processor|Processor time",
     "AutoRecovery": "Auto recovery",
-    "PostWebHookTip": "Auto recovery"
+    "PostWebHookTip": "Auto recovery",
+    "ChangeAlarmHandle": "Change alarm handle"
   },
   "WebHookBlock": {
     "AddWebHook": "Add WebHook",
