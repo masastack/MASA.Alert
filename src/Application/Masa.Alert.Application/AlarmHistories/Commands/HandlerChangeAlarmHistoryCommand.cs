@@ -3,6 +3,6 @@
 
 namespace Masa.Alert.Application.AlarmHistories.Commands;
 
-public record HandlerChangeAlarmHistoryCommand(Guid AlarmHistoryId, Guid Handler) : Command
+public record ChangeHandlerAlarmHistoryCommand(Guid AlarmHistoryId, Guid Handler) : Command
 {
 }

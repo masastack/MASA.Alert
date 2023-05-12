@@ -38,10 +38,10 @@ public class AlarmHistoryService : ServiceBase
         await eventBus.PublishAsync(command);
     }
 
-    [RoutePattern("{id}/handlerChange", StartWithBaseUri = true, HttpMethod = "Post")]
-    public async Task HandlerChangeAsync(IEventBus eventBus, Guid id, Guid handler)
+    [RoutePattern("{id}/change-handler", StartWithBaseUri = true, HttpMethod = "Post")]
+    public async Task ChangeHandlerAsync(IEventBus eventBus, Guid id, Guid handler)
     {
-        var command = new HandlerChangeAlarmHistoryCommand(id, handler);
+        var command = new ChangeHandlerAlarmHistoryCommand(id, handler);
         await eventBus.PublishAsync(command);
     }
 

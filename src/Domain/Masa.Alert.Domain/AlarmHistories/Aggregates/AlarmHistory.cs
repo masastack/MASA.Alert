@@ -127,9 +127,9 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         Recovery(false);
     }
 
-    public void HandlerChange(Guid handler, string remark)
+    public void ChangeHandler(Guid handler, string remark)
     {
-        var commit = Handle.HandlerChange(handler, remark);
+        var commit = Handle.ChangeHandler(handler, remark);
         _handleStatusCommits.Add(commit);
     }
 }

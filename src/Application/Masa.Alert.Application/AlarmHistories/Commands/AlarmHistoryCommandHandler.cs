@@ -75,7 +75,7 @@ public class AlarmHistoryCommandHandler
     }
 
     [EventHandler]
-    public async Task HandlerChangeAsync(HandlerChangeAlarmHistoryCommand command)
+    public async Task ChangeHandlerAsync(ChangeHandlerAlarmHistoryCommand command)
     {
         var entity = await _repository.FindAsync(x => x.Id == command.AlarmHistoryId);
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
@@ -89,7 +89,7 @@ public class AlarmHistoryCommandHandler
         MasaArgumentException.ThrowIfNull(handlerUser, _i18n.T("HandlerNotExist"));
 
         string remark = $"{_i18n.T("AllocationProcessor")}:{handlerUser?.StaffDislpayName ?? handlerUser?.DisplayName}";
-        entity.HandlerChange(command.Handler, remark);
+        entity.ChangeHandler(command.Handler, remark);
         await _repository.UpdateAsync(entity);
     }
 
