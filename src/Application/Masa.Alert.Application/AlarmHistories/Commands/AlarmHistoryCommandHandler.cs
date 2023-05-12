@@ -9,16 +9,19 @@ public class AlarmHistoryCommandHandler
     private readonly IUserContext _userContext;
     private readonly IAuthClient _authClient;
     private readonly II18n<DefaultResource> _i18n;
+    private readonly IDistributedCacheClient _cacheClient;
 
     public AlarmHistoryCommandHandler(IAlarmHistoryRepository repository
         , IUserContext userContext
         , IAuthClient authClient
-        , II18n<DefaultResource> i18n)
+        , II18n<DefaultResource> i18n
+        , IDistributedCacheClient cacheClient)
     {
         _repository = repository;
         _userContext = userContext;
         _authClient = authClient;
         _i18n = i18n;
+        _cacheClient = cacheClient;
     }
 
     [EventHandler]
@@ -53,6 +56,12 @@ public class AlarmHistoryCommandHandler
         entity.HandleAlarm(handle, currentUser.Id, remark);
 
         await _repository.UpdateAsync(entity);
+
+        if (handle.WebHookId == default)
+        {
+            var cacheKey = $"{AlarmCacheKeys.ALARM_CONSECUTIVE_COUNT}_{entity.AlarmRuleId}";
+            await _cacheClient.RemoveAsync<long>(cacheKey);
+        }
     }
 
     [EventHandler]

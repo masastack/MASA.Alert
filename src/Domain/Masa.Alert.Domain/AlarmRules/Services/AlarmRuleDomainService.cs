@@ -7,13 +7,16 @@ public class AlarmRuleDomainService : DomainService
 {
     private readonly IAlarmRuleRepository _repository;
     private readonly IRulesEngineClient _rulesEngineClient;
+    private readonly IDistributedCacheClient _cacheClient;
 
     public AlarmRuleDomainService(IDomainEventBus eventBus
         , IAlarmRuleRepository repository
-        , IRulesEngineClient rulesEngineClient) : base(eventBus)
+        , IRulesEngineClient rulesEngineClient
+        , IDistributedCacheClient cacheClient) : base(eventBus)
     {
         _repository = repository;
         _rulesEngineClient = rulesEngineClient;
+        _cacheClient = cacheClient;
     }
 
     public async Task ValidateRuleAsync(AlarmRule alarmRule)
@@ -41,7 +44,27 @@ public class AlarmRuleDomainService : DomainService
             ruleResult.Add(ruleResultItem);
         }
 
-        alarmRule.Check(excuteTime, aggregateResult, ruleResult);
+        var latestRecord = alarmRule.GetLatest();
+
+        var cacheKey = $"{AlarmCacheKeys.ALARM_CONSECUTIVE_COUNT}_{alarmRule.Id}";
+        var consecutiveCount = Convert.ToInt32(await _cacheClient.HashIncrementAsync(cacheKey));
+
+        var isTrigger = alarmRule.IsTrigger(ruleResult, consecutiveCount);
+
+        if (isTrigger)
+        {
+            alarmRule.TriggerAlarm(excuteTime, aggregateResult, ruleResult, consecutiveCount);
+        }
+        else if (latestRecord != null && latestRecord.IsTrigger)
+        {
+            alarmRule.RecoveryAlarm(excuteTime, aggregateResult, ruleResult);
+        }
+        else
+        {
+            alarmRule.AddAggregateResult(excuteTime, aggregateResult, false, 0, ruleResult);
+            await _cacheClient.RemoveAsync<long>(cacheKey);
+        }
+
         await _repository.UpdateAsync(alarmRule);
     }
 

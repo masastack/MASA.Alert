@@ -6,5 +6,6 @@
   "PostWebHookFail": "Processing failed. The request for WebHook timed out.",
   "AllocationProcessor": "Allocation Processor",
   "HandlerNotExist": "The handler user does not exist",
-  "HandlerChangeStateVerify": "Only during processing can the handler be changed"
+  "HandlerChangeStateVerify": "Only during processing can the handler be changed",
+  "AlarmRuleDisable": "Alarm rule disabled"
 }

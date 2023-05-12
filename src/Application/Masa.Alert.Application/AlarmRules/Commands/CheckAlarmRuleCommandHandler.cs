@@ -35,6 +35,9 @@ public class CheckAlarmRuleCommandHandler
 
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
 
+        if (!entity.IsEnabled)
+            throw new UserFriendlyException(errorCode: UserFriendlyExceptionCodes.ALARM_RULE_DISABLE);
+
         command.AlarmRule = entity;
     }
 
@@ -74,7 +77,7 @@ public class CheckAlarmRuleCommandHandler
     {
         if (command.IsStop)
         {
-            command.AlarmRule.AddAggregateResult(command.ExcuteTime ?? DateTimeOffset.Now, command.AggregateResult);
+            command.AlarmRule.AddAggregateResult(command.ExcuteTime ?? DateTimeOffset.Now, command.AggregateResult, false, 0, new List<RuleResultItem>());
             await _repository.UpdateAsync(command.AlarmRule);
             return;
         }
