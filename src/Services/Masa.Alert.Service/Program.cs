@@ -20,6 +20,7 @@ builder.Services.AddObservable(builder.Logging, () =>
 {
     return masaStackConfig.OtlpUrl;
 });
+
 builder.Services.AddDaprClient();
 var identityServerUrl = masaStackConfig.GetSsoDomain();
 if (builder.Environment.IsDevelopment())

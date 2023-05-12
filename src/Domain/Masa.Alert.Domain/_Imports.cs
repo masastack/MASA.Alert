@@ -36,3 +36,5 @@ global using System.Text.Json.Serialization;
 global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
 global using Masa.BuildingBlocks.Data.UoW;
 global using Masa.BuildingBlocks.Ddd.Domain.Services;
+global using Masa.BuildingBlocks.Caching;
+global using Masa.Alert.Domain.Shared.Consts;

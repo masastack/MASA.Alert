@@ -211,33 +211,22 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         SilenceCycle = silenceCycle;
     }
 
-    public void Check(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
+    public void TriggerAlarm(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult,int consecutiveCount)
     {
-        var latestRecord = GetLatest();
-        var consecutiveCount = latestRecord?.ConsecutiveCount ?? 0;
-        var isTrigger = ruleResult.Any(x => x.IsValid);
+        var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
 
-        if (isTrigger)
-        {
-            consecutiveCount++;
-        }
-        else
-        {
-            consecutiveCount = 0;
-        }
+        AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult, excuteTime, aggregateResult, consecutiveCount));
+    }
 
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResult));
+    public void RecoveryAlarm(DateTimeOffset excuteTime, ConcurrentDictionary<string,   long> aggregateResult, List<RuleResultItem> ruleResult)
+    {
+        AddDomainEvent(new RecoveryAlarmEvent(Id, excuteTime, aggregateResult, ruleResult));
+    }
 
-        if (isTrigger && consecutiveCount >= ContinuousTriggerThreshold)
-        {
-            var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
-
-            AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult));
-        }
-        else if (latestRecord != null && latestRecord.IsTrigger)
-        {
-            AddDomainEvent(new RecoveryAlarmEvent(Id));
-        }
+    public bool IsTrigger(List<RuleResultItem> ruleResult, int consecutiveCount)
+    {
+        var isValid = ruleResult.Any(x => x.IsValid);
+        return isValid && consecutiveCount > ContinuousTriggerThreshold;
     }
 
     public void SkipCheck(DateTimeOffset excuteTime)
@@ -245,9 +234,9 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, excuteTime, new List<RuleResultItem>()));
     }
 
-    public void AddAggregateResult(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult)
+    public void AddAggregateResult(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems, Guid AlarmHistoryId = default)
     {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, false, 0, excuteTime, new List<RuleResultItem>()));
+        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResultItems, AlarmHistoryId));
     }
 
     public bool CheckIsNotification()
