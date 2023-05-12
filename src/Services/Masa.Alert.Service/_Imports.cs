@@ -59,7 +59,3 @@ global using Google.Api;
 global using Microsoft.AspNetCore.SignalR;
 global using Masa.Contrib.StackSdks.Caller;
 global using Masa.BuildingBlocks.Data.UoW;
-global using Masa.Alert.Application.AlarmRules.Actors;
-global using Dapr.Actors.Client;
-global using Dapr.Actors;
-global using Masa.Alert.Application.Contracts.AlarmRules.Actors;
