@@ -89,10 +89,10 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
     {
         IsNotification = isNotification;
 
-        //if (IsNotification && !isSilence)
-        //{
-        //    AddDomainEvent(new SendAlarmNotificationEvent(Id));
-        //}
+        if (IsNotification && !isSilence)
+        {
+            AddDomainEvent(new SendAlarmNotificationEvent(Id));
+        }
     }
 
     public void HandleAlarm(AlarmHandle handle, Guid operatorId, string remark)
