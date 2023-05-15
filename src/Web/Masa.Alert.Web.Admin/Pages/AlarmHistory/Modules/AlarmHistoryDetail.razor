@@ -109,7 +109,7 @@
         <MSpacer></MSpacer>
         @if (!AlarmHistory.HandleStatusCommits.Any(x => x.Status == AlarmHistoryHandleStatuses.ProcessingCompleted))
         {
-            <SButton Small OnClick="HandleChange" BorderRadiusClass="rounded-lg">
+            <SButton Medium OnClick="HandleChange" Outlined>
                 <SIcon Size=18 IsDefaultToolTip="false">@IconConstants.Update</SIcon>
                 <span class="ml-2 btn">@T("ChangeAlarmHandle")</span>
             </SButton>
