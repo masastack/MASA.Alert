@@ -13,7 +13,7 @@ public partial class AlarmHistoryDetail : AdminCompontentBase
     [Parameter]
     public bool HandleStatusShow { get; set; }
 
-    private bool _handleAlarmModalVisible;
+    private bool _handleAlarmVisible;
 
     private HandleAlarm? _handleDetail;
 
@@ -27,7 +27,7 @@ public partial class AlarmHistoryDetail : AdminCompontentBase
 
     private void HandleChange()
     {
-        _handleAlarmModalVisible = true;
+        _handleAlarmVisible = true;
     }
 
     private async Task HandleDetailSaveAsync()
@@ -39,13 +39,8 @@ public partial class AlarmHistoryDetail : AdminCompontentBase
         if (!handleResult)
             return;
 
-        _handleAlarmModalVisible = false;
+        _handleAlarmVisible = false;
 
-        await ResetFormAsync();
-    }
-
-    private async Task ResetFormAsync()
-    {
         await GetFormDataAsync();
     }
 
@@ -53,5 +48,11 @@ public partial class AlarmHistoryDetail : AdminCompontentBase
     {
         var alarmHistory = await AlarmHistoryService.GetAsync(AlarmHistory.Id);
         AlarmHistory = alarmHistory.Adapt<AlarmHistoryViewModel>();
+    }
+
+    private void HandleAlarmVisibleChanged(bool val)
+    {
+        if (!val)
+            _handleAlarmVisible = false;
     }
 }

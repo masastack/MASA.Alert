@@ -117,7 +117,7 @@
     </div>
 
     <StatusTimeline StatusCommits="@AlarmHistory.HandleStatusCommits" />
-    <SSimpleModal  Value="_handleAlarmModalVisible" OnSave="HandleDetailSaveAsync" SaveText="@T("Submit")" Title="@T("HandleDetails")" Class="full-height" HeaderClass="mr-4">
+    <SSimpleModal Value="_handleAlarmVisible" ValueChanged="HandleAlarmVisibleChanged" OnSave="HandleDetailSaveAsync" SaveText="@T("Submit")" Title="@T("HandleDetails")" Class="full-height" HeaderClass="mr-4">
         <ChildContent>
             <HandleAlarm @bind-value="AlarmHistory.Handle" AlarmRuleId="AlarmHistory.Id" @ref="_handleDetail"></HandleAlarm>
         </ChildContent>
