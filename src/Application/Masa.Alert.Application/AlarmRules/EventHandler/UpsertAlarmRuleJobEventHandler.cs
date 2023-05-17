@@ -30,7 +30,7 @@ public class UpsertAlarmRuleJobEventHandler
         var alarmRule = await _repository.FindAsync(x => x.Id == eto.AlarmRuleId);
         if (alarmRule == null) return;
         var alertUrl = _masaStackConfig.GetAlertServiceDomain();
-        var request = new AddSchedulerJobRequest
+        var request = new UpsertSchedulerJobRequest
         {
             ProjectIdentity = MasaStackConsts.ALERT_SYSTEM_ID,
             Name = alarmRule.DisplayName,
@@ -44,25 +44,16 @@ public class UpsertAlarmRuleJobEventHandler
             }
         };
 
-        if (alarmRule.SchedulerJobId != default)
+        if (alarmRule.SchedulerJobId == default)
         {
-            try
-            {
-                await _schedulerClient.SchedulerJobService.RemoveAsync(new SchedulerJobRequestBase
-                {
-                    JobId = alarmRule.SchedulerJobId,
-                    OperatorId = alarmRule.Modifier
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "AlarmRuleCheckJob");
-            }
+            var jobId = await _schedulerClient.SchedulerJobService.AddAsync(request);
+            alarmRule.SetSchedulerJobId(jobId);
+            await _repository.UpdateAsync(alarmRule);
         }
-
-        var jobId = await _schedulerClient.SchedulerJobService.AddAsync(request);
-        alarmRule.SetSchedulerJobId(jobId);
-        await _repository.UpdateAsync(alarmRule);
+        else
+        {
+            await _schedulerClient.SchedulerJobService.UpdateAsync(alarmRule.SchedulerJobId, request);
+        }
 
         if (!alarmRule.IsEnabled)
         {

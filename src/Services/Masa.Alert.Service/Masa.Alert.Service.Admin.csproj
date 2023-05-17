@@ -12,8 +12,8 @@
 	
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
-		<PackageReference Include="Dapr.Actors.AspNetCore" Version="1.8.0" />
-		<PackageReference Include="Dapr.AspNetCore" Version="1.8.0" />
+		<PackageReference Include="Dapr.Actors.AspNetCore" Version="1.10.0" />
+		<PackageReference Include="Dapr.AspNetCore" Version="1.10.0" />
 		<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
 		<PackageReference Include="Masa.Contrib.Authentication.Identity" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.Configuration" Version="$(MasaFrameworkPackageVersion)" />
