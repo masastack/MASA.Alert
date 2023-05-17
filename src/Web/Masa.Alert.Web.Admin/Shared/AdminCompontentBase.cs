@@ -90,6 +90,18 @@ public abstract class AdminCompontentBase : BDomComponentBase
 
     public HubConnection? HubConnection { get; set; }
 
+    public async Task UpsertSuccessfulMessage(Guid entityId, string displayName)
+    {
+        if (entityId == default)
+        {
+            await SuccessMessageAsync(T("CreateSuccessfulMessage", displayName));
+        }
+        else
+        {
+            await SuccessMessageAsync(T("EditSuccessfulMessage", displayName));
+        }
+    }
+
     public async Task ConfirmAsync(string messgae, Func<Task> callback, AlertTypes type = AlertTypes.Warning)
     {
         if (await PopupService.SimpleConfirmAsync(I18n.T("OperationConfirmation"), messgae, type)) await callback.Invoke();

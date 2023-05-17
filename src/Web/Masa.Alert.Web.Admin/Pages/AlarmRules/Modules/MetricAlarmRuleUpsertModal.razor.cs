@@ -228,7 +228,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
 
         ResetForm();
 
-        await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+        await UpsertSuccessfulMessage(_entityId, T("AlarmRule"));
 
         if (OnOk.HasDelegate)
         {

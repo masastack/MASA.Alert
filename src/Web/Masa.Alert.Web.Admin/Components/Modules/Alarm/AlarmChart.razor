@@ -92,7 +92,7 @@
             }
         }
 
-        var seriesData = legendData.Select(key =>
+        var seriesData = legendData.Select((key, i) =>
         {
             var data = records.Select(x =>
             {
@@ -106,19 +106,8 @@
                 Type = "line",
                 Stack = "Total",
                 Data = data,
-                AreaStyle = new
-                {
-                    Color = new
-                    {
-                        ColorStops = new[] { new { Offset = 0, Color = "#FDCDC5" }, new { Offset = 1, Color = "rgba(255, 236, 232, 0)" } },
-                        Global = false,
-                        Type = "linear",
-                        X = 0,
-                        X2 = 0,
-                        Y = 0,
-                        Y2 = 1
-                    }
-                },
+                LineStyle = ChartHelper.GetLineStyle(i),
+                AreaStyle = ChartHelper.GetAreaStyle(i),
                 Smooth = true
             };
         });
@@ -150,6 +139,7 @@
                 Bottom = 30,
                 ContainLabel = true
             },
+            Color = ChartHelper.Colors,
             XAxis = new
             {
                 Type = "time",
