@@ -99,7 +99,8 @@ public class AlarmHistoryQueryHandler
         var userInfos = await _authClient.UserService.GetListByIdsAsync(userIds);
         foreach (var item in dtos)
         {
-            item.Handle.HandlerName = userInfos.FirstOrDefault(x => x.Id == item.Handle.Handler)?.StaffDislpayName ?? string.Empty;
+            var handler = userInfos.FirstOrDefault(x => x.Id == item.Handle.Handler);
+            item.Handle.HandlerName = handler?.StaffDisplayName ?? handler?.DisplayName ?? string.Empty;
         }
     }
 }
