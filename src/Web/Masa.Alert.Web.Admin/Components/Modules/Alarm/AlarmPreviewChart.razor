@@ -64,6 +64,7 @@
                 Bottom = 30,
                 ContainLabel = true
             },
+            Color = ChartHelper.Colors,
             XAxis = new
             {
                 Type = "time",
@@ -143,25 +144,15 @@
         }
 
         var legendData = chartData.Select(x => x.Name).ToList();
-        var seriesData = chartData.Select(x => new
+
+        var seriesData = chartData.Select((x, i) => new
         {
             Name = x.Name,
             Type = "line",
             Stack = "Total",
             Data = x.Data,
-            AreaStyle = new
-            {
-                Color = new
-                {
-                    ColorStops = new[] { new { Offset = 0, Color = "#ECE8FF" }, new { Offset = 1, Color = "rgba(236, 232, 255, 0)" } },
-                    Global = false,
-                    Type = "linear",
-                    X = 0,
-                    X2 = 0,
-                    Y = 0,
-                    Y2 = 1
-                }
-            },
+            LineStyle = ChartHelper.GetLineStyle(i),
+            AreaStyle = ChartHelper.GetAreaStyle(i),
             Smooth = true
         });
         RenderCharts(legendData, seriesData);
@@ -226,16 +217,6 @@
     {
         (_startTime, _endTime) = args;
         FillData();
-    }
-
-    public int GetMonth(DateTime date1, DateTime date2)
-    {
-        int year1 = date1.Year;
-        int year2 = date2.Year;
-        int month1 = date1.Month;
-        int month2 = date2.Month;
-        int months = 12 * (year2 - year1) + (month2 - month1);
-        return months;
     }
 
     private bool CheckIsAddTime(DateTimeOffset time, int i)

@@ -91,7 +91,7 @@ public partial class WebHookUpsertModal : AdminCompontentBase
 
         ResetForm();
 
-        await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+        await UpsertSuccessfulMessage(_entityId, T("WebHook"));
 
         if (OnOk.HasDelegate)
         {

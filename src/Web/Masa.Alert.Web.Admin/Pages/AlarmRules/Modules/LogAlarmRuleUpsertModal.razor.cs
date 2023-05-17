@@ -201,7 +201,7 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
 
         ResetForm();
 
-        await SuccessMessageAsync(T("OperationSuccessfulMessage"));
+        await UpsertSuccessfulMessage(_entityId, T("AlarmRule"));
 
         if (OnOk.HasDelegate)
         {
