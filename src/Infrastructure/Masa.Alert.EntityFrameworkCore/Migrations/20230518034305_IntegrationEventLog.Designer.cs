@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Masa.Alert.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AlertDbContext))]
-    [Migration("20230518033539_IntegrationEventLog")]
+    [Migration("20230518034305_IntegrationEventLog")]
     partial class IntegrationEventLog
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,6 +242,60 @@ namespace Masa.Alert.EntityFrameworkCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WebHooks", "alert");
+                });
+
+            modelBuilder.Entity("Masa.BuildingBlocks.Dispatcher.IntegrationEvents.Logs.IntegrationEventLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EventTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExpandContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)")
+                        .HasColumnName("RowVersion");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimesSent")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "EventId", "RowVersion" }, "IX_EventId_Version");
+
+                    b.HasIndex(new[] { "State", "ModificationTime" }, "IX_State_MTime");
+
+                    b.HasIndex(new[] { "State", "TimesSent", "ModificationTime" }, "IX_State_TimesSent_MTime");
+
+                    b.ToTable("IntegrationEventLog", (string)null);
                 });
 
             modelBuilder.Entity("Masa.Alert.Domain.AlarmHistories.Aggregates.AlarmHistory", b =>
