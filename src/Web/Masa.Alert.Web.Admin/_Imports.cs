@@ -81,3 +81,4 @@ global using System.Text.RegularExpressions;
 global using Masa.Alert.Application.Contracts.QueryModels;
 global using Masa.Contrib.StackSdks.Caller;
 global using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+global using Masa.Stack.Components.Extensions;

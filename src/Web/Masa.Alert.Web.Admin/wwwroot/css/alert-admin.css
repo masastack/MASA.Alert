@@ -291,14 +291,6 @@
     margin-top: 2px;
 }
 
-.page-content {
-    height: calc(100vh - 188px);
-}
-
-.page-content-advanced {
-    height: calc(100vh - 250px);
-}
-
 .masa .warning-disabled--text {
     color: #FBACA3 !important;
 }
