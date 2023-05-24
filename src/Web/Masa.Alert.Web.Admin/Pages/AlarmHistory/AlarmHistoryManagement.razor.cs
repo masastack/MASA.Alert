@@ -9,8 +9,6 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     public string AlarmRuleId { get; set; } = string.Empty;
 
     private GetAlarmHistoryInputDto _queryParam = new(10);
-    private bool advanced = false;
-    private bool isAnimate;
     private PaginatedListDto<AlarmHistoryListViewModel> _entities = new();
     private AlarmHistoryDetailModal? _detailModal;
     private HandleAlarmModal? _handleAlarmModal;
@@ -123,12 +121,6 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
     {
         _queryParam = new(10);
         await LoadData();
-    }
-
-    private void ToggleAdvanced()
-    {
-        advanced = !advanced;
-        isAnimate = true;
     }
 
     private async Task HandlePageChanged(int page)

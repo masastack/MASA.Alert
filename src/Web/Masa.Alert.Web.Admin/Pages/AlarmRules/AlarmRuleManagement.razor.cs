@@ -13,8 +13,6 @@ public partial class AlarmRuleManagement : AdminCompontentBase
 
     private GetAlarmRuleInputDto _queryParam = new(20);
     private PaginatedListDto<AlarmRuleListViewModel> _entities = new();
-    private bool advanced = false;
-    private bool isAnimate;
     private LogAlarmRuleUpsertModal? _logUpsertModal;
     private MetricAlarmRuleUpsertModal? _metricUpsertModal;
     private List<ProjectModel> _projects = new();
@@ -110,12 +108,6 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     {
         _queryParam = new(20);
         await LoadData();
-    }
-
-    private void ToggleAdvanced()
-    {
-        advanced = !advanced;
-        isAnimate = true;
     }
 
     private async Task HandleDelAsync(Guid _entityId, string displayName)
