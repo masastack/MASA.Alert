@@ -3,11 +3,11 @@
 <PageTitle>@T("WebHook")</PageTitle>
 <AutoHeight Overflow="!_showEmptyPlaceholder" AutoClass="mt-6">
     <HeaderContent>
-        <DefaultSearchPanel @bind-Value="@_queryParam.Filter" OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" OnClick="()=> _upsertModal?.OpenModalAsync()!">
+        <SSearchPanel @bind-Value="@_queryParam.Filter" OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" OnClick="()=> _upsertModal?.OpenModalAsync()!">
             <ChildContent>
                 <DefaultPageTitle>@T("WebHook")</DefaultPageTitle>
             </ChildContent>
-        </DefaultSearchPanel>
+        </SSearchPanel>
     </HeaderContent>
     <AutoHeightContent>
         @if (!_showEmptyPlaceholder)

@@ -4,7 +4,7 @@
 <PageTitle>@T("AlarmHistory")</PageTitle>
 <AutoHeight AutoClass="mt-6">
     <HeaderContent>
-        <DefaultSearchPanel @bind-Value="@_queryParam.Filter" Advanced OnEnter="RefreshAsync" OnClearClick="HandleClearAsync">
+        <SSearchPanel @bind-Value="@_queryParam.Filter" Advanced OnEnter="RefreshAsync" OnClearClick="HandleClearAsync">
             <ChildContent>
                 <SLabeledRadioGroup @bind-Value="@_queryParam.SearchType" ActiveClass="fill-background" Class="white" Dense OnChange="HandleSearchTypeChange">
                     @foreach (var item in Enum.GetValues<AlarmHistorySearchTypes>())
@@ -75,7 +75,7 @@
                     </MCol>
                 }
             </AdvancedContent>
-        </DefaultSearchPanel>
+        </SSearchPanel>
     </HeaderContent>
     <AutoHeightContent>
         <MCard Class="full-height">

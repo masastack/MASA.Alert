@@ -4,7 +4,7 @@
 <PageTitle>@T("AlarmRule")</PageTitle>
 <AutoHeight Overflow="!_showEmptyPlaceholder" AutoClass="mt-6">
     <HeaderContent>
-        <DefaultSearchPanel @bind-Value="@_queryParam.Filter" Advanced OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" OnClick="HandleAdd">
+        <SSearchPanel @bind-Value="@_queryParam.Filter" Advanced OnEnter="RefreshAsync" OnClearClick="HandleClearAsync" OnClick="HandleAdd">
             <ChildContent>
                 <SLabeledRadioGroup @bind-Value="@_queryParam.Type" ActiveClass="fill-background" Class="white" Dense OnChange="HandleTypeChange">
                     @foreach (var item in Enum.GetValues<AlarmRuleTypes>())
@@ -93,7 +93,7 @@
                     </MCol>
                 }
             </AdvancedContent>
-        </DefaultSearchPanel>
+        </SSearchPanel>
     </HeaderContent>
     <AutoHeightContent>
         @if (!_showEmptyPlaceholder)
