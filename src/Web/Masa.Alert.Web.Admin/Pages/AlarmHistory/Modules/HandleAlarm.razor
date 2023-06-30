@@ -10,7 +10,7 @@
             </MRadio>
             <div class="@(Value.IsThirdParty == false?"":"d-none")">
                 <div class="d-flex align-center mt-4">
-                    <MSwitch @bind-Value="Value.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
+                    <MSwitch @bind-Value="Value.IsHandleNotice" TValue="bool" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
                     @if (Value.IsHandleNotice)
                     {
                         <NotificationConfig @bind-value="Value.NotificationConfig"></NotificationConfig>
@@ -28,7 +28,7 @@
                     <SUserAutoComplete Class="fill mt-6" @bind-Value="Value.Handler" Label="@T("Handler")" Outlined FillBackground="false" Style="width: initial" />
                 </div>
                 <div class="d-flex align-center mt-6">
-                    <MSwitch @bind-Value="Value.IsHandleNotice" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
+                    <MSwitch @bind-Value="Value.IsHandleNotice" TValue="bool" Inset Class="label ml-1 mt-0 pt-0 flex-shrink-0" Label="@T("SendNotificationAfterProcessing")" />
                     @if (Value.IsHandleNotice)
                     {
                         <NotificationConfig @bind-value="Value.NotificationConfig"></NotificationConfig>
