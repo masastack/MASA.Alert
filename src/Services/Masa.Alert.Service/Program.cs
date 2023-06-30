@@ -89,6 +89,7 @@ var redisOptions = new RedisConfigurationOptions
     Password = masaStackConfig.RedisModel.RedisPassword
 };
 builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
+builder.Services.AddPmClient(masaStackConfig.GetPmServiceDomain());
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
 builder.Services.AddMcClient(masaStackConfig.GetMcServiceDomain());
 builder.Services.AddSchedulerClient(masaStackConfig.GetSchedulerServiceDomain());
