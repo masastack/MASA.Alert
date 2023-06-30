@@ -2,4 +2,4 @@
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 global using System.Runtime.CompilerServices;
-global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
+global using Masa.BuildingBlocks.Data.Contracts;

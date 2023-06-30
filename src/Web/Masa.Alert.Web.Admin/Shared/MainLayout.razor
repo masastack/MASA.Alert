@@ -5,10 +5,10 @@
 @inject NavigationManager Navigation
 @inject IMasaStackConfig MasaStackConfig
 
-<SLayout AppId="@MasaStackConfig.GetWebId(MasaStackConstant.ALERT)" OnSignOut="SignOut" OnErrorAsync="OnError"
+<SLayout OnSignOut="SignOut" OnErrorAsync="OnError"
          Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
          MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png"
-         WhiteUris="WhiteUris" Exact="false">
+         WhiteUris="WhiteUris">
     @Body
     <MLoading />
 </SLayout>

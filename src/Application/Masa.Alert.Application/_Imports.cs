@@ -34,7 +34,7 @@ global using Masa.Alert.Infrastructure.Ddd.Application.Contracts.Dtos;
 global using Masa.BuildingBlocks.Authentication.Identity;
 global using Masa.BuildingBlocks.Data;
 global using Masa.BuildingBlocks.Ddd.Domain.Events;
-global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
+global using Masa.BuildingBlocks.Data.Contracts;
 global using Masa.BuildingBlocks.Globalization.I18n;
 global using Masa.BuildingBlocks.ReadWriteSplitting.Cqrs.Commands;
 global using Masa.BuildingBlocks.ReadWriteSplitting.Cqrs.Queries;

@@ -15,7 +15,7 @@ global using Masa.Alert.Domain.WebHooks.Repositories;
 global using Masa.Alert.Infrastructure.EntityFrameworkCore.EntityFrameworkCore.ValueConverters;
 global using Masa.BuildingBlocks.Data;
 global using Masa.BuildingBlocks.Data.UoW;
-global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
+global using Masa.BuildingBlocks.Data.Contracts;
 global using Masa.Contrib.Ddd.Domain.Repository.EFCore;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

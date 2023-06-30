@@ -9,4 +9,4 @@ global using Microsoft.EntityFrameworkCore;
 global using System.Linq.Expressions;
 global using System.Reflection;
 global using System.Text.Json.Serialization;
-global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
+global using Masa.BuildingBlocks.Data.Contracts;

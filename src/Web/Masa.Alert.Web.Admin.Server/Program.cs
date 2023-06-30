@@ -6,14 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 ValidatorOptions.Global.LanguageManager = new MasaLanguageManager();
 GlobalValidationOptions.SetDefaultCulture("zh-CN");
 
-await builder.Services.AddMasaStackConfigAsync();
+await builder.Services.AddMasaStackConfigAsync(MasaStackProject.Alert, MasaStackApp.WEB);
 var masaStackConfig = builder.Services.GetMasaStackConfig();
 
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
     {
-        opt.AppId = masaStackConfig.GetWebId(MasaStackConstant.ALERT);
+        opt.AppId = masaStackConfig.GetWebId(MasaStackProject.Alert);
         opt.DaprHttpPort = 20604;
         opt.DaprGrpcPort = 20603;
     });
@@ -39,7 +39,7 @@ builder.Services.AddObservable(builder.Logging, () =>
     {
         ServiceNameSpace = builder.Environment.EnvironmentName,
         ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetWebId(MasaStackConstant.ALERT),
+        ServiceName = masaStackConfig.GetWebId(MasaStackProject.Alert),
         Layer = masaStackConfig.Namespace,
         ServiceInstanceId = builder.Configuration.GetValue<string>("HOSTNAME")
     };
@@ -65,7 +65,7 @@ if (string.IsNullOrEmpty(alertBaseAddress))
     alertBaseAddress = masaStackConfig.GetAlertServiceDomain();
 }
 
-builder.AddMasaStackComponentsForServer("wwwroot/i18n", authBaseAddress);
+await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Alert, "wwwroot/i18n", authBaseAddress);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();
@@ -73,7 +73,7 @@ builder.Services.AddGlobalForServer();
 MasaOpenIdConnectOptions masaOpenIdConnectOptions = new MasaOpenIdConnectOptions
 {
     Authority = masaStackConfig.GetSsoDomain(),
-    ClientId = masaStackConfig.GetWebId(MasaStackConstant.ALERT),
+    ClientId = masaStackConfig.GetWebId(MasaStackProject.Alert),
     Scopes = new List<string> { "offline_access" }
 };
 
@@ -82,7 +82,7 @@ builder.Services.AddMasaOpenIdConnect(masaOpenIdConnectOptions);
 
 builder.Services.AddAlertApiGateways(option =>
 {
-    option.AppId = masaStackConfig.GetServiceId(MasaStackConstant.ALERT);
+    option.AppId = masaStackConfig.GetServiceId(MasaStackProject.Alert);
     option.AuthorityEndpoint = masaOpenIdConnectOptions.Authority;
     option.ClientId = masaOpenIdConnectOptions.ClientId;
     option.ClientSecret = masaOpenIdConnectOptions.ClientSecret;
