@@ -1,6 +1,6 @@
 ﻿@inherits AdminCompontentBase
 
-<MSwitch Value=Value ValueChanged="ValueChanged" Inset Class="@(Class + " label my-auto")">
+<MSwitch Value=Value ValueChanged="ValueChanged" TValue="bool" Inset Class="@(Class + " label my-auto")">
     <LabelContent>
         <span class="regular--text body2 my-auto">@(Value ? T("Enabled") : T("Disabled"))</span>
     </LabelContent>

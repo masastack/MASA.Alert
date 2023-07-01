@@ -53,19 +53,11 @@
                                         @((MarkupString)_nextRunTimeStr)
                                     </div>
                                 }
-                                @*<MRow Class="my-8">
-                                    <MSwitch @bind-Value="_model.IsGetTotal" Inset Class="label my-auto ml-4" Label="@T("GetTotal")" />
-                                    @if (_model.IsGetTotal)
-                                    {
-                                    <MCol Md="2">
-                                    <STextField @bind-Value="_model.TotalVariable" Label="@T(nameof(_model.TotalVariable))" />
-                                    </MCol>
-                                    }
-                                </MRow>*@
+
                                 @foreach (var item in _model.MetricMonitorItems)
                                 {
                                     <MBorder Color="green" Width="4" Class="rounded-tl-lg rounded-bl-lg" Style="height: calc(100% - 16px);">
-                                        <MSwitch @bind-Value="item.IsExpression" Inset Class="label mt-9 ml-3" Label="@T("Expression")">
+                                        <MSwitch @bind-Value="item.IsExpression" TValue="bool" Inset Class="label mt-9 ml-3" Label="@T("Expression")">
                                         </MSwitch>
                                         @if (item.IsExpression)
                                         {
@@ -119,7 +111,7 @@
                                                     </PrependContent>
                                                 </STextField>
                                             </MCol>
-                                            <MSwitch @bind-Value="item.IsOffset" Inset Class="label mt-2 ml-3">
+                                            <MSwitch @bind-Value="item.IsOffset" TValue="bool" Inset Class="label mt-2 ml-3">
                                                 <LabelContent>
                                                     <DefaultTooltip Class="ml-2 mt-n1" Tooltip="@T("ChartSettingTip")" />
                                                     <span class="regular2--text body2 my-auto ml-1">@T("Offset")</span>
