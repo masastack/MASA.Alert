@@ -78,7 +78,7 @@ public static class ReflectionHelper
     /// <param name="memberInfo">MemberInfo</param>
     /// <param name="defaultValue">Default value (null as default)</param>
     /// <param name="inherit">Inherit attribute from base classes</param>
-    public static TAttribute GetSingleAttributeOrDefault<TAttribute>(MemberInfo memberInfo, TAttribute defaultValue = default, bool inherit = true)
+    public static TAttribute? GetSingleAttributeOrDefault<TAttribute>(MemberInfo memberInfo, TAttribute? defaultValue = default, bool inherit = true)
         where TAttribute : Attribute
     {
         //Get attribute on the member
@@ -98,7 +98,7 @@ public static class ReflectionHelper
     /// <param name="memberInfo">MemberInfo</param>
     /// <param name="defaultValue">Default value (null as default)</param>
     /// <param name="inherit">Inherit attribute from base classes</param>
-    public static TAttribute GetSingleAttributeOfMemberOrDeclaringTypeOrDefault<TAttribute>(MemberInfo memberInfo, TAttribute defaultValue = default, bool inherit = true)
+    public static TAttribute? GetSingleAttributeOfMemberOrDeclaringTypeOrDefault<TAttribute>(MemberInfo memberInfo, TAttribute? defaultValue = default, bool inherit = true)
         where TAttribute : class
     {
         return memberInfo.GetCustomAttributes(true).OfType<TAttribute>().FirstOrDefault()
@@ -126,7 +126,7 @@ public static class ReflectionHelper
     /// <summary>
     /// Gets value of a property by it's full path from given object
     /// </summary>
-    public static object GetValueByPath(object obj, Type objectType, string propertyPath)
+    public static object? GetValueByPath(object obj, Type objectType, string propertyPath)
     {
         var value = obj;
         var currentType = objectType;
@@ -174,7 +174,7 @@ public static class ReflectionHelper
         if (properties.Length == 1)
         {
             property = objectType.GetProperty(properties.First());
-            property.SetValue(obj, value);
+            property?.SetValue(obj, value);
             return;
         }
 
