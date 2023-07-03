@@ -8,19 +8,19 @@ public class LogDto
     [JsonPropertyName("@timestamp")]
     public DateTime Timestamp { get; set; }
 
-    public string TraceId { get; set; }
+    public string? TraceId { get; set; }
 
-    public string SpanId { get; set; }
+    public string? SpanId { get; set; }
 
     public int TraceFlags { get; set; }
 
-    public string SeverityText { get; set; }
+    public string? SeverityText { get; set; }
 
     public int SeverityNumber { get; set; }
 
-    public object Body { get; set; }
+    public object? Body { get; set; }
 
-    public Dictionary<string, object> Resource { get; set; }
+    public Dictionary<string, object>? Resource { get; set; }
 
-    public Dictionary<string, object> Attributes { get; set; }
+    public Dictionary<string, object>? Attributes { get; set; }
 }

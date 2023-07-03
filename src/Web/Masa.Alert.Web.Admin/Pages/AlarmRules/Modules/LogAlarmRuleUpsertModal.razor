@@ -66,15 +66,7 @@
                                         @((MarkupString)_nextRunTimeStr)
                                     </div>
                                 }
-                                @*<MRow Class="my-8">
-                                    <MSwitch @bind-Value="_model.IsGetTotal" Inset Class="label my-auto ml-4" Label="@T("GetTotal")" />
-                                    @if (_model.IsGetTotal)
-                                    {
-                                        <MCol Md="2">
-                                            <STextField @bind-Value="_model.TotalVariable" Label="@T(nameof(_model.TotalVariable))" />
-                                        </MCol>
-                                    }
-                                </MRow>*@
+
                                 @foreach (var item in _model.LogMonitorItems)
                                 {
                                     <MRow NoGutters Class="mt-6">
@@ -98,7 +90,7 @@
                                             </STextField>
                                         </MCol>
                                         <MCol Md="6" Class="d-flex mt-3">
-                                            <MSwitch @bind-Value="item.IsOffset" Inset Class="label my-auto ml-1">
+                                            <MSwitch @bind-Value="item.IsOffset" TValue="bool" Inset Class="label my-auto ml-1">
                                                 <LabelContent>
                                                     <span class="regular2--text body2 my-auto ml-1" style="width:50px">@T("Offset")</span>
                                                     <DefaultTooltip Class="ml-1 mt-n1" Tooltip="@T("OffsetTip")"/>

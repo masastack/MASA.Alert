@@ -3,7 +3,7 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-await builder.Services.AddMasaStackConfigAsync();
+await builder.Services.AddMasaStackConfigAsync(MasaStackProject.Alert, MasaStackApp.Service);
 var masaStackConfig = builder.Services.GetMasaStackConfig();
 
 builder.Services.AddObservable(builder.Logging, () =>
@@ -12,7 +12,7 @@ builder.Services.AddObservable(builder.Logging, () =>
     {
         ServiceNameSpace = builder.Environment.EnvironmentName,
         ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetServiceId(MasaStackConstant.ALERT),
+        ServiceName = masaStackConfig.GetServiceId(MasaStackProject.Alert),
         Layer = masaStackConfig.Namespace,
         ServiceInstanceId = builder.Configuration.GetValue<string>("HOSTNAME")
     };
@@ -27,7 +27,7 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDaprStarter(opt =>
     {
-        opt.AppId = masaStackConfig.GetServiceId(MasaStackConstant.ALERT);
+        opt.AppId = masaStackConfig.GetServiceId(MasaStackProject.Alert);
         opt.DaprHttpPort = 20602;
         opt.DaprGrpcPort = 20601;
     });
@@ -89,6 +89,7 @@ var redisOptions = new RedisConfigurationOptions
     Password = masaStackConfig.RedisModel.RedisPassword
 };
 builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
+builder.Services.AddPmClient(masaStackConfig.GetPmServiceDomain());
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
 builder.Services.AddMcClient(masaStackConfig.GetMcServiceDomain());
 builder.Services.AddSchedulerClient(masaStackConfig.GetSchedulerServiceDomain());
@@ -129,12 +130,12 @@ builder.Services
     .AddValidatorsFromAssemblies(assemblies)
     .AddMasaDbContext<AlertDbContext>(builder =>
     {
-        builder.UseSqlServer(masaStackConfig.GetConnectionString(MasaStackConstant.ALERT));
+        builder.UseSqlServer();
         builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddMasaDbContext<AlertQueryContext>(builder =>
     {
-        builder.UseSqlServer(masaStackConfig.GetConnectionString(MasaStackConstant.ALERT));
+        builder.UseSqlServer();
         builder.UseFilter(options => options.EnableSoftDelete = true);
     })
     .AddScoped<IAlertQueryContext, AlertQueryContext>()
@@ -148,8 +149,9 @@ builder.Services
         })
         .UseUoW<AlertDbContext>()
         .UseRepository<AlertDbContext>();
-    })
-    .AddIsolation(isolationBuilder => isolationBuilder.UseMultiEnvironment("env_key"));
+    });
+await builder.Services.AddStackIsolationAsync(MasaStackProject.Alert.Name);
+
 builder.Services.AddStackMiddleware();
 await builder.MigrateDbContextAsync<AlertDbContext>();
 
@@ -178,6 +180,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStackIsolation();
 app.UseStackMiddleware();
 app.UseCloudEvents();
 app.UseEndpoints(endpoints =>

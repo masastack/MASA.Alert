@@ -5,9 +5,9 @@ namespace Masa.Alert.Contracts.Admin.Tsc;
 
 public class MappingResponse
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
-    public string DataType { get; set; }
+    public string DataType { get; set; } = string.Empty;
 
     public bool? IsKeyword { get; set; }
 

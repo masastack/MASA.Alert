@@ -33,7 +33,7 @@ global using Masa.Alert.Domain.AlarmRules.Events;
 global using Masa.Alert.Domain.WebHooks.Aggregates;
 global using Masa.Alert.Domain.WebHooks.Events;
 global using System.Text.Json.Serialization;
-global using Masa.BuildingBlocks.Ddd.Domain.SeedWork;
+global using Masa.BuildingBlocks.Data.Contracts;
 global using Masa.BuildingBlocks.Data.UoW;
 global using Masa.BuildingBlocks.Ddd.Domain.Services;
 global using Masa.BuildingBlocks.Caching;
