@@ -22,7 +22,6 @@ global using FluentValidation;
 global using Masa.Alert.Infrastructure.Common.Extensions;
 global using System.Text;
 global using Microsoft.AspNetCore.SignalR.Client;
-global using Masa.Alert.Contracts.Admin.Consts;
 global using BlazorDownloadFile;
 global using Microsoft.JSInterop;
 global using Masa.Blazor.Components.Editor;

@@ -1,4 +1,7 @@
-﻿namespace Masa.Alert.ApiGateways.Caller;
+﻿using Masa.BuildingBlocks.Isolation;
+using Masa.Contrib.Service.Caller.HttpClient;
+
+namespace Masa.Alert.ApiGateways.Caller;
 
 public class AlertCaller : DaprCallerBase
 {
@@ -20,7 +23,11 @@ public class AlertCaller : DaprCallerBase
 
     protected override void UseDaprPost(MasaDaprClientBuilder masaDaprClientBuilder)
     {
-        masaDaprClientBuilder.UseAuthentication((IServiceProvider serviceProvider) => new AuthenticationService(serviceProvider.GetRequiredService<TokenProvider>(), serviceProvider.GetRequiredService<JwtTokenValidator>()));
+        masaDaprClientBuilder.UseAuthentication(serviceProvider => new AuthenticationService(
+                serviceProvider.GetRequiredService<TokenProvider>(),
+                serviceProvider.GetRequiredService<JwtTokenValidator>(),
+                serviceProvider.GetRequiredService<IMultiEnvironmentContext>()
+            ));
         base.UseDaprPost(masaDaprClientBuilder);
     }
 }
