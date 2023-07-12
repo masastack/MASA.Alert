@@ -32,7 +32,7 @@ public class UpsertAlarmRuleJobEventHandler
         var alertUrl = _masaStackConfig.GetAlertServiceDomain();
         var request = new UpsertSchedulerJobRequest
         {
-            ProjectIdentity = MasaStackConsts.ALERT_SYSTEM_ID,
+            ProjectIdentity = MasaStackProject.Alert.Name,
             Name = alarmRule.DisplayName,
             JobType = JobTypes.Http,
             CronExpression = alarmRule.GetCronExpression(),

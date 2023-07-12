@@ -20,7 +20,11 @@ public class AlertCaller : DaprCallerBase
 
     protected override void UseDaprPost(MasaDaprClientBuilder masaDaprClientBuilder)
     {
-        masaDaprClientBuilder.UseAuthentication((IServiceProvider serviceProvider) => new AuthenticationService(serviceProvider.GetRequiredService<TokenProvider>(), serviceProvider.GetRequiredService<JwtTokenValidator>()));
+        masaDaprClientBuilder.UseAuthentication(serviceProvider => new AuthenticationService(
+                serviceProvider.GetRequiredService<TokenProvider>(),
+                serviceProvider.GetRequiredService<JwtTokenValidator>(),
+                serviceProvider.GetRequiredService<IMultiEnvironmentContext>()
+            ));
         base.UseDaprPost(masaDaprClientBuilder);
     }
 }

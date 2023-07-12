@@ -15,7 +15,6 @@ global using Masa.Alert.Application.Contracts.AlarmRules.Validator;
 global using Masa.Alert.Application.Contracts.QueryContext;
 global using Masa.Alert.Application.Contracts.QueryModels;
 global using Masa.Alert.Application.Contracts.WebHooks.Dtos;
-global using Masa.Alert.Contracts.Admin.Consts;
 global using Masa.Alert.Domain.AlarmHistories.Aggregates;
 global using Masa.Alert.Domain.AlarmHistories.Events;
 global using Masa.Alert.Domain.AlarmHistories.Repositories;
