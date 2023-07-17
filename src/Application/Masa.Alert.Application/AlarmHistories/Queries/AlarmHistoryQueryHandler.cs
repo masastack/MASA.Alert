@@ -100,7 +100,7 @@ public class AlarmHistoryQueryHandler
         foreach (var item in dtos)
         {
             var handler = userInfos.FirstOrDefault(x => x.Id == item.Handle.Handler);
-            item.Handle.HandlerName = handler?.StaffDisplayName ?? handler?.DisplayName ?? string.Empty;
+            item.Handle.HandlerName = handler?.RealDisplayName ?? string.Empty;
         }
     }
 }

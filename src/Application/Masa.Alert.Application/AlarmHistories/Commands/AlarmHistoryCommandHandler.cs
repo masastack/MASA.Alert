@@ -44,13 +44,13 @@ public class AlarmHistoryCommandHandler
 
         if (handle.WebHookId == default)
         {
-            remark = currentUser.StaffDisplayName ?? currentUser?.DisplayName;
+            remark = currentUser.RealDisplayName;
         }
         else
         {
             var handlerUser = await _authClient.UserService.GetByIdAsync(handle.Handler);
-            var handlerDisplayName = handlerUser?.StaffDisplayName ?? handlerUser?.DisplayName;
-            remark = $"{currentUser.StaffDisplayName}{_i18n.T("AllocationProcessor")}:{handlerDisplayName}";
+            var handlerDisplayName = handlerUser?.RealDisplayName;
+            remark = $"{currentUser.RealDisplayName}{_i18n.T("AllocationProcessor")}:{handlerDisplayName}";
         }
 
         entity.HandleAlarm(handle, currentUser.Id, remark);
@@ -88,7 +88,7 @@ public class AlarmHistoryCommandHandler
         var handlerUser = await _authClient.UserService.GetByIdAsync(command.Handler);
         MasaArgumentException.ThrowIfNull(handlerUser, _i18n.T("HandlerNotExist"));
 
-        string remark = $"{_i18n.T("AllocationProcessor")}:{handlerUser?.StaffDisplayName ?? handlerUser?.DisplayName}";
+        string remark = $"{_i18n.T("AllocationProcessor")}:{handlerUser.RealDisplayName}";
         entity.ChangeHandler(command.Handler, remark);
         await _repository.UpdateAsync(entity);
     }
@@ -100,7 +100,7 @@ public class AlarmHistoryCommandHandler
 
         MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmHistory"));
         var user = await _authClient.UserService.GetByIdAsync(entity.Handle.Handler);
-        var handlerDisplayName = user?.StaffDisplayName ?? user?.DisplayName ?? string.Empty;
+        var handlerDisplayName = user?.RealDisplayName ?? string.Empty;
         entity.Completed(entity.Handle.Handler, handlerDisplayName);
 
         await _repository.UpdateAsync(entity);
