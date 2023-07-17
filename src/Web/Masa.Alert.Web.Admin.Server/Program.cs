@@ -33,20 +33,6 @@ if (!builder.Environment.IsDevelopment())
     });
 }
 
-builder.Services.AddObservable(builder.Logging, () =>
-{
-    return new MasaObservableOptions
-    {
-        ServiceNameSpace = builder.Environment.EnvironmentName,
-        ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetWebId(MasaStackProject.Alert),
-        Layer = masaStackConfig.Namespace,
-        ServiceInstanceId = builder.Configuration.GetValue<string>("HOSTNAME")
-    };
-}, () =>
-{
-    return masaStackConfig.OtlpUrl;
-}, true);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
