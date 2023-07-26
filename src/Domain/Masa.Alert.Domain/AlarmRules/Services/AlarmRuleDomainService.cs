@@ -49,7 +49,8 @@ public class AlarmRuleDomainService : DomainService
         var cacheKey = $"{AlarmCacheKeys.ALARM_CONSECUTIVE_COUNT}_{alarmRule.Id}";
         var consecutiveCount = Convert.ToInt32(await _cacheClient.HashIncrementAsync(cacheKey));
 
-        var isTrigger = alarmRule.IsTrigger(ruleResult, consecutiveCount);
+        var isRuleValid = alarmRule.IsRuleValid(ruleResult);
+        var isTrigger = isRuleValid && consecutiveCount >= alarmRule.ContinuousTriggerThreshold;
 
         if (isTrigger)
         {
@@ -61,8 +62,13 @@ public class AlarmRuleDomainService : DomainService
         }
         else
         {
-            alarmRule.AddAggregateResult(excuteTime, aggregateResult, false, 0, ruleResult);
-            await _cacheClient.RemoveAsync<long>(cacheKey);
+            if (!isRuleValid)
+            {
+                consecutiveCount = 0;
+                await _cacheClient.RemoveAsync<long>(cacheKey);
+            }
+            
+            alarmRule.AddAggregateResult(excuteTime, aggregateResult, false, consecutiveCount, ruleResult);
         }
 
         await _repository.UpdateAsync(alarmRule);

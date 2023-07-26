@@ -7,15 +7,12 @@ public class TriggerAlarmEventHandler
 {
     private readonly IAlarmHistoryRepository _repository;
     private readonly IAlarmRuleRepository _alarmRulerepository;
-    private readonly IEventBus _eventBus;
 
     public TriggerAlarmEventHandler(IAlarmHistoryRepository repository
-        , IAlarmRuleRepository alarmRulerepository
-        , IEventBus eventBus)
+        , IAlarmRuleRepository alarmRulerepository)
     {
         _repository = repository;
         _alarmRulerepository = alarmRulerepository;
-        _eventBus = eventBus;
     }
 
     [EventHandler]
@@ -31,7 +28,7 @@ public class TriggerAlarmEventHandler
         if (alarm == null || alarm.RecoveryTime.HasValue)
         {
             alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
-            alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, true, 1, eto.TriggerRuleItems);
+            alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, true, eto.ConsecutiveCount, eto.TriggerRuleItems);
             alarm.SetIsNotification(isNotification, isSilence);
             await _repository.AddAsync(alarm);
         }

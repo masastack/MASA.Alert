@@ -223,10 +223,9 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         AddDomainEvent(new RecoveryAlarmEvent(Id, excuteTime, aggregateResult, ruleResult));
     }
 
-    public bool IsTrigger(List<RuleResultItem> ruleResult, int consecutiveCount)
+    public bool IsRuleValid(List<RuleResultItem> ruleResult)
     {
-        var isValid = ruleResult.Any(x => x.IsValid);
-        return isValid && consecutiveCount > ContinuousTriggerThreshold;
+        return ruleResult.Any(x => x.IsValid);
     }
 
     public void SkipCheck(DateTimeOffset excuteTime)
