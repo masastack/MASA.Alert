@@ -70,8 +70,8 @@
             {
                 foreach (var item in _metricMonitorItems)
                 {
-                    <MChip Class="rounded-3 body2 default-tag mr-3 mt-3" Color="emphasis2" Outlined Style="max-width: 98px;">
-                        @item.Aggregation.Name
+                    <MChip Class="rounded-3 body2 default-tag mr-3 mt-3" Color="emphasis2" Outlined>
+                        <EllipsisText>@item.Aggregation.Name</EllipsisText>
                     </MChip>
                 }
             }
