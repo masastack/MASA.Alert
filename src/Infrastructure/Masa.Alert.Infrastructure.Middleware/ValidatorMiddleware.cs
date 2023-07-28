@@ -1,4 +1,4 @@
-﻿namespace Lonsid.Fusion.Infrastructure.Middleware;
+﻿namespace Masa.Alert.Infrastructure.Middleware;
 
 public class ValidatorMiddleware<TEvent> : IEventMiddleware<TEvent>
     where TEvent : notnull, IEvent
