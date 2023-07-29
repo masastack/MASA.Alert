@@ -11,23 +11,25 @@ public class McNotificationSender : INotificationSender, IScopedDependency
     {
         _mcClient = mcClient;
     }
-    public async Task SendAsync(NotificationConfig notificationConfig)
+    public async Task SendAsync(NotificationConfig notificationConfig, Dictionary<string, object> variables)
     {
         if (!notificationConfig.Receivers.Any())
         {
             return;
         }
 
-        var request = new BuildingBlocks.StackSdks.Mc.Model.SendTemplateMessageByInternalModel
+        var request = new SendTemplateMessageByInternalModel
         {
             ChannelCode = notificationConfig.ChannelCode,
             ChannelType = (ChannelTypes)notificationConfig.ChannelType,
             TemplateCode = notificationConfig.TemplateCode,
             ReceiverType = SendTargets.Assign,
-            Receivers = notificationConfig.Receivers.Select(x=>new InternalReceiverModel {
+            Receivers = notificationConfig.Receivers.Select(x => new InternalReceiverModel
+            {
                 Type = MessageTaskReceiverTypes.User,
                 SubjectId = x
-            }).ToList()
+            }).ToList(),
+            Variables = new System.Collections.Concurrent.ExtraPropertyDictionary(variables)
         };
 
         await _mcClient.MessageTaskService.SendTemplateMessageByInternalAsync(request);

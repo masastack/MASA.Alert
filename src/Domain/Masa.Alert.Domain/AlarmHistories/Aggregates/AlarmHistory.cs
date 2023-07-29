@@ -91,7 +91,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
         if (IsNotification && !isSilence)
         {
-            AddDomainEvent(new SendAlarmNotificationEvent(Id));
+            AddDomainEvent(new SendAlarmNotificationEvent(Id, AlarmRuleId));
         }
     }
 
@@ -119,7 +119,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
         if (Handle.IsHandleNotice)
         {
-            AddDomainEvent(new NoticeAlarmHandleEvent(Handle));
+            AddDomainEvent(new NoticeAlarmHandleEvent(Handle, AlarmRuleId));
 
             _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Notified, operatorId, Handle.NotificationConfig.TemplateName));
         }

@@ -7,12 +7,15 @@ public class SendAlarmRecoveryNotificationEventHandler
 {
     private readonly INotificationSender _notificationSender;
     private readonly IAlarmHistoryRepository _repository;
+    private readonly IAlarmRuleRepository _alarmRuleRepository;
 
     public SendAlarmRecoveryNotificationEventHandler(INotificationSender notificationSender
-        , IAlarmHistoryRepository repository)
+        , IAlarmHistoryRepository repository
+        , IAlarmRuleRepository alarmRuleRepository)
     {
         _notificationSender = notificationSender;
         _repository = repository;
+        _alarmRuleRepository = alarmRuleRepository;
     }
 
     [EventHandler]
@@ -27,7 +30,13 @@ public class SendAlarmRecoveryNotificationEventHandler
 
             var notificationConfig = item.AlarmRuleItem.RecoveryNotificationConfig;
 
-            await _notificationSender.SendAsync(notificationConfig);
+            var variables = new Dictionary<string, object>();
+            var alarmRule = await _alarmRuleRepository.FindAsync(x => x.Id == alarm.AlarmRuleId);
+            if (alarmRule != null)
+            {
+                variables.TryAdd(AlertConsts.ALARM_RULE_NAME_NOTIFICATION_TEMPLATE_VAR_NAME, alarmRule.DisplayName);
+            }
+            await _notificationSender.SendAsync(notificationConfig, variables);
         }
     }
 }

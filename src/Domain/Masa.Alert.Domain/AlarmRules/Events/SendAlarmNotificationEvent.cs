@@ -3,6 +3,6 @@
 
 namespace Masa.Alert.Domain.AlarmRules.Events;
 
-public record SendAlarmNotificationEvent(Guid AlarmHistoryId) : DomainEvent
+public record SendAlarmNotificationEvent(Guid AlarmHistoryId, Guid AlarmRuleId) : DomainEvent
 {
 }
