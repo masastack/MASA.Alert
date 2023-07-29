@@ -6,10 +6,12 @@ namespace Masa.Alert.Application.AlarmHistories.EventHandler;
 public class NoticeAlarmHandleEventHandler
 {
     private readonly INotificationSender _notificationSender;
+    private readonly IAlarmRuleRepository _alarmRuleRepository;
 
-    public NoticeAlarmHandleEventHandler(INotificationSender notificationSender)
+    public NoticeAlarmHandleEventHandler(INotificationSender notificationSender, IAlarmRuleRepository alarmRuleRepository)
     {
         _notificationSender = notificationSender;
+        _alarmRuleRepository = alarmRuleRepository;
     }
 
     [EventHandler]
@@ -17,6 +19,13 @@ public class NoticeAlarmHandleEventHandler
     {
         var notificationConfig = eto.AlarmHandle.NotificationConfig;
 
-        await _notificationSender.SendAsync(notificationConfig);
+        var variables = new Dictionary<string, object>();
+        var alarmRule = await _alarmRuleRepository.FindAsync(x => x.Id == eto.AlarmRuleId);
+        if (alarmRule != null)
+        {
+            variables.TryAdd(AlertConsts.ALARM_RULE_NAME_NOTIFICATION_TEMPLATE_VAR_NAME, alarmRule.DisplayName);
+        }
+
+        await _notificationSender.SendAsync(notificationConfig, variables);
     }
 }

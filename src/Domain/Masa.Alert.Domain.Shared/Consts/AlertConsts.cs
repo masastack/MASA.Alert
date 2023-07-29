@@ -7,4 +7,5 @@ public static class AlertConsts
 {
     public const string DbTablePrefix = null;
     public const string DbSchema = "alert";
+    public const string ALARM_RULE_NAME_NOTIFICATION_TEMPLATE_VAR_NAME = "Name";
 }

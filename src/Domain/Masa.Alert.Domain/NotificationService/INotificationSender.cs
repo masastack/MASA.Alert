@@ -5,5 +5,5 @@ namespace Masa.Alert.Domain.NotificationService;
 
 public interface INotificationSender
 {
-    Task SendAsync(NotificationConfig notificationConfig);
+    Task SendAsync(NotificationConfig notificationConfig, Dictionary<string, object> variables);
 }
