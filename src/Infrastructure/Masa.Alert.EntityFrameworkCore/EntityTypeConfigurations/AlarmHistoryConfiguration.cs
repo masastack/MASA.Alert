@@ -7,11 +7,11 @@ public class AlarmHistoryConfiguration : IEntityTypeConfiguration<AlarmHistory>
 {
     public void Configure(EntityTypeBuilder<AlarmHistory> builder)
     {
-        builder.ToTable(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
+        builder.ToTable(AlertConsts.DB_TABLE_PREFIX + "AlarmHistorys", AlertConsts.DB_SCHEMA);
         builder.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItem>>());
         builder.OwnsMany(x => x.HandleStatusCommits, b =>
         {
-            b.ToTable(AlertConsts.DbTablePrefix + "AlarmHandleStatusCommits", AlertConsts.DbSchema);
+            b.ToTable(AlertConsts.DB_TABLE_PREFIX + "AlarmHandleStatusCommits", AlertConsts.DB_SCHEMA);
             b.Property<Guid>("Id").ValueGeneratedOnAdd();
             b.HasKey("Id");
         });

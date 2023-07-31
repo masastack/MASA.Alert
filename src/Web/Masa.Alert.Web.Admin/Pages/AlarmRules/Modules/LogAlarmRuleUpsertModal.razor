@@ -53,7 +53,7 @@
                                     @if (_model.CheckFrequency.Type == AlarmCheckFrequencyTypes.Cron)
                                     {
                                         <MCol Md="8">
-                                            <STextField Class="ml-6" @bind-Value="_model.CheckFrequency.CronExpression" Label="@T(nameof(_model.CheckFrequency.CronExpression))" AppendIcon="mdi-clock" OnAppendClick="OpenCronModal" OnChange="(string v)=>GetNextRunTime()" />
+                                            <STextField Class="ml-6" @bind-Value="_model.CheckFrequency.CronExpression" Label="@T(nameof(_model.CheckFrequency.CronExpression))" AppendIcon="mdi-clock" OnAppendClick="OpenCronModal" OnBlur="()=>GetNextRunTime()" />
                                         </MCol>
                                     }
                                 </MRow>

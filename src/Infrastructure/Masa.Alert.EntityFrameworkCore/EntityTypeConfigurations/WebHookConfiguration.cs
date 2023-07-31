@@ -9,6 +9,6 @@ public class WebHookConfiguration : IEntityTypeConfiguration<WebHook>
 {
     public void Configure(EntityTypeBuilder<WebHook> builder)
     {
-        builder.ToTable(AlertConsts.DbTablePrefix + "WebHooks", AlertConsts.DbSchema);
+        builder.ToTable(AlertConsts.DB_TABLE_PREFIX + "WebHooks", AlertConsts.DB_SCHEMA);
     }
 }
