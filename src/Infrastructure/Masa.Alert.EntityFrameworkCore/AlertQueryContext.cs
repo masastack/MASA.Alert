@@ -21,7 +21,7 @@ public class AlertQueryContext : MasaDbContext<AlertQueryContext>, IAlertQueryCo
     {
         builder.Entity<AlarmRuleQueryModel>(b =>
         {
-            b.ToView(AlertConsts.DbTablePrefix + "AlarmRules", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DB_TABLE_PREFIX + "AlarmRules", AlertConsts.DB_SCHEMA);
             b.HasMany(x => x.LogMonitorItems).WithOne().HasForeignKey(x => x.AlarmRuleId).IsRequired();
             b.HasMany(x => x.MetricMonitorItems).WithOne().HasForeignKey(x => x.AlarmRuleId).IsRequired();
             b.HasMany(x => x.Items).WithOne().HasForeignKey(x => x.AlarmRuleId).IsRequired();
@@ -50,14 +50,14 @@ public class AlertQueryContext : MasaDbContext<AlertQueryContext>, IAlertQueryCo
 
         builder.Entity<AlarmRuleRecordQueryModel>(b =>
         {
-            b.ToView(AlertConsts.DbTablePrefix + "AlarmRuleRecords", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DB_TABLE_PREFIX + "AlarmRuleRecords", AlertConsts.DB_SCHEMA);
             b.Property(x => x.AggregateResult).HasConversion(new JsonValueConverter<ConcurrentDictionary<string, long>>());
             b.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
         });
 
         builder.Entity<AlarmHistoryQueryModel>(b =>
         {
-            b.ToView(AlertConsts.DbTablePrefix + "AlarmHistorys", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DB_TABLE_PREFIX + "AlarmHistorys", AlertConsts.DB_SCHEMA);
             b.HasOne(x => x.AlarmRule);
             b.Property(x => x.HandleNotificationConfig).HasConversion(new JsonValueConverter<NotificationConfigQueryModel>());
             b.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItemQueryModel>>());
@@ -66,12 +66,12 @@ public class AlertQueryContext : MasaDbContext<AlertQueryContext>, IAlertQueryCo
 
         builder.Entity<LogMonitorItemQueryModel>(b =>
         {
-            b.ToView(AlertConsts.DbTablePrefix + "AlarmRuleLogMonitors", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DB_TABLE_PREFIX + "AlarmRuleLogMonitors", AlertConsts.DB_SCHEMA);
         });
 
         builder.Entity<MetricMonitorItemQueryModel>(b =>
         {
-            b.ToView(AlertConsts.DbTablePrefix + "AlarmRuleMetricMonitors", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DB_TABLE_PREFIX + "AlarmRuleMetricMonitors", AlertConsts.DB_SCHEMA);
             b.OwnsOne(x => x.Aggregation, b =>
             {
                 b.Property(x => x.Name).HasColumnName("Name");
@@ -84,19 +84,19 @@ public class AlertQueryContext : MasaDbContext<AlertQueryContext>, IAlertQueryCo
 
         builder.Entity<AlarmRuleItemQueryModel>(b =>
         {
-            b.ToView(AlertConsts.DbTablePrefix + "AlarmRuleItems", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DB_TABLE_PREFIX + "AlarmRuleItems", AlertConsts.DB_SCHEMA);
             b.Property(x => x.RecoveryNotificationConfig).HasConversion(new JsonValueConverter<NotificationConfigQueryModel>());
             b.Property(x => x.NotificationConfig).HasConversion(new JsonValueConverter<NotificationConfigQueryModel>());
         });
 
         builder.Entity<AlarmHandleStatusCommitQueryModel>(b =>
         {
-            b.ToView(AlertConsts.DbTablePrefix + "AlarmHandleStatusCommits", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DB_TABLE_PREFIX + "AlarmHandleStatusCommits", AlertConsts.DB_SCHEMA);
         });
 
         builder.Entity<WebHookQueryModel>(b =>
         {
-            b.ToView(AlertConsts.DbTablePrefix + "WebHooks", AlertConsts.DbSchema);
+            b.ToView(AlertConsts.DB_TABLE_PREFIX + "WebHooks", AlertConsts.DB_SCHEMA);
         });
 
         base.OnModelCreatingExecuting(builder);

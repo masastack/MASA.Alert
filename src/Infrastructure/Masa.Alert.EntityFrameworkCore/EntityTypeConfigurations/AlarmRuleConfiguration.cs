@@ -7,7 +7,7 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
 {
     public void Configure(EntityTypeBuilder<AlarmRule> builder)
     {
-        builder.ToTable(AlertConsts.DbTablePrefix + "AlarmRules", AlertConsts.DbSchema);
+        builder.ToTable(AlertConsts.DB_TABLE_PREFIX + "AlarmRules", AlertConsts.DB_SCHEMA);
         builder.Property(x => x.DisplayName).IsRequired().HasMaxLength(128);
         builder.Property(x => x.ProjectIdentity).HasMaxLength(128);
         builder.Property(x => x.AppIdentity).HasMaxLength(128);
@@ -15,14 +15,14 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
         builder.Property(x => x.TotalVariable).HasMaxLength(64);
         builder.OwnsMany(x => x.LogMonitorItems, b =>
         {
-            b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleLogMonitors", AlertConsts.DbSchema);
+            b.ToTable(AlertConsts.DB_TABLE_PREFIX + "AlarmRuleLogMonitors", AlertConsts.DB_SCHEMA);
             b.Property<Guid>("Id").ValueGeneratedOnAdd();
             b.HasKey("Id");
             b.Property(x => x.AggregationType).HasConversion(v => v.Id, v => Enumeration.FromValue<Domain.AlarmRules.LogAggregationType>(v));
         });
         builder.OwnsMany(x => x.MetricMonitorItems, b =>
         {
-            b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleMetricMonitors", AlertConsts.DbSchema);
+            b.ToTable(AlertConsts.DB_TABLE_PREFIX + "AlarmRuleMetricMonitors", AlertConsts.DB_SCHEMA);
             b.Property<Guid>("Id").ValueGeneratedOnAdd();
             b.HasKey("Id");
             b.OwnsOne(x => x.Aggregation, b =>
@@ -36,7 +36,7 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
         });
         builder.OwnsMany(x => x.Items, b =>
         {
-            b.ToTable(AlertConsts.DbTablePrefix + "AlarmRuleItems", AlertConsts.DbSchema);
+            b.ToTable(AlertConsts.DB_TABLE_PREFIX + "AlarmRuleItems", AlertConsts.DB_SCHEMA);
             b.Property<Guid>("Id").ValueGeneratedOnAdd();
             b.HasKey("Id");
             b.Property(x => x.RecoveryNotificationConfig).HasConversion(new JsonValueConverter<NotificationConfig>());
