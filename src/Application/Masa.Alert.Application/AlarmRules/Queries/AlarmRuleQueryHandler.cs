@@ -31,7 +31,7 @@ public class AlarmRuleQueryHandler
     {
         var options = query.Input;
         var condition = await CreateFilteredPredicate(options);
-        var resultList = await _context.AlarmRuleQueries.Include(x => x.MetricMonitorItems).GetPaginatedListAsync(condition, new()
+        var resultList = await _context.AlarmRuleQueries.Include(x => x.Items).Include(x => x.MetricMonitorItems).GetPaginatedListAsync(condition, new()
         {
             Page = options.Page,
             PageSize = options.PageSize,

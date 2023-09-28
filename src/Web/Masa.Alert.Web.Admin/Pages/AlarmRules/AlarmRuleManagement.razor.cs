@@ -11,6 +11,9 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     [Inject]
     public ITscClient TscClient { get; set; } = default!;
 
+    [Inject]
+    public IAuthClient AuthClient { get; set; } = default!;
+
     private GetAlarmRuleInputDto _queryParam = new(20);
     private PaginatedListDto<AlarmRuleListViewModel> _entities = new();
     private LogAlarmRuleUpsertModal? _logUpsertModal;
@@ -68,11 +71,39 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         });
         if (result.IsValid)
         {
-            _entities = result.result?.Adapt<PaginatedListDto<AlarmRuleListViewModel>>() ?? new();
+            var paginatedListDto = result.result?.Adapt<PaginatedListDto<AlarmRuleListViewModel>>() ?? new();
+            paginatedListDto = await FillNotifier(paginatedListDto);
+            _entities = paginatedListDto;
             Loading = false;
             _showEmptyPlaceholder = !_entities.Result.Any();
             StateHasChanged();
         }
+    }
+
+    private async Task<PaginatedListDto<AlarmRuleListViewModel>> FillNotifier(PaginatedListDto<AlarmRuleListViewModel> alarmRules)
+    {
+        var userIds = new List<Guid>();
+
+        foreach (var rule in alarmRules.Result)
+        {
+            foreach (var item in rule.Items)
+            {
+                userIds.AddRange(item.NotificationConfig.Receivers);
+            }
+        }
+
+        var users = await AuthClient.UserService.GetListByIdsAsync(userIds.Distinct().ToArray());
+
+        foreach (var rule in alarmRules.Result)
+        {
+            foreach (var item in rule.Items)
+            {
+                var notifiers = users.Where(x=> item.NotificationConfig.Receivers.Contains(x.Id));
+                rule.Notifiers.AddRange(notifiers);
+            }
+        }
+
+        return alarmRules;
     }
 
     private async Task HandleOk()
@@ -107,19 +138,6 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     private async Task HandleClearAsync()
     {
         _queryParam = new(20);
-        await LoadData();
-    }
-
-    private async Task HandleDelAsync(Guid _entityId, string displayName)
-    {
-        await ConfirmAsync(T("DeletionConfirmationMessage", $"{T("AlarmRule")}\"{displayName}\""), async () => { await DeleteAsync(_entityId); }, AlertTypes.Error);
-    }
-
-    private async Task DeleteAsync(Guid _entityId)
-    {
-        Loading = true;
-        Loading = false;
-        await SuccessMessageAsync(T("DeletedSuccessfullyMessage"));
         await LoadData();
     }
 

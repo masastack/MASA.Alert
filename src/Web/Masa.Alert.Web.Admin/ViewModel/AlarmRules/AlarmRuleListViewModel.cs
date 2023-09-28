@@ -21,5 +21,9 @@ public class AlarmRuleListViewModel
 
     public bool IsEnabled { get; set; }
 
+    public List<AlarmRuleItemViewModel> Items { get; set; } = new();
+
     public List<MetricMonitorItemViewModel> MetricMonitorItems { get; set; } = new();
+
+    public List<UserModel> Notifiers = new();
 }
