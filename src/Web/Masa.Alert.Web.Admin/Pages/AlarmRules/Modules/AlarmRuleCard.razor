@@ -78,6 +78,26 @@
         </div>
     </MCardText>
     <MCardActions class="px-3 pb-3">
+        @if (AlarmRule.Notifiers.Any())
+        {
+            <SIcon Tooltip="@T("Notifier")" Size="20" Class="mr-2">mdi-bell</SIcon>
+            <div class="avatar-list-stacked">
+                @foreach (var item in AlarmRule.Notifiers)
+                {
+                    <MTooltip Top>
+                    <ActivatorContent>
+                        <MAvatar Size="24" @attributes="@context.Attrs">
+                            <MImage Src="@item.Avatar"></MImage>
+                        </MAvatar>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <span>@item.DisplayName</span>
+                    </ChildContent>
+                </MTooltip>
+                }
+            </div>
+            
+        }
         <MSpacer />
         <span class="caption regular3--text">@AlarmRule.ModificationTime.Humanize(culture:I18n.Culture) </span>
         <span class="d-flex px-1" style="height: 8px">
