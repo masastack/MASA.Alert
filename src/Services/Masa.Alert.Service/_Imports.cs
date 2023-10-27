@@ -40,3 +40,5 @@ global using Masa.Contrib.StackSdks.Middleware;
 global using Masa.BuildingBlocks.Data.UoW;
 global using Masa.Contrib.StackSdks.Isolation;
 global using Masa.Alert.Infrastructure.Middleware;
+global using Masa.BuildingBlocks.Extensions.BackgroundJobs;
+global using Masa.Alert.Application.AlarmRules.Jobs;

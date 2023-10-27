@@ -55,3 +55,5 @@ global using Masa.Alert.Infrastructure.Constants;
 global using Masa.BuildingBlocks.Dispatcher.Events;
 global using Masa.BuildingBlocks.Caching;
 global using Masa.Alert.Domain.Shared.Consts;
+global using Masa.BuildingBlocks.Extensions.BackgroundJobs;
+global using Masa.Alert.Application.AlarmRules.Commands;

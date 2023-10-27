@@ -12,6 +12,7 @@
     <PackageReference Include="Masa.BuildingBlocks.Dispatcher.Events" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.BuildingBlocks.Dispatcher.IntegrationEvents" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.BuildingBlocks.ReadWriteSplitting.Cqrs" Version="$(MasaFrameworkPackageVersion)" />
+	<PackageReference Include="Masa.Contrib.Extensions.BackgroundJobs.Memory" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.Contrib.Data.Mapping.Mapster" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.Utils.Extensions.Expressions" Version="$(MasaFrameworkPackageVersion)" />
     <PackageReference Include="Masa.BuildingBlocks.StackSdks.Auth" Version="$(MasaFrameworkPackageVersion)" />
