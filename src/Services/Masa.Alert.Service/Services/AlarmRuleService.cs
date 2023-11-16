@@ -60,9 +60,14 @@ public class AlarmRuleService : ServiceBase
     }
 
     [RoutePattern("{id}/check", StartWithBaseUri = true, HttpMethod = "Post")]
-    public async Task CheckAsync(IEventBus eventBus, Guid id, DateTimeOffset? excuteTime)
+    public async Task CheckAsync(Guid id, DateTimeOffset? excuteTime)
     {
-        var command = new CheckAlarmRuleCommand(id, excuteTime);
-        await eventBus.PublishAsync(command);
+        var args = new CheckAlarmRuleJobArgs()
+        {
+            AlarmRuleId = id,
+            ExcuteTime = excuteTime
+        };
+
+        await BackgroundJobManager.EnqueueAsync(args);
     }
 }

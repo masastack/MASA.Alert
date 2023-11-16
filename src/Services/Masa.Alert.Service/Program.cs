@@ -97,6 +97,10 @@ builder.Services.AddRulesEngine(rulesEngineOptions =>
 {
     rulesEngineOptions.UseMicrosoftRulesEngine();
 });
+builder.Services.AddBackgroundJob(options =>
+{
+    options.UseInMemoryDatabase();
+});
 
 builder.Services
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
