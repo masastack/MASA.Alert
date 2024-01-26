@@ -5,24 +5,18 @@ namespace Masa.Alert.Domain.AlarmRules.EventHandler;
 
 public class AddAlarmRuleRecordEventHandler
 {
-    private readonly IAlarmRuleRepository _repository;
-    private readonly IEventBus _eventBus;
+    private readonly IAlarmRuleRecordRepository _repository;
 
-    public AddAlarmRuleRecordEventHandler(IAlarmRuleRepository repository
-        , IEventBus eventBus)
+    public AddAlarmRuleRecordEventHandler(IAlarmRuleRecordRepository repository)
     {
         _repository = repository;
-        _eventBus = eventBus;
     }
 
     [EventHandler]
     public async Task HandleEventAsync(AddAlarmRuleRecordEvent eto)
     {
-        var alarm = await _repository.FindAsync(x => x.Id == eto.AlarmRuleId);
-        if (alarm == null) return;
+        var alarm = new AlarmRuleRecord(eto.AlarmRuleId, eto.AggregateResult, eto.IsTrigger, eto.ConsecutiveCount, eto.ExcuteTime, eto.RuleResultItems, eto.AlarmHistoryId);
 
-        alarm.AddAggregateResult(eto.ExcuteTime, eto.AggregateResult, eto.IsTrigger, eto.ConsecutiveCount, eto.RuleResultItems, eto.AlarmHistoryId);
-
-        await _repository.UpdateAsync(alarm);
+        await _repository.AddAsync(alarm);
     }
 }

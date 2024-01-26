@@ -32,18 +32,9 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public ICollection<AlarmRuleItem> Items { get; protected set; } = new Collection<AlarmRuleItem>();
 
-    public virtual IEnumerable<AlarmRuleRecord> AlarmRuleRecords => LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords))!;
-
     public Guid SchedulerJobId { get; protected set; } = default;
 
-    private List<AlarmRuleRecord> _alarmRuleRecords = default!;
-
-    private Action<object, string> LazyLoader { get; set; } = default!;
-
-    private AlarmRule(Action<object, string> lazyLoader)
-    {
-        LazyLoader = lazyLoader;
-    }
+    private AlarmRule() { }
 
     public AlarmRule(string displayName, AlarmRuleTypes type, string projectIdentity, string appIdentity, string chartYAxisUnit
         , bool isGetTotal, string totalVariable, string whereExpression, int continuousTriggerThreshold, SilenceCycle silenceCycle)
@@ -58,22 +49,6 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
         SetChartConfig(chartYAxisUnit);
         SetAdvancedConfig(continuousTriggerThreshold, silenceCycle);
-        _alarmRuleRecords = new List<AlarmRuleRecord>();
-    }
-
-    public AlarmRuleRecord? GetLatest()
-    {
-        LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
-        return _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.ExcuteTime).FirstOrDefault();
-    }
-
-    public long? GetOffsetResult(int offsetPeriod, string alias)
-    {
-        LazyLoader.Load(this, ref _alarmRuleRecords!, nameof(AlarmRuleRecords));
-
-        var offsetRecord = _alarmRuleRecords.Where(x => x.AlarmRuleId == Id).OrderByDescending(x => x.ExcuteTime).Skip(offsetPeriod - 1).FirstOrDefault();
-
-        return offsetRecord?.AggregateResult.FirstOrDefault(x => x.Key == alias).Value;
     }
 
     public string GetCronExpression()
@@ -226,16 +201,6 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
     public bool IsRuleValid(List<RuleResultItem> ruleResult)
     {
         return ruleResult.Any(x => x.IsValid);
-    }
-
-    public void SkipCheck(DateTimeOffset excuteTime)
-    {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, new ConcurrentDictionary<string, long>(), false, 0, excuteTime, new List<RuleResultItem>()));
-    }
-
-    public void AddAggregateResult(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems, Guid AlarmHistoryId = default)
-    {
-        _alarmRuleRecords.Add(new AlarmRuleRecord(Id, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResultItems, AlarmHistoryId));
     }
 
     public bool CheckIsNotification()

@@ -41,7 +41,8 @@ public class UpsertAlarmRuleJobEventHandler
             {
                 HttpMethod = HttpMethods.POST,
                 RequestUrl = $"{alertUrl}/api/v1/AlarmRules/{alarmRule.Id}/check"
-            }
+            },
+            ScheduleBlockStrategy = ScheduleBlockStrategyTypes.Cover
         };
 
         if (alarmRule.SchedulerJobId == default)
