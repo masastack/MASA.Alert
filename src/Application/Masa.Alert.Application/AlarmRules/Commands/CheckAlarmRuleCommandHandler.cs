@@ -46,12 +46,12 @@ public class CheckAlarmRuleCommandHandler
     {
         var alarmRule = command.AlarmRule;
         var checkTime = command.ExcuteTime ?? DateTimeOffset.Now;
-        var latest = alarmRule.GetLatest();
+        var latest = await _domainService.GetLatest(alarmRule.Id);
         var startTime = alarmRule.GetStartCheckTime(checkTime, latest);
 
         if (startTime == null)
         {
-            alarmRule.SkipCheck(checkTime);
+            await _domainService.SkipCheck(alarmRule.Id, checkTime);
             command.IsStop = true;
             return;
         }
@@ -77,8 +77,7 @@ public class CheckAlarmRuleCommandHandler
     {
         if (command.IsStop)
         {
-            command.AlarmRule.AddAggregateResult(command.ExcuteTime ?? DateTimeOffset.Now, command.AggregateResult, false, 0, new List<RuleResultItem>());
-            await _repository.UpdateAsync(command.AlarmRule);
+            await _domainService.AddAggregateResult(command.AlarmRule.Id, command.ExcuteTime ?? DateTimeOffset.Now, command.AggregateResult, false, 0, new List<RuleResultItem>());
             return;
         }
 
@@ -93,7 +92,7 @@ public class CheckAlarmRuleCommandHandler
         {
             if (item.IsOffset && item.OffsetPeriod > 0)
             {
-                var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
+                var offsetResult = await _domainService.GetOffsetResult(alarmRule.Id, item.OffsetPeriod, item.Alias);
                 if (offsetResult.HasValue)
                 {
                     aggregateResult.TryAdd(item.Alias, offsetResult.Value);
@@ -132,7 +131,7 @@ public class CheckAlarmRuleCommandHandler
         {
             if (item.IsOffset && item.OffsetPeriod > 0)
             {
-                var offsetResult = alarmRule.GetOffsetResult(item.OffsetPeriod, item.Alias);
+                var offsetResult = await _domainService.GetOffsetResult(alarmRule.Id, item.OffsetPeriod, item.Alias);
                 if (offsetResult.HasValue)
                 {
                     aggregateResult.TryAdd(item.Alias, offsetResult.Value);
