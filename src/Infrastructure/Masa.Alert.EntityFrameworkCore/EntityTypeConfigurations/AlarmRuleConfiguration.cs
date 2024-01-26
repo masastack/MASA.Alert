@@ -42,7 +42,6 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
             b.Property(x => x.RecoveryNotificationConfig).HasConversion(new JsonValueConverter<NotificationConfig>());
             b.Property(x => x.NotificationConfig).HasConversion(new JsonValueConverter<NotificationConfig>());
         });
-        builder.HasMany(x => x.AlarmRuleRecords).WithOne();
         builder.OwnsOne(x => x.CheckFrequency, b =>
         {
             b.OwnsOne(x => x.FixedInterval, b =>

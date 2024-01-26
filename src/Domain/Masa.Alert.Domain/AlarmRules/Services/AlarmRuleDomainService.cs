@@ -6,15 +6,18 @@ namespace Masa.Alert.Domain.AlarmRules.Services;
 public class AlarmRuleDomainService : DomainService
 {
     private readonly IAlarmRuleRepository _repository;
+    private readonly IAlarmRuleRecordRepository _alarmRuleRecordRepository;
     private readonly IRulesEngineClient _rulesEngineClient;
     private readonly IDistributedCacheClient _cacheClient;
 
     public AlarmRuleDomainService(IDomainEventBus eventBus
         , IAlarmRuleRepository repository
+        , IAlarmRuleRecordRepository alarmRuleRecordRepository
         , IRulesEngineClient rulesEngineClient
         , IDistributedCacheClient cacheClient) : base(eventBus)
     {
         _repository = repository;
+        _alarmRuleRecordRepository = alarmRuleRecordRepository;
         _rulesEngineClient = rulesEngineClient;
         _cacheClient = cacheClient;
     }
@@ -44,7 +47,7 @@ public class AlarmRuleDomainService : DomainService
             ruleResult.Add(ruleResultItem);
         }
 
-        var latestRecord = alarmRule.GetLatest();
+        var latestRecord = await GetLatest(alarmRule.Id);
 
         var cacheKey = $"{AlarmCacheKeys.ALARM_CONSECUTIVE_COUNT}_{alarmRule.Id}";
         var consecutiveCount = Convert.ToInt32(await _cacheClient.HashIncrementAsync(cacheKey));
@@ -67,8 +70,9 @@ public class AlarmRuleDomainService : DomainService
                 consecutiveCount = 0;
                 await _cacheClient.RemoveAsync<long>(cacheKey);
             }
-            
-            alarmRule.AddAggregateResult(excuteTime, aggregateResult, false, consecutiveCount, ruleResult);
+
+            var alarm = new AlarmRuleRecord(alarmRule.Id, aggregateResult, false, consecutiveCount, excuteTime, ruleResult, default);
+            await _alarmRuleRecordRepository.AddAsync(alarm);
         }
 
         await _repository.UpdateAsync(alarmRule);
@@ -90,5 +94,29 @@ public class AlarmRuleDomainService : DomainService
         alarmRule.CheckJob(isEnabled, checkFrequency);
 
         await _repository.UpdateAsync(alarmRule);
+    }
+
+    public async Task<AlarmRuleRecord?> GetLatest(Guid alarmRuleId)
+    {
+        var query = await _alarmRuleRecordRepository.GetQueryableAsync();
+        return query.Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.ExcuteTime).FirstOrDefault();
+    }
+
+    public async Task<long?> GetOffsetResult(Guid alarmRuleId, int offsetPeriod, string alias)
+    {
+        var query = await _alarmRuleRecordRepository.GetQueryableAsync();
+        var offsetRecord = query.Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.ExcuteTime).Skip(offsetPeriod - 1).FirstOrDefault();
+
+        return offsetRecord?.AggregateResult.FirstOrDefault(x => x.Key == alias).Value;
+    }
+
+    public async Task SkipCheck(Guid alarmRuleId, DateTimeOffset excuteTime)
+    {
+        await _alarmRuleRecordRepository.AddAsync(new AlarmRuleRecord(alarmRuleId, new ConcurrentDictionary<string, long>(), false, 0, excuteTime, new List<RuleResultItem>()));
+    }
+
+    public async Task AddAggregateResult(Guid alarmRuleId, DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems, Guid AlarmHistoryId = default)
+    {
+        await _alarmRuleRecordRepository.AddAsync(new AlarmRuleRecord(alarmRuleId, aggregateResult, isTrigger, consecutiveCount, excuteTime, ruleResultItems, AlarmHistoryId));
     }
 }
