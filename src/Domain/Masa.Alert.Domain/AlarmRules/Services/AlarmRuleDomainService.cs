@@ -99,13 +99,13 @@ public class AlarmRuleDomainService : DomainService
     public async Task<AlarmRuleRecord?> GetLatest(Guid alarmRuleId)
     {
         var query = await _alarmRuleRecordRepository.GetQueryableAsync();
-        return query.Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.ExcuteTime).FirstOrDefault();
+        return query.Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.Id).FirstOrDefault();
     }
 
     public async Task<long?> GetOffsetResult(Guid alarmRuleId, int offsetPeriod, string alias)
     {
         var query = await _alarmRuleRecordRepository.GetQueryableAsync();
-        var offsetRecord = query.Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.ExcuteTime).Skip(offsetPeriod - 1).FirstOrDefault();
+        var offsetRecord = query.Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.Id).Skip(offsetPeriod - 1).FirstOrDefault();
 
         return offsetRecord?.AggregateResult.FirstOrDefault(x => x.Key == alias).Value;
     }
