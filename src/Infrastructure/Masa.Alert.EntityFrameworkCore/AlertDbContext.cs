@@ -17,7 +17,7 @@ public class AlertDbContext : MasaDbContext<AlertDbContext>
     protected override void OnConfiguring(MasaDbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.DbContextOptionsBuilder
-            .LogTo(Console.WriteLine, LogLevel.Information)
+            .LogTo(Console.WriteLine, LogLevel.Error)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     }
