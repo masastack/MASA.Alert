@@ -57,3 +57,4 @@ global using Masa.BuildingBlocks.Caching;
 global using Masa.Alert.Domain.Shared.Consts;
 global using Masa.BuildingBlocks.Extensions.BackgroundJobs;
 global using Masa.Alert.Application.AlarmRules.Commands;
+global using Masa.BuildingBlocks.StackSdks.Tsc.Contracts.Log;
