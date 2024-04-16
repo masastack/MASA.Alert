@@ -86,12 +86,12 @@ public class SendAlarmNotificationEventHandler
 
         foreach (var resource in log.Resource)
         {
-            variables.TryAdd($"{prefix}.{nameof(log.Resource)}.{nameof(resource.Key)}", resource.Value);
+            variables.TryAdd($"{prefix}.{nameof(log.Resource)}.{resource.Key}", resource.Value);
         }
 
         foreach (var attribute in log.Attributes)
         {
-            variables.TryAdd($"{prefix}.{nameof(log.Attributes)}.{nameof(attribute.Key)}", attribute.Value);
+            variables.TryAdd($"{prefix}.{nameof(log.Attributes)}.{attribute.Key}", attribute.Value);
         }
     }
 }
