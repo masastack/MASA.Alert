@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 await builder.Services.AddMasaStackConfigAsync(MasaStackProject.Alert, MasaStackApp.Service);
 var masaStackConfig = builder.Services.GetMasaStackConfig();
 
-builder.Services.AddObservable(builder.Logging, () =>
+builder.Services.AddAlertObservable(builder.Logging, () =>
 {
     return new MasaObservableOptions
     {

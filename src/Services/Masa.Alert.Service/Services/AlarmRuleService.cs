@@ -65,9 +65,9 @@ public class AlarmRuleService : ServiceBase
         var args = new CheckAlarmRuleJobArgs()
         {
             AlarmRuleId = id,
-            ExcuteTime = excuteTime
+            ExcuteTime = excuteTime,
+            TraceParent = Activity.Current?.Id
         };
-
         await BackgroundJobManager.EnqueueAsync(args);
     }
 }
