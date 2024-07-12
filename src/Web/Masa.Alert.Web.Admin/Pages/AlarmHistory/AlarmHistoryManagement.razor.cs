@@ -150,47 +150,26 @@ public partial class AlarmHistoryManagement : AdminCompontentBase
                 _handleStatusItems = new List<AlarmHistoryHandleStatuses> { AlarmHistoryHandleStatuses.Pending, AlarmHistoryHandleStatuses.InProcess };
                 _queryParam.TimeType = default;
 
-                HandleSort(nameof(AlarmHistoryQueryModel.AlertSeverity));
+                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.AlertSeverity)} asc,{nameof(AlarmHistoryQueryModel.Id)} desc";
                 break;
             case AlarmHistorySearchTypes.Processed:
                 _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().ToList();
                 _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
                 _queryParam.TimeType = AlarmHistorySearchTimeTypes.ProcessingCompletedTime;
 
-                HandleSort(nameof(AlarmHistoryQueryModel.RecoveryTime), true);
+                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.RecoveryTime)} desc";
                 break;
             case AlarmHistorySearchTypes.NoNotice:
                 _timeTypeItems = Enum.GetValues<AlarmHistorySearchTimeTypes>().Where(x => x != AlarmHistorySearchTimeTypes.ProcessingCompletedTime).ToList();
                 _handleStatusItems = Enum.GetValues<AlarmHistoryHandleStatuses>().ToList();
                 _queryParam.TimeType = default;
 
-                HandleSort(nameof(AlarmHistoryQueryModel.LastAlarmTime), true);
+                _queryParam.Sorting = $"{nameof(AlarmHistoryQueryModel.LastAlarmTime)} desc";
                 break;
             default:
                 break;
         }
 
-        await RefreshAsync();
-    }
-
-    private void HandleSort(string sortField, bool isDesc = false)
-    {
-        _queryParam.Sorting = $"{sortField} {(isDesc ? "desc" : "")}";
-        _dataTableRef.UpdateOptions(options =>
-        {
-            var sortBys = new List<string> { sortField };
-            _dataTableRef.SortArray(sortBys);
-        });
-    }
-
-
-
-    private async Task HandleFilterKeyDown()
-    {
-        if (string.IsNullOrEmpty(_queryParam.Filter))
-        {
-            _queryParam.AlarmRuleId = null;
-        }
         await RefreshAsync();
     }
 
