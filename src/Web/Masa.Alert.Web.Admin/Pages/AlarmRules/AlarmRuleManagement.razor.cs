@@ -44,8 +44,6 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     {
         if (firstRender)
         {
-            ProjectModel p = null;
-            var b = p.Name;
             await InitData();
         }
         await base.OnAfterRenderAsync(firstRender);
