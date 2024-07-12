@@ -5,7 +5,7 @@
 @inject NavigationManager Navigation
 @inject IMasaStackConfig MasaStackConfig
 
-<SLayout OnSignOut="SignOut" OnErrorAsync="OnError" IsShowEnvironmentSwitch Class="full-height"
+<SLayout OnSignOut="SignOut" OnErrorAfterHandle="OnErrorAfterHandle" IsShowEnvironmentSwitch Class="fill-height"
          Logo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo-h-en.png"
          MiniLogo="https://cdn.masastack.com/stack/images/logo/MASAStack/logo.png"
          WhiteUris="WhiteUris">
@@ -19,9 +19,8 @@
 
     private List<string> WhiteUris = new List<string> { "alarmHistory/*" };
 
-    private Task OnError(Exception exception)
+    private Task OnErrorAfterHandle(Exception exception)
     {
-        PopupService.EnqueueSnackbarAsync(exception.Message, AlertTypes.Error);
         GlobalConfig.Loading = false;
         GlobalConfig.ThrottleFlag = false;
         return Task.CompletedTask;
