@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-global using BlazorComponent;
-global using BlazorComponent.I18n;
 global using Masa.Blazor;
 global using Masa.Alert.Web.Admin.Global;
 global using Microsoft.AspNetCore.Components;
@@ -36,7 +34,6 @@ global using Masa.Stack.Components.TaskHandle;
 global using System.Collections.Concurrent;
 global using Masa.Alert.Web.Admin.ViewModel.AlarmRules;
 global using Microsoft.AspNetCore.Components.Rendering;
-global using BlazorComponent.Helpers;
 global using Masa.Alert.Application.Contracts.AlarmRules;
 global using Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 global using Masa.Alert.Domain.Shared.AlarmRules;

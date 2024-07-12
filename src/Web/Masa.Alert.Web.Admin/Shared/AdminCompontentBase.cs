@@ -1,11 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.Stack.Components.Extensions;
-
 namespace Masa.Alert.Web.Admin;
 
-public abstract class AdminCompontentBase : BDomComponentBase
+public abstract class AdminCompontentBase : Blazor.Core.MasaComponentBase
 {
     private GlobalConfig? _globalConfig;
     private NavigationManager? _navigationManager;
