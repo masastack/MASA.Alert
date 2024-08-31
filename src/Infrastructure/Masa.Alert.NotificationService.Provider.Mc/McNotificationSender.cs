@@ -13,7 +13,15 @@ public class McNotificationSender : INotificationSender, IScopedDependency
     }
     public async Task SendAsync(NotificationConfig notificationConfig, Dictionary<string, object> variables)
     {
-        if (!notificationConfig.Receivers.Any())
+        var channelType = (ChannelTypes)notificationConfig.ChannelType;
+
+        SendTargets? receiverType = notificationConfig.Receivers.Any()
+                     ? SendTargets.Assign
+                     : channelType == ChannelTypes.WeixinWorkWebhook
+                        ? SendTargets.Broadcast
+                        : null;
+
+        if (receiverType == null)
         {
             return;
         }
@@ -23,8 +31,9 @@ public class McNotificationSender : INotificationSender, IScopedDependency
             ChannelCode = notificationConfig.ChannelCode,
             ChannelType = (ChannelTypes)notificationConfig.ChannelType,
             TemplateCode = notificationConfig.TemplateCode,
-            ReceiverType = SendTargets.Assign,
-            Receivers = notificationConfig.Receivers.Select(x => new InternalReceiverModel {
+            ReceiverType = receiverType.Value,
+            Receivers = notificationConfig.Receivers.Select(x => new InternalReceiverModel
+            {
                 Type = MessageTaskReceiverTypes.User,
                 SubjectId = x
             }).ToList(),
