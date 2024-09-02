@@ -68,6 +68,7 @@ public class SendAlarmNotificationEventHandler
             Query = alarmRule.WhereExpression,
             Start = startTime.Value.UtcDateTime,
             End = checkTime.UtcDateTime,
+            Service = alarmRule.AppIdentity,
             IsDesc = true
         };
 
