@@ -6,20 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 await builder.Services.AddMasaStackConfigAsync(MasaStackProject.Alert, MasaStackApp.Service);
 var masaStackConfig = builder.Services.GetMasaStackConfig();
 
-builder.Services.AddAlertObservable(builder.Logging, () =>
+builder.Services.AddObservable(builder.Logging, new MasaObservableOptions
 {
-    return new MasaObservableOptions
-    {
-        ServiceNameSpace = builder.Environment.EnvironmentName,
-        ServiceVersion = masaStackConfig.Version,
-        ServiceName = masaStackConfig.GetServiceId(MasaStackProject.Alert),
-        Layer = masaStackConfig.Namespace,
-        ServiceInstanceId = builder.Configuration.GetValue<string>("HOSTNAME")
-    };
-}, () =>
-{
-    return masaStackConfig.OtlpUrl;
-});
+    ServiceNameSpace = builder.Environment.EnvironmentName,
+    ServiceVersion = masaStackConfig.Version,
+    ServiceName = masaStackConfig.GetServiceId(MasaStackProject.Alert),
+    Layer = masaStackConfig.Namespace,
+    ServiceInstanceId = builder.Configuration.GetValue<string>("HOSTNAME")!
+}
+, masaStackConfig.OtlpUrl, activitySources: new string[] { CheckAlarmRuleJob.ActivitySource.Name });
 
 builder.Services.AddDaprClient();
 var identityServerUrl = masaStackConfig.GetSsoDomain();
