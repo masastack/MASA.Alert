@@ -59,4 +59,8 @@
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Middleware\Masa.Alert.Infrastructure.Middleware.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.NotificationService.Provider.Mc\Masa.Alert.NotificationService.Provider.Mc.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
+	</ItemGroup>
 </Project>
