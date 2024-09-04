@@ -31,7 +31,7 @@ global using Masa.BuildingBlocks.Dispatcher.IntegrationEvents;
 global using Masa.BuildingBlocks.Extensions.BackgroundJobs;
 global using Masa.BuildingBlocks.RulesEngine;
 global using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
-global using Masa.BuildingBlocks.StackSdks.Auth.Contracts.Consts;
+global using Masa.BuildingBlocks.StackSdks.Config.Consts;
 global using Masa.Contrib.Caching.Distributed.StackExchangeRedis;
 global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 global using Masa.Contrib.Dispatcher.IntegrationEvents.EventLogs.EFCore;
