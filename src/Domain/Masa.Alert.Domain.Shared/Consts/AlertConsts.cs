@@ -8,4 +8,6 @@ public static class AlertConsts
     public const string DB_TABLE_PREFIX = null;
     public const string DB_SCHEMA = "alert";
     public const string ALARM_RULE_NAME_NOTIFICATION_TEMPLATE_VAR_NAME = "Name";
+    public const string CHECK_START_TIME_NOTIFICATION_TEMPLATE_VAR_NAME = "CheckStartTime";
+    public const string CHECK_END_TIME_NOTIFICATION_TEMPLATE_VAR_NAME = "CheckEndTime";
 }

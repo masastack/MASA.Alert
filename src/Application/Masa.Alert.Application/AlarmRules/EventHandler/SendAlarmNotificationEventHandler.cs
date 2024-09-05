@@ -74,6 +74,9 @@ public class SendAlarmNotificationEventHandler
         if (startTime == null)
             return;
 
+        variables.TryAdd(AlertConsts.CHECK_START_TIME_NOTIFICATION_TEMPLATE_VAR_NAME, startTime.Value.UtcDateTime);
+        variables.TryAdd(AlertConsts.CHECK_END_TIME_NOTIFICATION_TEMPLATE_VAR_NAME, checkTime.UtcDateTime);
+
         var request = new LogLatestRequest
         {
             Query = alarmRule.WhereExpression,
