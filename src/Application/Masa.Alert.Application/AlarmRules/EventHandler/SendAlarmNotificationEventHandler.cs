@@ -37,6 +37,9 @@ public class SendAlarmNotificationEventHandler
             var notificationConfig = item.AlarmRuleItem.NotificationConfig;
 
             var variables = new Dictionary<string, object>();
+
+            AddAggregateVariables(variables, eto.AggregateResult);
+
             var alarmRule = await _alarmRuleRepository.FindAsync(x => x.Id == eto.AlarmRuleId);
             if (alarmRule != null)
             {
@@ -53,6 +56,14 @@ public class SendAlarmNotificationEventHandler
 
         alarm.Notification();
         await _repository.UpdateAsync(alarm);
+    }
+
+    private void AddAggregateVariables(Dictionary<string, object> variables, ConcurrentDictionary<string, long> aggregateResult)
+    {
+        foreach (var aggregateItem in aggregateResult)
+        {
+            variables.TryAdd(aggregateItem.Key, aggregateItem.Value);
+        }
     }
 
     private async Task AddLogVariablesAsync(AlarmRule alarmRule, Dictionary<string, object> variables)
