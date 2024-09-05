@@ -37,7 +37,10 @@ public class SendAlarmNotificationEventHandler
             var notificationConfig = item.AlarmRuleItem.NotificationConfig;
 
             var variables = new Dictionary<string, object>();
-            var alarmRule = await _alarmRuleRepository.FindAsync(x => x.Id == eto.AlarmRuleId);
+
+            AddAggregateVariables(variables, eto.AggregateResult);
+
+            var alarmRule = await _alarmRuleRepository.FindAsync(x => x.Id == alarm.AlarmRuleId);
             if (alarmRule != null)
             {
                 variables.TryAdd(AlertConsts.ALARM_RULE_NAME_NOTIFICATION_TEMPLATE_VAR_NAME, alarmRule.DisplayName);
@@ -55,6 +58,14 @@ public class SendAlarmNotificationEventHandler
         await _repository.UpdateAsync(alarm);
     }
 
+    private void AddAggregateVariables(Dictionary<string, object> variables, ConcurrentDictionary<string, long> aggregateResult)
+    {
+        foreach (var aggregateItem in aggregateResult)
+        {
+            variables.TryAdd(aggregateItem.Key, aggregateItem.Value);
+        }
+    }
+
     private async Task AddLogVariablesAsync(AlarmRule alarmRule, Dictionary<string, object> variables)
     {
         var checkTime = DateTimeOffset.Now;
@@ -62,6 +73,9 @@ public class SendAlarmNotificationEventHandler
         var startTime = alarmRule.GetStartCheckTime(checkTime, latest);
         if (startTime == null)
             return;
+
+        variables.TryAdd(AlertConsts.CHECK_START_TIME_NOTIFICATION_TEMPLATE_VAR_NAME, startTime.Value.UtcDateTime);
+        variables.TryAdd(AlertConsts.CHECK_END_TIME_NOTIFICATION_TEMPLATE_VAR_NAME, checkTime.UtcDateTime);
 
         var request = new LogLatestRequest
         {

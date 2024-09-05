@@ -29,13 +29,13 @@ public class TriggerAlarmEventHandler
         {
             alarm = new AlarmHistory(eto.AlarmRuleId, eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
             alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, true, eto.ConsecutiveCount, eto.TriggerRuleItems);
-            alarm.SetIsNotification(isNotification, isSilence);
+            alarm.SetIsNotification(isNotification, isSilence, eto.AggregateResult);
             await _repository.AddAsync(alarm);
         }
         else
         {
             alarm.Update(eto.AlertSeverity, isNotification, eto.TriggerRuleItems);
-            alarm.SetIsNotification(isNotification, isSilence);
+            alarm.SetIsNotification(isNotification, isSilence, eto.AggregateResult);
             alarm.AddAlarmRuleRecord(eto.ExcuteTime, eto.AggregateResult, true, eto.ConsecutiveCount, eto.TriggerRuleItems);
             await _repository.UpdateAsync(alarm);
             

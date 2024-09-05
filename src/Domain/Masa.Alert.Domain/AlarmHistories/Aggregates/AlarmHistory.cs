@@ -85,13 +85,13 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         LastNotificationTime = DateTimeOffset.Now;
     }
 
-    public void SetIsNotification(bool isNotification, bool isSilence)
+    public void SetIsNotification(bool isNotification, bool isSilence, ConcurrentDictionary<string, long> aggregateResult)
     {
         IsNotification = isNotification;
 
         if (IsNotification && !isSilence)
         {
-            AddDomainEvent(new SendAlarmNotificationEvent(Id, AlarmRuleId));
+            AddDomainEvent(new SendAlarmNotificationEvent(Id, aggregateResult));
         }
     }
 
