@@ -40,7 +40,7 @@ public class SendAlarmNotificationEventHandler
 
             AddAggregateVariables(variables, eto.AggregateResult);
 
-            var alarmRule = await _alarmRuleRepository.FindAsync(x => x.Id == eto.AlarmRuleId);
+            var alarmRule = await _alarmRuleRepository.FindAsync(x => x.Id == alarm.AlarmRuleId);
             if (alarmRule != null)
             {
                 variables.TryAdd(AlertConsts.ALARM_RULE_NAME_NOTIFICATION_TEMPLATE_VAR_NAME, alarmRule.DisplayName);

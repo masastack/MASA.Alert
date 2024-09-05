@@ -91,7 +91,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
         if (IsNotification && !isSilence)
         {
-            AddDomainEvent(new SendAlarmNotificationEvent(Id, AlarmRuleId, aggregateResult));
+            AddDomainEvent(new SendAlarmNotificationEvent(Id, aggregateResult));
         }
     }
 
