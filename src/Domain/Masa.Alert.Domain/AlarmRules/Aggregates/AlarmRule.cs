@@ -51,7 +51,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         IsGetTotal = isGetTotal;
         TotalVariable = totalVariable;
         WhereExpression = whereExpression;
-        Source = source;
+        Source = source ?? string.Empty;
         Show = show;
 
         SetChartConfig(chartYAxisUnit);

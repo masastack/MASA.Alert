@@ -56,6 +56,7 @@ public class AlarmRuleQueryHandler
         Expression<Func<AlarmRuleQueryModel, bool>> condition = x => true;
         condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.DisplayName.Contains(options.Filter));
         condition = condition.And(options.Type != default, x => x.Type == options.Type);
+        condition = condition.And(x => x.Show == options.Show);
         if (options.TimeType == AlarmRuleSearchTimeTypes.ModificationTime)
         {
             condition = condition.And(options.StartTime.HasValue, x => x.ModificationTime >= options.StartTime);

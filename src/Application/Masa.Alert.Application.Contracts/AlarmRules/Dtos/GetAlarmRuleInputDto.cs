@@ -23,6 +23,8 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto<GetAlarmRuleInputDto>
 
     public Guid TeamId { get; set; }
 
+    public bool Show { get; set; } = true;
+
     public GetAlarmRuleInputDto()
     {
     }

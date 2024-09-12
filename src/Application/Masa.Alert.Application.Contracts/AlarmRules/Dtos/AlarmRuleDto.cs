@@ -38,4 +38,8 @@ public class AlarmRuleDto : AuditEntityDto<Guid, Guid>
     public List<AlarmRuleItemDto> Items { get; set; } = new();
 
     public string ModifierName { get; set; } = string.Empty;
+
+    public string Source { get; set; } = default!;
+
+    public bool Show { get; set; }
 }

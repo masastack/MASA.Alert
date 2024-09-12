@@ -38,7 +38,7 @@ public class AlarmRuleCommandHandler
         var queryable = await _repository.WithDetailsAsync();
         var entity = await queryable.FirstOrDefaultAsync(x => x.Id == updateCommand.AlarmRuleId);
 
-        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));
+        MasaArgumentException.ThrowIfNull(entity, _i18n.T("AlarmRule"));       
 
         updateCommand.AlarmRule.Adapt(entity);
 
