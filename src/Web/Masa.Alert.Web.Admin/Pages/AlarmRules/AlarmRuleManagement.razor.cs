@@ -6,13 +6,13 @@ namespace Masa.Alert.Web.Admin.Pages.AlarmRules;
 public partial class AlarmRuleManagement : AdminCompontentBase
 {
     [Inject]
+    public IAuthClient AuthClient { get; set; } = default!;
+
+    [Inject]
     public IPmClient PmClient { get; set; } = default!;
 
     [Inject]
     public ITscClient TscClient { get; set; } = default!;
-
-    [Inject]
-    public IAuthClient AuthClient { get; set; } = default!;
 
     private GetAlarmRuleInputDto _queryParam = new(20);
     private PaginatedListDto<AlarmRuleListViewModel> _entities = new();
@@ -49,12 +49,39 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         await base.OnAfterRenderAsync(firstRender);
     }
 
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MasaGlobalConfig.CurrentTeamId = MasaUser.CurrentTeamId;
+        MasaGlobalConfig.OnCurrentTeamChanged += OnTeamChanged;
+    }
+
+    private void OnTeamChanged(Guid teamId)
+    {
+        MasaGlobalConfig.CurrentTeamId = teamId;
+        _ = InvokeAsync(async () =>
+        {
+            await LoadProjectAppsAsync();
+            await LoadData();
+            StateHasChanged();
+        });
+    }
     public async Task InitData()
     {
         await LoadData();
-        _projects = await PmClient.ProjectService.GetListAsync();
-        _projectItems = _projects.Select(x => new SelectItem<string>(x.Identity, x.Name)).ToList();
+        await LoadProjectAppsAsync();
         _metricItems = (await TscClient.MetricService.GetNamesAsync(null)).Select(x => new SelectItem<string>(x, x)).ToList();
+    }
+
+    private async Task LoadProjectAppsAsync()
+    {
+        _projects = await PmClient.ProjectService.GetListByTeamIdsAsync(new List<Guid> { MasaGlobalConfig.CurrentTeamId }, MultiEnvironmentUserContext.Environment!);
+        _projectItems = _projects.Select(x => new SelectItem<string>(x.Identity, x.Name)).ToList();
+        if (!string.IsNullOrEmpty(_queryParam.ProjectIdentity) && !_projects.Exists(project => project.Identity == _queryParam.ProjectIdentity))
+            _queryParam.ProjectIdentity = default!;
+        if (!string.IsNullOrEmpty(_queryParam.AppIdentity) && (string.IsNullOrEmpty(_queryParam.ProjectIdentity) || !_projectItems.Exists(app => app.Value == _queryParam.AppIdentity)))
+            _queryParam.AppIdentity = default!;
     }
 
     private async Task LoadData()
@@ -64,6 +91,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         var result = await _asyncTaskQueue.ExecuteAsync(async () =>
         {
             var queryParam = _queryParam.Adapt<GetAlarmRuleInputDto>() ?? new();
+            queryParam.TeamId = MasaGlobalConfig.CurrentTeamId;
             queryParam.StartTime = queryParam.StartTime?.Add(JsInitVariables.TimezoneOffset);
             queryParam.EndTime = queryParam.EndTime?.Add(JsInitVariables.TimezoneOffset);
             var dtos = (await AlarmRuleService.GetListAsync(queryParam));
@@ -98,7 +126,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         {
             foreach (var item in rule.Items)
             {
-                var notifiers = users.Where(x=> item.NotificationConfig.Receivers.Contains(x.Id));
+                var notifiers = users.Where(x => item.NotificationConfig.Receivers.Contains(x.Id));
                 rule.Notifiers.AddRange(notifiers);
             }
         }
@@ -171,7 +199,7 @@ public partial class AlarmRuleManagement : AdminCompontentBase
     {
         await RefreshAsync();
 
-        var projectId = _projects.FirstOrDefault(x => x.Identity == _queryParam.ProjectIdentity)?.Id;
+        var projectId = _projects.Find(x => x.Identity == _queryParam.ProjectIdentity)?.Id;
 
         if (projectId == null)
         {
@@ -189,5 +217,11 @@ public partial class AlarmRuleManagement : AdminCompontentBase
         };
 
         await RefreshAsync();
+    }
+
+    protected override ValueTask DisposeAsyncCore()
+    {
+        MasaGlobalConfig.OnCurrentTeamChanged -= OnTeamChanged;
+        return base.DisposeAsyncCore();
     }
 }

@@ -32,12 +32,17 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public ICollection<AlarmRuleItem> Items { get; protected set; } = new Collection<AlarmRuleItem>();
 
-    public Guid SchedulerJobId { get; protected set; } = default;
+    public Guid SchedulerJobId { get; protected set; } = Guid.Empty;
+
+    public string Source { get; set; } = default!;
+
+    public bool Show { get; set; }
 
     private AlarmRule() { }
 
     public AlarmRule(string displayName, AlarmRuleTypes type, string projectIdentity, string appIdentity, string chartYAxisUnit
-        , bool isGetTotal, string totalVariable, string whereExpression, int continuousTriggerThreshold, SilenceCycle silenceCycle)
+        , bool isGetTotal, string totalVariable, string whereExpression, int continuousTriggerThreshold, SilenceCycle silenceCycle,
+        string source, bool show)
     {
         DisplayName = displayName;
         Type = type;
@@ -46,6 +51,8 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         IsGetTotal = isGetTotal;
         TotalVariable = totalVariable;
         WhereExpression = whereExpression;
+        Source = source;
+        Show = show;
 
         SetChartConfig(chartYAxisUnit);
         SetAdvancedConfig(continuousTriggerThreshold, silenceCycle);
@@ -186,21 +193,21 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
         SilenceCycle = silenceCycle;
     }
 
-    public void TriggerAlarm(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult,int consecutiveCount)
+    public void TriggerAlarm(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult, int consecutiveCount)
     {
         var alertSeverity = ruleResult.Where(x => x.IsValid).Min(x => x.AlarmRuleItem.AlertSeverity);
 
         AddDomainEvent(new TriggerAlarmEvent(Id, alertSeverity, ruleResult, excuteTime, aggregateResult, consecutiveCount));
     }
 
-    public void RecoveryAlarm(DateTimeOffset excuteTime, ConcurrentDictionary<string,   long> aggregateResult, List<RuleResultItem> ruleResult)
+    public void RecoveryAlarm(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, List<RuleResultItem> ruleResult)
     {
         AddDomainEvent(new RecoveryAlarmEvent(Id, excuteTime, aggregateResult, ruleResult));
     }
 
     public bool IsRuleValid(List<RuleResultItem> ruleResult)
     {
-        return ruleResult.Any(x => x.IsValid);
+        return ruleResult.Exists(x => x.IsValid);
     }
 
     public bool CheckIsNotification()

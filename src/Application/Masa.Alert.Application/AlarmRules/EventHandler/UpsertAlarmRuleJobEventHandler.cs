@@ -45,7 +45,7 @@ public class UpsertAlarmRuleJobEventHandler
             ScheduleBlockStrategy = ScheduleBlockStrategyTypes.Cover
         };
 
-        if (alarmRule.SchedulerJobId == default)
+        if (alarmRule.SchedulerJobId == Guid.Empty)
         {
             var jobId = await _schedulerClient.SchedulerJobService.AddAsync(request);
             alarmRule.SetSchedulerJobId(jobId);

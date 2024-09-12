@@ -1,26 +1,16 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.Authentication.Identity;
+using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
+
 namespace Masa.Alert.Web.Admin;
 
-public abstract class AdminCompontentBase : Blazor.Core.MasaComponentBase
+public abstract class AdminCompontentBase : Masa.Blazor.Core.MasaComponentBase
 {
     private GlobalConfig? _globalConfig;
-    private NavigationManager? _navigationManager;
     private AlertCaller? _alertCaller;
-
-    [Inject]
-    public AlertCaller AlertCaller
-    {
-        get
-        {
-            return _alertCaller ?? throw new Exception("please Inject AlertCaller!");
-        }
-        set
-        {
-            _alertCaller = value;
-        }
-    }
+    private NavigationManager? _navigationManager;
 
     [Inject]
     public IPopupService PopupService { get; set; } = default!;
@@ -59,6 +49,36 @@ public abstract class AdminCompontentBase : Blazor.Core.MasaComponentBase
 
     [CascadingParameter(Name = "Culture")]
     private string Culture { get; set; } = null!;
+
+    [Inject]
+    public AlertCaller AlertCaller
+    {
+        get
+        {
+            return _alertCaller ?? throw new Exception("please Inject AlertCaller!");
+        }
+        set
+        {
+            _alertCaller = value;
+        }
+    }
+
+    [Inject]
+    public MasaGlobalConfig MasaGlobalConfig { get; set; } = default!;
+
+    [Inject]
+    public IMultiEnvironmentUserContext MultiEnvironmentUserContext { get; set; } = default!;
+
+    [Inject]
+    public MasaUser MasaUser { get; set; } = null!;
+
+    protected bool IsPage = false;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MasaGlobalConfig.CurrentTeamId = MasaUser.CurrentTeamId;
+    }
 
     public bool Loading
     {

@@ -17,7 +17,7 @@ public class AlarmRuleUpsertViewModel
 
     public string ChartYAxisUnit { get; set; } = string.Empty;
 
-    public CheckFrequencyViewModel CheckFrequency { get;  set; } = new();
+    public CheckFrequencyViewModel CheckFrequency { get; set; } = new();
 
     public bool IsGetTotal { get; set; }
 
@@ -29,7 +29,7 @@ public class AlarmRuleUpsertViewModel
 
     public int ContinuousTriggerThreshold { get; set; }
 
-    public SilenceCycleViewModel SilenceCycle { get;  set; } = new();
+    public SilenceCycleViewModel SilenceCycle { get; set; } = new();
 
     public bool IsEnabled { get; set; }
 
@@ -38,4 +38,8 @@ public class AlarmRuleUpsertViewModel
     public List<MetricMonitorItemViewModel> MetricMonitorItems { get; set; } = new();
 
     public List<AlarmRuleItemViewModel> Items { get; set; } = new();
+
+    public string Source { get; set; } = default!;
+
+    public bool Show { get; set; }
 }

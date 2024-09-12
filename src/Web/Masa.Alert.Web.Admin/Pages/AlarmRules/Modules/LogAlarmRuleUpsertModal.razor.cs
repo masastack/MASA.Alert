@@ -1,6 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.StackSdks.Config;
+using Masa.Contrib.StackSdks.Config;
+
 namespace Masa.Alert.Web.Admin.Pages.AlarmRules.Modules;
 
 public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
@@ -14,6 +17,9 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     [Inject]
     public ITscClient TscClient { get; set; } = default!;
 
+    [Inject]
+    public IMasaStackConfig MasaStackConfig { get; set; } = default!;
+
     private MForm? _form;
     private AlarmRuleUpsertViewModel _model = new();
     private bool _visible;
@@ -21,7 +27,6 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
     private bool _cronVisible;
     private string _tempCron = string.Empty;
     private string _nextRunTimeStr = string.Empty;
-    private List<string> _items = new();
     private AlarmPreviewChartModal? _previewChart;
     private List<ProjectModel> _projectItems = new();
     private List<AppDetailModel> _appItems = new();
@@ -31,18 +36,45 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
 
     protected override string? PageName { get; set; } = "AlarmRuleBlock";
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MasaGlobalConfig.CurrentTeamId = MasaUser.CurrentTeamId;
+        MasaGlobalConfig.OnCurrentTeamChanged += OnTeamChanged;
+    }
+
+    private void OnTeamChanged(Guid teamId)
+    {
+        MasaGlobalConfig.CurrentTeamId = teamId;
+        _ = InvokeAsync(async () =>
+        {
+            await LoadProjectsAsync();
+            StateHasChanged();
+        });
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        _projectItems = await PmClient.ProjectService.GetListAsync() ?? new();
+        await LoadProjectsAsync();
         _fields = (await TscClient.LogService.GetMappingAsync()).ToList();
+    }
+
+    private async Task LoadProjectsAsync()
+    {
+        _projectItems = await PmClient.ProjectService.GetListByTeamIdsAsync(new List<Guid> { MasaGlobalConfig.CurrentTeamId }, MultiEnvironmentUserContext.Environment!) ?? new();
+        if (!string.IsNullOrEmpty(_model.ProjectIdentity) && !_projectItems.Exists(project => project.Identity == _model.ProjectIdentity))
+        {
+            _model.ProjectIdentity = default!;
+            _appItems = new();
+        }
     }
 
     public async Task OpenModalAsync(AlarmRuleListViewModel? listModel = null)
     {
         _entityId = listModel?.Id ?? default;
-        _model = listModel?.Adapt<AlarmRuleUpsertViewModel>() ?? new();
+        _model = listModel?.Adapt<AlarmRuleUpsertViewModel>() ?? new() { Source = MasaStackConfig.GetServiceId(MasaStackProject.Alert), Show = true };
         _model.Type = AlarmRuleTypes.Log;
 
         if (_entityId != default)
@@ -222,11 +254,13 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
 
     private async Task HandleProjectChange()
     {
-        var projectId = _projectItems.FirstOrDefault(x => x.Identity == _model.ProjectIdentity)?.Id;
+        var projectId = _projectItems.Find(x => x.Identity == _model.ProjectIdentity)?.Id;
         if (projectId != null)
         {
             _appItems = await PmClient.AppService.GetListByProjectIdsAsync(new List<int> { projectId.Value }) ?? new();
-        };
+            if (!string.IsNullOrEmpty(_model.AppIdentity) && (string.IsNullOrEmpty(_model.ProjectIdentity) || !_appItems.Exists(app => app.Identity == _model.AppIdentity)))
+                _model.AppIdentity = default!;
+        }
     }
 
     private async Task HandleDel()
@@ -246,5 +280,11 @@ public partial class LogAlarmRuleUpsertModal : AdminCompontentBase
         {
             await OnOk.InvokeAsync();
         }
+    }
+
+    protected override ValueTask DisposeAsyncCore()
+    {
+        MasaGlobalConfig.OnCurrentTeamChanged -= OnTeamChanged;
+        return base.DisposeAsyncCore();
     }
 }

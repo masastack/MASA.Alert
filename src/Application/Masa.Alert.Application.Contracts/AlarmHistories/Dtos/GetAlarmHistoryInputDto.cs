@@ -23,6 +23,8 @@ public class GetAlarmHistoryInputDto : PaginatedOptionsDto<GetAlarmHistoryInputD
 
     public Guid Handler { get; set; }
 
+    public Guid TeamId { get; set; }
+
     public GetAlarmHistoryInputDto()
     {
     }

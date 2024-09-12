@@ -38,4 +38,8 @@ public class AlarmRuleUpsertDto
     public List<MetricMonitorItemDto> MetricMonitorItems { get; set; } = new();
 
     public List<AlarmRuleItemDto> Items { get; set; } = new();
+
+    public string Source { get; set; } = default!;
+
+    public bool Show { get; set; } = true;
 }

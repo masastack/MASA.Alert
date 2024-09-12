@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.StackSdks.Pm;
+
 namespace Masa.Alert.Application.AlarmHistories.Queries;
 
 public class AlarmHistoryQueryHandler
@@ -9,10 +11,12 @@ public class AlarmHistoryQueryHandler
     private readonly IAuthClient _authClient;
     private readonly IDataFilter _dataFilter;
     private readonly II18n<DefaultResource> _i18n;
+    private readonly IPmClient _pmClient;
 
-    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter, II18n<DefaultResource> i18n)
+    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter, II18n<DefaultResource> i18n, IPmClient pmClient)
     {
         _context = context;
+        _pmClient = pmClient;
         _authClient = authClient;
         _dataFilter = dataFilter;
         _i18n = i18n;
@@ -89,17 +93,19 @@ public class AlarmHistoryQueryHandler
         condition = condition.And(options.AlertSeverity != default, x => x.AlertSeverity == options.AlertSeverity);
         condition = condition.And(options.HandleStatus != default, x => x.HandleStatus == options.HandleStatus);
         condition = condition.And(options.AlarmRuleId.HasValue, x => x.AlarmRuleId == options.AlarmRuleId);
-        condition = condition.And(options.Handler != default, x => x.Handler == options.Handler);
-        return await Task.FromResult(condition); ;
+        condition = condition.And(options.Handler != Guid.Empty, x => x.Handler == options.Handler);
+        return await Task.FromResult(condition);
     }
+
+
 
     private async Task FillAlarmHistoryDtos(List<AlarmHistoryDto> dtos)
     {
-        var userIds = dtos.Where(x => x.Handle.Handler != default).Select(x => x.Handle.Handler).Distinct().ToArray();
+        var userIds = dtos.Where(x => x.Handle.Handler != Guid.Empty).Select(x => x.Handle.Handler).Distinct().ToArray();
         var userInfos = await _authClient.UserService.GetListByIdsAsync(userIds);
         foreach (var item in dtos)
         {
-            var handler = userInfos.FirstOrDefault(x => x.Id == item.Handle.Handler);
+            var handler = userInfos.Find(x => x.Id == item.Handle.Handler);
             item.Handle.HandlerName = handler?.RealDisplayName ?? string.Empty;
         }
     }
