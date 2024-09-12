@@ -1,8 +1,6 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Masa.BuildingBlocks.StackSdks.Pm;
-
 namespace Masa.Alert.Application.AlarmHistories.Queries;
 
 public class AlarmHistoryQueryHandler
@@ -11,12 +9,10 @@ public class AlarmHistoryQueryHandler
     private readonly IAuthClient _authClient;
     private readonly IDataFilter _dataFilter;
     private readonly II18n<DefaultResource> _i18n;
-    private readonly IPmClient _pmClient;
 
-    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter, II18n<DefaultResource> i18n, IPmClient pmClient)
+    public AlarmHistoryQueryHandler(IAlertQueryContext context, IAuthClient authClient, IDataFilter dataFilter, II18n<DefaultResource> i18n)
     {
         _context = context;
-        _pmClient = pmClient;
         _authClient = authClient;
         _dataFilter = dataFilter;
         _i18n = i18n;

@@ -43,9 +43,7 @@ builder.Services.AddResponseCompression(opts =>
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
 });
-var authBaseAddress = masaStackConfig.GetAuthServiceDomain();
-var mcBaseAddress = masaStackConfig.GetMcServiceDomain();
-var pmBaseAddress = masaStackConfig.GetPmServiceDomain();
+
 var tscBaseAddress = masaStackConfig.GetTscServiceDomain();
 var alertBaseAddress = builder.Services.GetMasaConfiguration().ConfigurationApi.GetDefault().GetValue<string>("AppSettings:AlertClient:Url");
 
@@ -54,15 +52,7 @@ if (string.IsNullOrEmpty(alertBaseAddress))
     alertBaseAddress = masaStackConfig.GetAlertServiceDomain();
 }
 
-#if DEBUG
-authBaseAddress = "https://auth-service-dev.masastack.com";
-mcBaseAddress = "https://mc-service-dev.masastack.com";
-pmBaseAddress = "https://pm-service-dev.masastack.com";
-tscBaseAddress = "https://tsc-service-dev.masastack.com";
-alertBaseAddress = "http://localhost:19711";
-#endif
-
-await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Alert, "wwwroot/i18n", authBaseAddress, mcBaseAddress, pmBaseAddress);
+await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Alert);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();

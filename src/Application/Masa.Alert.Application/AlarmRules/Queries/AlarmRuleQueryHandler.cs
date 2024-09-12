@@ -69,12 +69,12 @@ public class AlarmRuleQueryHandler
         }
         condition = condition.And(!string.IsNullOrEmpty(options.ProjectIdentity), x => x.ProjectIdentity == options.ProjectIdentity);
         condition = condition.And(!string.IsNullOrEmpty(options.AppIdentity), x => x.AppIdentity == options.AppIdentity);
-        await AppendProjectAppFilter(options, condition);
+        await AppendProjectAppFilterAsync(options, condition);
         condition = condition.And(!string.IsNullOrEmpty(options.MetricId), x => x.MetricMonitorItems.Any(x => x.Aggregation.Name == options.MetricId));
         return condition;
     }
 
-    private async Task AppendProjectAppFilter(GetAlarmRuleInputDto options, Expression<Func<AlarmRuleQueryModel, bool>> condition)
+    private async Task AppendProjectAppFilterAsync(GetAlarmRuleInputDto options, Expression<Func<AlarmRuleQueryModel, bool>> condition)
     {
         var projects = await _pmClient.ProjectService.GetListByTeamIdsAsync(new List<Guid>() { options.TeamId }, _multiEnvironment.CurrentEnvironment);
         if (projects == null || !projects.Any())
