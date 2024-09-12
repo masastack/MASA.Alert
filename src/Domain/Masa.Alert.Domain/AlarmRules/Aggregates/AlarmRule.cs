@@ -34,9 +34,9 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
     public Guid SchedulerJobId { get; protected set; } = Guid.Empty;
 
-    public string Source { get; set; } = default!;
+    public string Source { get; protected set; } = default!;
 
-    public bool Show { get; set; }
+    public bool Show { get; protected set; }
 
     private AlarmRule() { }
 
