@@ -44,4 +44,8 @@ public class AlarmRuleQueryModel : ISoftDelete
     public DateTime ModificationTime { get; set; }
 
     public Guid Modifier { get; set; }
+
+    public string Source { get; set; } = default!;
+
+    public bool Show { get; set; }
 }

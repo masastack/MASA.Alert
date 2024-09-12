@@ -43,7 +43,8 @@ builder.Services.AddResponseCompression(opts =>
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
 });
-var authBaseAddress = masaStackConfig.GetAuthServiceDomain();
+
+var tscBaseAddress = masaStackConfig.GetTscServiceDomain();
 var alertBaseAddress = builder.Services.GetMasaConfiguration().ConfigurationApi.GetDefault().GetValue<string>("AppSettings:AlertClient:Url");
 
 if (string.IsNullOrEmpty(alertBaseAddress))
@@ -51,7 +52,7 @@ if (string.IsNullOrEmpty(alertBaseAddress))
     alertBaseAddress = masaStackConfig.GetAlertServiceDomain();
 }
 
-await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Alert, "wwwroot/i18n", authBaseAddress);
+await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Alert);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();
@@ -74,7 +75,7 @@ builder.Services.AddAlertApiGateways(option =>
     option.ClientSecret = masaOpenIdConnectOptions.ClientSecret;
 });
 
-builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
+builder.Services.AddTscClient(tscBaseAddress);
 builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);

@@ -21,6 +21,10 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto<GetAlarmRuleInputDto>
 
     public string MetricId { get; set; } = default!;
 
+    public Guid TeamId { get; set; }
+
+    public bool Show { get; set; } = true;
+
     public GetAlarmRuleInputDto()
     {
     }

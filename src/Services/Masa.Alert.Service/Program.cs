@@ -31,9 +31,9 @@ if (builder.Environment.IsDevelopment())
 var publicConfiguration = builder.Services.GetMasaConfiguration().ConfigurationApi.GetPublic();
 builder.Services.AddMasaIdentity(options =>
 {
-    options.Environment = "environment";
-    options.UserName = "name";
-    options.UserId = "sub";
+    options.Environment = IdentityClaimConsts.ENVIRONMENT;
+    options.UserName = IdentityClaimConsts.USER_NAME;
+    options.UserId = IdentityClaimConsts.USER_ID;
     options.Mapping(nameof(MasaUser.CurrentTeamId), IdentityClaimConsts.CURRENT_TEAM);
     options.Mapping(nameof(MasaUser.StaffId), IdentityClaimConsts.STAFF);
     options.Mapping(nameof(MasaUser.Account), IdentityClaimConsts.ACCOUNT);
@@ -83,11 +83,13 @@ var redisOptions = new RedisConfigurationOptions
     DefaultDatabase = masaStackConfig.RedisModel.RedisDb,
     Password = masaStackConfig.RedisModel.RedisPassword
 };
+
 builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
 builder.Services.AddPmClient(masaStackConfig.GetPmServiceDomain());
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
 builder.Services.AddMcClient(masaStackConfig.GetMcServiceDomain());
 builder.Services.AddSchedulerClient(masaStackConfig.GetSchedulerServiceDomain());
+
 builder.Services.AddRulesEngine(rulesEngineOptions =>
 {
     rulesEngineOptions.UseMicrosoftRulesEngine();

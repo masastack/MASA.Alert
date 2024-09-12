@@ -72,7 +72,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     public void AddAlarmRuleRecord(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems)
     {
-        if (Id == default)
+        if (Id == Guid.Empty)
         {
             Id = IdGeneratorFactory.SequentialGuidGenerator.NewId();
         }

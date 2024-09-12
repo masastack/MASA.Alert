@@ -5,5 +5,5 @@ namespace Masa.Alert.Application.AlarmRules.Commands;
 
 public record CreateAlarmRuleCommand(AlarmRuleUpsertDto AlarmRule) : Command
 {
-    public Guid Result { get; set; } = default;
+    public Guid Result { get; set; } = Guid.Empty;
 }
