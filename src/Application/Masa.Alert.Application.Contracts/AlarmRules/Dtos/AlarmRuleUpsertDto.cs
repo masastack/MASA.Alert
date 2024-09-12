@@ -41,5 +41,5 @@ public class AlarmRuleUpsertDto
 
     public string Source { get; set; } = default!;
 
-    public bool Show { get; set; } = true;
+    public bool Show { get; set; } = false;
 }

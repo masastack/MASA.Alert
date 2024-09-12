@@ -83,11 +83,19 @@ var redisOptions = new RedisConfigurationOptions
     DefaultDatabase = masaStackConfig.RedisModel.RedisDb,
     Password = masaStackConfig.RedisModel.RedisPassword
 };
+#if DEBUG
+builder.Services.AddAuthClient("https://auth-service-dev.masastack.com", redisOptions);
+builder.Services.AddPmClient("https://pm-service-dev.masastack.com");
+builder.Services.AddTscClient("https://tsc-service-dev.masastack.com");
+builder.Services.AddMcClient("https://mc-service-dev.masastack.com");
+builder.Services.AddSchedulerClient("https://scheduler-service-dev.masastack.com");
+#else
 builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
 builder.Services.AddPmClient(masaStackConfig.GetPmServiceDomain());
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
 builder.Services.AddMcClient(masaStackConfig.GetMcServiceDomain());
 builder.Services.AddSchedulerClient(masaStackConfig.GetSchedulerServiceDomain());
+#endif
 builder.Services.AddRulesEngine(rulesEngineOptions =>
 {
     rulesEngineOptions.UseMicrosoftRulesEngine();

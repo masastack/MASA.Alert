@@ -13,7 +13,7 @@ public class AlarmRuleConfiguration : IEntityTypeConfiguration<AlarmRule>
         builder.Property(x => x.AppIdentity).HasMaxLength(128);
         builder.Property(x => x.ChartYAxisUnit).HasMaxLength(128);
         builder.Property(x => x.TotalVariable).HasMaxLength(64);
-        builder.Property(x => x.Source).IsRequired().HasMaxLength(40);
+        builder.Property(x => x.Source).IsRequired().HasMaxLength(40).HasDefaultValue(string.Empty);
         builder.Property(x => x.Show).HasDefaultValue(true).IsRequired();
         builder.OwnsMany(x => x.LogMonitorItems, b =>
         {

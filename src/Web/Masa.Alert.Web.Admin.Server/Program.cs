@@ -44,6 +44,9 @@ builder.Services.AddResponseCompression(opts =>
         new[] { "application/octet-stream" });
 });
 var authBaseAddress = masaStackConfig.GetAuthServiceDomain();
+var mcBaseAddress = masaStackConfig.GetMcServiceDomain();
+var pmBaseAddress = masaStackConfig.GetPmServiceDomain();
+var tscBaseAddress = masaStackConfig.GetTscServiceDomain();
 var alertBaseAddress = builder.Services.GetMasaConfiguration().ConfigurationApi.GetDefault().GetValue<string>("AppSettings:AlertClient:Url");
 
 if (string.IsNullOrEmpty(alertBaseAddress))
@@ -51,7 +54,15 @@ if (string.IsNullOrEmpty(alertBaseAddress))
     alertBaseAddress = masaStackConfig.GetAlertServiceDomain();
 }
 
-await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Alert, "wwwroot/i18n", authBaseAddress);
+#if DEBUG
+authBaseAddress = "https://auth-service-dev.masastack.com";
+mcBaseAddress = "https://mc-service-dev.masastack.com";
+pmBaseAddress = "https://pm-service-dev.masastack.com";
+tscBaseAddress = "https://tsc-service-dev.masastack.com";
+alertBaseAddress = "http://localhost:19711";
+#endif
+
+await builder.Services.AddMasaStackComponentsAsync(MasaStackProject.Alert, "wwwroot/i18n", authBaseAddress, mcBaseAddress, pmBaseAddress);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddGlobalForServer();
@@ -74,7 +85,7 @@ builder.Services.AddAlertApiGateways(option =>
     option.ClientSecret = masaOpenIdConnectOptions.ClientSecret;
 });
 
-builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
+builder.Services.AddTscClient(tscBaseAddress);
 builder.Services.AddMapster();
 var assemblies = AppDomain.CurrentDomain.GetAllAssemblies();
 TypeAdapterConfig.GlobalSettings.Scan(assemblies);
