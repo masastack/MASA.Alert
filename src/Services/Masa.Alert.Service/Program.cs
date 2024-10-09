@@ -81,7 +81,8 @@ var redisOptions = new RedisConfigurationOptions
         }
     },
     DefaultDatabase = masaStackConfig.RedisModel.RedisDb,
-    Password = masaStackConfig.RedisModel.RedisPassword
+    Password = masaStackConfig.RedisModel.RedisPassword,
+    ClientName = builder.Configuration.GetValue<string>("HOSTNAME") ?? masaStackConfig.GetServiceId(MasaStackProject.Alert)
 };
 
 builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
