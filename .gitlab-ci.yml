@@ -1,6 +1,7 @@
 stages:
   - docker-dev
   - deploy-dev
+  - deploy-new-prd
   - deploy-test
   # - deploy-staging
   - docker-prd
@@ -21,6 +22,7 @@ variables:
   NAMESPACE_TEST: masastack-test
   NAMESPACE_STAGING: masastack-staging
   NAMESPACE_PRD: masastack
+  NAMESPAEC_SEC: masa-to-sec
 
 docker-dev:
   stage: docker-dev
@@ -50,6 +52,33 @@ deploy-dev:
     - kubectl --kubeconfig ./config set image deployment/alert alert=$Alert_Web_Image_DEV -n $NAMESPACE_DEV
     - kubectl --kubeconfig ./config set image deployment/alert-service alert-service=$Alert_Service_Image_DEV -n $NAMESPACE_DEV
   retry: 2
+
+deploy-sec:
+  stage: deploy-dev
+  image: registry.cn-hangzhou.aliyuncs.com/masa/library:kubectl-shell-v1.21.1
+  only:
+    - main
+  script:
+    - echo $KUBE_CONFIG_NEW_YDY | base64 -d > ./config
+    - echo $CI_PIPELINE_ID
+    - kubectl --kubeconfig ./config set image deployment/alert alert=$Alert_Web_Image_DEV -n $NAMESPACE_SEC
+    - kubectl --kubeconfig ./config set image deployment/alert-service alert-service=$Alert_Service_Image_DEV -n $NAMESPACE_SEC
+  retry: 2
+
+
+deploy-prd:
+  stage: deploy-new-prd
+  image: registry.cn-hangzhou.aliyuncs.com/masa/library:kubectl-shell-v1.21.1
+  only:
+    - main
+  script:
+    - echo $KUBE_CONFIG_LSD_PRD_YDY | base64 -d > ./config
+    - echo $CI_COMMIT_ID
+    - kubectl --kubeconfig ./config set image deployment/alert alert=$Alert_Web_Image_DEV -n $NAMESPACE_PRD
+    - kubectl --kubeconfig ./config set image deployment/alert-service alert-service=$Alert_Service_Image_DEV -n $NAMESPACE_PRD
+  retry: 2
+
+
 
 deploy-test:
   stage: deploy-test
