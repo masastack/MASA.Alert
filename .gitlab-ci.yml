@@ -77,7 +77,7 @@ deploy-prd:
     - kubectl --kubeconfig ./config set image deployment/alert alert=$Alert_Web_Image_DEV -n $NAMESPACE_PRD
     - kubectl --kubeconfig ./config set image deployment/alert-service alert-service=$Alert_Service_Image_DEV -n $NAMESPACE_PRD
   retry: 2
-
+  when: manual
 
 
 deploy-test:
