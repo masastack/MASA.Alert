@@ -22,3 +22,4 @@ global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.EntityFrameworkCore.Design;
 global using Microsoft.Extensions.Configuration;
+global using System.Reflection;

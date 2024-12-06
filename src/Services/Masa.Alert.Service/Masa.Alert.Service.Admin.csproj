@@ -19,7 +19,6 @@
 		<PackageReference Include="Masa.Contrib.Configuration" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.Data.Contracts" Version="$(MasaFrameworkPackageVersion)" />
-		<PackageReference Include="Masa.Contrib.Data.EFCore.SqlServer" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.Data.Mapping.Mapster" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.Data.UoW.EFCore" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.Dispatcher.Events" Version="$(MasaFrameworkPackageVersion)" />
@@ -39,19 +38,16 @@
 		<PackageReference Include="Masa.Contrib.StackSdks.Isolation" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Pm" Version="$(MasaStackSdksPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Tsc.OpenTelemetry" Version="$(MasaStackSdksPackageVersion)" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(MicrosoftPackageVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="$(MicrosoftPackageVersion)" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	</ItemGroup>
 	
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Application\Masa.Alert.Application\Masa.Alert.Application.csproj" />
 	  <ProjectReference Include="..\..\Contracts\Masa.Alert.Contracts.Admin\Masa.Alert.Contracts.Admin.csproj" />
-	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.EntityFrameworkCore\Masa.Alert.EntityFrameworkCore.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.EntityFrameworkCore.PostgreSql\Masa.Alert.EntityFrameworkCore.PostgreSql.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.EntityFrameworkCore.SqlServer\Masa.Alert.EntityFrameworkCore.SqlServer.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Common\Masa.Alert.Infrastructure.Common.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Constants\Masa.Alert.Infrastructure.Constants.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Ddd.Application.Contracts\Masa.Alert.Infrastructure.Ddd.Application.Contracts.csproj" />

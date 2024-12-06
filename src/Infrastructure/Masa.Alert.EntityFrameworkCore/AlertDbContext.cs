@@ -2,6 +2,8 @@
 
 public class AlertDbContext : MasaDbContext<AlertDbContext>
 {
+    internal static Assembly Assembly = typeof(AlertDbContext).Assembly;
+
     public AlertDbContext(MasaDbContextOptions<AlertDbContext> options) : base(options)
     {
         base.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
@@ -11,6 +13,7 @@ public class AlertDbContext : MasaDbContext<AlertDbContext>
     {
         builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         builder.ApplyConfigurationsFromAssembly(typeof(Masa.Contrib.Dispatcher.IntegrationEvents.EventLogs.EFCore.IntegrationEventLogModelCreatingProvider).Assembly);
+        builder.ApplyConfigurationsFromAssembly(Assembly);
         base.OnModelCreatingExecuting(builder);
     }
 
@@ -20,5 +23,10 @@ public class AlertDbContext : MasaDbContext<AlertDbContext>
             .LogTo(Console.WriteLine, LogLevel.Error)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
+    }
+
+    public static void RegisterAssembly(Assembly assembly)
+    {
+        Assembly = assembly;
     }
 }

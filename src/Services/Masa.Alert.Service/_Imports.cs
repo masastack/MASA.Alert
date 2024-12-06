@@ -2,7 +2,7 @@
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 global using System.Diagnostics;
-global using System.Linq;
+global using System.Text.Json;
 global using System.Text.RegularExpressions;
 global using FluentValidation;
 global using Mapster;
@@ -19,6 +19,7 @@ global using Masa.Alert.Application.WebHooks.Commands;
 global using Masa.Alert.Application.WebHooks.Queries;
 global using Masa.Alert.Domain.NotificationService;
 global using Masa.Alert.EntityFrameworkCore;
+global using Masa.Alert.Service.Admin.Infrastructure.Extensions;
 global using Masa.Alert.Infrastructure.Common.Extensions;
 global using Masa.Alert.Infrastructure.Ddd.Application.Contracts.Dtos;
 global using Masa.Alert.Infrastructure.Middleware;
@@ -31,7 +32,9 @@ global using Masa.BuildingBlocks.Dispatcher.IntegrationEvents;
 global using Masa.BuildingBlocks.Extensions.BackgroundJobs;
 global using Masa.BuildingBlocks.RulesEngine;
 global using Masa.BuildingBlocks.StackSdks.Auth.Contracts;
+global using Masa.BuildingBlocks.StackSdks.Config;
 global using Masa.BuildingBlocks.StackSdks.Config.Consts;
+global using Masa.BuildingBlocks.StackSdks.Config.Models;
 global using Masa.Contrib.Caching.Distributed.StackExchangeRedis;
 global using Masa.Contrib.Configuration.ConfigurationApi.Dcc;
 global using Masa.Contrib.Dispatcher.IntegrationEvents.EventLogs.EFCore;
