@@ -161,7 +161,7 @@
     private List<long> GetTimeListByFixedInterval(int count = 10)
     {
         var timeList = new List<long>();
-        var time = _startTime ?? DateTimeOffset.Now;
+        var time = _startTime ?? DateTimeOffset.UtcNow;
 
         var i = 0;
         while (CheckIsAddTime(time, i))
@@ -195,7 +195,7 @@
 
         if (timezone != null)
             cronExpression.TimeZone = timezone;
-        var time = _startTime ?? DateTimeOffset.Now;
+        var time = _startTime ?? DateTimeOffset.UtcNow;
         var i = 0;
         while (CheckIsAddTime(time, i))
         {

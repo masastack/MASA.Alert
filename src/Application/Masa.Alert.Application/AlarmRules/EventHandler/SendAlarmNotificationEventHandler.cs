@@ -68,7 +68,7 @@ public class SendAlarmNotificationEventHandler
 
     private async Task AddLogVariablesAsync(AlarmRule alarmRule, Dictionary<string, object> variables)
     {
-        var checkTime = DateTimeOffset.Now;
+        var checkTime = DateTimeOffset.UtcNow;
         var latest = await _domainService.GetLatest(alarmRule.Id);
         var startTime = alarmRule.GetStartCheckTime(checkTime, latest);
         if (startTime == null)

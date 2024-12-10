@@ -45,7 +45,7 @@ public class CheckAlarmRuleCommandHandler
     public async Task QueryAggregationAsync(CheckAlarmRuleCommand command)
     {
         var alarmRule = command.AlarmRule;
-        var checkTime = command.ExcuteTime ?? DateTimeOffset.Now;
+        var checkTime = command.ExcuteTime ?? DateTimeOffset.UtcNow;
         var latest = await _domainService.GetLatest(alarmRule.Id);
         var startTime = alarmRule.GetStartCheckTime(checkTime, latest);
 
@@ -77,11 +77,11 @@ public class CheckAlarmRuleCommandHandler
     {
         if (command.IsStop)
         {
-            await _domainService.AddAggregateResult(command.AlarmRule.Id, command.ExcuteTime ?? DateTimeOffset.Now, command.AggregateResult, false, 0, new List<RuleResultItem>());
+            await _domainService.AddAggregateResult(command.AlarmRule.Id, command.ExcuteTime ?? DateTimeOffset.UtcNow, command.AggregateResult, false, 0, new List<RuleResultItem>());
             return;
         }
 
-        await _domainService.CheckRuleAsync(command.ExcuteTime ?? DateTimeOffset.Now, command.AlarmRule, command.AggregateResult);
+        await _domainService.CheckRuleAsync(command.ExcuteTime ?? DateTimeOffset.UtcNow, command.AlarmRule, command.AggregateResult);
     }
 
     private async Task<ConcurrentDictionary<string, long>> QueryLogAggregationAsync(AlarmRule alarmRule, DateTime startTime, DateTime endTime, CheckAlarmRuleCommand command)

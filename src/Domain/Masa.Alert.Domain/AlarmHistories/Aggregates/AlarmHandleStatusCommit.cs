@@ -16,7 +16,7 @@ public class AlarmHandleStatusCommit : ValueObject
     public AlarmHandleStatusCommit(AlarmHistoryHandleStatuses status, Guid userId, string remarks)
     {
         Status = status;
-        CreationTime = DateTimeOffset.Now;
+        CreationTime = DateTimeOffset.UtcNow;
         UserId = userId;
         Remarks = remarks;
     }

@@ -224,7 +224,7 @@ public class AlarmRule : FullAggregateRoot<Guid, Guid>
 
         var silenceEndTime = GetSilenceEndTime(lastNotificationTime.Value);
 
-        if (!silenceEndTime.HasValue || DateTimeOffset.Now > silenceEndTime)
+        if (!silenceEndTime.HasValue || DateTimeOffset.UtcNow > silenceEndTime)
         {
             return false;
         }

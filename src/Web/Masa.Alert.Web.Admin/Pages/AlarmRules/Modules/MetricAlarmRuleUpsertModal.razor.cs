@@ -136,7 +136,7 @@ public partial class MetricAlarmRuleUpsertModal : AdminCompontentBase
 
         var sb = new StringBuilder();
 
-        var startTime = DateTimeOffset.Now;
+        var startTime = DateTimeOffset.UtcNow;
 
         var cronExpression = new CronExpression(_model.CheckFrequency.CronExpression);
 
