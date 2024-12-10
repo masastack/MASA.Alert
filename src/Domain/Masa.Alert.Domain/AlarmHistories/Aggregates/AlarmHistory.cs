@@ -40,8 +40,8 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         IsNotification = isNotification;
         RuleResultItems = ruleResultItems;
         AlarmCount = 1;
-        FirstAlarmTime = DateTimeOffset.Now;
-        LastAlarmTime = DateTimeOffset.Now;
+        FirstAlarmTime = DateTimeOffset.UtcNow;
+        LastAlarmTime = DateTimeOffset.UtcNow;
 
         Handle = new();
         _handleStatusCommits.Add(new AlarmHandleStatusCommit(AlarmHistoryHandleStatuses.Pending, default, string.Empty));
@@ -49,7 +49,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     public void Recovery(bool isAuto)
     {
-        RecoveryTime = DateTimeOffset.Now;
+        RecoveryTime = DateTimeOffset.UtcNow;
         Duration = (long)(RecoveryTime - FirstAlarmTime).Value.TotalSeconds;
 
         if (isAuto)
@@ -67,7 +67,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
         IsNotification = isNotification;
         RuleResultItems = ruleResultItems;
         AlarmCount++;
-        LastAlarmTime = DateTimeOffset.Now;
+        LastAlarmTime = DateTimeOffset.UtcNow;
     }
 
     public void AddAlarmRuleRecord(DateTimeOffset excuteTime, ConcurrentDictionary<string, long> aggregateResult, bool isTrigger, int consecutiveCount, List<RuleResultItem> ruleResultItems)
@@ -82,7 +82,7 @@ public class AlarmHistory : FullAggregateRoot<Guid, Guid>
 
     public void Notification()
     {
-        LastNotificationTime = DateTimeOffset.Now;
+        LastNotificationTime = DateTimeOffset.UtcNow;
     }
 
     public void SetIsNotification(bool isNotification, bool isSilence, ConcurrentDictionary<string, long> aggregateResult)

@@ -46,9 +46,3 @@ public class GetAlarmRuleInputDto : PaginatedOptionsDto<GetAlarmRuleInputDto>
         MetricId = metricId;
     }
 }
-
-public enum AlarmRuleSearchTimeTypes
-{
-    ModificationTime = 1,
-    CreationTime,
-}
