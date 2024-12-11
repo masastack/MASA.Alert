@@ -22,7 +22,7 @@ variables:
   NAMESPACE_TEST: masastack-test
   NAMESPACE_STAGING: masastack-staging
   NAMESPACE_PRD: masastack
-  NAMESPAEC_SEC: masa-to-sec
+  NAMESPACE_SEC: masa-to-sec
 
 docker-dev:
   stage: docker-dev
@@ -134,3 +134,4 @@ deploy-prd:
     - kubectl --kubeconfig ./config set image deployment/alert-service alert-service=$Alert_Service_Image -n $NAMESPACE_PRD
   retry: 2
   when: manual
+
