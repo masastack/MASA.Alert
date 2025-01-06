@@ -10,5 +10,6 @@ public class AlarmRuleRecordConfiguration : IEntityTypeConfiguration<AlarmRuleRe
         builder.ToTable(AlertConsts.DB_TABLE_PREFIX + "AlarmRuleRecords", AlertConsts.DB_SCHEMA);
         builder.Property(x => x.AggregateResult).HasConversion(new JsonValueConverter<ConcurrentDictionary<string, long>>());
         builder.Property(x => x.RuleResultItems).HasConversion(new JsonValueConverter<List<RuleResultItem>>());
+        builder.HasIndex(u => u.CreationTime);
     }
 }
