@@ -15,6 +15,6 @@ public class AlarmHistoryRepository : Repository<AlertDbContext, AlarmHistory>, 
 
     public async Task<AlarmHistory?> GetLastAsync(Guid alarmRuleId)
     {
-        return await Context.Set<AlarmHistory>().Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+        return await Context.Set<AlarmHistory>().Where(x => x.AlarmRuleId == alarmRuleId).OrderByDescending(x => x.CreationTime).FirstOrDefaultAsync();
     }
 }
