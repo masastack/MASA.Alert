@@ -6,5 +6,3 @@ global using System.Collections.Concurrent;
 global using System.Reflection;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.Extensions.Primitives;
-global using Util.Reflection.Expressions;
-global using Util.Reflection.Expressions.Abstractions;

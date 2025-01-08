@@ -1,4 +1,4 @@
-﻿global using Masa.Contrib.Service.Caller.DaprClient;
+﻿global using Masa.Contrib.Service.Caller.HttpClient;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Reflection;
 global using Masa.BuildingBlocks.Service.Caller;

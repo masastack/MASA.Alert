@@ -69,7 +69,7 @@ builder.Services.AddMasaOpenIdConnect(masaOpenIdConnectOptions);
 
 builder.Services.AddAlertApiGateways(option =>
 {
-    option.AppId = masaStackConfig.GetServiceId(MasaStackProject.Alert);
+    option.ServiceBaseAddress = masaStackConfig.GetAlertServiceDomain();
     option.AuthorityEndpoint = masaOpenIdConnectOptions.Authority;
     option.ClientId = masaOpenIdConnectOptions.ClientId;
     option.ClientSecret = masaOpenIdConnectOptions.ClientSecret;

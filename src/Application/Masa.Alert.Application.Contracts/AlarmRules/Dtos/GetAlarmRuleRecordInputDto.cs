@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Application.Contracts.AlarmRules.Dtos;
 
-public class GetAlarmRuleRecordInputDto : PaginatedOptionsDto<GetAlarmRuleRecordInputDto>
+public class GetAlarmRuleRecordInputDto : PaginatedOptionsDto
 {
     public Guid AlarmHistoryId { get; set; }
 

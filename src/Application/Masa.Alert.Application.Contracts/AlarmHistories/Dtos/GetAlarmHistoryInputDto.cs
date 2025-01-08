@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Application.Contracts.AlarmHistories.Dtos;
 
-public class GetAlarmHistoryInputDto : PaginatedOptionsDto<GetAlarmHistoryInputDto>
+public class GetAlarmHistoryInputDto : PaginatedOptionsDto
 {
     public string Filter { get; set; } = default!;
 

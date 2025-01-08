@@ -3,7 +3,7 @@
 
 namespace Masa.Alert.Application.Contracts.WebHooks.Dtos;
 
-public class GetWebHookInputDto : PaginatedOptionsDto<GetWebHookInputDto>
+public class GetWebHookInputDto : PaginatedOptionsDto
 {
     public string Filter { get; set; } = default!;
 

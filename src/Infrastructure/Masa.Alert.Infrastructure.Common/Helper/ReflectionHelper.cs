@@ -37,39 +37,6 @@ public static class ReflectionHelper
         return IsAssignableToGenericType(givenTypeInfo.BaseType, genericType);
     }
 
-    //TODO: Summary
-    public static List<Type> GetImplementedGenericTypes(Type givenType, Type genericType)
-    {
-        var result = new List<Type>();
-        AddImplementedGenericTypes(result, givenType, genericType);
-        return result;
-    }
-
-    private static void AddImplementedGenericTypes(List<Type> result, Type givenType, Type genericType)
-    {
-        var givenTypeInfo = givenType.GetTypeInfo();
-
-        if (givenTypeInfo.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
-        {
-            result.TryAdd(givenType);
-        }
-
-        foreach (var interfaceType in givenTypeInfo.GetInterfaces())
-        {
-            if (interfaceType.GetTypeInfo().IsGenericType && interfaceType.GetGenericTypeDefinition() == genericType)
-            {
-                result.TryAdd(interfaceType);
-            }
-        }
-
-        if (givenTypeInfo.BaseType == null)
-        {
-            return;
-        }
-
-        AddImplementedGenericTypes(result, givenTypeInfo.BaseType, genericType);
-    }
-
     /// <summary>
     /// Tries to gets an of attribute defined for a class member and it's declaring type including inherited attributes.
     /// Returns default value if it's not declared at all.

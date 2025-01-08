@@ -1,6 +1,6 @@
 ﻿namespace Masa.Alert.ApiGateways.Caller;
 
-public class AlertCaller : DaprCallerBase
+public class AlertCaller : StackHttpClientCaller
 {
     private AlarmRuleService? _alarmRuleService;
     private AlarmHistoryService? _alarmHistoryService;
@@ -11,20 +11,16 @@ public class AlertCaller : DaprCallerBase
     public AlarmHistoryService AlarmHistoryService => _alarmHistoryService ??= new(Caller);
     public AlarmRuleRecordService AlarmRuleRecordService => _alarmRuleRecordService ??= new(Caller);
     public WebHookService WebHookService => _webHookService ??= new(Caller);
-    protected override string AppId { get; set; } = App.APP;
+    protected override string BaseAddress { get; set; }
 
     public AlertCaller(AlertApiOptions options)
     {
-        AppId = options.AppId;
+        BaseAddress = options.ServiceBaseAddress;
     }
 
-    protected override void UseDaprPost(MasaDaprClientBuilder masaDaprClientBuilder)
+    protected override void UseHttpClientPost(MasaHttpClientBuilder masaHttpClientBuilder)
     {
-        masaDaprClientBuilder.UseAuthentication(serviceProvider => new AuthenticationService(
-                serviceProvider.GetRequiredService<TokenProvider>(),
-                serviceProvider.GetRequiredService<JwtTokenValidator>(),
-                serviceProvider.GetRequiredService<IMultiEnvironmentContext>()
-            ));
-        base.UseDaprPost(masaDaprClientBuilder);
+        masaHttpClientBuilder.UseI18n();
+        base.UseHttpClientPost(masaHttpClientBuilder);
     }
 }

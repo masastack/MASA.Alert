@@ -8,14 +8,7 @@ public static class ServiceCollectionExtensions
         var options = new AlertApiOptions();
         configure.Invoke(options);
         services.AddSingleton(options);
-        services.AddStackCaller(Assembly.Load("Masa.Alert.ApiGateways.Caller"), jwtTokenValidatorOptions =>
-        {
-            jwtTokenValidatorOptions.AuthorityEndpoint = options.AuthorityEndpoint;
-        }, clientRefreshTokenOptions =>
-        {
-            clientRefreshTokenOptions.ClientId = options.ClientId;
-            clientRefreshTokenOptions.ClientSecret = options.ClientSecret;
-        });
+        services.AddStackCaller(Assembly.Load("Masa.Alert.ApiGateways.Caller"));
         return services;
     }
 }
