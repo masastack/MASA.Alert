@@ -1,6 +1,9 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Alert.Domain.Shared.AlarmHistory;
+using Masa.Alert.Domain.Shared.AlarmRules;
+
 namespace Masa.Alert.Service.Admin.Services;
 
 public class AlarmHistoryService : ServiceBase
@@ -11,8 +14,9 @@ public class AlarmHistoryService : ServiceBase
     }
 
     [RoutePattern("", StartWithBaseUri = true, HttpMethod = "Get")]
-    public async Task<PaginatedListDto<AlarmHistoryDto>> GetListAsync(IEventBus eventbus, GetAlarmHistoryInputDto inputDto)
+    public async Task<PaginatedListDto<AlarmHistoryDto>> GetListAsync(IEventBus eventbus, [FromQuery] Guid? alarmRuleId, [FromQuery] DateTime? startTime, [FromQuery] DateTime? endTime, [FromQuery] Guid? handler, [FromQuery] AlarmHistorySearchTypes searchType = default, [FromQuery] AlarmHistorySearchTimeTypes timeType = default, [FromQuery] AlertSeverity alertSeverity = default, [FromQuery] AlarmHistoryHandleStatuses handleStatus = default, [FromQuery] string filter = "", [FromQuery] string sorting = "", [FromQuery] int page = 1, [FromQuery] int pagesize = 10)
     {
+        var inputDto = new GetAlarmHistoryInputDto(filter, alarmRuleId, searchType, timeType, startTime, endTime, alertSeverity, handleStatus, handler ?? default, sorting, page, pagesize);
         var query = new GetAlarmHistoryListQuery(inputDto);
         await eventbus.PublishAsync(query);
         return query.Result;
