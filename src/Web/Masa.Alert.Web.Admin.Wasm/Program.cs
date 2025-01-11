@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddSingleton(sp => builder.Configuration);
 //builder.Services.AddDccClient("https://dcc-service-dev.masastack.com");
-await builder.Services.AddMasaStackConfigAsync(builder.Configuration, builder.HostEnvironment.Environment);
+await builder.Services.AddMasaStackConfigAsync(builder.Configuration);
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.RootComponents.Add<App>("#app");
@@ -22,17 +22,17 @@ MasaOpenIdConnectOptions masaOpenIdConnectOptions = new()
 {
     Authority = masaStackConfig.GetSsoDomain(),
     ClientId = masaStackConfig.GetWebId(MasaStackProject.Alert),
-    Scopes = new List<string> { "offline_access" }
+    Scopes = new List<string> { "openid", "profile" }
 };
 
-builder.AddMasaOpenIdConnect(masaOpenIdConnectOptions);
+await builder.AddMasaOpenIdConnectAsync(masaOpenIdConnectOptions);
 
 builder.Services.AddAlertApiGateways(option =>
 {
     option.ServiceBaseAddress = masaStackConfig.GetAlertServiceDomain();
 });
 
-builder.Services.AddMasaStackComponent(MasaStackProject.Alert);
+builder.Services.AddMasaStackComponent(MasaStackProject.Alert, $"{builder.HostEnvironment.BaseAddress}i18n");
 
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
 builder.Services.AddMapster();
@@ -44,3 +44,5 @@ builder.Services.AddAutoInject(assemblies);
 var host = builder.Build();
 await host.Services.InitializeMasaStackApplicationAsync();
 await host.RunAsync();
+
+Console.WriteLine("初始化完成");

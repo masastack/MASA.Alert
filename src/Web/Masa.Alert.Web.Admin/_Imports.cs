@@ -50,3 +50,4 @@ global using Microsoft.AspNetCore.SignalR.Client;
 global using Microsoft.Extensions.DependencyInjection;
 global using ProjectModel = Masa.BuildingBlocks.StackSdks.Pm.Model.ProjectModel;
 global using MasaGlobalConfig = Masa.Stack.Components.Configs.GlobalConfig;
+global using System.Globalization;

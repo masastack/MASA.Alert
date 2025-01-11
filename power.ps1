@@ -8,7 +8,7 @@ docker login --username=$u registry.cn-hangzhou.aliyuncs.com --password=$p
 
 $ServiceDockerfilePath="./src/Services/Masa.Alert.Service/Dockerfile"
 $ServiceServerName="masa-alert-service-admin"
-$WebDockerfilePath="./src/Web/Masa.Alert.Web.Admin.Server/Dockerfile"
+$WebDockerfilePath="./src/Web/Masa.Alert.Web.Admin.WebAssembly/Dockerfile"
 $WebServerName="masa-alert-web-admin"
 
 docker build -t registry.cn-hangzhou.aliyuncs.com/masastack/${ServiceServerName}:$t  -f $ServiceDockerfilePath .

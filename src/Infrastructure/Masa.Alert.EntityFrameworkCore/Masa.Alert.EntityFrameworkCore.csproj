@@ -12,6 +12,7 @@
     <PackageReference Include="Masa.Contrib.Data.EFCore" Version="$(MasaFrameworkPackageVersion)" />
 	<PackageReference Include="Masa.Contrib.Data.EFCore.SqlServer" Version="$(MasaFrameworkPackageVersion)" />
 	<PackageReference Include="Masa.Contrib.Dispatcher.IntegrationEvents.EventLogs.EFCore" Version="$(MasaFrameworkPackageVersion)" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftPackageVersion)" />
   </ItemGroup>
 <ItemGroup>
   <ProjectReference Include="..\..\Application\Masa.Alert.Application.Contracts\Masa.Alert.Application.Contracts.csproj" />

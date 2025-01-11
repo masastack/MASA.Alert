@@ -14,7 +14,5 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
-    <None Include="src\Web\Masa.Alert.Web.Admin\Pages\AlarmRules\Modules\MCol.razor" />
-    <None Include="src\Web\Masa.Alert.Web.Admin\RedirectToLogin.razor" />
   </ItemGroup>
 </Project>

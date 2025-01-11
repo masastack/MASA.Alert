@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Masa.BuildingBlocks.StackSdks.Auth.Contracts" Version="$(MasaStackSdksPackageVersion)" />
   </ItemGroup>
