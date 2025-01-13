@@ -1,10 +1,9 @@
 ﻿global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-global using Masa.Auth.Web.Admin;
 global using Masa.Contrib.StackSdks.Config;
 global using Masa.Stack.Components.Extensions.OpenIdConnect;
 global using Masa.Stack.Components;
-global using Masa.Contrib.StackSdks.Dcc;
-global using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-global using Masa.Blazor;
 global using Masa.Alert.ApiGateways.Caller.Extensions;
+global using Mapster;
+global using Masa.Alert.Infrastructure.Common.Extensions;
+global using Masa.Alert.Web.Admin;

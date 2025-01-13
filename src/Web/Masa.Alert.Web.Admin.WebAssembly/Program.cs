@@ -1,11 +1,6 @@
 // Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
-using Mapster;
-using Masa.Alert.Infrastructure.Common.Extensions;
-using Masa.Alert.Web.Admin;
-using Microsoft.Extensions.DependencyInjection;
-
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddSingleton(sp => builder.Configuration);
 //builder.Services.AddDccClient("https://dcc-service-dev.masastack.com");
