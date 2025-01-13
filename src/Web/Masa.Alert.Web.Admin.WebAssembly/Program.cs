@@ -3,7 +3,7 @@
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddSingleton(sp => builder.Configuration);
-//builder.Services.AddDccClient("https://dcc-service-dev.masastack.com");
+
 await builder.Services.AddMasaStackConfigAsync(builder.Configuration);
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
@@ -39,5 +39,3 @@ builder.Services.AddAutoInject(assemblies);
 var host = builder.Build();
 await host.Services.InitializeMasaStackApplicationAsync();
 await host.RunAsync();
-
-Console.WriteLine("初始化完成");
