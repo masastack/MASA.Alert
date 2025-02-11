@@ -1,6 +1,8 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.BuildingBlocks.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 await builder.Services.AddMasaStackConfigAsync(MasaStackProject.Alert, MasaStackApp.Service);
@@ -97,7 +99,10 @@ builder.Services.AddRulesEngine(rulesEngineOptions =>
 });
 builder.Services.AddBackgroundJob(options =>
 {
-    options.UseInMemoryDatabase();
+    options.UseInMemoryDatabase(_ =>
+    {
+        _.MaxRetryTimes = 1;
+    }, serviceProvider => serviceProvider.GetService<IIdGenerator<Guid>>()!);
 });
 
 builder.Services
