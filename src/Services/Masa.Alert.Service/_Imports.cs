@@ -46,6 +46,7 @@ global using Masa.Contrib.StackSdks.Config;
 global using Masa.Contrib.StackSdks.Isolation;
 global using Masa.Contrib.StackSdks.Middleware;
 global using Masa.Contrib.StackSdks.Tsc;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
