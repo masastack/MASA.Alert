@@ -7,7 +7,10 @@ public class WebHookService : ServiceBase
 {
     public WebHookService(IServiceCollection services) : base()
     {
-
+        RouteHandlerBuilder = builder =>
+        {
+            builder.RequireAuthorization();
+        };
     }
 
     [RoutePattern("", StartWithBaseUri = true, HttpMethod = "Get")]

@@ -7,7 +7,10 @@ public class AlarmRuleService : ServiceBase
 {
     public AlarmRuleService(IServiceCollection services) : base()
     {
-
+        RouteHandlerBuilder = builder =>
+        {
+            builder.RequireAuthorization();
+        };
     }
 
     [RoutePattern("", StartWithBaseUri = true, HttpMethod = "Get")]
@@ -59,6 +62,7 @@ public class AlarmRuleService : ServiceBase
         }
     }
 
+    [AllowAnonymous]
     [RoutePattern("{id}/check", StartWithBaseUri = true, HttpMethod = "Post")]
     public async Task CheckAsync(Guid id, DateTimeOffset? excuteTime)
     {
