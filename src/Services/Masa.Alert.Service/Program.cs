@@ -1,6 +1,7 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Masa.Alert.Service.Admin.Infrastructure.Authentication;
 using Masa.BuildingBlocks.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -87,6 +88,8 @@ var redisOptions = new RedisConfigurationOptions
     ClientName = builder.Configuration.GetValue<string>("HOSTNAME") ?? masaStackConfig.GetServiceId(MasaStackProject.Alert)
 };
 
+builder.Services.AddCache(redisOptions);
+builder.Services.AddScoped<ITokenGenerater, TokenGenerater>();
 builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
 builder.Services.AddPmClient(masaStackConfig.GetPmServiceDomain());
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
