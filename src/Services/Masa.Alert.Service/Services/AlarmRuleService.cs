@@ -1,13 +1,18 @@
 ﻿// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace Masa.Alert.Service.Admin.Services;
 
 public class AlarmRuleService : ServiceBase
 {
     public AlarmRuleService(IServiceCollection services) : base()
     {
-
+        RouteHandlerBuilder = builder =>
+        {
+            builder.RequireAuthorization();
+        };
     }
 
     [RoutePattern("", StartWithBaseUri = true, HttpMethod = "Get")]
@@ -59,6 +64,7 @@ public class AlarmRuleService : ServiceBase
         }
     }
 
+    [AllowAnonymous]
     [RoutePattern("{id}/check", StartWithBaseUri = true, HttpMethod = "Post")]
     public async Task CheckAsync(Guid id, DateTimeOffset? excuteTime)
     {

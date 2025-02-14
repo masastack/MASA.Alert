@@ -7,7 +7,10 @@ public class AlarmRuleRecordService : ServiceBase
 {
     public AlarmRuleRecordService(IServiceCollection services) : base()
     {
-
+        RouteHandlerBuilder = builder =>
+        {
+            builder.RequireAuthorization();
+        };
     }
 
     [RoutePattern("", StartWithBaseUri = true, HttpMethod = "Get")]
