@@ -57,7 +57,14 @@ public class AlarmRuleCommandHandler
 
         if (entity.SchedulerJobId != default)
         {
-            await _schedulerClient.SchedulerJobService.RemoveAsync(new SchedulerJobRequestBase { JobId = entity.SchedulerJobId, OperatorId = entity.Modifier });
+            try
+            {
+                await _schedulerClient.SchedulerJobService.RemoveAsync(new SchedulerJobRequestBase { JobId = entity.SchedulerJobId, OperatorId = entity.Modifier });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to remove scheduler job: {ex.Message}");
+            }
         }
     }
 
