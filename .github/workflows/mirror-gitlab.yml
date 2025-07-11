@@ -8,11 +8,13 @@ on:
 jobs:
   to_gitlab:
     runs-on: ubuntu-latest
-    steps:                                            
-      - uses: actions/checkout@v1
+    steps:                                     
       - name: config git
         run: git config --global http.postBuffer 524288000
-      - uses: yesolutions/mirror-action@v0.5.1
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: yesolutions/mirror-action@master
         with:
           REMOTE: '${{ secrets.GITLAB_ADDER }}/cicd/masa.alert.git'
           GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
