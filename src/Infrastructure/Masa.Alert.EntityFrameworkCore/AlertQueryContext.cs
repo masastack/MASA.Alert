@@ -99,6 +99,30 @@ public class AlertQueryContext : MasaDbContext<AlertQueryContext>, IAlertQueryCo
             b.ToView(AlertConsts.DB_TABLE_PREFIX + "WebHooks", AlertConsts.DB_SCHEMA);
         });
 
+        // Apply provider-specific configurations
+        ApplyProviderSpecificConfigurations(builder);
+
         base.OnModelCreatingExecuting(builder);
+    }
+
+    private void ApplyProviderSpecificConfigurations(ModelBuilder builder)
+    {
+        if (Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL")
+        {
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime))
+                    {
+                        property.SetValueConverter(new DateTimeUtcConverter());
+                    }
+                    else if (property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(new NullableDateTimeUtcConverter());
+                    }
+                }
+            }
+        }
     }
 }
