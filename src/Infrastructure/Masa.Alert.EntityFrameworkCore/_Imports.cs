@@ -13,6 +13,7 @@ global using Masa.Alert.Domain.Shared.Consts;
 global using Masa.Alert.Domain.WebHooks.Aggregates;
 global using Masa.Alert.Domain.WebHooks.Repositories;
 global using Masa.Alert.Infrastructure.EntityFrameworkCore.EntityFrameworkCore.ValueConverters;
+global using Masa.Alert.Infrastructure.EntityFrameworkCore.ValueConverters;
 global using Masa.BuildingBlocks.Data.UoW;
 global using Masa.BuildingBlocks.Data.Contracts;
 global using Masa.Contrib.Ddd.Domain.Repository.EFCore;
