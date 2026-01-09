@@ -1,4 +1,4 @@
-﻿// Copyright (c) MASA Stack All rights reserved.
+// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 namespace Masa.Alert.Application.AlarmHistories.Queries;
@@ -55,7 +55,7 @@ public class AlarmHistoryQueryHandler
     private async Task<Expression<Func<AlarmHistoryQueryModel, bool>>> CreateFilteredPredicate(GetAlarmHistoryInputDto options)
     {
         Expression<Func<AlarmHistoryQueryModel, bool>> condition = x => true;
-        condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.AlarmRule.DisplayName.Contains(options.Filter));
+        condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.AlarmRule.DisplayName.ToLower().Contains(options.Filter.ToLower()));
         switch (options.SearchType)
         {
             case AlarmHistorySearchTypes.Alarming:
