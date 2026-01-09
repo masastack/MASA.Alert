@@ -1,4 +1,4 @@
-﻿// Copyright (c) MASA Stack All rights reserved.
+// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 namespace Masa.Alert.Application.WebHooks.Queries;
@@ -48,7 +48,7 @@ public class WebHookQueryHandler
     private async Task<Expression<Func<WebHookQueryModel, bool>>> CreateFilteredPredicate(GetWebHookInputDto options)
     {
         Expression<Func<WebHookQueryModel, bool>> condition = x => true;
-        condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.DisplayName.Contains(options.Filter));
+        condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.DisplayName.ToLower().Contains(options.Filter.ToLower()));
         return await Task.FromResult(condition); ;
     }
 

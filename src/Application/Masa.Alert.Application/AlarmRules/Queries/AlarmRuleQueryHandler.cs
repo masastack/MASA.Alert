@@ -1,4 +1,4 @@
-﻿// Copyright (c) MASA Stack All rights reserved.
+// Copyright (c) MASA Stack All rights reserved.
 // Licensed under the Apache License. See LICENSE.txt in the project root for license information.
 
 namespace Masa.Alert.Application.AlarmRules.Queries;
@@ -54,7 +54,7 @@ public class AlarmRuleQueryHandler
     private async Task<Expression<Func<AlarmRuleQueryModel, bool>>> CreateFilteredPredicate(GetAlarmRuleInputDto options)
     {
         Expression<Func<AlarmRuleQueryModel, bool>> condition = x => true;
-        condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.DisplayName.Contains(options.Filter));
+        condition = condition.And(!string.IsNullOrEmpty(options.Filter), x => x.DisplayName.ToLower().Contains(options.Filter.ToLower()));
         condition = condition.And(options.Type != default, x => x.Type == options.Type);
         condition = condition.And(x => x.Show == options.Show);
         if (options.TimeType == AlarmRuleSearchTimeTypes.ModificationTime)
