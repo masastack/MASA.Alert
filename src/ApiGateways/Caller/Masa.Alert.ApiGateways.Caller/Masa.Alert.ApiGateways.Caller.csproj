@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <ItemGroup>
-	<PackageReference Include="Masa.Contrib.StackSdks.Caller" Version="$(MasaStackSdksPackageVersion)" />
-	<PackageReference Include="Masa.Contrib.Service.Caller.DaprClient" Version="$(MasaFrameworkPackageVersion)" />
-  </ItemGroup>
+	<PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Contracts\Masa.Alert.Contracts.Admin\Masa.Alert.Contracts.Admin.csproj" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Caller" Version="$(MasaStackSdksPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.Service.Caller.DaprClient" Version="$(MasaFrameworkPackageVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Contracts\Masa.Alert.Contracts.Admin\Masa.Alert.Contracts.Admin.csproj" />
 	</ItemGroup>
 </Project>

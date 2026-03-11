@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
@@ -20,8 +19,8 @@
 		<PackageReference Include="Masa.Stack.Components" Version="0.0.491" />
 		<PackageReference Include="Masa.Utils.Data.Elasticsearch" Version="$(MasaFrameworkPackageVersion)" />
 		<PackageReference Include="Masa.Contrib.StackSdks.Tsc" Version="$(MasaStackSdksPackageVersion)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.16" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(MicrosoftPackageVersion)" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="$(MicrosoftPackageVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>
