@@ -46,12 +46,13 @@ public class TokenGenerater : ITokenGenerater
 
     private async Task<string> GetClientCredentialsTokenAsync()
     {
-        var accessToken = await _cacheContext.GetOrSetAsync(CacheKeys.ClientCredentialsTokenKey(_masaStackConfig.GetWebId(MasaStackProject.Alert)),
+        string accessToken = await _cacheContext.GetOrSetAsync(CacheKeys.ClientCredentialsTokenKey(_masaStackConfig.GetWebId(MasaStackProject.Alert)),
             async () =>
             {
+                string url = _masaStackConfig.GetSsoDomain();
                 var request = new ClientCredentialsTokenRequest
                 {
-                    Address = _masaStackConfig.GetSsoDomain() + "/connect/token",
+                    Address = $"{url}{(url.EndsWith('/') ? "" : "/")}connect/token",
                     GrantType = BuildingBlocks.Authentication.OpenIdConnect.Models.Constans.GrantType.CLIENT_CREDENTIALS,
                     ClientId = _masaStackConfig.GetWebId(MasaStackProject.Alert),
                     Scope = "MasaStack"
