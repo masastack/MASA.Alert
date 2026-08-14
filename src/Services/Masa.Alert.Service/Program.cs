@@ -86,7 +86,7 @@ var redisOptions = new RedisConfigurationOptions
 };
 
 builder.Services.AddCache(redisOptions);
-builder.Services.AddScoped<ITokenGenerater, TokenGenerater>();
+//builder.Services.AddScoped<ITokenGenerater, TokenGenerater>();
 builder.Services.AddAuthClient(masaStackConfig.GetAuthServiceDomain(), redisOptions);
 builder.Services.AddPmClient(masaStackConfig.GetPmServiceDomain());
 builder.Services.AddTscClient(masaStackConfig.GetTscServiceDomain());
