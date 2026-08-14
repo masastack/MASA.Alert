@@ -1,36 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-<ItemGroup>
-    <PackageReference Include="Masa.BuildingBlocks.Authentication.Identity" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.BuildingBlocks.Data.Mapping" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.BuildingBlocks.Data.MappingExtensions" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.BuildingBlocks.Dispatcher.Events" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.BuildingBlocks.Dispatcher.IntegrationEvents" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.BuildingBlocks.ReadWriteSplitting.Cqrs" Version="$(MasaFrameworkPackageVersion)" />
-	<PackageReference Include="Masa.Contrib.Extensions.BackgroundJobs.Memory" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.Contrib.Data.Mapping.Mapster" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.Utils.Extensions.Expressions" Version="$(MasaFrameworkPackageVersion)" />
-    <PackageReference Include="Masa.BuildingBlocks.StackSdks.Auth" Version="$(MasaStackSdksPackageVersion)" />
-	<PackageReference Include="Masa.Contrib.StackSdks.Mc" Version="$(MasaStackSdksPackageVersion)" />
-	<PackageReference Include="Masa.BuildingBlocks.StackSdks.Scheduler" Version="$(MasaStackSdksPackageVersion)" />
-	<PackageReference Include="Masa.Contrib.Configuration" Version="$(MasaFrameworkPackageVersion)" />
-	<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="$(MasaFrameworkPackageVersion)" />
-	<PackageReference Include="Masa.Contrib.Data.EFCore" Version="$(MasaFrameworkPackageVersion)" />
-	<PackageReference Include="Masa.Contrib.StackSdks.Config" Version="$(MasaStackSdksPackageVersion)" />
-	<PackageReference Include="Masa.Contrib.StackSdks.Tsc" Version="$(MasaStackSdksPackageVersion)" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
-	<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.22" />
-  </ItemGroup>
-<ItemGroup>
-  <ProjectReference Include="..\..\Contracts\Masa.Alert.Contracts.Admin\Masa.Alert.Contracts.Admin.csproj" />
-  <ProjectReference Include="..\..\Domain\Masa.Alert.Domain\Masa.Alert.Domain.csproj" />
-  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Constants\Masa.Alert.Infrastructure.Constants.csproj" />
-  <ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.EntityFrameworkCore\Masa.Alert.Infrastructure.EntityFrameworkCore.csproj" />
-  <ProjectReference Include="..\Masa.Alert.Application.Contracts\Masa.Alert.Application.Contracts.csproj" />
-</ItemGroup>
+	<PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Masa.BuildingBlocks.Authentication.Identity" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.BuildingBlocks.Data.Mapping" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.BuildingBlocks.Data.MappingExtensions" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.BuildingBlocks.Dispatcher.Events" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.BuildingBlocks.Dispatcher.IntegrationEvents" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.BuildingBlocks.ReadWriteSplitting.Cqrs" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.Extensions.BackgroundJobs.Memory" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.Data.Mapping.Mapster" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.Utils.Extensions.Expressions" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.BuildingBlocks.StackSdks.Auth" Version="$(MasaStackSdksPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Mc" Version="$(MasaStackSdksPackageVersion)" />
+		<PackageReference Include="Masa.BuildingBlocks.StackSdks.Scheduler" Version="$(MasaStackSdksPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.Configuration" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.Configuration.ConfigurationApi.Dcc" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.Data.EFCore" Version="$(MasaFrameworkPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Config" Version="$(MasaStackSdksPackageVersion)" />
+		<PackageReference Include="Masa.Contrib.StackSdks.Tsc" Version="$(MasaStackSdksPackageVersion)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(MicrosoftPackageVersion)" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.7.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Contracts\Masa.Alert.Contracts.Admin\Masa.Alert.Contracts.Admin.csproj" />
+		<ProjectReference Include="..\..\Domain\Masa.Alert.Domain\Masa.Alert.Domain.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.Constants\Masa.Alert.Infrastructure.Constants.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\Masa.Alert.Infrastructure.EntityFrameworkCore\Masa.Alert.Infrastructure.EntityFrameworkCore.csproj" />
+		<ProjectReference Include="..\Masa.Alert.Application.Contracts\Masa.Alert.Application.Contracts.csproj" />
+	</ItemGroup>
 </Project>
