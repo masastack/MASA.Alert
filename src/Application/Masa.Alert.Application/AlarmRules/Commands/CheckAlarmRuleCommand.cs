@@ -11,5 +11,7 @@ public record CheckAlarmRuleCommand(Guid AlarmRuleId, DateTimeOffset? ExcuteTime
 
     public ConcurrentDictionary<string, bool> RulesResult { get; set; } = new();
 
+    public DateTimeOffset? StartTime { get; set; }
+
     public bool IsStop { get; set; }
 }

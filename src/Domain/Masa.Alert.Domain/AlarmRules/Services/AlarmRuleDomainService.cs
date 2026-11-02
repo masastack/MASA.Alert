@@ -36,7 +36,7 @@ public class AlarmRuleDomainService : DomainService
         await Task.CompletedTask;
     }
 
-    public async Task CheckRuleAsync(DateTimeOffset excuteTime, AlarmRule alarmRule, ConcurrentDictionary<string, long> aggregateResult)
+    public async Task CheckRuleAsync(DateTimeOffset excuteTime, AlarmRule alarmRule, ConcurrentDictionary<string, long> aggregateResult, DateTimeOffset? startTime = null)
     {
         var ruleResult = new List<RuleResultItem>();
 
@@ -57,7 +57,7 @@ public class AlarmRuleDomainService : DomainService
 
         if (isTrigger)
         {
-            alarmRule.TriggerAlarm(excuteTime, aggregateResult, ruleResult, consecutiveCount);
+            alarmRule.TriggerAlarm(excuteTime, aggregateResult, ruleResult, consecutiveCount, startTime);
         }
         else if (latestRecord != null && latestRecord.IsTrigger)
         {

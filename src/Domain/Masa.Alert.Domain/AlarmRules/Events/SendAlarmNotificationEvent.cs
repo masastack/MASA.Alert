@@ -3,6 +3,6 @@
 
 namespace Masa.Alert.Domain.AlarmRules.Events;
 
-public record SendAlarmNotificationEvent(Guid AlarmHistoryId, ConcurrentDictionary<string, long> AggregateResult) : DomainEvent
+public record SendAlarmNotificationEvent(Guid AlarmHistoryId, ConcurrentDictionary<string, long> AggregateResult, DateTimeOffset? StartTime = null, DateTimeOffset? EndTime = null) : DomainEvent
 {
 }

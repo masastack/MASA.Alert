@@ -47,7 +47,7 @@ public class SendAlarmNotificationEventHandler
 
                 if (alarmRule.Type == AlarmRuleTypes.Log)
                 {
-                    await AddLogVariablesAsync(alarmRule, variables);
+                    await AddLogVariablesAsync(alarmRule, variables, eto.StartTime, eto.EndTime);
                 }
             }
 
@@ -66,11 +66,17 @@ public class SendAlarmNotificationEventHandler
         }
     }
 
-    private async Task AddLogVariablesAsync(AlarmRule alarmRule, Dictionary<string, object> variables)
+    private async Task AddLogVariablesAsync(AlarmRule alarmRule, Dictionary<string, object> variables, DateTimeOffset? eventStartTime, DateTimeOffset? eventEndTime)
     {
-        var checkTime = DateTimeOffset.UtcNow;
-        var latest = await _domainService.GetLatest(alarmRule.Id);
-        var startTime = alarmRule.GetStartCheckTime(checkTime, latest);
+        // 优先使用告警检查时（获取聚合数量）的起止时间，保证与最新日志查询的时间范围一致
+        var checkTime = eventEndTime ?? DateTimeOffset.UtcNow;
+        var startTime = eventStartTime;
+        if (startTime == null)
+        {
+            var latest = await _domainService.GetLatest(alarmRule.Id);
+            startTime = alarmRule.GetStartCheckTime(checkTime, latest);
+        }
+
         if (startTime == null)
             return;
 

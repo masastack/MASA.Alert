@@ -56,6 +56,8 @@ public class CheckAlarmRuleCommandHandler
             return;
         }
 
+        command.StartTime = startTime;
+
         if (alarmRule.Type == AlarmRuleTypes.Log)
         {
             command.AggregateResult = await QueryLogAggregationAsync(alarmRule, startTime.Value.UtcDateTime, checkTime.UtcDateTime, command);
@@ -81,7 +83,7 @@ public class CheckAlarmRuleCommandHandler
             return;
         }
 
-        await _domainService.CheckRuleAsync(command.ExcuteTime ?? DateTimeOffset.UtcNow, command.AlarmRule, command.AggregateResult);
+        await _domainService.CheckRuleAsync(command.ExcuteTime ?? DateTimeOffset.UtcNow, command.AlarmRule, command.AggregateResult, command.StartTime);
     }
 
     private async Task<ConcurrentDictionary<string, long>> QueryLogAggregationAsync(AlarmRule alarmRule, DateTime startTime, DateTime endTime, CheckAlarmRuleCommand command)
