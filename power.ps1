@@ -14,5 +14,5 @@ $WebServerName="masa-alert-web-admin"
 docker build -t registry.cn-hangzhou.aliyuncs.com/masastack/${ServiceServerName}:$t  -f $ServiceDockerfilePath .
 docker push registry.cn-hangzhou.aliyuncs.com/masastack/${ServiceServerName}:$t 
 
-docker build -t registry.cn-hangzhou.aliyuncs.com/masastack/${WebServerName}:$t  -f $WebDockerfilePath .
-docker push registry.cn-hangzhou.aliyuncs.com/masastack/${WebServerName}:$t 
+#docker build -t registry.cn-hangzhou.aliyuncs.com/masastack/${WebServerName}:$t  -f $WebDockerfilePath .
+#docker push registry.cn-hangzhou.aliyuncs.com/masastack/${WebServerName}:$t 
